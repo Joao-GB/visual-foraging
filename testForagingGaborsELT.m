@@ -31,43 +31,7 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
     
     
 %% 2) Inicializa PTB e EyelinkToolBox
-    % (a) Configurações antes de abrir a tela
-        FlushEvents;
-
-        
-        PsychDefaultSetup(2);
-        Screen('Preference', 'SkipSyncTests', 2);
-        Screen('Preference','SuppressAllWarnings',0);
-        Screen('Preference','Verbosity',0);
-        PsychImaging('PrepareConfiguration');
-        PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
-    
-    % (b) Escolhe a tela em que haverá o desenho
-        screenNumber = max(Screen('Screens'));
-        white = WhiteIndex(screenNumber);
-        grey = white / 2;
-        [window, ~] = PsychImaging('OpenWindow', screenNumber, grey, [], 32, 2,...
-                                [], [],  kPsychNeed32BPCFloat);
-    
-    % (c) Obtém propriedades da tela
-        [monitorW_mm, ~] = Screen('DisplaySize', screenNumber); % Tamanho     da tela em mm
-        screenRes = Screen('Resolution', screenNumber);         % Resolução   da tela em px
-        ifi = Screen('GetFlipInterval', window);
-    
-    % (d) Obtém o centro e os semieixos da elipse
-        ellipseProps = [screenRes.width/2, screenRes.height/2];
-        ellipseProps = [ellipseProps ellipseProps(1)*ellipseToScreenRatio(1) ellipseProps(2)*ellipseToScreenRatio(2)];
-        Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    % i. Inicializa Eyelink
-        dummymode = 1;
-        EyelinkInit(dummymode); % Initialize EyeLink connection
-        status = Eyelink('IsConnected');
-        if status < 1 % If EyeLink not connected
-            dummymode = 1; 
-        end
-
-    % ii. Caixa de diálogo para nome do arquivo
+    % i. Caixa de diálogo
         prompt = {'Subject code', 'Session number', 'Dominant eye (L or R)'};
         dlg_title = 'Experimental Setup';
         def = {'00', '01', 'R'};
@@ -79,6 +43,42 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
 
         % Interrompe se nome muito longo
         if length(edfFile) > 8, fprintf('Filename needs to be no more than 8 characters long (letters, numbers and underscores only)\n'); cleanup; return; end
+    
+    
+    % (a) Configurações antes de abrir a tela
+        FlushEvents;
+        PsychDefaultSetup(2);
+        Screen('Preference', 'SyncTestSettings', 0.01, 50, 0.25);
+        Screen('Preference', 'SuppressAllWarnings', 1);
+        Screen('Preference', 'Verbosity', 0);
+        PsychImaging('PrepareConfiguration');
+        PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
+    
+
+    % (b) Escolhe a tela em que haverá o desenho
+        screenNumber = max(Screen('Screens'));
+        white = WhiteIndex(screenNumber);
+        grey = white / 2;%startP startP startP+dimX startP+dimY
+        [window, ~] = PsychImaging('OpenWindow', screenNumber, grey, [], 32, 2,...
+                                [], [],  kPsychNeed32BPCFloat);
+
+    % (c) Obtém propriedades da tela
+        [monitorW_mm, ~] = Screen('DisplaySize', screenNumber); % Tamanho     da tela em mm
+        screenRes = Screen('Resolution', screenNumber);         % Resolução   da tela em px
+        ifi = Screen('GetFlipInterval', window);
+
+    % (d) Obtém o centro e os semieixos da elipse
+        ellipseProps = [screenRes.width/2, screenRes.height/2];
+        ellipseProps = [ellipseProps ellipseProps(1)*ellipseToScreenRatio(1) ellipseProps(2)*ellipseToScreenRatio(2)];
+        Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    % i. Inicializa Eyelink
+        dummymode = 0;
+        EyelinkInit(dummymode); % Initialize EyeLink connection
+%         status = Eyelink('IsConnected');
+%         if status < 1, dummymode = 1; end
+
+    % ii. Abre o arquivo .edf
         failOpen = Eyelink('OpenFile', edfFile);
         % Interrompe se arquivo não abrir
         if failOpen ~= 0, fprintf('Cannot create EDF file %s', edfFile); cleanup; return; end
@@ -87,58 +87,51 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
 %         ELsoftwareVersion = 0; [ver, versionstring] = Eyelink('GetTrackerVersion');
 %         if ver ~=0, [~, vnumcell] = regexp(versionstring,'.*?(\d)\.\d*?','Match','Tokens'); ELsoftwareVersion = str2double(vnumcell{1}{1}); end
 
-    % iv. Adiciona um texto inicial ao arquivo .edf
-        preambleText = sprintf('RECORDED BY %s session name: %s', mfilename, edfFile);
-        Eyelink('Command', 'add_file_preamble_text "%s"', preambleText);
-
-    % v. Ajusta o que é comunicado entre os PCs
+    % iv. Ajusta o que é comunicado entre os PCs
         Eyelink('Command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
         Eyelink('Command', 'link_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,BUTTON,FIXUPDATE,INPUT');
 
-    % vi. Ajusta o que é salvo no arquivo .edf
+    % v. Ajusta o que é salvo no arquivo .edf
         Eyelink('Command', 'file_sample_data  = LEFT,RIGHT,GAZE,HREF,RAW,AREA,HTARGET,GAZERES,BUTTON,STATUS,INPUT');
         Eyelink('Command', 'link_sample_data  = LEFT,RIGHT,GAZE,GAZERES,AREA,HTARGET,STATUS,INPUT');
 
-    % vii. Identifica o olho dominante
+    % vi. Identifica o olho dominante
         if ismember(domEye, {'L','E'}), Eye=1; Eyelink('Command', 'active_eye = LEFT'); elseif ismember(domEye, {'R', 'D'}), Eye=2; Eyelink('Command', 'active_eye = RIGHT'); end
 
-    % viii. Ajusta as configurações padrão do Eyelink de calibração
+    % vii. Adiciona um texto inicial ao arquivo .edf
+        preambleText = sprintf('RECORDED BY %s session name: %s', mfilename, edfFile);
+        Eyelink('Command', 'add_file_preamble_text "%s"', preambleText);
+
+    % viii. Ajusta as configurações-padrão do Eyelink de calibração
         el = EyelinkInitDefaults(window);
         el.calibrationtargetsize = 2;
         el.calibrationtargetwidth = 0.3;
         el.backgroundcolour = grey;
         el.calibrationtargetcolour = [0 0 0];
         el.msgfontcolour = [0 0 0];
-
         el.targetbeep = 0; el.feedbackbeep = 0;
-
         EyelinkUpdateDefaults(el);
-
         Eyelink('Command', 'screen_pixel_coords = %ld %ld %ld %ld', 0, 0, screenRes.width-1, screenRes.height-1);
         Eyelink('Message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, screenRes.width-1, screenRes.height-1);
-        
-        Eyelink('Command', 'calibration_type = HV9');
-            % Podemos definir pontos de calibração mais bem espaçados ou não
-        Eyelink('command', 'generate_default_targets = NO');
-            % Modify calibration and validation target locations
-        Eyelink('command', 'calibration_samples = 10');
-        Eyelink('command', 'calibration_sequence = 0,1,2,3,4,5,6,7,8,9');
+        Eyelink('Command', 'calibration_type = HV9'); Eyelink('command', 'generate_default_targets = NO');
+        % Podemos definir o espaçamento dos pontos de calibração
+        Eyelink('command', 'calibration_samples = 10'); Eyelink('command', 'calibration_sequence = 0,1,2,3,4,5,6,7,8,9');
         Eyelink('command', 'calibration_targets = %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d',...
-            960,540, 960,205, 960,875, 148,540, 1772,540, 148,205, 1772,205, 148,875, 1772,875);
-        Eyelink('command', 'validation_samples = 10');
-        Eyelink('command', 'validation_sequence = 0,1,2,3,4,5,6,7,8,9');
+            960,540, 960,205, 960,875, 442,540, 1478,540, 442,205, 1478,205, 442,875, 1478,875);
+        Eyelink('command', 'validation_samples = 10'); Eyelink('command', 'validation_sequence = 0,1,2,3,4,5,6,7,8,9');
         Eyelink('command', 'validation_targets = %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d %d,%d',...
-            960,540, 960,205, 960,875, 148,540, 1772,540, 148,205, 1772,205, 148,875, 1772,875);
-
-
+            960,540, 960,205, 960,875, 442,540, 1478,540, 442,205, 1478,205, 442,875, 1478,875);
         Eyelink('Command', 'button_function 5 "accept_target_fixation"');
+
+
+        Eyelink('Command', 'clear_screen 0'); % Limpa a tela do Host PC
+        topPriorityLevel = MaxPriority(window);
+        Priority(topPriorityLevel);
         HideCursor(window);
-            % Com isso o teclado não escreve nada na command window
-        ListenChar(-1);
-        Eyelink('Command', 'clear_screen 0'); % Clear Host PC display from any previus drawing
-            % Put EyeLink Host PC in Camera Setup mode for participant setup/calibration
-        EyelinkDoTrackerSetup(el);
+        ListenChar(-1); % Para o teclado não escrever nada na command window
     
+        % Put EyeLink Host PC in Camera Setup mode for participant setup/calibration
+        EyelinkDoTrackerSetup(el);
     
 %% 3) Qualidades dos Gabores
     % (a) Tamanho dos gabores, distância entre eles, em px, e cor do fundo
@@ -189,7 +182,7 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
                                 % continua simétrico ao redor de 0.5, porém
                                 % mais distante dos extremos
     
-    % (c) Define a matriz que contém o ruído e o centro dos retêngulos a serem
+    % (c) Define a matriz que contém o ruído e o centro dos retângulos a serem
     %     plotados
         noiseMatrix = zeros(gaborSize_px, nStims*gaborSize_px);
     
@@ -221,19 +214,36 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
     
 %% 8) Desenha os Gabores em cada trial
     KbName('UnifyKeyNames');
-    vbl = Screen('Flip', window);
-
-    HideCursor(window);
+    
     try
         for i = 1:nTrials
+        % (a) Cria os retângulos de destino
+            dstRects = CenterRectOnPointd(repmat(baseRect, [nStims,1])', stimCenters(1,:, i), stimCenters(2,:, i));
         
         % i. Deixa de registrar até StartRecording
             Eyelink('SetOfflineMode');
-            WaitSecs(0.1);
+            WaitSecs(.1);
 
         % ii. Faz drift correction
+            Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             EyelinkDoDriftCorrection(el);
-            WaitSecs(1);
+            WaitSecs(.1);
+
+        % iii. Desenha, na tela do Host PC, linhas indicando a orientação de cada estímulo
+            Eyelink('Command', 'clear_screen 0');
+            for j=1:size(dstRects, 2)
+                hostRect = dstRects(:,j);
+                cx = mean(hostRect([1 3]));
+                cy = mean(hostRect([2 4]));
+                hostRect = round(hostRect);
+                radius = (hostRect(3)-hostRect(1))/2;
+                % Eyelink('Command', 'draw_circle %d %d %d %d 15', hostRect(1), hostRect(2), hostRect(3), hostRect(4));
+                theta = orientation(i, j);
+                lineLen = radius * 0.8;
+                dx = lineLen * sind(theta);
+                dy = lineLen * cosd(theta);
+                Eyelink('Command', 'draw_line %d %d %d %d 12', round(cx-dx), round(cy-dy), round(cx+dx), round(cy+dy));
+            end
         
         % (a) Desenha a cruz de fixação
             xFix = [-gaborSize_px/2 gaborSize_px/2 0 0];
@@ -246,34 +256,16 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
         % (b) Cria as texturas de ruído, sem desenhá-las
             noiseMatrix(:,:) = noiseAlpha*(noiseContrast*rescale(pinkNoise(gaborSize_px, nStims*gaborSize_px), -noiseAmplitude, noiseAmplitude))+grey;
             noiseTex = Screen('MakeTexture', window, noiseMatrix, [], [], [], [], blurshader); 
-
-        % (c) Cria os retângulos de destino
-            dstRects = CenterRectOnPointd(repmat(baseRect, [nStims,1])', stimCenters(1,:, i), stimCenters(2,:, i));
+            
+            FPonset = Screen('Flip', window);
         
-        % iii. Desenha, na tela do Host PC, círculos indicando a orientação de cada estímulo
-            Eyelink('Command', 'clear_screen 0');
-            for j=1:size(dstRects, 2)
-                hostRect = dstRects(:,j);
-                cx = mean(hostRect([1 3]));
-                cy = mean(hostRect([2 4]));
-                radius = (hostRect(3)-hostRect(1))/2;
-                Eyelink('Command', 'draw_circle %d %d %d 15', round(cx), round(cy), round(radius));
-                theta = orientation(i, j);
-                lineLen = radius * 0.8;
-                dx = lineLen * cosd(theta);
-                dy = lineLen * sind(theta);
-                Eyelink('Command', 'draw_line %d %d %d %d 12', round(cx-dx), round(cy-dy), round(cx+dx), round(cy+dy));
-            end
-        
-
         % iv. Inicia o registro da sessão
             Eyelink('StartRecording');
             Eyelink('Command', 'record_status_message "TRIAL %d/%d"', i, nTrials);
-
-            FPonset = Screen('Flip', window, vbl + 0.5 * ifi);
             Eyelink('Message', sprintf('FP_onset_%d', FPonset));
         
         % v. Não avança de tela até que os olhos estejam na cruz de fixação
+            fixCenter = fixCenters(:,i);
             while true
                 damn = Eyelink('CheckRecording');
                 if(damn ~= 0), break; end
@@ -284,15 +276,17 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
                     y_gaze = evt.gy(Eye);
                     % Se os olhos estiverem perto da cruz por tempo
                     % suficiente, prossegue
-                    if vecnorm([x_gaze; y_gaze] - fixCoords) <= minFixDist
+                    % vecnorm([x_gaze; y_gaze] - fixCenter)
+                    % minFixDist
+                    if vecnorm([x_gaze; y_gaze] - fixCenter) <= minFixDist
                         if (GetSecs - FPonset) >= minFixTime, break; end
                     % Se estiverem distantes, reinicia a contagem
-                    elseif vecnorm([x_gaze; y_gaze] - fixCoords) > minFixDist
+                    elseif vecnorm([x_gaze; y_gaze] - fixCenter) > minFixDist
                         FPonset = GetSecs;
                     end
                 end
-
-                if keyCode(KbName('space')), break; end
+                % [~,~,keyCode] = KbCheck;
+                % if keyCode(KbName('space')), break; end
             end
             
             vbl = Screen('Flip', window);
@@ -301,10 +295,9 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
             Screen('BlendFunction', window, GL_ONE, GL_ZERO);
             Screen('DrawTextures', window, noiseTex, srcRects, dstRects, [], [], [], [], []);
         
-            Screen('BlendFunction', window, GL_ONE, GL_ONE);
         % (e) Desenha os gratings, somando ambos os sinais
+            Screen('BlendFunction', window, GL_ONE, GL_ONE);
             Screen('DrawTextures', window, gaborTex, [], dstRects, orientation(i,:), [], [], [], [], [], gaborProps);
-            
         
         % (f) Desenha a abertura gaussiana
             Screen('BlendFunction', window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
@@ -323,18 +316,23 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
                 [~,trialOffset,keyCode] = KbCheck;
                 if keyCode(KbName('space')), break; end
             end
-            Eyelink('Message', sprintf('trial_onset_%1d', trialOffset));
+            Eyelink('Message', sprintf('trial_offset_%1d', trialOffset));
+            Screen('Flip', window);
          
         % vii. Interrompe o registro, pois ou a tela será atualizada ou
              % acabaram os trials
-            WaitSecs(0.1); % Add 100 msec of data to catch final events before stopping
-            Eyelink('StopRecording');
+            WaitSecs(0.1); 
+%             Eyelink('SetOfflineMode');
+%             Eyelink('StopRecording');
+
+            disp(['Termina o ' num2str(i) 'o trial (após um Flip cinza)'])
         end
     catch
         psychrethrow(psychlasterror);
         cleanup;
     end
     Eyelink('CloseFile');
+    cleanup;
 end
 
 function [fixCenter, stimCenters] = getStimLocations(ROIparams, nStims, minDist, gridShape, randomize)
