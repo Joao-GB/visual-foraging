@@ -155,7 +155,7 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
         gaborProps = repmat(gaborProps', 1, nStims);
     % (d) Matrizes com orientação e centros dos estímulos
         stimCenters = zeros(2, nStims, nTrials);
-        orientation = zeros(nTrials, nStims);
+        orientation = 45*ones(nTrials, nStims);
     
 %% 4) Qualidades das cruzes de fixação
         lineWidth_px = 4;
@@ -293,7 +293,7 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
             
         % (d) Desenha os ruídos, puramente opacos
             Screen('BlendFunction', window, GL_ONE, GL_ZERO);
-            Screen('DrawTextures', window, noiseTex, srcRects, dstRects, [], [], [], [], []);
+            Screen('DrawTextures', window, noiseTex, srcRects, dstRects, orientation(i,:), [], [], [], []);
         
         % (e) Desenha os gratings, somando ambos os sinais
             Screen('BlendFunction', window, GL_ONE, GL_ONE);
@@ -301,7 +301,7 @@ function testForagingGaborsELT(nTrials, nStims, nTargets)
         
         % (f) Desenha a abertura gaussiana
             Screen('BlendFunction', window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            Screen('DrawTextures', window, blobTex, [], dstRects, [], [], [], [0 0 0 1]', [], [], blobProps);                                                             
+            Screen('DrawTextures', window, blobTex, [], dstRects, orientation(i,:), [], [], [0 0 0 1]', [], [], blobProps);                                                             
             Screen('Close', noiseTex);
         
             vbl = Screen('Flip', window, vbl + 0.5 * ifi);

@@ -13,7 +13,7 @@ function ForagingGabors(nTrials, nStims, nTargets)
 %% Depende do participante: olho registrado, orientação-alvo, fixação média
 %% de cada participante, algum parâmetro do ruído rosa
 
-        if nargin < 1, nTrials = 10; end
+        if nargin < 1, nTrials = 3; end
         if nargin < 2, nStims   = 8; end
         if nargin < 3, nTargets = ceil(nStims/2); end
         
@@ -27,6 +27,8 @@ function ForagingGabors(nTrials, nStims, nTargets)
         else
             As = nTargets*ones(nTrials, 1);
         end
+
+        cleanup
     
     
 %% 1) Parâmetros das condições experimentais
@@ -34,7 +36,7 @@ function ForagingGabors(nTrials, nStims, nTargets)
         screenDist       = 57; % PC: 57; tv: 200
 
     % (b) Tamanhos e frequências, em dva e cpd
-        gaborSize_dva    = 1;
+        gaborSize_dva    = 1.5;
         gaborFreq_cpd    = 11; % usa 11
         noiseCutFreq_cpd = 5; % em cpd
 
@@ -71,9 +73,9 @@ function ForagingGabors(nTrials, nStims, nTargets)
 
     % (f) Parâmetros do ruído rosa com orientação
         %% Arrumar parâmetro
-        aSigma = 10; rSigma2 = .76;
+        aSigma = 20; rSigma2 = .76;
         % Duração do estímulo de ruído rosa, em segundos
-        pinkNoiseDur = .2;
+        pinkNoiseDur = .15;
 
     % (g) Quantidade de estímulos cuja orientação deve ser reportada
         propTrialsPSA = .5;     % Em metade dos trials espera-se que a condição
@@ -235,6 +237,8 @@ function ForagingGabors(nTrials, nStims, nTargets)
         [oriFilter, OFsize] = MakeOriFilter(gaborSize_px, aSigma, rSigma2);
     
 %% 4) Qualidades das cruzes de fixação
+        crossSize_dva = 1;
+        crossSize_px = dva2pix(screenDist,monitorW_mm/10,screenRes.width,crossSize_dva);
         lineWidth_px = 4;
         fixCenters  = zeros(2, nTrials);
     
@@ -329,8 +333,8 @@ function ForagingGabors(nTrials, nStims, nTargets)
             end
         
         % (a) Desenha a cruz de fixação
-            xFix = [-gaborSize_px/2 gaborSize_px/2 0 0];
-            yFix = [0 0 -gaborSize_px/2 gaborSize_px/2];
+            xFix = [-crossSize_px/2 crossSize_px/2 0 0];
+            yFix = [0 0 -crossSize_px/2 crossSize_px/2];
             fixCoords = [xFix; yFix];
         
             Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -343,12 +347,21 @@ function ForagingGabors(nTrials, nStims, nTargets)
 
         % (c) Cria as texturas dos ruídos com orientação, sem desenhá-las
             for j=1:nStims
-                oriPinkMatrix(:,((j-1)*nStims+1):(j*nStims)) = ApplyOriFilter(oriFilter, OFsize, auxNoiseMatrix(:,((j-1)*nStims+1):(j*nStims)));
+                colRange = ((j-1)*gaborSize_px+1):(j*gaborSize_px);
+                oriPinkMatrix(:,colRange) = ApplyOriFilter(oriFilter, OFsize, auxNoiseMatrix(:,colRange));
             end
-            oriPinkMatrix = (noiseContrast*oriPinkMatrix)+grey;
 
             oriPinkTex = Screen('MakeTexture', window, oriPinkMatrix);
-            
+
+            % auxTex = Screen('MakeTexture', window, auxNoiseMatrix);
+            % Screen('BlendFunction', window, GL_ONE, GL_ZERO);
+            % Screen('DrawTextures', window, auxTex)
+            % Screen('Flip', window);
+            % WaitSecs(8);
+            % Screen('DrawTextures', window, oriPinkTex)
+            % Screen('Flip', window);
+            % WaitSecs(8);
+
             FPonset = Screen('Flip', window);
         
         % iv. Inicia o registro da sessão
@@ -383,7 +396,7 @@ function ForagingGabors(nTrials, nStims, nTargets)
             
         % (d) Desenha os ruídos, puramente opacos
             Screen('BlendFunction', window, GL_ONE, GL_ZERO);
-            Screen('DrawTextures', window, noiseTex, srcRects, dstRects, [], [], [], [], []);
+            Screen('DrawTextures', window, noiseTex, srcRects, dstRects, orientation(i,:), [], [], [], []);
         
         % (e) Desenha os gratings, somando ambos os sinais
             Screen('BlendFunction', window, GL_ONE, GL_ONE);
@@ -391,7 +404,7 @@ function ForagingGabors(nTrials, nStims, nTargets)
         
         % (f) Desenha a abertura gaussiana
             Screen('BlendFunction', window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            Screen('DrawTextures', window, blobTex, [], dstRects, [], [], [], [0 0 0 1]', [], [], blobProps);                                                             
+            Screen('DrawTextures', window, blobTex, [], dstRects, orientation(i,:), [], [], [0 0 0 1]', [], [], blobProps);                                                             
             Screen('Close', noiseTex);
         
             vbl = Screen('Flip', window, vbl + 0.5 * ifi);
@@ -404,7 +417,10 @@ function ForagingGabors(nTrials, nStims, nTargets)
         % vii. O sujeito deve visitar exatamente Ns(i) estímulos
         %      antes de ocorrerem as modificações pré-sacádicas
             counter = 0;                % Número de estímulos visitados
-            flag    = zeros(nStims, 1); % Quantas vezes cada estímulo foi visitado
+            flag    = zeros(1, nStims); % Quantas vezes cada estímulo foi visitado
+
+            Ns(i)
+            
             while counter < Ns(i)
                 damn = Eyelink('CheckRecording');
                 if(damn ~= 0), break; end
@@ -416,7 +432,7 @@ function ForagingGabors(nTrials, nStims, nTargets)
                     
                     % Se os olhos estiverem suficientemente próximos de
                     %  um alvo não antes visto, incrementa o contador
-                    isCurrTarget = vecnorm([x_gaze; y_gaze] - stimCenters(1,:, i)) <= minFixDist1;
+                    isCurrTarget = vecnorm([x_gaze; y_gaze] - stimCenters(:,:, i)) <= minFixDist1;
                     if any(isCurrTarget)
                         if (GetSecs - trialOnset) >= minFixTime2
                             if any(isCurrTarget & (flag == 0))
@@ -426,24 +442,26 @@ function ForagingGabors(nTrials, nStims, nTargets)
                         end
                     % Se estiverem distantes, reinicia o tempo
                     else
+                        % disp('Sem fixação')
                         trialOnset = GetSecs;
                     end
                 end
             end
             seenIdx = find(flag ~= 0); notSeenIdx = find(flag == 0);
 
+
         % (g) Desenha ruído com orientação
-        Screen('BlendFunction', window, GL_ONE, GL_ZERO);
-        Screen('DrawTextures', window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(i,:), [], [], [], []);
-        Screen('BlendFunction', window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-        Screen('DrawTextures', window, blobTex, [], dstRects(:,notSeenIdx), [], [], [], [0 0 0 1]', [], [], blobProps);                                                             
-        Screen('Close', oriPinkTex);
+            Screen('BlendFunction', window, GL_ONE, GL_ZERO);
+            Screen('DrawTextures', window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(i,notSeenIdx), [], [], [], []);
+            Screen('BlendFunction', window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+            Screen('DrawTextures', window, blobTex, [], dstRects(:,notSeenIdx), orientation(i,notSeenIdx), [], [], [0 0 0 1]', [], [], blobProps);                                                             
+            Screen('Close', oriPinkTex);
     
         % viii. Registra os tempos de início e fim da 3a fase
-        updateStimOnset = Screen('Flip', window);
-        Eyelink('Message', sprintf('update_onset_%1d', updateStimOnset));
-        updateStimOffset = Screen('Flip', window, updateStimOnset + pinkNoiseDur);
-        Eyelink('Message', sprintf('update_offset_%1d', updateStimOffset));
+            updateStimOnset = Screen('Flip', window);
+            Eyelink('Message', sprintf('update_onset_%1d', updateStimOnset));
+            updateStimOffset = Screen('Flip', window, updateStimOnset + pinkNoiseDur);
+            Eyelink('Message', sprintf('update_offset_%1d', updateStimOffset));
 
         % ix. Verifica se há alguma fixação de duração mínima em estímulo 
         %     numa janela pós-modificação
@@ -457,11 +475,12 @@ function ForagingGabors(nTrials, nStims, nTargets)
                     x_gaze = evt.gx(Eye);
                     y_gaze = evt.gy(Eye);
                     
-                    isCurrTarget = vecnorm([x_gaze; y_gaze] - stimCenters(1,:, i)) <= minFixDist3;
+                    isCurrTarget = vecnorm([x_gaze; y_gaze] - stimCenters(:,:, i)) <= minFixDist3;
                     if any(isCurrTarget)
                         if (GetSecs - fixOnset) >= minFixTime3
                             flag = flag + isCurrTarget;
                             currIdx = find(isCurrTarget);
+                            disp(['Trial ' num2str(i) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação'])
                             break;
                         end
                     else
@@ -508,13 +527,13 @@ function ForagingGabors(nTrials, nStims, nTargets)
             
                     allTargets(orderToReportStims(j)) = currTarget;
             
-                    answerOffset = foragingFlip(win, stimCenters, dstRects, np, rectColors, allTargets, targetOri, rectPW);
+                    answerOffset = foragingFlip(window, stimCenters(:,:,i), dstRects, orderToReportStims, gaborSize_px, rectColors, allTargets, targetOri, rectPW);
             
                 end
             end
 
             Eyelink('Message', sprintf('answer_offset_%1d', answerOffset));
-            foragingFlip(win, stimCenters, dstRects, np, allColors, allTargets, targetOri, allPW);
+            foragingFlip(window, stimCenters(:,:,i), dstRects, orderToReportStims, gaborSize_px, allColors, allTargets, targetOri, allPW);
             WaitSecs(0.5);
 
         % xi. Interrompe o registro, pois ou a tela será atualizada ou
@@ -622,8 +641,8 @@ function pmf = robust_beta_pmf(m, desired_mode, concentration_type, value)
     pmf = densities / sum(densities);
 end
 
-function currTime = foragingFlip(win, centers, dstCoord, s, colors, aT, tOri, pW)
-    Screen('FrameOval', win, colors, dstCoord, pW);
+function currTime = foragingFlip(win, centers, dstCoord, idxForOvals, s, colors, aT, tOri, pW)
+    Screen('FrameOval', win, colors(:, idxForOvals), dstCoord(:, idxForOvals), pW(:, idxForOvals));
 
     targets = (aT == true); nonTargets = (aT == false);
 
