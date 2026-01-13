@@ -83,7 +83,7 @@ function params = foragingParams
     % (c) Fatores de duração de cada trial com base nas durações de fixações e sacadas
     params.revisitFactor = 1/2;         % Proporção de tolerância de revisita a
                                             % estímulos já vistos
-    params.sacFixDurRatio = 1/2;        % Duração de uma sacada em relação a uma fixação
+    params.sacFixDurRatio = 1;        % Duração de uma sacada em relação a uma fixação
     params.maxTrialDurFactor = (1+params.revisitFactor)*(1+params.sacFixDurRatio); 
                                             % A ideia é que se N é um número de estímulos, o sujeito fará no máximo
                                             % 1.5*N fixações e sacadas, já que a 1a fixação parte da cruz de fixação.

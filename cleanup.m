@@ -7,7 +7,7 @@ function cleanup(win)
         Eyelink('Shutdown');
     end
     sca;
-    ShowCursor([], win)
+    ShowCursor();
     ListenChar(0);
     Priority(0);
     close all;
