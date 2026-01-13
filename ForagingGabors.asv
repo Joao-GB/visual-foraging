@@ -1022,6 +1022,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             % vi. Registra o momento de início do trial
                         if debug == 0  && mode >= 2 && keepGoingTrials
                             Eyelink('Message','TRIAL ONSET PHASE 2');
+%                             Eyelink('Message', sprintf('trial_onset_%1d', trialOnset));
                         end
                     else 
                         trialOnset = GetSecs;
@@ -1309,7 +1310,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         end
 
                          if debug == 0  && mode >= 2
-                            Eyelink('Message','TRIAL ONSET PHASE 4');
+                            Eyelink('Command','record_status_message "TRIAL ONSET PHASE 4"');
+%                             Eyelink('Message', sprintf('answer_onset_%1d', GetSecs));
                          end
                         for j=1:length(orderToReportStims)
                             KbReleaseWait;
@@ -1343,7 +1345,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         end
                         
                         if debug == 0 && mode >= 2
-                            Eyelink('Message','TRIAL OFFSET PHASE 4');
+                            Eyelink('Command','record_status_message "TRIAL OFFSET PHASE 4"');
+%                             Eyelink('Message', sprintf('answer_offset_%1d', answerOffset));
                         end
 
                         feedback = (orientation(:,idx,b) == targetOri(b))' + allTargets;
@@ -1364,12 +1367,12 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
                         i = i + 1;
                     else
-                        Eyelink('Message','TRIAL ABORT TRY');
+                        Eyelink('Command','record_status_message "TRIAL ABORT TRY"');
 %                         Eyelink('Message', 'bad_trial');
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;
 
                         if retryCount(trialQueue(i)) > prm.maxRetries
-                            Eyelink('Message','TRIAL ABORT IDX');
+                            Eyelink('Command','record_status_message "TRIAL ABORT IDX"');
                             warning('Trial %d excede o máximo de repetições. Prosseguindo', trialQueue(i));
                             i = i + 1;
                         else
@@ -1383,7 +1386,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             %     acabaram os trials
                     if debug == 0 && mode >= 2 && keepGoingTrials
                         trialOffset = GetSecs; %#ok<NASGU>
-                        Eyelink('Message',sprintf('TRIAL OFFSET  %d/%d', i, tkP.nTrials));
+                        % Eyelink('Command','record_status_message "TRIAL OFFSET %d/%d at %.2f"', i, tkP.nTrials, trialOffset);
+                        Eyelink('Command','record_status_message "TRIAL OFFSET %d/%d"', i, tkP.nTrials);
+%                         Eyelink('Message', sprintf('trial_offset_%1d', trialOffset));
                         Screen('Flip', dpP.window);
                         WaitSecs(0.1);
                         Eyelink('SetOfflineMode');
@@ -1395,20 +1400,21 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 end
                 if keepGoingTrials
                     if restartBlock
-                        Eyelink('Message','BLOCK ABORT TRY');
+                        Eyelink('Command','record_status_message "BLOCK ABORT TRY"');
                         restartBlock = false;
                     else
                         blockOffset = GetSecs; %#ok<NASGU>
-                        Eyelink('Message',sprintf('BLOCK OFFSET %d/%d (%s)', b, tkP.nBlocks, suffix));
+                        % Eyelink('Command','record_status_message "BLOCK OFFSET %d/%d at %.2f (%s)"', b, tkP.nBlocks, blockOffset, suffix);
+                        Eyelink('Command','record_status_message "BLOCK OFFSET %d/%d (%s)"', b, tkP.nBlocks, suffix);
                         b = b+1;
                     end
                 end
 
                 if b == tkP.nBlocks && keepGoingTrials
-                    Eyelink('Message','SESSION OFFSET COMPLETED');
+                    Eyelink('Command','record_status_message "SESSION OFFSET COMPLETED"');
                     blocksCompleted = true;
                 else
-                    Eyelink('Message','SESSION OFFSET INTERRUPTED');
+                    Eyelink('Command','record_status_message "SESSION OFFSET INTERRUPTED"');
                 end
             end
 
@@ -1677,7 +1683,7 @@ end
 
 function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kgTrials, rTrial, wasRecording, tkP, dpP, drP, prm, pauseMode, debug, foragingMode)
     pauseStart = GetSecs;
-    Eyelink('Message','PAUSE ONSET');
+    Eyelink('Command','record_status_message "PAUSE ONSET"');
 %     Eyelink('Message', 'PAUSE ONSET');
     Eyelink('StopRecording');
     Eyelink('SetOfflineMode');
@@ -1685,15 +1691,18 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
     
     if strcmp(pauseMode, 'trial')
         if strcmp(decision, 'gotoMenu')
-            Eyelink('Message','PAUSE > MENU');
+            Eyelink('Command','record_status_message "PAUSE > MENU"');
+%             Eyelink('Message', 'PAUSE > MENU');
             kgTrials = false;
             kgBlocks = false;
         elseif strcmp(decision, 'restartBlock')
-            Eyelink('Message','PAUSE > RESTART');
+            Eyelink('Command','record_status_message "PAUSE > RESTART"');
+%             Eyelink('Message', 'PAUSE > RESTART');
             rBlock = true;
             kgTrials = false;
         elseif strcmp(decision, 'recalibrate')
-          Eyelink('Message', 'PAUSE > RECAL');
+            Eyelink('Command','record_status_message "PAUSE > RECAL"');
+%           Eyelink('Message', 'PAUSE > RECAL');
             if debug == 0 && foragingMode >= 2
                 EyelinkDoTrackerSetup(tkP.el);
             else
@@ -1701,7 +1710,7 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
             end
             rTrial = true;
         elseif strcmp(decision, 'resume')
-            Eyelink('Message','PAUSE > RESUME');
+            Eyelink('Command','record_status_message "PAUSE > RESUME"');
             rTrial = true;
         end
         pauseEnd = GetSecs;
@@ -1718,17 +1727,19 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
         end
     elseif strcmp(pauseMode, 'block')
         if strcmp(decision, 'gotoMenu')
-            Eyelink('Message', 'PAUSE_TO_MENU');
+            Eyelink('Command','record_status_message "PAUSE > MENU"');
+%             Eyelink('Message', 'PAUSE_TO_MENU');
             kgBlocks = false;
         elseif strcmp(decision, 'recalibrate')
-            Eyelink('Message','PAUSE > RECAL');
+            Eyelink('Command','record_status_message "PAUSE > RECAL"');
             if debug == 0 && mode >= 2
+%                 Eyelink('Message', 'PAUSE_TO_RECALIBRATION');
                 EyelinkDoTrackerSetup(tkP.el);
             else
                 disp('Recalibragem solicitada')
             end
         elseif strcmp(decision, 'resume')
-            Eyelink('Message','PAUSE > RESUME');
+            Eyelink('Command','record_status_message "PAUSE > RESUME"');
         end
         if kgBlocks
             if wasRecording
@@ -1736,7 +1747,7 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
             end
         end
     end
-    Eyelink('Message','PAUSE OFFSET');
+    Eyelink('Command','record_status_message "PAUSE OFFSET"');
 end
 
 
