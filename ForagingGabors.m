@@ -684,7 +684,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             blocksCompleted = false;
             b = 1;
 
-            trialOrder    = zeros(2, tkP.nTrials, tkP.nBlocks);
+            trialOrder = zeros(2, tkP.nTrials, tkP.nBlocks);
 
             % O vetor guarda os índices dos estímulos em destaque na fase 4 (i.e., sobre os quais o sujeito tinha que responder)
             % na ordem em que foram perguntados, identificando em 3 linhas
@@ -696,7 +696,11 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
             seenStimsQueue = cell(tkP.nBlocks, tkP.nTrials);
 
-            Eyelink('Command','record_status_message "SESSION ONSET"');
+            if mode >= 2
+                Eyelink('Command','record_status_message "SESSION ONSET"');
+                EyelinkDoTrackerSetup(tkP.el);
+            end
+
             while b <= tkP.nBlocks && keepGoingBlocks
                 trialOrder(:,:,b) = 0;
                 
@@ -755,9 +759,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     end
                 end
 
-                blockOnset = Screen('Flip', dpP.window);
+                blockOnset = Screen('Flip', dpP.window); %#ok<NASGU>
                 if debug == 0 && mode >= 2 && keepGoingBlocks
-                    Eyelink('Command','record_status_message "BLOCK ONSET %d/%d at %d (%s)"', b, tkP.nBlocks, blockOnset, suffix);
+                    Eyelink('Command','record_status_message "BLOCK ONSET %d/%d (%s)"', b, tkP.nBlocks, suffix);
+                    % Eyelink('Command','record_status_message "BLOCK ONSET %d/%d at %.2f (%s)"', b, tkP.nBlocks, blockOnset, suffix);
                 end
                 i = 1;
                 % Reordeno os trials para que, caso reinicie o bloco, a
@@ -848,7 +853,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         if debug == 0 && mode >= 2
                             Eyelink('StartRecording');
                             wasRecording = true;
-                            Eyelink('Command','record_status_message "TRIAL ONSET %d/%d at %d"', i, tkP.nTrials, FSonset);
+                            % Eyelink('Command','record_status_message "TRIAL ONSET %d/%d at %.2f"', i, tkP.nTrials, FSonset);
+                            Eyelink('Command','record_status_message "TRIAL ONSET %d/%d"', i, tkP.nTrials);
                             Eyelink('Command','record_status_message "TRIAL ONSET PHASE 1"');
                         end
                     
@@ -1381,8 +1387,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             % xi. Interrompe o registro, pois ou a tela será atualizada ou
             %     acabaram os trials
                     if debug == 0 && mode >= 2 && keepGoingTrials
-                        trialOffset = GetSecs;
-                        Eyelink('Command','record_status_message "TRIAL OFFSET %d/%d at %d"', i, tkP.nTrials, trialOffset);
+                        trialOffset = GetSecs; %#ok<NASGU>
+                        % Eyelink('Command','record_status_message "TRIAL OFFSET %d/%d at %.2f"', i, tkP.nTrials, trialOffset);
+                        Eyelink('Command','record_status_message "TRIAL OFFSET %d/%d"', i, tkP.nTrials);
 %                         Eyelink('Message', sprintf('trial_offset_%1d', trialOffset));
                         Screen('Flip', dpP.window);
                         WaitSecs(0.1);
@@ -1398,8 +1405,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         Eyelink('Command','record_status_message "BLOCK ABORT TRY"');
                         restartBlock = false;
                     else
-                        blockOffset = GetSecs;
-                        Eyelink('Command','record_status_message "BLOCK OFFSET %d/%d at %d (%s)"', b, tkP.nBlocks, blockOffset, suffix);
+                        blockOffset = GetSecs; %#ok<NASGU>
+                        % Eyelink('Command','record_status_message "BLOCK OFFSET %d/%d at %.2f (%s)"', b, tkP.nBlocks, blockOffset, suffix);
+                        Eyelink('Command','record_status_message "BLOCK OFFSET %d/%d (%s)"', b, tkP.nBlocks, suffix);
                         b = b+1;
                     end
                 end
@@ -1429,7 +1437,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 results.seenStimsQueue = seenStimsQueue;
 
                 if Eyelink('IsConnected')
-                    filePath = prm.filePath;
+                    outPath = fullfile(prm.filePath, prm.outFolder);
                     if Eyelink('CheckRecording')
                         Eyelink('SetOfflineMode');
                         Eyelink('StopRecording');
@@ -1448,16 +1456,17 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     if status <= 0
                         warning('Arquivo do Eyelink não recebido!')
                     end
-                    edfFile = [prm.edfFile prm.edfExtension]; 
+                    edfFile = [tkP.edfFile prm.edfExtension]; 
                     if exist(edfFile,'file')
-                        movefile(edfFile, filePath);
+                        movefile(edfFile, outPath);
                         disp('Arquivo movido para o diretório fornecido.')
                         savedNdone(1) = true;
                     else
                         warning('Arquivo do EyeLink não encontrado!')
                     end
                 end
-                save(filePath,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
+                outFile = fullfile(outPath, ['s' tkP.edfFile]);
+                save(outFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
             else
                 disp('Se fosse sessão experimental, estaria salvo')
             end
@@ -2177,6 +2186,7 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, mode, txP, ori)
     
     doAction = false; selected = 0; keyWasDown = 0;
     Screen('TextSize', dpP.window, prm.textSizeSmall);
+    lastActionTime = GetSecs;
     while true
         tNow = GetSecs;
         elapsedTime = tNow - startTime;

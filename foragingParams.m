@@ -149,6 +149,7 @@ function params = foragingParams
     params.upFrac = 2/3;                % Proporção do botão reservada para ícones
     params.iconScaleFactor = 0.6;       % Proporção da porção reservada realmente 
                                             % ocupada
+    params.outFolder       = 'out';     % Nome da pasta com imagens dos ícones
     params.imgFolder       = 'img';     % Nome da pasta com imagens dos ícones
     params.imgExtension    = '.png';    % Extensão das imagens
 
