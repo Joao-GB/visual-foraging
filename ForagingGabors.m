@@ -773,6 +773,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
                 keepGoingTrials = keepGoingBlocks;
                 while i <= tkP.nTrials && keepGoingTrials
+                    trialIdxUp = false;
                     seenStimsQueue{b, i} = [];
                     idx = trialQueue(i);
                     trialOrder(1, i, b) = idx;
@@ -1034,7 +1035,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     currStim = 0;
                     fixStartTime = NaN;
                     if keepGoingTrials && ~restartTrial
-                        checkFixOnset = trialOnset;
+%                         checkFixOnset = trialOnset;
                         if debug > 0 && mode > 1
                             seenIdx = sort(randsample(tkP.nStims,modTimes(b, idx)))';
                             flag(seenIdx) = 1;
@@ -1042,7 +1043,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             KbPressWait;
                         else
                             % Esse runTrial está sujeito a duas condições, vide
-                            % fim do while abaixo
+                            % fim do while abaixo, e diz respeito ao número
+                            % de estímulos vistos
                             runTrial = true;
                             while runTrial
                                 WaitSecs(0.001);
@@ -1100,16 +1102,26 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         fixStartTime = NaN;
                                     
                                     % Entra no else quando há estímulo fixado
+                                    % (i.e., começa ou continua fixando)
                                     else
                                         % Se logo antes não havia estímulo fixado,
                                         % é o início da fixação
                                         if currStim == 0
                                             currStim = currIdx;
                                             fixStartTime = tNow;
+
+                                            %% IMPORTANTE: Se for iniciada uma fixação
+                                            % num modTimes(b,i)-ésimo estímulo diferente, 
+                                            % inicia incrementa o counter, pois isso encerrará
+                                            % o while runTrial
+                                            if flag(currStim) == 0 && counter == modTimes(b, idx) - 1
+                                                counter = counter + 1;
+                                            end
+
                                         % Se antes havia um estímulo diferente,
                                         % deve terminar a fixação e começar outra
                                           % (improvável que seja usado, só com
-                                          %  estímulos próximos e amostragem baixa)
+                                          %  estímulos próximos E amostragem baixa)
                                         elseif currStim ~= currIdx
                                             fixDur = tNow - fixStartTime;
         
@@ -1223,7 +1235,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('Close', oriPinkTex);
                         
-                        timeLeft = max(0, medFixTime - (GetSecs - checkFixOnset));
+                        %% A tela não modificada deve ser exibida ao todo por 
+                        % medFixTime - prm.pinkNoiseDur, mas devo descontar
+                        % o tempo passado desde o início da fixação
+                        timeLeft = max(0, (medFixTime - prm.pinkNoiseDur) - (GetSecs - fixStartTime));
                 
             % viii. Registra os tempos de início e fim da Fase 3
                         updateStimOnset = Screen('Flip', dpP.window, timeLeft);
@@ -1363,6 +1378,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         trialOrder(2, i, b) = 1;
 
                         i = i + 1;
+                        trialIdxUp = true;
                     else
                         Eyelink('Message','TRIAL ABORT TRY');
 %                         Eyelink('Message', 'bad_trial');
@@ -1372,6 +1388,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             Eyelink('Message','TRIAL ABORT IDX');
                             warning('Trial %d excede o máximo de repetições. Prosseguindo', trialQueue(i));
                             i = i + 1;
+                            trialIdxUp = true;
                         else
                             % Faz com que o trial não terminado sempre vá para
                             % o fim da fila
@@ -1383,7 +1400,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             %     acabaram os trials
                     if debug == 0 && mode >= 2 && keepGoingTrials
                         trialOffset = GetSecs; %#ok<NASGU>
-                        Eyelink('Message',sprintf('TRIAL OFFSET  %d/%d', i, tkP.nTrials));
+                        Eyelink('Message',sprintf('TRIAL OFFSET  %d/%d', i - trialIdxUp, tkP.nTrials));
                         Screen('Flip', dpP.window);
                         WaitSecs(0.1);
                         Eyelink('SetOfflineMode');
@@ -1404,10 +1421,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     end
                 end
 
-                if b == tkP.nBlocks && keepGoingTrials
+                if b == tkP.nBlocks+1 && keepGoingBlocks
                     Eyelink('Message','SESSION OFFSET COMPLETED');
                     blocksCompleted = true;
-                else
+                elseif b ~= tkP.nBlocks+1 && ~keepGoingBlocks
                     Eyelink('Message','SESSION OFFSET INTERRUPTED');
                 end
             end
@@ -1497,9 +1514,9 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
     %     tal que, em média, 3/4 do total de estímulos tenham sido vistos
         modeDistr = floor(3*nStims/4);
         targetModTimePMF = robust_beta_pmf(nStims, modeDistr, 'peakness', 1.5);
-        auxModTimes = randsample(1:nStims, nBlocks*nTrials, true, targetModTimePMF);
-        auxModTimes = reshape(auxModTimes, nBlocks, nTrials);
-        modTimes = auxModTimes - 1;
+        modTimes = randsample(1:nStims, nBlocks*nTrials, true, targetModTimePMF);
+        modTimes = reshape(modTimes, nBlocks, nTrials);
+%         modTimes = modTimes - 1;
 
     % (d) Distribuição da quantidade de estímulos cuja orientação deve ser
     %     reportada por trial: uniforme entre minToReport e maxToReport,

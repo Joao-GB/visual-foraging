@@ -54,7 +54,7 @@ function params = foragingParams
     params.propTrialsPSA = .75;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .15;
+    params.pinkNoiseDur = .1;
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
