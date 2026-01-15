@@ -1990,7 +1990,7 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, mode, txP, ori)
 
     if nargin < 5, mode = 'opening'; end
 
-    leftKey = tkP.keys{1}; rightKey = tkP.keys{2};
+    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; escapeKey = tkP.keys{4};
 
     parentDir = fileparts(mfilename('fullpath'));
     fileLogo1 = 'logo_bBg_wSb.png'; fileLogo2 = 'logo_gBg_wSb.png'; fileRoundRect = '1by2_rect.png';
@@ -2229,6 +2229,8 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, mode, txP, ori)
                 elseif keyCode(rightKey)
                     selected = 1;
                     hintPhase = 'fadeout'; fadeStart = elapsedTime;
+                elseif keyCode(escapeKey)
+                    break;
                 end
             end
         end
