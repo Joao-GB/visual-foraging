@@ -54,7 +54,7 @@ function params = foragingParams
     params.propTrialsPSA = .75;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .1;
+    params.pinkNoiseDur = .15;
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
@@ -66,8 +66,8 @@ function params = foragingParams
     params.fixTimeQueueSize = 20;
 
     % (n) Fatores multiplicativos para se considerar ou não fixação
-    params.fixDistFactor1 = 1.1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+    params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
+    params.fixDistFactor3 = 1.1;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 
@@ -108,6 +108,49 @@ function params = foragingParams
     % (f) Parâmetros de fixação com cursor
     params.minCursorFixTime2 = .4;
     params.minCursorFixTime3 = params.minCursorFixTime2/2;
+
+    % (g) Textos de início, fim, pausa e interrupção de sessão, blocos e
+    %     trials
+    params.msg.suffix     = {'cur', 'trn', 'exp'};
+    params.msg.on.ses{1}     = 'SESSION ONSET (%s)';
+    params.msg.on.ses{2}     = 'SESSION ONSET';
+    params.msg.on.blk{1}  = 'BLOCK ONSET %d/%d';
+    params.msg.on.blk{2}  = 'BLOCK ONSET';
+    params.msg.on.trl{1}  = 'TRIAL ONSET %d/%d';
+    params.msg.on.trl{2}  = 'TRIAL ONSET';
+    params.msg.on.stm{1}  = 'STIM ONSET NEW';
+    params.msg.on.stm{1}  = 'STIM ONSET OLD';
+    params.msg.on.P1      = 'PHASE 1 ONSET';
+    params.msg.on.P2      = 'PHASE 2 ONSET';
+    params.msg.on.P3      = 'PHASE 3 ONSET';
+    params.msg.on.P4      = 'PHASE 4 ONSET';
+    params.msg.on.pse     = 'PAUSE ONSET';
+    
+
+    params.msg.err.blk    = 'BLOCK ABORT TRY';
+    params.msg.err.trl{1} = 'TRIAL ABORT TRY';
+    params.msg.err.trl{2} = 'TRIAL ABORT IDX';
+    params.msg.err.P1     = 'TRIAL TIMEOUT PHASE 1';
+    params.msg.err.P2     = 'TRIAL TIMEOUT PHASE 2';
+
+    params.msg.pse{1}     = 'PAUSE > MENU';
+    params.msg.pse{2}     = 'PAUSE > RESTART';
+    params.msg.pse{3}     = 'PAUSE > RECAL';
+    params.msg.pse{4}     = 'PAUSE > RESUME';
+    params.msg.pse{5}     = 'TRIAL > RECAL';
+
+    params.msg.off.ses{1} = 'SESSION OFFSET (%s) COMPLETED';
+    params.msg.off.ses{2} = 'SESSION OFFSET (%s) INTERRUPTED';
+    params.msg.off.ses{3} = 'SESSION OFFSET';
+    params.msg.off.blk{1} = 'BLOCK OFFSET %d/%d';
+    params.msg.off.blk{2} = 'BLOCK OFFSET';
+    params.msg.off.trl{1} = 'TRIAL OFFSET %d/%d';
+    params.msg.off.trl{2} = 'TRIAL OFFSET';
+    params.msg.off.stm{1} = 'STIM OFFSET';
+    params.msg.off.stm{2} = 'STIM OFFSET BAD';
+    params.msg.off.P3     = 'PHASE 3 OFFSET';
+    params.msg.off.P4     = 'PHASE 4 OFFSET';
+    params.msg.off.pse    = 'PAUSE OFFSET';
 
 %% Parâmetros de formatação: fontes, espessuras, cores, tamanhos e posições de textos e ícones...
     % (g) Fonte para os textos
