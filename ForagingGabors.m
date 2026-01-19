@@ -149,7 +149,7 @@ function ForagingGabors(nTrials, nStims, nBlocks, nTargets, options)
     if debug == 0
         failOpen = Eyelink('OpenFile', edfFile);
         % Interrompe se arquivo não abrir
-        if failOpen ~= 0, fprintf('ERRO: Não foi possível criar o arquivo %s', edfFile); cleanup; return; end
+        if failOpen ~= 0, fprintf('ERRO: Não foi possível criar o arquivo %s\n', edfFile); cleanup; return; end
     
        % iv. Ajusta o que é comunicado entre os PCs
         Eyelink('Command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
@@ -849,7 +849,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         
         % (g) Atualiza a tela para exibir a cruz de fixação
                         if mode == 1, Screen('DrawTexture', dpP.window, bg); lastPos = [-1 -1]; end
-                        disp('Vai calcular FSOnset')
+                        % disp('Vai calcular FSOnset')
                         FSonset = Screen('Flip', dpP.window);
                         FPonset = FSonset;
                     
@@ -1093,6 +1093,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                                 % fixação em um estímulo
                                                 if flag(currStim) == 0
                                                     counter = counter + 1;
+                                                    fprintf('Iniciou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
                                                 end
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]]; % Se quisesse registrar o comprimento de todas as fixações
@@ -1114,7 +1115,6 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         % é o início da fixação
                                         if currStim == 0
                                             currStim = currIdx;
-                                            fixStartTime = tNow;
 
                                             if debug == 0 && mode >= 2
                                                 if flag(currStim) == 0
@@ -1130,7 +1130,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                             % o while runTrial
                                             if flag(currStim) == 0 && counter == modTimes(b, idx) - 1
                                                 counter = counter + 1;
+                                                fprintf('Visita ao último %d-ésimo estímulo\n', counter)
                                             end
+                                            fixStartTime = tNow;
 
                                         % Se antes havia um estímulo diferente,
                                         % deve terminar a fixação e começar outra
@@ -1248,12 +1250,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         %     medFixTime segundo antes de o ruído rosa substituí-lo
                     if ~restartTrial && keepGoingTrials
                         blinkIdx = setdiff(1:tkP.nStims, currIdx);
-                        Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
-            %             Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [], []);
-            
 
             % (i) Desenha os gratings, somando ambos os sinais
                         Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+            %             Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [], []);
                         Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
 
                         if ~isempty(currIdx)
@@ -1272,12 +1272,14 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
                         % o tempo passado desde o início da fixação
-                        timeLeft = max(0, (medFixTime - prm.pinkNoiseDur) - (GetSecs - fixStartTime));
-%                         disp('ATENÇAO: Vai aparecer ruido rosa')
+                        auxT1 = (medFixTime - prm.pinkNoiseDur); auxT2 = (GetSecs - fixStartTime);
+                        timeLeft = max(0, auxT1 - auxT2);
+                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', auxT1)
+                        fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
+                        fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
                 
             % viii. Registra os tempos de início e fim da Fase 3
                         updateStimOnset = Screen('Flip', dpP.window, timeLeft);
-%                         fprintf('Apareceu ruido rosa apos %.4f s\n', timeLeft)
                             if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
                         if mode == 1, img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img); end
                         
@@ -1287,7 +1289,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         while true 
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
-%                                 disp(tNow - updateStimOnset)
+                                auxT1 = tNow - updateStimOnset;
+                                fprintf('Fim ruído rosa por duração: %.4f\n', auxT1)
                                 break;
                             end
                             check = false;
@@ -1314,13 +1317,17 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if check
                                 isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                 if isCurrStim(currStim) == 0
-                                    disp(tNow - updateStimOnset)
+                                    auxT1 = tNow - updateStimOnset;
+                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', auxT1)
                                     break;
                                 end
                             end
                             WaitSecs(.0005);
                         end
                         updateStimOffset = Screen('Flip', dpP.window);
+                        auxT1 = updateStimOffset - updateStimOnset;
+                        fprintf('Tempo total de ruído rosa: %.4f\n', auxT1)
+
                         if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
 %                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);
             

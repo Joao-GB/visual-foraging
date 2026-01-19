@@ -1,0 +1,481 @@
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.2000
+Tempo transcorrido desde início da fixação: 0.0018
+Tempo restante ate exibir ruído rosa: 0.1982
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1574
+Trial 4: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.2000
+Tempo transcorrido desde início da fixação: 0.0011
+Tempo restante ate exibir ruído rosa: 0.1989
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1587
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.2087
+Tempo transcorrido desde início da fixação: 0.0010
+Tempo restante ate exibir ruído rosa: 0.2077
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3955
+Tempo transcorrido desde início da fixação: 0.0013
+Tempo restante ate exibir ruído rosa: 0.3942
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1557
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4360
+Tempo transcorrido desde início da fixação: 0.0038
+Tempo restante ate exibir ruído rosa: 0.4322
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1561
+ATENÇÃO: 4 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Visita ao último 4-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4360
+Tempo transcorrido desde início da fixação: 0.0012
+Tempo restante ate exibir ruído rosa: 0.4348
+Fim ruído rosa por dispersão: 0.0793
+Tempo total de ruído rosa: 0.0825
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4545
+Tempo transcorrido desde início da fixação: 0.0022
+Tempo restante ate exibir ruído rosa: 0.4523
+Fim ruído rosa por dispersão: 0.0004
+Tempo total de ruído rosa: 0.0068
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4901
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.4897
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1568
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.5232
+Tempo transcorrido desde início da fixação: 0.0020
+Tempo restante ate exibir ruído rosa: 0.5212
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.5365
+Tempo transcorrido desde início da fixação: 0.0023
+Tempo restante ate exibir ruído rosa: 0.5342
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1574
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.5332
+Tempo transcorrido desde início da fixação: 0.0015
+Tempo restante ate exibir ruído rosa: 0.5317
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1593
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4752
+Tempo transcorrido desde início da fixação: 0.0005
+Tempo restante ate exibir ruído rosa: 0.4748
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1563
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4619
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.4616
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.4094
+Tempo transcorrido desde início da fixação: 0.0025
+Tempo restante ate exibir ruído rosa: 0.4070
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1562
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3914
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3911
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1564
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3771
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3767
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3626
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3622
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3316
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3312
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1563
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3050
+Tempo transcorrido desde início da fixação: 0.0018
+Tempo restante ate exibir ruído rosa: 0.3032
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1571
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.2777
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.2773
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1558
+Se fosse sessão experimental, estaria salvo
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.2791
+Tempo transcorrido desde início da fixação: 0.0033
+Tempo restante ate exibir ruído rosa: 0.2758
+Fim ruído rosa por dispersão: 0.0008
+Tempo total de ruído rosa: 0.0066
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3406
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3403
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 4 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Visita ao último 4-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3576
+Tempo transcorrido desde início da fixação: 0.0015
+Tempo restante ate exibir ruído rosa: 0.3562
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3591
+Tempo transcorrido desde início da fixação: 0.0005
+Tempo restante ate exibir ruído rosa: 0.3586
+Fim ruído rosa por dispersão: 0.0071
+Tempo total de ruído rosa: 0.0155
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3889
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3885
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1549
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3881
+Tempo transcorrido desde início da fixação: 0.0024
+Tempo restante ate exibir ruído rosa: 0.3858
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1557
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3916
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3912
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1574
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3892
+Tempo transcorrido desde início da fixação: 0.0005
+Tempo restante ate exibir ruído rosa: 0.3887
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1584
+ATENÇÃO: 8 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Iniciou a visita ao 7-ésimo estímulo
+Visita ao último 8-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3704
+Tempo transcorrido desde início da fixação: 0.0015
+Tempo restante ate exibir ruído rosa: 0.3688
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1565
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3674
+Tempo transcorrido desde início da fixação: 0.0017
+Tempo restante ate exibir ruído rosa: 0.3657
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1561
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3335
+Tempo transcorrido desde início da fixação: 0.0017
+Tempo restante ate exibir ruído rosa: 0.3318
+Fim ruído rosa por duração: 0.1506
+Tempo total de ruído rosa: 0.1557
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3233
+Tempo transcorrido desde início da fixação: 0.0027
+Tempo restante ate exibir ruído rosa: 0.3206
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1569
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3335
+Tempo transcorrido desde início da fixação: 0.0007
+Tempo restante ate exibir ruído rosa: 0.3328
+Fim ruído rosa por dispersão: 0.0003
+Tempo total de ruído rosa: 0.0093
+Trial 7: Visitou o alvo 7 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3528
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3524
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3844
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3841
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1554
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3788
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3785
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1572
+ATENÇÃO: 5 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Visita ao último 5-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3500
+Tempo transcorrido desde início da fixação: 0.0003
+Tempo restante ate exibir ruído rosa: 0.3496
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1560
+ATENÇÃO: 6 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Visita ao último 6-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3356
+Tempo transcorrido desde início da fixação: 0.0003
+Tempo restante ate exibir ruído rosa: 0.3352
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1583
+ATENÇÃO: 7 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Iniciou a visita ao 4-ésimo estímulo
+Iniciou a visita ao 5-ésimo estímulo
+Iniciou a visita ao 6-ésimo estímulo
+Visita ao último 7-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3149
+Tempo transcorrido desde início da fixação: 0.0005
+Tempo restante ate exibir ruído rosa: 0.3145
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+ATENÇÃO: 4 visitas até modificar
+Iniciou a visita ao 1-ésimo estímulo
+Iniciou a visita ao 2-ésimo estímulo
+Iniciou a visita ao 3-ésimo estímulo
+Visita ao último 4-ésimo estímulo
+Tempo permitido de fixação antes do rosa: 0.3149
+Tempo transcorrido desde início da fixação: 0.0004
+Tempo restante ate exibir ruído rosa: 0.3146
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1595
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de treino concluída e salva.
+AVISO: Sessão experimental concluída e salva com êxito.
