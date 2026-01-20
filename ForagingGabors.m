@@ -1291,6 +1291,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if tNow - updateStimOnset > prm.pinkNoiseDur
                                 auxT1 = tNow - updateStimOnset;
                                 fprintf('Fim ruído rosa por duração: %.4f\n', auxT1)
+                                if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                 break;
                             end
                             check = false;
@@ -1319,6 +1320,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 if isCurrStim(currStim) == 0
                                     auxT1 = tNow - updateStimOnset;
                                     fprintf('Fim ruído rosa por dispersão: %.4f\n', auxT1)
+                                    if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
                                     break;
                                 end
                             end

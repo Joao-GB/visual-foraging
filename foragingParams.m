@@ -148,6 +148,7 @@ function params = foragingParams
     params.msg.off.trl{2} = 'TRIAL OFFSET';
     params.msg.off.stm{1} = 'STIM OFFSET';
     params.msg.off.stm{2} = 'STIM OFFSET BAD';
+    params.msg.off.stm{3} = 'STIM OFFSET P3';
     params.msg.off.P3     = 'PHASE 3 OFFSET';
     params.msg.off.P4     = 'PHASE 4 OFFSET';
     params.msg.off.pse    = 'PAUSE OFFSET';
