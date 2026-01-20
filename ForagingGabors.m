@@ -1823,7 +1823,7 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
             kgBlocks = false;
         elseif strcmp(decision, 'recalibrate')
             Eyelink('Message',prm.msg.pse{3});
-            if debug == 0 && mode >= 2
+            if debug == 0 && foragingMode >= 2
                 EyelinkDoTrackerSetup(tkP.el);
             else
                 disp('Recalibragem solicitada')
