@@ -1,4 +1,4 @@
-function ForagingGabors(nTrials, nStims, nBlocks, nTargets, options)
+function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
 % A tarefa consiste em nTrials trials, cada um com nStims estímulos e 
 % quantidade média de nTargets alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
@@ -18,8 +18,8 @@ function ForagingGabors(nTrials, nStims, nBlocks, nTargets, options)
 % nTrials é sempre a 2a dimensão)
     
     arguments
-        nTrials {mustBeNumeric}   = 20;
         nStims {mustBeNumeric}    = 8;
+        nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
         nTargets {mustBeNumeric}  = ceil(nStims/2);
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
@@ -279,7 +279,7 @@ function ForagingGabors(nTrials, nStims, nBlocks, nTargets, options)
 %     end
     [~, taskState] = menuScreen(taskProps, displayProps, drawProps, texProps, debug, params);
     taskEnd = toc(taskStart);
-    fprintf('Tempo total da sessão: %.3f s', taskEnd);
+    fprintf('Tempo total da sessão: %.3f s\n', taskEnd);
 
     warningStart = 'AVISO: Sessão: ';
     myWarning = {};
@@ -550,7 +550,7 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                             [tkP, savedNdone] = runForaging(tkP, dpP, drP, txP, prm, debug, mode);
                         end
                         taskEnd = toc(taskStart);
-                        fprintf('Tempo total da tarefa: %.3f s', taskEnd);
+                        fprintf('Tempo total da tarefa: %.3f s\n', taskEnd);
 
                         if strcmp(mode, 'training'),      taskState(1,2:3) = savedNdone; end
                         if strcmp(mode, 'experiment'), taskState(2,2:3) = savedNdone; end
@@ -1251,26 +1251,32 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         %     atual -- as linhas comentadas servem para mudar apenas os 
         %     não vistos. Atrasa a apresentação para o estímulo durar
         %     medFixTime segundo antes de o ruído rosa substituí-lo
+                    if mode == 1
+                        bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey);
+                        auxWin  = bg1;
+                    else
+                        auxWin = dpP.window;
+                    end
                     if ~restartTrial && keepGoingTrials
                         blinkIdx = setdiff(1:tkP.nStims, currIdx);
 
             % (i) Desenha os gratings, somando ambos os sinais
-                        Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                        Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
             %             Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [], []);
-                        Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
+                        Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
 
                         if ~isempty(currIdx)
-                            Screen('DrawTextures', dpP.window, noiseTex, srcRects(:, currIdx), dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], []);
-                            Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
-                            Screen('DrawTexture', dpP.window, txP.gabor.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], [], [], txP.gabor.props);
+                            Screen('DrawTextures', auxWin, noiseTex, srcRects(:, currIdx), dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], []);
+                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                            Screen('DrawTexture', auxWin, txP.gabor.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], [], [], txP.gabor.props);
                         end
                     
             % (j) Desenha a abertura gaussiana
-                        Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+                        Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
             %             Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                        Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('Close', oriPinkTex); Screen('Close', noiseTex);
-                        Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                        Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
@@ -1308,7 +1314,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         if mode == 1
                             Screen('Close', bg);
                             clear auxWin bg;
-                            img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
+                            % img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
                         end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
@@ -1337,7 +1343,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                 check = true;
                                 if any([x_gaze, y_gaze] ~= lastPos)
-                                    Screen('DrawTexture', dpP.window, bg);
+                                    Screen('DrawTexture', dpP.window, bg1);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                     Screen('Flip', dpP.window);
                                     lastPos = [x_gaze, y_gaze];
@@ -1420,7 +1426,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             % x. Desenha placeholders para os estímulos aleatoriamente, obedecendo
             %    a identificação deles como visitados, atual e não visitados
                         if mode == 1
-                            Screen('Close', bg); clear auxWin bg;
+                            Screen('Close', bg1); clear auxWin bg1;
                         end
                         allTargets = nan(1,tkP.nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1625,8 +1631,10 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
     % (c) Distribuição do instante de modificação: após quantos alvos fixados 
     %     será apresentado o ruído rosa com orientação. A distribuição é
     %     tal que, em média, 3/4 do total de estímulos tenham sido vistos
-        modeDistr = floor(3*nStims/4);
-        targetModTimePMF = robust_beta_pmf(nStims, modeDistr, 'peakness', 1.5);
+        
+        % modeDistr = floor(3*nStims/4);
+        % targetModTimePMF = robust_beta_pmf(nStims, modeDistr, 'peakness', 1.5);
+        targetModTimePMF = modTime_pmf(nStims);
         modTimes = randsample(1:nStims, nBlocks*nTrials, true, targetModTimePMF);
         modTimes = reshape(modTimes, nBlocks, nTrials);
 %         modTimes = modTimes - 1;
