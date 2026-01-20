@@ -272,13 +272,16 @@ function ForagingGabors(nTrials, nStims, nBlocks, nTargets, options)
 
 %% 5) Chama as funções para executar a tarefa
 %     if debug ~= 1
+    taskStart = tic;
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
 %     else
 %         Screen('FillRect', displayProps.window, drawProps.grey);
 %     end
     [~, taskState] = menuScreen(taskProps, displayProps, drawProps, texProps, debug, params);
+    taskEnd = toc(taskStart);
+    fprintf('Tempo total da sessão: %.3f s', taskEnd);
 
-    warningStart = 'AVISO: Sessão ';
+    warningStart = 'AVISO: Sessão: ';
     myWarning = {};
     warnings = {'de treino não concluída.', 'encerrada sem treino ou experimento.', 'de treino concluída e salva.'; ...
                 'experimental não concluída nem salva.', 'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.'};
@@ -538,6 +541,7 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                         Screen('Flip', dpP.window);
                         WaitSecs(0.05);
                         % Apenas importa a fila de fixações se a tarefa não for de cursor
+                        taskStart = tic;
                         if strcmp(mode, 'cursor')
                             [~, savedNdone] = runForaging(tkP, dpP, drP, txP, prm, debug, mode);
                         elseif strcmp(mode, 'staircase')
@@ -545,6 +549,9 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                         else
                             [tkP, savedNdone] = runForaging(tkP, dpP, drP, txP, prm, debug, mode);
                         end
+                        taskEnd = toc(taskStart);
+                        fprintf('Tempo total da tarefa: %.3f s', taskEnd);
+
                         if strcmp(mode, 'training'),      taskState(1,2:3) = savedNdone; end
                         if strcmp(mode, 'experiment'), taskState(2,2:3) = savedNdone; end
                         % Se o experimento tiver sido concluído, não volta
@@ -1238,11 +1245,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         
     
     %% 7) Início Fase 3: tela com ruído rosa
-        % Apenas se a tela 
-                    if mode == 1
-                        Screen('Close', bg);
-                        clear auxWin bg;
-                    end
+        % Apenas se a tela
         
         % (l) Desenha ruído orientado em todos os estímulos menos o 
         %     atual -- as linhas comentadas servem para mudar apenas os 
@@ -1272,16 +1275,41 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
                         % o tempo passado desde o início da fixação
-                        auxT1 = (medFixTime - prm.pinkNoiseDur); auxT2 = (GetSecs - fixStartTime);
-                        timeLeft = max(0, auxT1 - auxT2);
-                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', auxT1)
-                        fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
-                        fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
+                        preUpdateDur = (medFixTime - prm.pinkNoiseDur);
+%                         auxT2 = (GetSecs - fixStartTime);
+%                         timeLeft = max(0, preUpdateDur - auxT2);
+                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', preUpdateDur)
+%                         fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
+%                         fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
                 
             % viii. Registra os tempos de início e fim da Fase 3
-                        updateStimOnset = Screen('Flip', dpP.window, timeLeft);
-                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
-                        if mode == 1, img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img); end
+                        preUpdateDeadline = fixStartTime + preUpdateDur;
+                        if mode == 1
+                            lastPos = [-1 -1];
+                            while GetSecs < preUpdateDeadline
+                                [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
+                                if any([x_gaze, y_gaze] ~= lastPos)
+                                    Screen('DrawTexture', dpP.window, bg);
+                                    Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                    Screen('Flip', dpP.window);
+                                    lastPos = [x_gaze, y_gaze];
+                                end
+                                WaitSecs(0.001);
+                            end
+
+                            updateStimOnset = GetSecs;
+                        else
+                            updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
+                        end
+
+                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
+
+
+                        if mode == 1
+                            Screen('Close', bg);
+                            clear auxWin bg;
+                            img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
+                        end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
                         % demais na tela ou quando o olho sai do último
@@ -1289,8 +1317,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         while true 
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
-                                auxT1 = tNow - updateStimOnset;
-                                fprintf('Fim ruído rosa por duração: %.4f\n', auxT1)
+                                preUpdateDur = tNow - updateStimOnset;
+                                fprintf('Fim ruído rosa por duração: %.4f\n', preUpdateDur)
                                 if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                 break;
                             end
@@ -1318,8 +1346,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if check
                                 isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                 if isCurrStim(currStim) == 0
-                                    auxT1 = tNow - updateStimOnset;
-                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', auxT1)
+                                    preUpdateDur = tNow - updateStimOnset;
+                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', preUpdateDur)
                                     if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
                                     break;
                                 end
@@ -1327,8 +1355,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             WaitSecs(.0005);
                         end
                         updateStimOffset = Screen('Flip', dpP.window);
-                        auxT1 = updateStimOffset - updateStimOnset;
-                        fprintf('Tempo total de ruído rosa: %.4f\n', auxT1)
+                        preUpdateDur = updateStimOffset - updateStimOnset;
+                        fprintf('Tempo total de ruído rosa: %.4f\n', preUpdateDur)
 
                         if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
 %                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);

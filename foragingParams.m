@@ -58,7 +58,7 @@ function params = foragingParams
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .35;                   % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .2;                   % Tempo mínimo de fixação nos estímulos, em s
     params.minFixTime3 = params.minFixTime2/2;  % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = .5;                    % Janela temporal (após offset dos estímulos) durante a qual se 
                                                     % espera a fixação com duração mínima minFixTime3, em s
