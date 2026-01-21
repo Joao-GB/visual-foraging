@@ -58,7 +58,8 @@ function params = foragingParams
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .2;                   % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .15;                   % Tempo mínimo de fixação nos estímulos, em s
+    params.medFixTime2 = .3;                    % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = params.minFixTime2/2;  % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = .5;                    % Janela temporal (após offset dos estímulos) durante a qual se 
                                                     % espera a fixação com duração mínima minFixTime3, em s
@@ -67,7 +68,7 @@ function params = foragingParams
 
     % (n) Fatores multiplicativos para se considerar ou não fixação
     params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.1;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+    params.fixDistFactor3 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 
@@ -90,11 +91,11 @@ function params = foragingParams
                                             % Por exemplo, se revisitFactor = 1/2 e sacFixDurRatio = 1/2, sendo m o 
                                             % tempo de cada fixação (logo m/2 de cada sacada), o tempo máximo é 
                                             % 1.5(N*m + N*(.5*m)) = 2.25*N*m
-    params.sacFixDurRatioCursor = 5;    % Mesma finalidade que sacFixDurRatio,
+    params.cursorSacFixDurRatio = 5;    % Mesma finalidade que sacFixDurRatio,
                                             % mas para demonstração com cursor
-    params.maxTrialDurFactorCursor = (1+params.revisitFactor)*(1+params.sacFixDurRatioCursor);
+    params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
-    params.postModDurCursor     = 1.5;
+    params.cursorPostModDur     = .5;
 
     % (d) Parâmetros de retentativas
     params.nBufferTrials = 3;   % Número de trials adicionados para evitar
@@ -106,8 +107,9 @@ function params = foragingParams
     params.cursorColor       = [1 1 1];
 
     % (f) Parâmetros de fixação com cursor
-    params.minCursorFixTime2 = .4;
-    params.minCursorFixTime3 = params.minCursorFixTime2/2;
+    params.cursorMinFixTime2 = .2;
+    params.cursorMedFixTime2 = .4;
+    params.cursorMinFixTime3 = params.cursorMinFixTime2/2;
 
     % (g) Textos de início, fim, pausa e interrupção de sessão, blocos e
     %     trials
@@ -123,6 +125,7 @@ function params = foragingParams
     params.msg.on.P1      = 'PHASE 1 ONSET';
     params.msg.on.P2      = 'PHASE 2 ONSET';
     params.msg.on.P3      = 'PHASE 3 ONSET';
+    params.msg.on.PM      = 'POST-MOD ONSET';
     params.msg.on.P4      = 'PHASE 4 ONSET';
     params.msg.on.pse     = 'PAUSE ONSET';
     
@@ -149,7 +152,9 @@ function params = foragingParams
     params.msg.off.stm{1} = 'STIM OFFSET';
     params.msg.off.stm{2} = 'STIM OFFSET BAD';
     params.msg.off.stm{3} = 'STIM OFFSET P3';
+    params.msg.off.stm{4} = 'STIM OFFSET PM';
     params.msg.off.P3     = 'PHASE 3 OFFSET';
+    params.msg.off.PM      = 'POST-MOD OFFSET';
     params.msg.off.P4     = 'PHASE 4 OFFSET';
     params.msg.off.pse    = 'PAUSE OFFSET';
 

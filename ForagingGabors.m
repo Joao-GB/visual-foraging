@@ -221,7 +221,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     exampleNoise = foragingNoise(window, exampleGabor.size_px, 1, grey, params);
 
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
-    fixQueue = params.minFixTime2*ones(1, max(params.fixTimeQueueSize, round(2.5*nStims)));
+    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(2.5*nStims)));
 
     displayProps.window       = window;
     displayProps.winCol       = grey;
@@ -618,9 +618,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             nBlocks = tkP.nBlocks;
             nTrials = tkP.nTrials;
             if mode == 1
-                prm.minFixTime2 = prm.minCursorFixTime2;
-                prm.minFixTime3 = prm.minCursorFixTime3;
-                prm.postModDur  = prm.postModDurCursor;
+                prm.minFixTime2 = prm.cursorMinFixTime2;
+                prm.medFixTime2 = prm.cursorMedFixTime2;
+                prm.minFixTime3 = prm.cursorMinFixTime3;
+                prm.postModDur  = prm.cursorPostModDur;
                 tkP.nBlocks = 1;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
@@ -790,7 +791,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         % (b) Obtém a mediana do vetor de tempos de fixação
                     medFixTime = median(tkP.fixQueue);
                     if mode == 1
-                        maxTrialDur = prm.maxTrialDurFactorCursor*tkP.nStims*medFixTime;
+                        maxTrialDur = prm.cursorMaxTrialDurFactor*tkP.nStims*medFixTime;
                     else
                         maxTrialDur = prm.maxTrialDurFactor*tkP.nStims*medFixTime;
                     end
@@ -1113,15 +1114,20 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         % Como deixou de fixar, reseta as variáveis
                                         % de estado e início de fixação
                                         currStim = 0;
+                                        % fprintf('currStim = %d\n', currStim);
                                         fixStartTime = NaN;
                                     
                                     % Entra no else quando há estímulo fixado
                                     % (i.e., começa ou continua fixando)
                                     else
                                         % Se logo antes não havia estímulo fixado,
-                                        % é o início da fixação
-                                        if currStim == 0
+                                        % ou havia um estímulo diferente
+                                        % (pouco provável, requer estímulos 
+                                        % próximos E amostragem baixa), temos
+                                        % o início da fixação
+                                        if currStim == 0 || currStim ~= currIdx
                                             currStim = currIdx;
+                                            fprintf('currStim = %d\n', currStim);
 
                                             if debug == 0 && mode >= 2
                                                 if flag(currStim) == 0
@@ -1140,30 +1146,12 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                                 fprintf('Visita ao último %d-ésimo estímulo\n', counter)
                                             end
                                             fixStartTime = tNow;
-
-                                        % Se antes havia um estímulo diferente,
-                                        % deve terminar a fixação e começar outra
-                                          % (improvável que seja usado, só com
-                                          %  estímulos próximos E amostragem baixa)
-                                        elseif currStim ~= currIdx
-                                            fixDur = tNow - fixStartTime;
-        
-                                            if fixDur >= prm.minFixTime2
-                                                % De novo, apenas salva na fila a 
-                                                % primeira fixação em um estímulo
-                                                if flag(currStim) == 0
-                                                    counter = counter + 1;
-                                                    auxFixQueue(counter) = fixDur;
-                                                end
-                                                flag(currStim) = flag(currStim) + 1;
-                                            end
-        
-                                            currStim = currIdx;
-                                            fixStartTime = tNow;
+                                            % Se ainda estiver fixando o mesmo estímulo
+                                            % (i.e., currStim == currIdx), não faz nada
                                         end
-                                        % Se ainda estiver fixando o mesmo estímulo
-                                        % (i.e., currStim == stmIdx), não faz nada
                                     end
+                                else
+                                    disp('Check falso')
                                 end
             % () Se o tempo máximo tiver sido excedido, exibe uma tela especial
                                 tAux = tNow - trialOnset;
@@ -1242,6 +1230,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         end
                         notSeenIdx = find(flag == 0);
                     end
+                    
+                    fprintf('currStim final = %d\n', currStim);
         
     
     %% 7) Início Fase 3: tela com ruído rosa
@@ -1320,6 +1310,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         % A fase 3 é encerrada se o estímulo fica tempo
                         % demais na tela ou quando o olho sai do último
                         % estímulo
+                        fprintf('currStim último fixado  (agora em P3) = %d\n', currStim);
                         while true 
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
@@ -1370,6 +1361,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             % ix. Verifica se há alguma fixação de duração mínima em estímulo 
             %     numa janela pós-modificação
                         fixOnset = updateStimOffset; currIdx = [];
+
+                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.PM); end
             
                         if debug == 0 || mode == 1
                             maxDurReached = true;
@@ -1393,35 +1386,67 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             
                                 if check
                                     isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist3;
+
+                                    % Se currIdx estava com valor inicial e isCurrStim não é  
+                                    % totalmente nulo, começou uma fixação 
                                     if isempty(currIdx)
                                         if any(isCurrStim)
                                             currIdx = find(isCurrStim, 1);
                                             fixOnset = tNow;
+                                            if debug == 0 && mode >= 2
+                                                if flag(currIdx) == 0
+                                                    Eyelink('Message',prm.msg.on.stm{1});
+                                                else
+                                                    Eyelink('Message',prm.msg.on.stm{2});
+                                                end
+                                            end
                                         end
+                                    % Uma vez que currIdx é não nulo, fica verificando se a
+                                    % fixação saiu dele, o que acontece se isCurrStim(currIdx)
+                                    % voltar a ser nulo. Considera como fixação apenas se for
+                                    % suficientemente longa
                                     else
                                         if ~isCurrStim(currIdx)
                                             fixDur = tNow - fixOnset;
                                             if fixDur >= prm.minFixTime3
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur]];
                                                 disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
+                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
                                                 maxDurReached = false;
                                                 break
                                             end
+                                            % Se a fixação não foi longa o suficiente, pode ser
+                                            % que estava apenas passando pelo estímulo para 
+                                            % fovear outro, então recomeça a busca
+                                            currIdx = [];
+                                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{2}); end
                                         end
-                                        
+                                    end
+
+
+                                    if mode == 1
+                                        [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
+                                        if any([x_gaze, y_gaze] ~= lastPos)
+                                            Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                            Screen('Flip', dpP.window);
+                                            lastPos = [x_gaze, y_gaze];
+                                        end
                                     end
                                 end
-                                WaitSecs(.001);
+                                WaitSecs(.0005);
                                 tNow = GetSecs;
                             end
                             if maxDurReached && ~isempty(currIdx)
                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
                             end
                         end
+
+                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
             
                         if ~isempty(currIdx) && ismember(currIdx, notSeenIdx)
                             notSeenIdx(notSeenIdx == currIdx) = [];
                         end
+                        
     %% 8) Início Fase 4: reportar em quais posições havia alvos
             % x. Desenha placeholders para os estímulos aleatoriamente, obedecendo
             %    a identificação deles como visitados, atual e não visitados
@@ -1430,8 +1455,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         end
                         allTargets = nan(1,tkP.nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-                        seenAux = datasample(setdiff(seenIdx, currIdx), min(length(seenIdx), nStimsToReport(1, idx, b)), 'Replace', false);
+                        auxIdx = setdiff(seenIdx, currIdx);
+                        seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
                         currAux = []; if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
                         notSeenAux = datasample(notSeenIdx, min(length(notSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
                         % Tanto seenAux como notSeenAux devem ser linhas
