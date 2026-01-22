@@ -68,7 +68,7 @@ function params = foragingParams
 
     % (n) Fatores multiplicativos para se considerar ou não fixação
     params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+    params.fixDistFactor3 = 1.25;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 

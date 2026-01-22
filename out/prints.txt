@@ -1,4 +1,4 @@
-ForagingGabors(6, 5, 5)
+>> ForagingGabors(6, 5, 5)
 Compiling all shaders matching BasicSineGratingShader * into a GLSL program.
 Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.frag.txt ...
 Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.vert.txt ...
@@ -11,440 +11,30 @@ Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/Psyc
 Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
 Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
 Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
-ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-Check falso
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-Check falso
-Check falso
-Check falso
-currStim = 4
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-Check falso
-Check falso
-currStim = 3
-Visita ao último 3-ésimo estímulo
-currStim final = 3
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 3
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 5 visitas até modificar
-Check falso
-currStim = 3
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 4
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 5
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 6
-Check falso
-Iniciou a visita ao 4-ésimo estímulo
-currStim = 2
-Visita ao último 5-ésimo estímulo
-currStim final = 2
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 2
-Fim ruído rosa por dispersão: 0.1035
-Tempo total de ruído rosa: 0.1083
-ATENÇÃO: 4 visitas até modificar
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 6
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 5
-currStim = 2
-Visita ao último 4-ésimo estímulo
-currStim final = 2
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 2
-Fim ruído rosa por dispersão: 0.1360
-Tempo total de ruído rosa: 0.1416
-ATENÇÃO: 4 visitas até modificar
-currStim = 4
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 6
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 3
-Visita ao último 4-ésimo estímulo
-currStim final = 3
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 3
-Fim ruído rosa por duração: 0.1502
-Tempo total de ruído rosa: 0.1583
-Trial 4: Visitou o alvo 2 pós-modificação
-ATENÇÃO: 4 visitas até modificar
-Check falso
-currStim = 5
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 5
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 5
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 1
-Check falso
-currStim = 2
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
 
 ans =
 
    1.7691e+09
 
-currStim final = 1
-ATENÇÃO: 3 visitas até modificar
-currStim = 4
-currStim = 4
-currStim = 4
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 3
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 6
-Visita ao último 3-ésimo estímulo
-currStim final = 6
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 6
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1610
-ATENÇÃO: 3 visitas até modificar
-currStim = 5
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 6
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 2
-Visita ao último 3-ésimo estímulo
-currStim final = 2
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 2
-Fim ruído rosa por duração: 0.1503
-Tempo total de ruído rosa: 0.1583
+
+ans =
+
+   1.7691e+09
+
+
+ans =
+
+   1.7691e+09
+
+Se fosse sessão experimental, estaria salvo
+Tempo total da tarefa: 112.693 s
 ATENÇÃO: 4 visitas até modificar
-Check falso
-currStim = 5
-Check falso
-currStim = 5
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 6
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 3
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 4
-Visita ao último 4-ésimo estímulo
-currStim final = 4
-Tempo permitido de fixação antes do rosa: 0.1500
-currStim último fixado  (agora em P3) = 4
-Fim ruído rosa por dispersão: 0.0280
-Tempo total de ruído rosa: 0.0360
-ATENÇÃO: 3 visitas até modificar
-currStim = 2
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 1
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 4
-Visita ao último 3-ésimo estímulo
-currStim final = 4
-Tempo permitido de fixação antes do rosa: 0.1584
-currStim último fixado  (agora em P3) = 4
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 4 visitas até modificar
-Check falso
-currStim = 3
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-Check falso
-Check falso
-currStim = 5
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 4
-currStim = 4
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 6
-Visita ao último 4-ésimo estímulo
-currStim final = 6
-Tempo permitido de fixação antes do rosa: 0.1681
-currStim último fixado  (agora em P3) = 6
-Fim ruído rosa por duração: 0.1503
-Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-currStim = 3
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-Check falso
-currStim = 4
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 6
-Visita ao último 3-ésimo estímulo
-currStim final = 6
-Tempo permitido de fixação antes do rosa: 0.1720
-currStim último fixado  (agora em P3) = 6
-Fim ruído rosa por duração: 0.1502
-Tempo total de ruído rosa: 0.1583
-Trial 2: Visitou o alvo 6 pós-modificação
-ATENÇÃO: 2 visitas até modificar
-currStim = 3
-currStim = 3
-currStim = 3
-currStim = 3
-currStim = 3
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 2
-Visita ao último 2-ésimo estímulo
-currStim final = 2
-Tempo permitido de fixação antes do rosa: 0.1731
-currStim último fixado  (agora em P3) = 2
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 5 visitas até modificar
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 1
-currStim = 1
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
-Check falso
-currStim = 5
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 3
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 6
-currStim = 6
-Check falso
-Iniciou a visita ao 4-ésimo estímulo
-currStim = 4
-Visita ao último 5-ésimo estímulo
-currStim final = 4
-Tempo permitido de fixação antes do rosa: 0.1720
-currStim último fixado  (agora em P3) = 4
-Fim ruído rosa por dispersão: 0.0042
-Tempo total de ruído rosa: 0.0102
-ATENÇÃO: 2 visitas até modificar
-Check falso
-Check falso
-Check falso
-currStim = 1
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 4
-Visita ao último 2-ésimo estímulo
-currStim final = 4
-Tempo permitido de fixação antes do rosa: 0.1731
-currStim último fixado  (agora em P3) = 4
-Fim ruído rosa por dispersão: 0.0859
-Tempo total de ruído rosa: 0.0917
-ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 5
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 2
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 1
-Visita ao último 3-ésimo estímulo
-currStim final = 1
-Tempo permitido de fixação antes do rosa: 0.1755
-currStim último fixado  (agora em P3) = 1
-Fim ruído rosa por dispersão: 0.0805
-Tempo total de ruído rosa: 0.0833
-ATENÇÃO: 4 visitas até modificar
-Check falso
-Check falso
-currStim = 2
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 1
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 4
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-currStim = 6
-Visita ao último 4-ésimo estímulo
-currStim final = 6
-Tempo permitido de fixação antes do rosa: 0.1768
-currStim último fixado  (agora em P3) = 6
-Fim ruído rosa por dispersão: 0.0608
-Tempo total de ruído rosa: 0.0692
-ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-currStim = 4
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 4
-Check falso
-Check falso
-currStim = 6
-Visita ao último 3-ésimo estímulo
-currStim final = 6
-Tempo permitido de fixação antes do rosa: 0.1766
-currStim último fixado  (agora em P3) = 6
-Fim ruído rosa por duração: 0.1503
-Tempo total de ruído rosa: 0.1595
-Trial 4: Visitou o alvo 6 pós-modificação
-ATENÇÃO: 5 visitas até modificar
-Check falso
-Check falso
-currStim = 4
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-Check falso
-currStim = 5
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 6
-Check falso
-Check falso
-Iniciou a visita ao 3-ésimo estímulo
-Check falso
-currStim = 2
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 4-ésimo estímulo
-currStim = 2
-Check falso
-Check falso
-Check falso
-currStim = 1
-Visita ao último 5-ésimo estímulo
-currStim final = 1
-Tempo permitido de fixação antes do rosa: 0.1886
-currStim último fixado  (agora em P3) = 1
-Fim ruído rosa por dispersão: 0.0418
-Tempo total de ruído rosa: 0.0500
+
+ans =
+
+   1.7691e+09
+
+currStim final = 0
 ATENÇÃO: 4 visitas até modificar
 
 ans =
@@ -455,6 +45,105 @@ currStim final = 0
 ATENÇÃO: 4 visitas até modificar
 Check falso
 Check falso
+currStim = 4
+currStim = 4
+currStim = 4
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 4
+Check falso
+currStim = 6
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.1500
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+
+ans =
+
+   1.7691e+09
+
+currStim final = 0
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Visita ao último 2-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.1500
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1584
+Trial 1: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+
+ans =
+
+   1.7691e+09
+
+currStim final = 0
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+currStim = 2
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.1500
+currStim último fixado  (agora em P3) = 1
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 4: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+currStim = 6
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
+currStim = 6
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
 Check falso
 Check falso
 Check falso
@@ -465,84 +154,788 @@ Check falso
 Check falso
 Check falso
 Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 3
 Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+currStim final = 4
+ATENÇÃO: 4 visitas até modificar
+
+ans =
+
+   1.7691e+09
+
+
+ans =
+
+   1.7691e+09
+
+currStim final = 0
+Warning: Trial 3 excede o máximo de repetições. Prosseguindo 
+> In ForagingGabors>runForaging (line 1545)
+In ForagingGabors>menuScreen (line 550)
+In ForagingGabors (line 280) 
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 5
 Check falso
 Check falso
 Iniciou a visita ao 2-ésimo estímulo
 Check falso
-currStim = 5
+currStim = 6
+Check falso
+Check falso
 Check falso
 Check falso
 Check falso
 Check falso
 Iniciou a visita ao 3-ésimo estímulo
-currStim = 1
+Check falso
+currStim = 4
 Visita ao último 4-ésimo estímulo
-currStim final = 1
-Tempo permitido de fixação antes do rosa: 0.1581
-currStim último fixado  (agora em P3) = 1
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.1500
+currStim último fixado  (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0839
+Tempo total de ruído rosa: 0.0917
+Trial 6: Visitou o alvo 3 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+currStim = 4
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.1500
+currStim último fixado  (agora em P3) = 6
 Fim ruído rosa por duração: 0.1504
 Tempo total de ruído rosa: 0.1583
-Trial 2: Visitou o alvo 1 pós-modificação
+Trial 3: Visitou o alvo 5 pós-modificação
 ATENÇÃO: 3 visitas até modificar
 Check falso
 Check falso
 currStim = 5
 Check falso
 Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.1534
+currStim último fixado  (agora em P3) = 1
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 6: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+currStim = 3
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.1621
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1583
+Trial 4: Visitou o alvo 2 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+currStim = 6
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 5
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.1921
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 5: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+currStim = 4
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Check falso
+currStim = 3
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2429
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.1119
+Tempo total de ruído rosa: 0.1167
+Trial 8: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+Check falso
+currStim = 2
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
+Check falso
+currStim = 5
+Visita ao último 3-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2575
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0513
+Tempo total de ruído rosa: 0.0594
+Trial 8: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 3
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2575
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.1229
+Tempo total de ruído rosa: 0.1333
+Trial 5: Visitou o alvo 2 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 6
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2559
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0032
+Tempo total de ruído rosa: 0.0083
+Trial 3: Visitou o alvo 2 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 2
+currStim = 1
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 4
+currStim = 4
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2396
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Visita ao último 3-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2396
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.1081
+Tempo total de ruído rosa: 0.1167
+Trial 7: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+currStim = 3
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2482
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0431
+Tempo total de ruído rosa: 0.0525
+Trial 6: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+currStim = 4
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+currStim = 3
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Visita ao último 3-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2479
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+currStim = 1
+currStim = 1
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+currStim = 2
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 3
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2479
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0483
+Tempo total de ruído rosa: 0.0591
+Trial 7: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+Check falso
+currStim = 3
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2556
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 1: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 1
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2556
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0271
+Tempo total de ruído rosa: 0.0351
+Trial 3: Visitou o alvo 3 pós-modificação
+Se fosse sessão experimental, estaria salvo
+Tempo total da tarefa: 280.113 s
+ATENÇÃO: 3 visitas até modificar
+Check falso
+currStim = 4
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+currStim = 2
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
+currStim = 5
+Visita ao último 3-ésimo estímulo
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2632
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0980
+Tempo total de ruído rosa: 0.1075
+Trial 5: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+currStim = 2
+Check falso
+currStim = 2
+currStim = 2
+Check falso
+currStim = 2
+Check falso
+currStim = 2
+currStim = 3
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 4
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 5
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2709
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.1261
+Tempo total de ruído rosa: 0.1333
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2582
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1582
+Trial 1: Visitou o alvo 3 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+currStim = 3
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2709
+currStim último fixado  (agora em P3) = 1
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 7: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+currStim = 4
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Visita ao último 2-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2582
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.1138
+Tempo total de ruído rosa: 0.1167
+Trial 8: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+currStim = 5
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 1
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 2
+Visita ao último 3-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2582
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+Check falso
+currStim = 2
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
+currStim = 5
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2510
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 7: Visitou o alvo 6 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+currStim = 2
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2485
+currStim último fixado  (agora em P3) = 4
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1603
+Trial 3: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+currStim = 1
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 4
+Visita ao último 4-ésimo estímulo
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2452
+currStim último fixado  (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0412
+Tempo total de ruído rosa: 0.0500
+Trial 5: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+Check falso
+Check falso
+currStim = 5
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 3
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 2
+Visita ao último 3-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2485
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por dispersão: 0.0417
+Tempo total de ruído rosa: 0.0500
+Trial 1: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+currStim = 6
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 4
+Visita ao último 4-ésimo estímulo
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2452
+currStim último fixado  (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0005
+Tempo total de ruído rosa: 0.0083
+Trial 7: Visitou o alvo 3 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+currStim = 5
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
 Iniciou a visita ao 1-ésimo estímulo
 currStim = 6
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+Check falso
+currStim = 3
+Visita ao último 3-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2452
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0655
+Tempo total de ruído rosa: 0.0750
+Trial 6: Visitou o alvo 2 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2523
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 5: Visitou o alvo 2 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+currStim = 1
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 2
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+Check falso
 currStim = 6
+Visita ao último 3-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2465
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0047
+Tempo total de ruído rosa: 0.0083
+Trial 1: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+currStim = 5
+currStim = 5
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+Check falso
+currStim = 3
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 1
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+Check falso
+currStim = 4
+Visita ao último 4-ésimo estímulo
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2581
+currStim último fixado  (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0714
+Tempo total de ruído rosa: 0.0749
+Trial 4: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 3 visitas até modificar
+Check falso
+Check falso
+currStim = 2
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+Check falso
+currStim = 1
 Check falso
 Iniciou a visita ao 2-ésimo estímulo
 currStim = 3
 Visita ao último 3-ésimo estímulo
 currStim final = 3
-Tempo permitido de fixação antes do rosa: 0.1617
+Tempo permitido de fixação antes do rosa: 0.2713
 currStim último fixado  (agora em P3) = 3
-Fim ruído rosa por duração: 0.1503
+Fim ruído rosa por duração: 0.1502
 Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 2 visitas até modificar
-Check falso
-currStim = 3
-currStim = 3
-Check falso
-Check falso
-currStim = 3
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
-Visita ao último 2-ésimo estímulo
-currStim final = 5
-Tempo permitido de fixação antes do rosa: 0.1818
-currStim último fixado  (agora em P3) = 5
-Fim ruído rosa por duração: 0.1503
-Tempo total de ruído rosa: 0.1583
-Trial 8: Visitou o alvo 5 pós-modificação
+Trial 3: Visitou o alvo 5 pós-modificação
 ATENÇÃO: 3 visitas até modificar
 Check falso
 Check falso
 Check falso
 Check falso
-Check falso
-currStim = 1
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
 currStim = 4
 Check falso
-Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 5
 Check falso
 Check falso
 Check falso
@@ -550,128 +943,194 @@ Check falso
 Check falso
 Check falso
 Iniciou a visita ao 2-ésimo estímulo
-Check falso
-currStim = 5
+currStim = 3
 Visita ao último 3-ésimo estímulo
-currStim final = 5
-Tempo permitido de fixação antes do rosa: 0.1617
-currStim último fixado  (agora em P3) = 5
-Fim ruído rosa por duração: 0.1500
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2840
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por duração: 0.1504
 Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 4 visitas até modificar
-
-ans =
-
-   1.7691e+09
-
-currStim final = 0
+Trial 1: Visitou o alvo 3 pós-modificação
 ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-Check falso
-currStim = 1
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 1-ésimo estímulo
-currStim = 4
-Check falso
-Check falso
-Check falso
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 5
-Visita ao último 3-ésimo estímulo
-currStim final = 5
-Tempo permitido de fixação antes do rosa: 0.2052
-currStim último fixado  (agora em P3) = 5
-Fim ruído rosa por duração: 0.1503
-Tempo total de ruído rosa: 0.1581
-Trial 8: Visitou o alvo 5 pós-modificação
-ATENÇÃO: 2 visitas até modificar
-Check falso
-Check falso
-Check falso
-Check falso
-Check falso
-currStim = 2
-currStim = 2
-Iniciou a visita ao 1-ésimo estímulo
-Check falso
-currStim = 1
-Visita ao último 2-ésimo estímulo
-currStim final = 1
-Tempo permitido de fixação antes do rosa: 0.1841
-currStim último fixado  (agora em P3) = 1
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1583
-Trial 2: Visitou o alvo 1 pós-modificação
-ATENÇÃO: 3 visitas até modificar
-Check falso
-Check falso
-currStim = 4
-Check falso
-Check falso
-Check falso
-Check falso
+currStim = 3
 Iniciou a visita ao 1-ésimo estímulo
 currStim = 2
-Check falso
-Check falso
 Check falso
 Iniciou a visita ao 2-ésimo estímulo
 currStim = 1
 Visita ao último 3-ésimo estímulo
 currStim final = 1
-Tempo permitido de fixação antes do rosa: 0.1520
+Tempo permitido de fixação antes do rosa: 0.2713
 currStim último fixado  (agora em P3) = 1
-Fim ruído rosa por dispersão: 0.0161
-Tempo total de ruído rosa: 0.0250
-ATENÇÃO: 4 visitas até modificar
+Fim ruído rosa por dispersão: 0.0350
+Tempo total de ruído rosa: 0.0417
+Trial 5: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+Check falso
+Check falso
+currStim = 2
 Check falso
 Check falso
 Check falso
-currStim = 6
 Check falso
 Check falso
 Iniciou a visita ao 1-ésimo estímulo
-currStim = 5
+Check falso
+currStim = 3
 Check falso
 Check falso
 Check falso
 Iniciou a visita ao 2-ésimo estímulo
-currStim = 3
 Check falso
+Check falso
+currStim = 4
 Check falso
 Check falso
 Check falso
 Check falso
 Iniciou a visita ao 3-ésimo estímulo
+currStim = 4
+currStim = 4
+currStim = 4
+currStim = 4
+Check falso
+Check falso
+currStim = 5
+currStim = 5
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2380
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0923
+Tempo total de ruído rosa: 0.1000
+ATENÇÃO: 4 visitas até modificar
+Check falso
+currStim = 1
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
 currStim = 2
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 5
+currStim = 5
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 3
 Visita ao último 4-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2380
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0081
+Tempo total de ruído rosa: 0.0193
+Trial 4: Visitou o alvo 4 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+currStim = 4
+currStim = 3
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Check falso
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+currStim = 6
+Check falso
+Check falso
+Check falso
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 4
+currStim = 5
+Iniciou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
 currStim final = 2
-Tempo permitido de fixação antes do rosa: 0.1530
+Tempo permitido de fixação antes do rosa: 0.2380
 currStim último fixado  (agora em P3) = 2
-Fim ruído rosa por duração: 0.1500
-Tempo total de ruído rosa: 0.1583
-ATENÇÃO: 4 visitas até modificar
+Fim ruído rosa por dispersão: 0.0423
+Tempo total de ruído rosa: 0.0500
+Trial 5: Visitou o alvo 1 pós-modificação
+ATENÇÃO: 5 visitas até modificar
+currStim = 6
+Iniciou a visita ao 1-ésimo estímulo
+currStim = 4
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 3
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 1
+currStim = 1
+Iniciou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2353
+currStim último fixado  (agora em P3) = 2
+Fim ruído rosa por dispersão: 0.1068
+Tempo total de ruído rosa: 0.1167
+Trial 8: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 2 visitas até modificar
 Check falso
-currStim = 5
+currStim = 1
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
+Check falso
+currStim = 3
+Visita ao último 2-ésimo estímulo
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2353
+currStim último fixado  (agora em P3) = 3
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 3: Visitou o alvo 3 pós-modificação
+ATENÇÃO: 2 visitas até modificar
+Check falso
+Check falso
+currStim = 4
+currStim = 4
 Check falso
 Iniciou a visita ao 1-ésimo estímulo
 currStim = 6
-currStim = 6
-Iniciou a visita ao 2-ésimo estímulo
-currStim = 1
-Iniciou a visita ao 3-ésimo estímulo
+Visita ao último 2-ésimo estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2374
+currStim último fixado  (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0549
+Tempo total de ruído rosa: 0.0583
+Trial 1: Visitou o alvo 5 pós-modificação
+ATENÇÃO: 4 visitas até modificar
+Check falso
+Check falso
+Check falso
+currStim = 2
+Check falso
+Iniciou a visita ao 1-ésimo estímulo
 currStim = 4
+Check falso
+Check falso
+Iniciou a visita ao 2-ésimo estímulo
+currStim = 6
+Iniciou a visita ao 3-ésimo estímulo
+currStim = 5
 Visita ao último 4-ésimo estímulo
-currStim final = 4
-Tempo permitido de fixação antes do rosa: 0.1481
-currStim último fixado  (agora em P3) = 4
-Fim ruído rosa por duração: 0.1501
-Tempo total de ruído rosa: 0.1583
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2374
+currStim último fixado  (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0743
+Tempo total de ruído rosa: 0.0833
+Trial 2: Visitou o alvo 3 pós-modificação
 Arquivo movido para o diretório fornecido.
-Tempo total da tarefa: 245.705 s
-Tempo total da sessão: 249.073 s
+Tempo total da tarefa: 197.541 s
+Tempo total da sessão: 628.497 s
+AVISO: Sessão: de treino concluída e salva.
 AVISO: Sessão: experimental concluída e salva com êxito.
->> 
