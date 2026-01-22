@@ -1890,7 +1890,7 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
             end
             WaitSecs(.01);
             if wasRecording
-                if debug == 0 && foragingMode >= 2, Eyelink('StartRecording'); end
+                Eyelink('StartRecording'); 
             end
         end
     elseif strcmp(pauseMode, 'block')
@@ -1917,7 +1917,7 @@ function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kg
 end
 
 
-function decision = pauseScreen(tkP, dpP, drP, prm, pauseMode)
+function decision = pauseScreen(tkP, dpP, drP, prm, mode)
     decision = '';
 
     leaveOptions = {'quit', 'gotoMenu'};
@@ -1928,7 +1928,7 @@ function decision = pauseScreen(tkP, dpP, drP, prm, pauseMode)
 
     titleText = 'PAUSADO'; titleMargin = cX*prm.titleMarginFactor;
     %% Tipos de botões
-    switch pauseMode
+    switch mode
         case 'menu'
             options     = {'quit', 'resume'};
             optionsName = {'Sair', 'Prosseguir'};
@@ -2145,10 +2145,10 @@ function confirmed = confirmationScreen(dpP, drP, prm, keys)
 end
 
 
-function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
+function fakeLoadingScreen(tkP, dpP, drP, prm, mode, txP, ori)
     % Tela de 'Carregando' falsa com barra e dicas
 
-    if nargin < 5, loadingMode = 'opening'; end
+    if nargin < 5, mode = 'opening'; end
 
     leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; escapeKey = tkP.keys{4};
 
@@ -2161,7 +2161,7 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
     pathRectRound = fullfile(parentDir, prm.imgFolder, fileRoundRect);
     clear parentDir fileRoundRect
 
-    if strcmp(loadingMode, 'opening')
+    if strcmp(mode, 'opening')
         pathLogo = pathLogo1; f = 0;
         bgColor   = drP.black;
         totalTime = 15;
@@ -2176,7 +2176,7 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
         showBar     = true;
         barYOffset  = 135;
         hintYOffset = 75;       % Quantos pixels abaixo da barra aparecem as dicas
-    elseif ismember(loadingMode, {'start', 'trial'})
+    elseif ismember(mode, {'start', 'trial'})
         pathLogo = pathLogo2; f = 1;
         bgColor   = drP.grey;
         totalTime = 8;
@@ -2237,7 +2237,7 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
     clear logoImg imgH imgW maxImgW maxImgH scaleFactor scaledW scaledH
 
     
-    if strcmp(loadingMode, 'trial')
+    if strcmp(mode, 'trial')
         totalTime = totalTime*(3/8);
         Screen('Close', logoTex);
         logoTex = -1;
