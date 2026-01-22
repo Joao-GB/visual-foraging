@@ -766,7 +766,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     
                     elseif keyCode(escapeKey)
                         KbReleaseWait;
-                        [keepGoingBlocks, ~, ~, ~] = pauseHandle(keepGoingBlocks, [], [], [], wasRecording, tkP, dpP, drP, prm, 'block', debug, mode);
+                        [keepGoingBlocks, ~, ~, ~] = pauseHandle(keepGoingBlocks, [], [], [], wasRecording, tkP, txP, dpP, drP, prm, 'block', debug, mode);
                     end
                 end
 
@@ -884,7 +884,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 KbReleaseWait;
                                 if keyIsDown
                                     if keyCode(escapeKey)
-                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, dpP, drP, prm, 'trial', debug, mode);
+                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, mode);
                                     else
                                         fixAcquired = true;
                                     end
@@ -939,7 +939,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 if keyIsDown
                                     if keyCode(escapeKey)
                                         KbReleaseWait;
-                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, dpP, drP, prm, 'trial', debug, mode);
+                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, mode);
                                         break;
                                     end
                                 end
@@ -997,7 +997,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         end
                                         break;
                                     elseif keyCode(escapeKey)
-                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, dpP, drP, prm, 'trial', debug, mode);
+                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, mode);
                                         break;
                                     end
                                 end
@@ -1224,12 +1224,13 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                             if keyCode(spaceKey)
                                                 break;
                                             elseif keyCode(escapeKey)
-                                                [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, dpP, drP, prm, 'trial', debug, mode);
+                                                [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, mode);
                                                 break;
                                             end
                                         end
                                     end
                                 end
+                                
                                 runTrial = (counter < modTimes(b, idx)) && ~restartTrial;
                             end
                             seenIdx = find(flag ~= 0);
@@ -1851,7 +1852,7 @@ function noise = foragingNoise(window, noiseSize, nStims, grey, params, loCut, h
 end
 
 
-function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kgTrials, rTrial, wasRecording, tkP, dpP, drP, prm, pauseMode, debug, foragingMode)
+function [kgBlocks, rBlock, kgTrials, rTrial] = pauseHandle(kgBlocks, rBlock, kgTrials, rTrial, wasRecording, tkP, txP, dpP, drP, prm, pauseMode, debug, foragingMode)
     pauseStart = GetSecs;
     if debug == 0 && foragingMode >= 2
         Eyelink('Message',prm.msg.on.pse);
