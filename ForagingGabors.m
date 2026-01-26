@@ -220,6 +220,9 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     exampleBlob = foragingBlob(window, exampleGabor.size_px, grey, params);
     exampleNoise = foragingNoise(window, exampleGabor.size_px, 1, grey, params);
 
+    % (c) Blobs pós-modificação
+    PMBlob = foragingBlob(window,  gabor.size_px, grey, params, 0);
+
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
     fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(2.5*nStims)));
 
@@ -256,7 +259,8 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     texProps.noiseLoCutFreq = noiseLoCutFreq;
     texProps.oriFilter      = oriFilter;
     texProps.OFsize         = OFsize;
-    clear gabor blob exampleGabor exampleBlob exampleNoise noiseHiCutFreq noiseLoCutFreq oriFilter OFsize
+    texProps.PMBlob         = PMBlob;
+    clear gabor blob exampleGabor exampleBlob exampleNoise noiseHiCutFreq noiseLoCutFreq oriFilter OFsize PMBlob
 
     taskProps.Eye       = Eye;
     taskProps.targetKey = targetKey;
@@ -622,6 +626,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 prm.medFixTime2 = prm.cursorMedFixTime2;
                 prm.minFixTime3 = prm.cursorMinFixTime3;
                 prm.postModDur  = prm.cursorPostModDur;
+                prm.pinkNoiseDur= prm.cursorpinkNoiseDur;
                 tkP.nBlocks = 1;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
@@ -684,6 +689,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         auxFixQueue = zeros(1, tkP.nStims);
 
     %% 4) Início dos blocos e trials
+        fprintf('----Início da sessão----')
         try
             Screen('TextFont', dpP.window, prm.textFont);
             keepGoingBlocks = true;
@@ -756,7 +762,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     Screen('Flip', dpP.window);
         
                     KbReleaseWait;
-                    KbWait;
+                       KbWait;
                     
                     [~,~,keyCode] = KbCheck;
                     
@@ -1107,7 +1113,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                                 % fixação em um estímulo
                                                 if flag(currStim) == 0
                                                     counter = counter + 1;
-                                                    fprintf('Iniciou a visita ao %d-ésimo estímulo\n', counter)
+                                                    fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
                                                 end
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]]; % Se quisesse registrar o comprimento de todas as fixações
@@ -1233,11 +1239,11 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 
                                 runTrial = (counter < modTimes(b, idx)) && ~restartTrial;
                             end
-                            seenIdx = find(flag ~= 0);
                         end
-                        notSeenIdx = find(flag == 0);
                     end
-                    
+                    % Foram mais para baixo
+%                     seenIdx = find(flag ~= 0);
+%                     notSeenIdx = find(flag == 0);
                     fprintf('currStim final = %d\n', currStim);
         
     
@@ -1302,6 +1308,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
                             updateStimOnset = GetSecs;
                         else
+
                             updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
                         end
 
@@ -1322,6 +1329,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
                                 preUpdateDur = tNow - updateStimOnset;
+                                fixDur = tNow - fixStartTime;
                                 fprintf('Fim ruído rosa por duração: %.4f\n', preUpdateDur)
                                 if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                 break;
@@ -1351,6 +1359,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                 isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                 if isCurrStim(currStim) == 0
                                     preUpdateDur = tNow - updateStimOnset;
+                                    fixDur = tNow - fixStartTime;
                                     fprintf('Fim ruído rosa por dispersão: %.4f\n', preUpdateDur)
                                     if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
                                     break;
@@ -1358,14 +1367,30 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             end
                             WaitSecs(.0005);
                         end
+                        % Como saio do loop da fase 2 assim que inicio a
+                        % última fixação, tenho que adicionar neste momento
+                        % a fixação iniciada lá
+                        seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]];
+                        flag(currStim) = flag(currStim) + 1;
+
+                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+
                         updateStimOffset = Screen('Flip', dpP.window);
                         preUpdateDur = updateStimOffset - updateStimOnset;
                         fprintf('Tempo total de ruído rosa: %.4f\n', preUpdateDur)
 
+
+                        %% ADICIONAR MÁSCARA EM vez de flipar para o nada
+
+
                         if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
+
+                        seenIdx = find(flag ~= 0);
+                        notSeenIdx = find(flag == 0);
+                        
 %                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);
             
-            % ix. Verifica se há alguma fixação de duração mínima em estímulo 
+            %% ix. Verifica se há alguma fixação de duração mínima em estímulo 
             %     numa janela pós-modificação
                         fixOnset = updateStimOffset; currIdx = [];
 
@@ -1434,6 +1459,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                     if mode == 1
                                         [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                         if any([x_gaze, y_gaze] ~= lastPos)
+                                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                                             Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                             Screen('Flip', dpP.window);
                                             lastPos = [x_gaze, y_gaze];
@@ -1452,8 +1478,16 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
             
-                        if ~isempty(currIdx) && ismember(currIdx, notSeenIdx)
+                        if ~isempty(currIdx)
                             notSeenIdx(notSeenIdx == currIdx) = [];
+
+                            % Se não tiver mexido os olhos, não será feita
+                            % nenhuma pergunta sobre o estímulo fixado
+                            if currIdx == currStim
+                                seenIdx(seenIdx == currIdx) = [];
+                                currIdx = [];
+                                disp('Não mexou os olhos durante ruído rosa')
+                            end
                         end
                         
     %% 8) Início Fase 4: reportar em quais posições havia alvos
@@ -1572,13 +1606,16 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 % keepGoingTrials = false, ao reiniciar um bloco vai haver
                 % tanto erro do último trial como do bloco
                 if restartBlock
-                    if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.blk); end
+                    if debug == 0 && mode >= 2
+                        Eyelink('Message',prm.msg.err.blk);
+                        Eyelink('Message',sprintf(prm.msg.off.blk{1}, b, tkP.nBlocks)); 
+                    end
                     restartBlock = false;
                 else
                     blockOffset = GetSecs; %#ok<NASGU>
+                    if debug == 0 && mode >= 2, Eyelink('Message',sprintf(prm.msg.off.blk{1}, b, tkP.nBlocks)); end
                     b = b+1;
                 end
-                if debug == 0 && mode >= 2, Eyelink('Message',sprintf(prm.msg.off.blk{1}, b, tkP.nBlocks)); end
 %                 end
             end
 
@@ -1652,18 +1689,24 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 end
 
 
-function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(nTargets, nStims, nTrials, nBlocks, params)
+function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(~, nStims, nTrials, nBlocks, params)
 
-% (a) Distribuição da quantidade de alvos: triangular (discreta) ao 
-    %     redor da média nTargets, se nTargets \in (1, nStims)
-        if nTargets > 1 && nTargets < nStims
-            numTargetsPMF = [.25 .50 .25];
-            targetsSpace  = nTargets + [-1 0 1];
-            nTs = randsample(targetsSpace, nBlocks*nTrials, true, numTargetsPMF);
-            nTs = reshape(nTs, [nBlocks nTrials]);
-        else
-            nTs = nTargets*ones(nBlocks, nTrials);
-        end
+% (a) Distribuição da quantidade de alvos: binomial, de modo que (1) não requer
+%     número de alvos; (2) em média, metade serão alvos; (3) um estímulo é 
+%     alvo independentemente se o outro é; (4) não há como antecipar se o próximo a ser
+%     olhado é alvo ou não acima da chance -- i.e., a predição ótima com base
+%     no passado é sempre 1/2
+        p = .5;
+        nTs = binornd(nStims, p, nBlocks, nTrials);
+
+%         if nTargets > 1 && nTargets < nStims
+%             numTargetsPMF = [.25 .50 .25];
+%             targetsSpace  = nTargets + [-1 0 1];
+%             nTs = randsample(targetsSpace, nBlocks*nTrials, true, numTargetsPMF);
+%             nTs = reshape(nTs, [nBlocks nTrials]);
+%         else
+%             nTs = nTargets*ones(nBlocks, nTrials);
+%         end
 
     % (b) Distribuição da orientação-alvo: uma por bloco, uniforme nas
     %     orientações de allOri
@@ -1829,8 +1872,14 @@ function gabor = foragingGabor(window, screenRes, nStims, params, monitorW_mm)
 end
 
 
-function blob  = foragingBlob(window, blobSize, grey, params)
-    blobColorOffset = [grey grey grey 0];
+function blob  = foragingBlob(window, blobSize, grey, params, blobMode)
+    if nargin < 5, blobMode = 1; end
+
+    if blobMode == 1
+        blobColorOffset = [grey grey grey 0];
+    else
+        blobColorOffset = [grey grey grey 1];
+    end
     [blobTex, ~] = CreateProceduralGaussBlob(window, blobSize, blobSize, blobColorOffset, 1, 1);
     blobSigma = blobSize/6;
     blobProps = [params.blobContrast, blobSigma, params.blobAspect, 0]';

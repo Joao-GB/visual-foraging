@@ -42,9 +42,9 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [0 45 90 135];
+    params.allOri = [0 90]; %[0 45 90 135];
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};
+    params.allOriName = {'vertical', 'horizontal'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};
 
 %% Propriedades indispensáveis da tarefa: tempos de fixação, durações dos estímulos...
     % (j) Quantidades e proporções de estímulos a serem reportados ao 
@@ -54,7 +54,7 @@ function params = foragingParams
     params.propTrialsPSA = .75;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .15;
+    params.pinkNoiseDur = .1;
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
@@ -95,12 +95,13 @@ function params = foragingParams
                                             % mas para demonstração com cursor
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
+    params.cursorPinkNoiseDur   = .25;
     params.cursorPostModDur     = .5;
 
     % (d) Parâmetros de retentativas
     params.nBufferTrials = 3;   % Número de trials adicionados para evitar
                                     % repetições consecutivas de um trial
-    params.maxRetries = 1;      % Número máximo de vezes que pode se 
+    params.maxRetries = 3;      % Número máximo de vezes que pode se 
                                     % repetir cada trial 
     % (e) Tamanho e cor do cursor
     params.cursorRadius_px   = 4;

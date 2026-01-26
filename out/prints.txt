@@ -543,6 +543,7 @@ Tempo total de ruído rosa: 0.0351
 Trial 3: Visitou o alvo 3 pós-modificação
 Se fosse sessão experimental, estaria salvo
 Tempo total da tarefa: 280.113 s
+
 ATENÇÃO: 3 visitas até modificar
 Check falso
 currStim = 4
@@ -571,6 +572,7 @@ currStim último fixado  (agora em P3) = 5
 Fim ruído rosa por dispersão: 0.0980
 Tempo total de ruído rosa: 0.1075
 Trial 5: Visitou o alvo 6 pós-modificação
+
 ATENÇÃO: 5 visitas até modificar
 currStim = 2
 Check falso
