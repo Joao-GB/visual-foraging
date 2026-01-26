@@ -626,7 +626,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 prm.medFixTime2 = prm.cursorMedFixTime2;
                 prm.minFixTime3 = prm.cursorMinFixTime3;
                 prm.postModDur  = prm.cursorPostModDur;
-                prm.pinkNoiseDur= prm.cursorpinkNoiseDur;
+                prm.pinkNoiseDur= prm.cursorPinkNoiseDur;
                 tkP.nBlocks = 1;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
@@ -651,7 +651,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         for b=1:tkP.nBlocks
             auxAllOri = prm.allOri;
             auxAllOri(auxAllOri == targetOri(b)) = [];
-            orientation(:,:,b) = prm.allOri(randi(length(auxAllOri), tkP.nStims, nTrialsBuffered));
+            orientation(:,:,b) = auxAllOri(randi(length(auxAllOri), tkP.nStims, nTrialsBuffered));
         end
 
         % (b) Tamanho e matrizes para as cruzes de fixação 
@@ -1374,16 +1374,11 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         flag(currStim) = flag(currStim) + 1;
 
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-
                         updateStimOffset = Screen('Flip', dpP.window);
+                        if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
+
                         preUpdateDur = updateStimOffset - updateStimOnset;
                         fprintf('Tempo total de ruído rosa: %.4f\n', preUpdateDur)
-
-
-                        %% ADICIONAR MÁSCARA EM vez de flipar para o nada
-
-
-                        if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
 
                         seenIdx = find(flag ~= 0);
                         notSeenIdx = find(flag == 0);
@@ -1402,6 +1397,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             while tNow - updateStimOffset < prm.postModDur
                                 check = false;
                                 if mode > 1
+                                    if tNow - updateStimOffset > prm.blobPMDur
+                                        Screen('Flip', dpP.window);
+                                    end
+                                        
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
                     
@@ -1459,7 +1458,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                     if mode == 1
                                         [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                         if any([x_gaze, y_gaze] ~= lastPos)
-                                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                            if tNow - updateStimOffset <= prm.blobPMDur
+                                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                            end
                                             Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                             Screen('Flip', dpP.window);
                                             lastPos = [x_gaze, y_gaze];
@@ -1471,12 +1472,13 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             end
                             if maxDurReached && ~isempty(currIdx)
                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
-                               disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
+                               disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
                             end
                         end
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
+                        Screen('Flip', dpP.window);
             
                         if ~isempty(currIdx)
                             notSeenIdx(notSeenIdx == currIdx) = [];
@@ -1486,7 +1488,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if currIdx == currStim
                                 seenIdx(seenIdx == currIdx) = [];
                                 currIdx = [];
-                                disp('Não mexou os olhos durante ruído rosa')
+                                disp('Não mexeu os olhos durante ruído rosa')
                             end
                         end
                         
@@ -1496,11 +1498,32 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         if mode == 1
                             Screen('Close', bg1); clear auxWin bg1;
                         end
+
+                        if ~isempty(currIdx)
+                            nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
+                            disp(nStimsToReport(:, idx, b))
+                            fprintf('Há currIdx... ')
+                            nStimsToReport(2, idx, b) = rand < prm.propTrialsPSA;
+                            if nStimsToReport(2, idx, b)
+                                if nPre+nPost >= 3
+                                    if nPre> nPost, nStimsToReport(1, idx, b) = nPre-1;
+                                    else, nStimsToReport(3, idx, b) = nPost-1;
+                                    end
+                                end
+                                fprintf('então será perguntado sobre\n');
+                                disp(nStimsToReport(:, idx, b))
+                            else
+                                fprintf('mas NÃO será perguntado sobre\n')
+                            end
+                        end
+
                         allTargets = nan(1,tkP.nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         auxIdx = setdiff(seenIdx, currIdx);
                         seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
-                        currAux = []; if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
+                        currAux = []; 
+                        
+                        if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
                         notSeenAux = datasample(notSeenIdx, min(length(notSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
                         % Tanto seenAux como notSeenAux devem ser linhas
                         % para concatenar 
@@ -1708,9 +1731,13 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
 %             nTs = nTargets*ones(nBlocks, nTrials);
 %         end
 
-    % (b) Distribuição da orientação-alvo: uma por bloco, uniforme nas
-    %     orientações de allOri
-        targetOri = randsample(params.allOri, nBlocks, true);
+    % (b) Distribuição da orientação-alvo: pseudo-uniforme nas orientações 
+    %     de allOri, de modo que dois bloos consecutivos têm orientações
+    %     distintas
+    aux = ceil(nBlocks / length(params.allOri));
+    aux = sort(repmat(params.allOri, 1, aux));
+    while(any(diff(aux) == 0)), aux = aux(randperm(numel(aux))); end
+    targetOri = aux(1:nBlocks);
 
     % (c) Distribuição do instante de modificação: após quantos alvos fixados 
     %     será apresentado o ruído rosa com orientação. A distribuição é
@@ -1724,25 +1751,32 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
 %         modTimes = modTimes - 1;
 
     % (d) Distribuição da quantidade de estímulos cuja orientação deve ser
-    %     reportada por trial: uniforme entre minToReport e maxToReport,
-    %     e em propTrialsPSA*nTrials trials será verificado o efeito de
-    %     atenção pré-sacádica
+    %     reportada por trial: sempre pergunto de um não visto, às vezes de
+    %     um já visto e os recém-fixados eu decido se pergunto na hora, com
+    %     base na quantidade de estímulos fixados entre a fase 3 e PM.
+
         nStimsToReport = round((params.maxToReport - params.minToReport)*rand(nBlocks,nTrials) + params.minToReport);
-        reportPostModFix = rand(nBlocks, nTrials) <= params.propTrialsPSA;
-        % Guarda a quantidade de estímulos a serem reportados que não são 
-        % alvos da fixação 
-        nStimsToReport = nStimsToReport - reportPostModFix; 
-        % Garante que, se houver 2 ou mais estímulos (não alvos de fixação) 
-        % a serem reportados, haja pelo menos um já visto e um não visto
-        nStimsBase = nStimsToReport >= 2;
-        % Tira 2 dos maiores (ou iguais a) 2, para distribui-los, e 0 dos
-        % menores (i.e., de tamanho 1). Do que sobra, joga aleatoriamente
-        % para cada lado
-        aux = nStimsToReport-2*nStimsBase;
-        nStimsAddPre  = round(rand(size(aux)).*aux);
-        nStimsAddPost = (nStimsToReport - 2*nStimsBase) - nStimsAddPre;
-        reportStimsFromSets = cat(1, permute(nStimsAddPre + nStimsBase,[3,2,1]), permute(nStimsAddPost + nStimsBase,[3,2,1]));
-        nStimsToReport = cat(1, reportStimsFromSets(1,:,:), permute(reportPostModFix, [3, 2, 1]), reportStimsFromSets(2,:,:));
+        nStimsPM = zeros(nBlocks, nTrials);
+        nStimsPost = ones(nBlocks, nTrials);
+        nStimsPre = ones(nBlocks, nTrials);
+
+        % remainder = nStimsToReport - nStimsPM - nStimsPost;
+        remainder = nStimsToReport - nStimsPM - nStimsPost - nStimsPre;
+
+        % Garante que, se houver 2 ou mais estímulos no resto, pelo menos
+        % um vá para o pós. Ao fim, espera-se que remainder seja de uns
+        % nStimsPre = remainder >= 2;
+        % remainder = remainder - nStimsPre;
+
+        % Escolhe uniformemente quem do remainder vai para pré e pós
+        addPre  = round(rand(size(remainder)).*remainder);
+        addPost = remainder - addPre;
+
+        nStimsPre = nStimsPre + addPre;
+        nStimsPost = nStimsPost + addPost;
+
+        nStimsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
+        
         % Em cada trial, o sujeito deve reportar dos estímulos vistos
         % anteriormente, do atual ou dos não vistos em ordem aleatória
         [~, orderToReportSets] = sort(rand(3, nTrials, nBlocks), 1);

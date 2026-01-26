@@ -42,33 +42,34 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [0 90]; %[0 45 90 135];
+    params.allOri = [0 45 90 135]; %[0 90];%
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'vertical', 'horizontal'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};
+    params.allOriName = {'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%{'vertical', 'horizontal'};%
 
 %% Propriedades indispensáveis da tarefa: tempos de fixação, durações dos estímulos...
     % (j) Quantidades e proporções de estímulos a serem reportados ao 
     %     longo dos trials
     params.minToReport = 2;
     params.maxToReport = 3;
-    params.propTrialsPSA = .75;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
+    params.propTrialsPSA = .8;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .1;
+    params.pinkNoiseDur = .15;
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .15;                   % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .1;                   % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .3;                    % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
-    params.minFixTime3 = params.minFixTime2/2;  % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .5;                    % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.minFixTime3 = .1;                   % Tempo mínimo de fixação na região do alvo pós-modificação, em s
+    params.postModDur  = .75;                    % Janela temporal (após offset dos estímulos) durante a qual se 
                                                     % espera a fixação com duração mínima minFixTime3, em s
+    params.blobPMDur   = .05;
     % (m) Tamanho da fila de tempos de fixação
     params.fixTimeQueueSize = 20;
 
     % (n) Fatores multiplicativos para se considerar ou não fixação
     params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.25;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+    params.fixDistFactor3 = 1.3;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 
