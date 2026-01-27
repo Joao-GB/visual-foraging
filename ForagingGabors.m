@@ -224,7 +224,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     PMBlob = foragingBlob(window,  gabor.size_px, grey, params, 0);
 
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
-    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(2.5*nStims)));
+    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nStims)));
 
     displayProps.window       = window;
     displayProps.winCol       = grey;
@@ -627,7 +627,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 prm.minFixTime3 = prm.cursorMinFixTime3;
                 prm.postModDur  = prm.cursorPostModDur;
                 prm.pinkNoiseDur= prm.cursorPinkNoiseDur;
-                tkP.nBlocks = 1;
+                tkP.nBlocks = 4;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
             elseif mode == 2
@@ -689,7 +689,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         auxFixQueue = zeros(1, tkP.nStims);
 
     %% 4) Início dos blocos e trials
-        fprintf('----Início da sessão----')
+        fprintf('----Início da sessão----\n')
         try
             Screen('TextFont', dpP.window, prm.textFont);
             keepGoingBlocks = true;
@@ -797,11 +797,11 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     idx = trialQueue(i);
                     trialOrder(1, i, b) = idx;
                     restartTrial = false;
-
+                    fprintf('\nIdx Bloco: %d\n# Trial: %d\n Idx Trial: %d\n', b, i, idx)
                     fprintf('ATENÇÃO: %d visitas até modificar\n', modTimes(b, idx))
 
         % (b) Obtém a mediana do vetor de tempos de fixação
-                    medFixTime = median(tkP.fixQueue);
+                    medFixTime = fixProxy(tkP.fixQueue, prm.pinkNoiseDur);
                     if mode == 1
                         maxTrialDur = prm.cursorMaxTrialDurFactor*tkP.nStims*medFixTime;
                     else
@@ -991,6 +991,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         if debug == 0 && mode >= 2
                                             Eyelink('Message',prm.msg.pse{5});
                                             EyelinkDoTrackerSetup(tkP.el);
+                                            restartTrial = true;
                                         else
                                             disp('Recalibragem solicitada')
                                         end
@@ -1476,6 +1477,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
                             end
                         end
+                        fprintf('seenStimsQueue final: '); disp(seenStimsQueue{b,i}(1,:)); fprintf('\n')
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
                         Screen('Flip', dpP.window);
@@ -1503,18 +1505,16 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
                             disp(nStimsToReport(:, idx, b))
                             fprintf('Há currIdx... ')
-                            nStimsToReport(2, idx, b) = rand < prm.propTrialsPSA;
-                            if nStimsToReport(2, idx, b)
-                                if nPre+nPost >= 3
-                                    if nPre> nPost, nStimsToReport(1, idx, b) = nPre-1;
-                                    else, nStimsToReport(3, idx, b) = nPost-1;
-                                    end
+                            nStimsToReport(2, idx, b) = 1;
+                            if nPre+nPost == 2
+                                nStimsToReport(1, idx, b) = 0;
+                            elseif nPre+nPost >=3
+                                if nPre> nPost, nStimsToReport(1, idx, b) = nPre-1;
+                                else, nStimsToReport(3, idx, b) = nPost-1;
                                 end
-                                fprintf('então será perguntado sobre\n');
-                                disp(nStimsToReport(:, idx, b))
-                            else
-                                fprintf('mas NÃO será perguntado sobre\n')
                             end
+                            fprintf('então será perguntado sobre\n');
+                            disp(nStimsToReport(:, idx, b))
                         end
 
                         allTargets = nan(1,tkP.nStims); allColors2 = drP.allColors;
@@ -1712,6 +1712,32 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 end
 
 
+function T = fixProxy(queue, tf, delta1, delta2)
+    if nargin < 3, delta1 = 0; delta2 = 0; end
+    med = median(queue);
+
+    queue = sort(queue(:));
+%     W = tf + delta1 + delta2;
+
+    bestCount = -inf;
+    T = NaN;
+
+    for k = 1:numel(queue)
+        left  = queue(k) - (tf + delta1);
+        right = queue(k) + delta2;
+
+        count = sum(queue > left & queue < right);
+
+        if count > bestCount
+            bestCount = count;
+            T = queue(k);
+        end
+    end
+    fprintf('T = %.3f contra med = %.3f\n', T, med);
+end
+
+
+
 function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(~, nStims, nTrials, nBlocks, params)
 
 % (a) Distribuição da quantidade de alvos: binomial, de modo que (1) não requer
@@ -1775,7 +1801,7 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
         nStimsPre = nStimsPre + addPre;
         nStimsPost = nStimsPost + addPost;
 
-        nStimsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
+                          n   S   t imsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
         
         % Em cada trial, o sujeito deve reportar dos estímulos vistos
         % anteriormente, do atual ou dos não vistos em ordem aleatória

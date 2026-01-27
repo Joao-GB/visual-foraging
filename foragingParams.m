@@ -97,7 +97,7 @@ function params = foragingParams
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
     params.cursorPinkNoiseDur   = .25;
-    params.cursorPostModDur     = .5;
+    params.cursorPostModDur     = 1;
 
     % (d) Parâmetros de retentativas
     params.nBufferTrials = 3;   % Número de trials adicionados para evitar
@@ -110,7 +110,7 @@ function params = foragingParams
 
     % (f) Parâmetros de fixação com cursor
     params.cursorMinFixTime2 = .2;
-    params.cursorMedFixTime2 = .4;
+    params.cursorMedFixTime2 = .5;
     params.cursorMinFixTime3 = params.cursorMinFixTime2/2;
 
     % (g) Textos de início, fim, pausa e interrupção de sessão, blocos e

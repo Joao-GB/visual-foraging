@@ -14,7 +14,8 @@ Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/Psyc
 Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
 Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
 Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
-----Início da sessão----ATENÇÃO: 3 visitas até modificar
+----Início da sessão----
+ATENÇÃO: 3 visitas até modificar
 currStim = 2
 Terminou a visita ao 1-ésimo estímulo
 currStim = 1
@@ -766,6 +767,7 @@ Trial 3: Visitou o alvo 4 pós-modificação (fim forçado)
      1
 
 Há currIdx... mas NÃO será perguntado sobre
+
 ATENÇÃO: 5 visitas até modificar
 Check falso
 Check falso
