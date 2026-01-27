@@ -627,7 +627,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 prm.minFixTime3 = prm.cursorMinFixTime3;
                 prm.postModDur  = prm.cursorPostModDur;
                 prm.pinkNoiseDur= prm.cursorPinkNoiseDur;
-                tkP.nBlocks = 4;
+                tkP.nBlocks = 1;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
             elseif mode == 2
@@ -1801,7 +1801,7 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
         nStimsPre = nStimsPre + addPre;
         nStimsPost = nStimsPost + addPost;
 
-                          n   S   t imsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
+        nStimsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
         
         % Em cada trial, o sujeito deve reportar dos estímulos vistos
         % anteriormente, do atual ou dos não vistos em ordem aleatória
