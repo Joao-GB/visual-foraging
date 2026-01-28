@@ -1,6 +1,6 @@
-function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
-% A tarefa consiste em nTrials trials, cada um com nStims estímulos e 
-% quantidade média de nTargets alvos, espalhados pseudoaleatoriamente na 
+function ForagingGabors(nStims, nTrials, nBlocks, options)
+% A tarefa consiste em nTrials trials, cada um com nStims estímulos, sendo,
+% em média, metade deles alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
 % com orientações variadas, alvos com uma orientação específica, apenas com
 % o movimento ocular. Em determinado momento, durante essa busca ocular, os
@@ -21,7 +21,6 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
         nStims {mustBeNumeric}    = 8;
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
-        nTargets {mustBeNumeric}  = ceil(nStims/2);
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
     
@@ -32,13 +31,6 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     debug = 0;
     if strcmp(options.mode, 'debug'), debug = 1; elseif strcmp(options.mode, 'debugTV'), debug = 2; end
     clear options;
-
-    if debug > 0
-        nTrials  = 2;
-        nStims   = 8;
-        nBlocks  = 2;
-        nTargets = ceil(nStims/2);
-    end
 
 %% 1) Importa os parâmetros para o experimento
     params = foragingParams;
@@ -267,12 +259,13 @@ function ForagingGabors(nStims, nTrials, nBlocks, nTargets, options)
     taskProps.el        = el;
     taskProps.edfFile   = edfFile;
     taskProps.fixQueue  = fixQueue;
-    taskProps.nTargets  = nTargets;
     taskProps.nStims    = nStims;
     taskProps.nTrials   = nTrials;
     taskProps.nBlocks   = nBlocks;
     taskProps.keys      = keys;
-    clear ans Eye targetKey el edfFile fixQueue nTargets nStims nTrials nBlocks keys
+    taskProps.fixProps.preP3  = [];
+    taskProps.fixProps.med    = [];
+    clear ans Eye targetKey el edfFile fixQueue nStims nTrials nBlocks keys
 
 %% 5) Chama as funções para executar a tarefa
 %     if debug ~= 1
@@ -602,8 +595,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         Screen('Flip', dpP.window);
 
         if strcmp(mode, 'experiment')
-            fakeLoadingScreen(tkP, dpP, drP, prm, 'start');
+            fakeAux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori);
         end
+
+        if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
 
         modeMap = containers.Map({'cursor', 'training', 'experiment'}, 1:3);
         mode = modeMap(mode);
@@ -633,25 +628,30 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             elseif mode == 2
                 L = numel(prm.allOri);
                 tkP.nBlocks = L;
-                tkP.nTrials = prm.nTrialsTrain;
+                tkP.nTrials = max(prm.nTrialsTrain, ceil(1.5*prm.fixTimeQueueSize/L));
             end
         end
 
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
-        [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(tkP.nTargets, tkP.nStims, nTrialsBuffered, tkP.nBlocks, prm);
+        [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(tkP.nStims, nTrialsBuffered, tkP.nBlocks, prm);
         if mode == 2,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
     %% 3) Define matrizes usadas para os estímulos
         % (a) Matrizes com orientação e centros dos estímulos. Sem os alvos,
-        %     há quantidade aleatória de estímulos diagonais e cardinais 
+        %     há distratores com orientações aleatórias
         %     (cf. (e) para adição de alvos)
         stimCenters = zeros(2, tkP.nStims, nTrialsBuffered, tkP.nBlocks);
         orientation = zeros(tkP.nStims, nTrialsBuffered, tkP.nBlocks);
         for b=1:tkP.nBlocks
-            auxAllOri = prm.allOri;
-            auxAllOri(auxAllOri == targetOri(b)) = [];
-            orientation(:,:,b) = auxAllOri(randi(length(auxAllOri), tkP.nStims, nTrialsBuffered));
+            lowerBound = targetOri(b) + prm.nbhdRadius;
+            upperBound = 180 + (targetOri(b) - prm.nbhdRadius);
+            orientation(:,:,b) = mod(rand(tkP.nStims, nTrialsBuffered)*(upperBound-lowerBound)+lowerBound, 180);
+        % Versão anterior para escolher distratores com base nas demais
+        % orientações
+%             auxAllOri = prm.allOri;
+%             auxAllOri(auxAllOri == targetOri(b)) = [];
+%             orientation(:,:,b) = auxAllOri(randi(length(auxAllOri), tkP.nStims, nTrialsBuffered));
         end
 
         % (b) Tamanho e matrizes para as cruzes de fixação 
@@ -687,6 +687,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         minFixDist3 = txP.gabor.size_px*prm.fixDistFactor3;
 
         auxFixQueue = zeros(1, tkP.nStims);
+        if strcmp(mode, 'experiment')
+            endFake(fakeAux, dpP, drP, prm);
+        end
 
     %% 4) Início dos blocos e trials
         fprintf('----Início da sessão----\n')
@@ -799,9 +802,14 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     restartTrial = false;
                     fprintf('\nIdx Bloco: %d\n# Trial: %d\n Idx Trial: %d\n', b, i, idx)
                     fprintf('ATENÇÃO: %d visitas até modificar\n', modTimes(b, idx))
+                    if modTimes(b, idx) >= tkP.nStims
+                        disp('Algo errado!')
+                    end
 
         % (b) Obtém a mediana do vetor de tempos de fixação
-                    medFixTime = fixProxy(tkP.fixQueue, prm.pinkNoiseDur);
+                    P3On = P3Onset(tkP, prm);
+                    med  = median(tkP.fixQueue);
+                    medFixTime = median(tkP.fixQueue);
                     if mode == 1
                         maxTrialDur = prm.cursorMaxTrialDurFactor*tkP.nStims*medFixTime;
                     else
@@ -1285,15 +1293,15 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
                         % o tempo passado desde o início da fixação
-                        preUpdateDur = (medFixTime - prm.pinkNoiseDur);
+%                         P3On = (medFixTime - prm.pinkNoiseDur);#
 %                         auxT2 = (GetSecs - fixStartTime);
 %                         timeLeft = max(0, preUpdateDur - auxT2);
-                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', preUpdateDur)
+                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
 %                         fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
 %                         fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
                 
             % viii. Registra os tempos de início e fim da Fase 3
-                        preUpdateDeadline = fixStartTime + preUpdateDur;
+                        preUpdateDeadline = fixStartTime + P3On;
                         if mode == 1
                             lastPos = [-1 -1];
                             while GetSecs < preUpdateDeadline
@@ -1309,7 +1317,6 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
 
                             updateStimOnset = GetSecs;
                         else
-
                             updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
                         end
 
@@ -1329,9 +1336,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         while true 
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
-                                preUpdateDur = tNow - updateStimOnset;
+                                P3On = tNow - updateStimOnset;
                                 fixDur = tNow - fixStartTime;
-                                fprintf('Fim ruído rosa por duração: %.4f\n', preUpdateDur)
+                                fprintf('Fim ruído rosa por duração: %.4f\n', P3On)
                                 if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                 break;
                             end
@@ -1359,9 +1366,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if check
                                 isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                 if isCurrStim(currStim) == 0
-                                    preUpdateDur = tNow - updateStimOnset;
+                                    P3On = tNow - updateStimOnset;
                                     fixDur = tNow - fixStartTime;
-                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', preUpdateDur)
+                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', P3On)
                                     if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
                                     break;
                                 end
@@ -1378,8 +1385,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         updateStimOffset = Screen('Flip', dpP.window);
                         if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
 
-                        preUpdateDur = updateStimOffset - updateStimOnset;
-                        fprintf('Tempo total de ruído rosa: %.4f\n', preUpdateDur)
+                        P3On = updateStimOffset - updateStimOnset;
+                        fprintf('Tempo total de ruído rosa: %.4f\n', P3On)
 
                         seenIdx = find(flag ~= 0);
                         notSeenIdx = find(flag == 0);
@@ -1501,15 +1508,33 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             Screen('Close', bg1); clear auxWin bg1;
                         end
 
+                        % Se houver fixado em algum estímulo em PM...
                         if ~isempty(currIdx)
                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
-                            disp(nStimsToReport(:, idx, b))
+                        
+                        % ... garante que serão perguntadas as orientações
+                        % de 2 ou 3 estímulos sempre (nunca só 1)
+                            if numel(seenIdx) < nPre
+                                dif = nPre - numel(seenIdx);
+                                nStimsToReport(1, idx, b) = numel(seenIdx);
+                                nStimsToReport(3, idx, b) = nPost + dif;
+                            end
+                            if numel(notSeenIdx) < nPost
+                                dif = nPost - numel(notSeenIdx);
+                                nStimsToReport(3, idx, b) = numel(notSeenIdx);
+                                nStimsToReport(1, idx, b) = nPre + dif;
+                            end
+                            nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
+
+
+                        % ... e substitui um dos a ser perguntado
+                        % (preferencialmente o já visto)
                             fprintf('Há currIdx... ')
                             nStimsToReport(2, idx, b) = 1;
                             if nPre+nPost == 2
-                                nStimsToReport(1, idx, b) = 0;
+                                nStimsToReport(1, idx, b) = max(0, nStimsToReport(1, idx, b) - 1);
                             elseif nPre+nPost >=3
-                                if nPre> nPost, nStimsToReport(1, idx, b) = nPre-1;
+                                if nPre > nPost, nStimsToReport(1, idx, b) = nPre-1;
                                 else, nStimsToReport(3, idx, b) = nPost-1;
                                 end
                             end
@@ -1529,6 +1554,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         % para concatenar 
                         orderToReportStimsCell = {seenAux, currAux, notSeenAux};
                         orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
+                        if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
+                            disp('Algo de errado!');
+                        end
                         orderRemapped = [];
                         for auxIdx = 1:3
                             orderRemapped = [orderRemapped orderToReportMap(orderToReportSets(auxIdx, idx, b))*ones(1, length(orderToReportStimsCell{orderToReportSets(auxIdx, idx, b)}))]; %#ok<AGROW> 
@@ -1584,6 +1612,8 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         WaitSecs(1);
                         
                         tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
+                        tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
+                        tkP.fixProps.med   = [tkP.fixProps.med    med];
                         trialOrder(2, i, b) = 1;
 
                         i = i + 1;
@@ -1708,37 +1738,48 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         tkP.nBlocks = nBlocks;
         tkP.nTrials = nTrials;
         if debug == 0, HideCursor(dpP.window); end
-    end
-end
 
-
-function T = fixProxy(queue, tf, delta1, delta2)
-    if nargin < 3, delta1 = 0; delta2 = 0; end
-    med = median(queue);
-
-    queue = sort(queue(:));
-%     W = tf + delta1 + delta2;
-
-    bestCount = -inf;
-    T = NaN;
-
-    for k = 1:numel(queue)
-        left  = queue(k) - (tf + delta1);
-        right = queue(k) + delta2;
-
-        count = sum(queue > left & queue < right);
-
-        if count > bestCount
-            bestCount = count;
-            T = queue(k);
+        % Se estiver no modo treino, ajusta a duração do ruído rosa
+        % conforme as fixações salvas na fila
+        if mode == 2
+            disp('Ajuste de pinkNoiseDur')
+            shortFixLimit = prctile(tkP.fixQueue, prm.shortFixPerc);
+            tkP.pinkNoiseDur = min(prm.pinkNoiseDur, shortFixLimit);
         end
     end
-    fprintf('T = %.3f contra med = %.3f\n', T, med);
+end
+
+
+function T = P3Onset(tkP, prm)
+% Para que, com alta probaiblidade, o estímulo de P3 comece antes e termine 
+% pelo menos perto (ou depois) do fim da fixação, precisamos que
+% P(T + D < (duração da fixação) < T + tf + D) seja grande.
+    alpha = .25;
+    Q = tkP.fixQueue;
+    D = prm.minP3Dur;
+    tf = prm.pinkNoiseDur; 
+    prevT = tkP.fixProps.preP3;
+    
+    steps = (0:.005:max(Q))';
+
+    L = steps + D;
+    U = steps + tf + D;
+
+    inWindow = (Q > L) & (Q < U);
+    counts = sum(inWindow, 2);
+    [~, idx] = max(counts);
+    bestT = steps(idx);
+    
+    if isempty(prevT), prevT = bestT;
+    else, prevT = prevT(end);
+    end
+
+    T = (1 - alpha) * prevT + alpha * bestT;
 end
 
 
 
-function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(~, nStims, nTrials, nBlocks, params)
+function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(nStims, nTrials, nBlocks, params)
 
 % (a) Distribuição da quantidade de alvos: binomial, de modo que (1) não requer
 %     número de alvos; (2) em média, metade serão alvos; (3) um estímulo é 
@@ -1758,11 +1799,13 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
 %         end
 
     % (b) Distribuição da orientação-alvo: pseudo-uniforme nas orientações 
-    %     de allOri, de modo que dois bloos consecutivos têm orientações
-    %     distintas
-    aux = ceil(nBlocks / length(params.allOri));
-    aux = sort(repmat(params.allOri, 1, aux));
-    while(any(diff(aux) == 0)), aux = aux(randperm(numel(aux))); end
+    %     de allOri, de modo que dois blocos consecutivos têm orientações
+    %     distintas (claro, se houver mais de 2 alvos possíveis)
+    aux = repmat(params.allOri, 1, ceil(nBlocks / length(params.allOri)));
+    if numel(params.allOri) > 2
+        aux = sort(aux);
+        while(any(diff(aux) == 0)), aux = aux(randperm(numel(aux))); end
+    end
     targetOri = aux(1:nBlocks);
 
     % (c) Distribuição do instante de modificação: após quantos alvos fixados 
@@ -2258,9 +2301,14 @@ end
 
 
 function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
+    if nargin < 5, loadingMode = 'opening'; txP = []; ori = []; end
     % Tela de 'Carregando' falsa com barra e dicas
+    aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori);
+    endFake(aux, dpP, drP, prm)
+end
 
-    if nargin < 5, loadingMode = 'opening'; end
+
+function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
 
     leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; escapeKey = tkP.keys{4};
 
@@ -2596,10 +2644,14 @@ function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
     
         Screen('Flip', dpP.window);
     end
-    
-    %% Faz uma transição lenta à cor original
-    if logoTex ~= -1, Screen('Close', logoTex); end
-    Screen('Close', blockTex);
+    aux.logoTex  = logoTex;
+    aux.blockTex = blockTex;
+end
+
+function endFake(aux, dpP, drP, prm)
+%% Faz uma transição lenta à cor original
+    if aux.logoTex ~= -1, Screen('Close', aux.logoTex); end
+    Screen('Close', aux.blockTex);
 
     img = Screen('GetImage', dpP.window);
     frozenTex = Screen('MakeTexture', dpP.window, img);

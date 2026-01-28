@@ -42,9 +42,11 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [0 45 90 135]; %[0 90];%
+    params.allOri = [0 90];%[0 45 77 160]; %
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%{'vertical', 'horizontal'};%
+    params.allOriName = {'vertical', 'horizontal'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%
+    sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
+    params.nbhdRadius = min(diff(sortedOri))/2;
 
 %% Propriedades indispensáveis da tarefa: tempos de fixação, durações dos estímulos...
     % (j) Quantidades e proporções de estímulos a serem reportados ao 
@@ -65,9 +67,13 @@ function params = foragingParams
                                                     % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = .05;
     % (m) Tamanho da fila de tempos de fixação
-    params.fixTimeQueueSize = 20;
+    params.fixTimeQueueSize = 30;
+    % (n) Percentil de fixações curtas, para ajustar pinkNoiseDur
+    params.shortFixPerc     = 20;
+    params.successP3Perc    = 75;
+    params.minP3Dur         = .025;
 
-    % (n) Fatores multiplicativos para se considerar ou não fixação
+    % (o) Fatores multiplicativos para se considerar ou não fixação
     params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
     params.fixDistFactor3 = 1.3;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
@@ -85,14 +91,14 @@ function params = foragingParams
     % (c) Fatores de duração de cada trial com base nas durações de fixações e sacadas
     params.revisitFactor = 1/2;         % Proporção de tolerância de revisita a
                                             % estímulos já vistos
-    params.sacFixDurRatio = 1;        % Duração de uma sacada em relação a uma fixação
+    params.sacFixDurRatio = 1/2;        % Duração de uma sacada em relação a uma fixação
     params.maxTrialDurFactor = (1+params.revisitFactor)*(1+params.sacFixDurRatio); 
                                             % A ideia é que se N é um número de estímulos, o sujeito fará no máximo
                                             % 1.5*N fixações e sacadas, já que a 1a fixação parte da cruz de fixação.
                                             % Por exemplo, se revisitFactor = 1/2 e sacFixDurRatio = 1/2, sendo m o 
                                             % tempo de cada fixação (logo m/2 de cada sacada), o tempo máximo é 
                                             % 1.5(N*m + N*(.5*m)) = 2.25*N*m
-    params.cursorSacFixDurRatio = 5;    % Mesma finalidade que sacFixDurRatio,
+    params.cursorSacFixDurRatio = 3;    % Mesma finalidade que sacFixDurRatio,
                                             % mas para demonstração com cursor
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
@@ -111,7 +117,7 @@ function params = foragingParams
     % (f) Parâmetros de fixação com cursor
     params.cursorMinFixTime2 = .2;
     params.cursorMedFixTime2 = .5;
-    params.cursorMinFixTime3 = params.cursorMinFixTime2/2;
+    params.cursorMinFixTime3 = .35;
 
     % (g) Textos de início, fim, pausa e interrupção de sessão, blocos e
     %     trials
@@ -213,10 +219,9 @@ function params = foragingParams
                                     % tela relembrando alvo
     % (l) Atrasos para começar efeitos de fade in
     params.fadeInDelay1 = 0.3;
-    params.fadeInDelay2 = 0.7;
+    params.fadeInDelay2 = 0.5;
 
     % (m) Durações de efeitos de fade in
     params.fadeInDur1   = 0.1;
     params.fadeInDur2   = 0.35;
-    params.fadeInDur3   = 1.5;
 end
