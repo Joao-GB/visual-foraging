@@ -595,7 +595,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         Screen('Flip', dpP.window);
 
         if strcmp(mode, 'experiment')
-            fakeAux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori);
+            fakeAux = startFake(tkP, dpP, drP, prm, 'start', [], []);
         end
 
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
@@ -628,7 +628,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             elseif mode == 2
                 L = numel(prm.allOri);
                 tkP.nBlocks = L;
-                tkP.nTrials = max(prm.nTrialsTrain, ceil(1.5*prm.fixTimeQueueSize/L));
+                tkP.nTrials = max(prm.nTrialsTrain, ceil(1*prm.fixTimeQueueSize/L));
             end
         end
 
@@ -801,9 +801,9 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                     trialOrder(1, i, b) = idx;
                     restartTrial = false;
                     fprintf('\nIdx Bloco: %d\n# Trial: %d\n Idx Trial: %d\n', b, i, idx)
-                    fprintf('ATENÇÃO: %d visitas até modificar\n', modTimes(b, idx))
+                    fprintf('ATENÇÃO: %d/%d visitas até modificar\n', modTimes(b, idx), tkP.nStims)
                     if modTimes(b, idx) >= tkP.nStims
-                        disp('Algo errado!')
+                        fprintf('Algo errado!')
                     end
 
         % (b) Obtém a mediana do vetor de tempos de fixação
@@ -1497,7 +1497,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                             if currIdx == currStim
                                 seenIdx(seenIdx == currIdx) = [];
                                 currIdx = [];
-                                disp('Não mexeu os olhos durante ruído rosa')
+                                disp('Não chegou noutro estímulo durante ruído rosa')
                             end
                         end
                         
@@ -1555,7 +1555,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                         orderToReportStimsCell = {seenAux, currAux, notSeenAux};
                         orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
                         if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
-                            disp('Algo de errado!');
+                            fprintf('Algo de errado: tem que reportar: %d', numel(orderToReportStims));
                         end
                         orderRemapped = [];
                         for auxIdx = 1:3
