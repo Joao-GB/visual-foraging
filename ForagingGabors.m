@@ -1,6 +1,6 @@
 function ForagingGabors(nStims, nTrials, nBlocks, options)
-% A tarefa consiste em nTrials trials, cada um com nStims estímulos, sendo,
-% em média, metade deles alvos, espalhados pseudoaleatoriamente na 
+% A tarefa consiste em nTrials X nBlocks trials, cada um com nStims estímulos, 
+% sendo, em média, metade deles alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
 % com orientações variadas, alvos com uma orientação específica, apenas com
 % o movimento ocular. Em determinado momento, durante essa busca ocular, os
@@ -105,8 +105,8 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     black = BlackIndex(screenNumber);
     white = WhiteIndex(screenNumber);
     grey = white / 2;
-    if debug == 1, bgColor = black; else, bgColor = grey; end
-    [window, winRect] = PsychImaging('OpenWindow', screenNumber, bgColor, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
+    % if debug == 1, bgColor = black; else, bgColor = grey; end
+    [window, winRect] = PsychImaging('OpenWindow', screenNumber, black, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
     Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     % (c) Obtém propriedades da tela
@@ -1678,7 +1678,6 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                 if mode >= 2, Eyelink('Message',sprintf(prm.msg.off.ses{2}, suffix)); end
             end
 
-            % Salva todos os arquivos relevantes
             if mode > 1
                 tkS(mode - 1, 2) = blocksCompleted;
             end
@@ -2804,7 +2803,7 @@ function endScreen(dpP, drP, prm)
     yawMax   = deg2rad(30); pitchMax = deg2rad(10); zDist = 500;
     
     eyeState = 0; % 0 para blink, 1 para pursuit, 2 para sacada
-    waitTime = 3; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
+    waitTime = 1; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
     yaw = [0 0]; pitch = [0 0]; wAngles = .9; wT0 = 0; wT1 = .50001; wT2 = .5;
     wT = wT1;
     vLim1 = 200; vLim2 = 1000; vLim3 = 4000; eyeVLim = 5;

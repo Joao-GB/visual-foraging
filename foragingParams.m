@@ -27,7 +27,7 @@ function params = foragingParams
 
     % (f) Parâmetros do ruído rosa com orientação
     %% Arrumar parâmetros
-    params.aSigma = 20;
+    params.aSigma = 60;
     params.rSigma2 = .76;
 
     % (g) Parâmetros dos blobs
@@ -36,7 +36,7 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(3, params.gaborSize_dva); 
+    params.minDist_dva = max(4, params.gaborSize_dva); 
     params.ellipseToScreenRatio = [3/4 3/4];
     params.gridShape   = [2 4];
     params.randomize = false;
@@ -195,7 +195,7 @@ function params = foragingParams
     params.blue      = [.57 .64 .72];
     params.darkBlue  = [.40 .50 .60];
     params.green     = [.06 .87 .33];
-    params.drakGreen = [.41 .68 .22];
+    params.darkGreen = [.41 .68 .22];
     params.brown     = [.55 .32 .114];
     params.darkBrown = [.43 .18 .051];
     params.paleBrown = [.52 .37 .298];
