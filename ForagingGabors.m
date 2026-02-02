@@ -279,6 +279,12 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     clear ans Eye targetKey el edfFile fixQueue nStims nTrials nBlocks keys
 
 %% 5) Chama as funções para executar a tarefa
+    outPath = fullfile(params.filePath, params.outFolder);
+    winOutFile = fullfile(outPath, ['p' taskProps.edfFile ]);
+    winOutFile = fileVersion(winOutFile, '.txt');
+    
+    diary(winOutFile);
+
     taskStart = tic;
 
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
@@ -292,6 +298,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     end
 
     cleanup(displayProps.window);
+    diary off;
 end
 
 
@@ -537,11 +544,11 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                         % Apenas importa a fila de fixações se a tarefa não for de cursor
                         taskStart = tic;
                         if strcmp(mode, 'cursor')
-                            [~, taskState] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            [~, taskState, ~] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                         elseif strcmp(mode, 'staircase')
                             disp('Vai para staircase...')
                         else
-                            [tkP, taskState] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            [tkP, taskState, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                         end
                         taskEnd = toc(taskStart);
                         fprintf('Tempo total da tarefa: %.3f s\n', taskEnd);
@@ -1725,6 +1732,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
             if debug ~= 0, tkS(:) = 0; end
             foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
+            diary off
             psychrethrow(psychlasterror);
         end
 
@@ -1813,7 +1821,7 @@ function T = P3Onset(tkP, prm)
 % Para que, com alta probaiblidade, o estímulo de P3 comece antes e termine 
 % pelo menos perto (ou depois) do fim da fixação, precisamos que
 % P(T + D < (duração da fixação) < T + tf + D) seja grande.
-    alpha = .25;
+    alpha = 1;
     Q = tkP.fixQueue;
     D = prm.minP3Dur;
     tf = prm.pinkNoiseDur; 
@@ -1861,8 +1869,8 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
     %     de allOri, de modo que dois blocos consecutivos têm orientações
     %     distintas (claro, se houver mais de 2 alvos possíveis)
     aux = repmat(params.allOri, 1, ceil(nBlocks / length(params.allOri)));
+    aux = aux(randperm(numel(aux)));
     if numel(params.allOri) > 2
-        aux = sort(aux);
         while(any(diff(aux) == 0)), aux = aux(randperm(numel(aux))); end
     end
     targetOri = aux(1:nBlocks);
