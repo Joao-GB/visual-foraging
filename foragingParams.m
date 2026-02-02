@@ -190,11 +190,17 @@ function params = foragingParams
     params.pW3 = 10;
 
     % (j) Cores escolhidas a dedo
-    params.orange   = [.98 .55 .06];
-    params.red      = [.86 .20 .20];
-    params.blue     = [.57 .64 .72];
-    params.darkBlue = [.40 .50 .60];
-    params.green    = [.06 .87 .33];
+    params.orange    = [.98 .55 .06];
+    params.red       = [.86 .20 .20];
+    params.blue      = [.57 .64 .72];
+    params.darkBlue  = [.40 .50 .60];
+    params.green     = [.06 .87 .33];
+    params.drakGreen = [.41 .68 .22];
+    params.brown     = [.55 .32 .114];
+    params.darkBrown = [.43 .18 .051];
+    params.paleBrown = [.52 .37 .298];
+    params.greyBrown = [.58 .44 .384];
+    
 
     % (k) Tamanhos e posições dos símbolos de Menu e Pause
     params.titleMarginFactor = .05;     % Distância entre título e limites da tela

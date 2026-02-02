@@ -122,12 +122,18 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     %     desenhar algumas das figuras
     whiteGrey = (white+grey)/2;
     blackGrey = (black+grey)/2;
-    orange   = white*params.orange;
-    blue     = white*params.blue;
-    darkBlue = white*params.darkBlue;
-    red     = white*params.red;
-    green   = white*params.green;
-    params  = rmfield(params, {'blue', 'darkBlue', 'green', 'orange', 'red'});
+    orange    = white*params.orange;
+    blue      = white*params.blue;
+    darkBlue  = white*params.darkBlue;
+    red       = white*params.red;
+    green     = white*params.green;
+    darkGreen = white*params.darkGreen;
+    brown     = white*params.brown;
+    darkBrown = white*params.darkBrown;
+    greyBrown = white*params.greyBrown;
+    paleBrown = white*params.paleBrown;
+
+    params    = rmfield(params, {'blue', 'darkBlue', 'green', 'darkGreen', 'brown', 'darkBrown', 'greyBrown', 'paleBrown', 'orange', 'red'});
     
     allColors = white*ones(3, nStims);
     allPW     = params.pW1*ones(1,nStims);
@@ -238,6 +244,11 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     drawProps.darkBlue  = darkBlue;
     drawProps.red       = red;
     drawProps.green     = green;
+    drawProps.darkGreen = darkGreen;
+    drawProps.brown     = brown;
+    drawProps.darkBrown = darkBrown;
+    drawProps.greyBrown = greyBrown;
+    drawProps.paleBrown = paleBrown;
     drawProps.allColors = allColors;
     drawProps.allPW     = allPW;
     clear white whiteGrey blackGrey grey black orange blue darkBlue red green allColors allPW
@@ -268,33 +279,18 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     clear ans Eye targetKey el edfFile fixQueue nStims nTrials nBlocks keys
 
 %% 5) Chama as funções para executar a tarefa
-%     if debug ~= 1
     taskStart = tic;
+
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
-%     else
-%         Screen('FillRect', displayProps.window, drawProps.grey);
-%     end
     [~, taskState] = menuScreen(taskProps, displayProps, drawProps, texProps, debug, params);
+
     taskEnd = toc(taskStart);
     fprintf('Tempo total da sessão: %.3f s\n', taskEnd);
 
-    warningStart = 'AVISO: Sessão: ';
-    myWarning = {};
-    warnings = {'de treino não concluída.', 'encerrada sem treino ou experimento.', 'de treino concluída e salva.'; ...
-                'experimental não concluída nem salva.', 'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.'};
-
-    if sum(taskState(:)) == 0
-        myWarning{end+1} = [warningStart warnings{1, 2}];
-        disp(myWarning{end});
-    else
-        for i=1:size(taskState,1)
-            if sum(taskState(i,:)) ~= 0
-                colIdx = find(taskState(i,:) > 0, 1, "last");
-                myWarning{end+1} = [warningStart warnings{i, colIdx}]; %#ok<AGROW> 
-                disp(myWarning{end});
-            end
-        end
+    if taskState(2,2) == 1
+        endScreen(displayProps, drawProps, params);
     end
+
     cleanup(displayProps.window);
 end
 
@@ -303,9 +299,9 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     if nargin < 7, menuMode = 'normal'; end
 %% Interpretação da variável taskState:
     % Linhas: treino e experimento; 
-    % Colunas: começou, salvou e concluiu
-    taskState = [0 0 0;
-                 0 0 0];
+    % Colunas: começou e concluiu
+    taskState = [0 0;
+                 0 0];
 
     Screen('TextFont', dpP.window, prm.textFont);
     Screen('TextSize', dpP.window, prm.textSizeNormal);
@@ -409,6 +405,7 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     lastActionTime = 0; lastRepeatTime = -Inf;
     doAction = false;
     mode = '';
+    quitSes = 0;
 
     while true
 
@@ -540,21 +537,19 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                         % Apenas importa a fila de fixações se a tarefa não for de cursor
                         taskStart = tic;
                         if strcmp(mode, 'cursor')
-                            [~, savedNdone] = runForaging(tkP, dpP, drP, txP, prm, debug, mode);
+                            [~, taskState] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                         elseif strcmp(mode, 'staircase')
                             disp('Vai para staircase...')
                         else
-                            [tkP, savedNdone] = runForaging(tkP, dpP, drP, txP, prm, debug, mode);
+                            [tkP, taskState] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                         end
                         taskEnd = toc(taskStart);
                         fprintf('Tempo total da tarefa: %.3f s\n', taskEnd);
 
-                        if strcmp(mode, 'training'),      taskState(1,2:3) = savedNdone; end
-                        if strcmp(mode, 'experiment'), taskState(2,2:3) = savedNdone; end
                         % Se o experimento tiver sido concluído, não volta
                         % pro menu
-                        if taskState(2,3) == 1
-                            return;
+                        if taskState(2,2) == 1
+                            break;
                         else
                             iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
                             SetMouse(cX, cY, dpP.window);
@@ -565,8 +560,9 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
                     KbReleaseWait;
                     decision = pauseScreen(tkP, dpP, drP, prm, 'menu');
                     if strcmp(decision, 'quit')
-                        Screen('Flip', dpP.window); 
-                        return;
+                        Screen('Flip', dpP.window);
+                        quitSes = 1;
+                        break;
                     end
                 end
             end
@@ -575,6 +571,10 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
         end
         keyWasDown = keyIsDown;
     end
+
+    if debug ~= 0, taskState(:) = 0; end
+    if ~exist('results', 'var'), results = []; end
+    foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
 end
 
 
@@ -588,7 +588,7 @@ function [iconsTex] = getMenuTex(win, iconsDir, col)
 end
 
 
-function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(tkP, dpP, drP, txP, prm, debug, mode)
+function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, tkS)
         % O modo default é experiment
         if nargin < 7, mode = 'experiment'; end
 
@@ -696,7 +696,6 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
         try
             Screen('TextFont', dpP.window, prm.textFont);
             keepGoingBlocks = true;
-            savedNdone = [0 0];
             wasRecording = false;
             restartBlock = false;
             blocksCompleted = false;
@@ -1172,7 +1171,7 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                                         end
                                     end
                                 else
-                                    disp('Check falso')
+%                                     disp('Check falso')
                                 end
             % () Se o tempo máximo tiver sido excedido, exibe uma tela especial
                                 tAux = tNow - trialOnset;
@@ -1680,8 +1679,10 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             end
 
             % Salva todos os arquivos relevantes
-            savedNdone(2) = blocksCompleted;
-            if debug == 0 && mode >= 3
+            if mode > 1
+                tkS(mode - 1, 2) = blocksCompleted;
+            end
+            if debug == 0 && mode >= 2
 
                 results.fixCenters = fixCenters;
                 results.stimCenters = stimCenters;
@@ -1694,44 +1695,38 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
                 results.trialOrder = trialOrder;
                 results.trialFeedback = trialFeedback;
                 results.seenStimsQueue = seenStimsQueue;
-
-                if Eyelink('IsConnected')
-                    outPath = fullfile(prm.filePath, prm.outFolder);
-                    if Eyelink('CheckRecording')
-                        Eyelink('SetOfflineMode');
-                        Eyelink('StopRecording');
-                    end
-                    Eyelink('CloseFile');
-    
-                    % Por algum motivo puxa várias vezes do EyeLink
-                    ntimes = 1;
-                    while ntimes <= 10
-                        status = Eyelink('ReceiveFile');
-                        if status > 0
-                            break
-                        end
-                        ntimes = ntimes+1;
-                    end
-                    if status <= 0
-                        warning('Arquivo do Eyelink não recebido!')
-                    end
-                    edfFile = [tkP.edfFile prm.edfExtension]; 
-                    if exist(edfFile,'file')
-                        movefile(edfFile, outPath);
-                        disp('Arquivo movido para o diretório fornecido.')
-                        savedNdone(1) = true;
-                    else
-                        warning('Arquivo do EyeLink não encontrado!')
-                    end
-                end
-                outFile = fullfile(outPath, ['s' tkP.edfFile]);
-                save(outFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
             else
-                disp('Se fosse sessão experimental, estaria salvo')
+                results = [];
             end
         catch
-            psychrethrow(psychlasterror);
+            if ~exist('fixCenters', 'var'),   fixCenters = []; end
+            if ~exist('stimCenters', 'var'),  stimCenters = []; end
+            if ~exist('orientation', 'var'),  orientation = []; end
+            if ~exist('nTs', 'var'),       nTs = []; end
+            if ~exist('targetOri', 'var'), targetOri = []; end
+            if ~exist('modTimes', 'var'),  modTimes = []; end
+            if ~exist('nStimsToReport', 'var'),     nStimsToReport = []; end
+            if ~exist('orderToReportSets', 'var'),  orderToReportSets = []; end
+            if ~exist('trialOrder', 'var'),      trialOrder = []; end
+            if ~exist('trialFeedback', 'var'),   trialFeedback = []; end
+            if ~exist('seenStimsQueue', 'var'),  seenStimsQueue = []; end
+
+            results.fixCenters = fixCenters;
+            results.stimCenters = stimCenters;
+            results.orientation = orientation;
+            results.nTs = nTs;
+            results.targetOri = targetOri;
+            results.modTimes = modTimes;
+            results.nStimsToReport = nStimsToReport;
+            results.orderToReportSets = orderToReportSets;
+            results.trialOrder = trialOrder;
+            results.trialFeedback = trialFeedback;
+            results.seenStimsQueue = seenStimsQueue;
+            
+            if debug ~= 0, tkS(:) = 0; end
+            foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
+            psychrethrow(psychlasterror);
         end
 
     if mode < 3
@@ -1745,6 +1740,71 @@ function [tkP, savedNdone, fixCenters, stimCenters, orientation] = runForaging(t
             disp('Ajuste de pinkNoiseDur')
             shortFixLimit = prctile(tkP.fixQueue, prm.shortFixPerc);
             tkP.pinkNoiseDur = min(prm.pinkNoiseDur, shortFixLimit);
+        end
+    end
+end
+
+
+function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
+    warningStart = 'AVISO: Sessão ';
+    warnings = {'de treino não concluída, mas salva.', 'de treino concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
+                'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.', ''};
+
+    if sum(tkS(:)) == 0
+        myWarning = [warningStart warnings{1, 3}];
+        disp(myWarning);
+        return;
+    end
+
+    % Modifica o nome a depender de como a última sessão foi encerrada
+    aux = '';
+    if     qSes == 1, aux = '_i';
+    elseif qSes == 2, aux = '_r';
+    end
+
+    % Não sobrescreve arquivos já existentes
+    outPath = fullfile(prm.filePath, prm.outFolder);
+    dstEdfFile = fullfile(outPath, ['e' tkP.edfFile aux]);
+    dstEdfFile = fileVersion(dstEdfFile, prm.edfExtension);
+
+    matFile = fullfile(outPath, ['s' tkP.edfFile aux]);
+    matFile = fileVersion(matFile, '.mat');
+
+    if Eyelink('IsConnected') 
+        if Eyelink('CheckRecording')
+            Eyelink('StopRecording');
+            Eyelink('SetOfflineMode');
+        end
+        Eyelink('CloseFile');
+
+        % Por algum motivo puxa várias vezes do EyeLink
+        ntimes = 1;
+        while ntimes <= 10
+            status = Eyelink('ReceiveFile');
+            if status > 0
+                break
+            end
+            ntimes = ntimes+1;
+        end
+        if status <= 0
+            warning('Arquivo do Eyelink não recebido!')
+        end
+        srcEdfFile = [tkP.edfFile prm.edfExtension]; 
+        if exist(srcEdfFile,'file')
+            movefile(srcEdfFile, dstEdfFile);
+            disp('Arquivo movido para o diretório fornecido.')
+        else
+            warning('Arquivo do EyeLink não encontrado!')
+        end
+    end
+
+    save(matFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
+    
+    for i=1:size(tkS,1)
+        if sum(tkS(i,:)) ~= 0
+            colIdx = find(tkS(i,:) > 0, 1, "last");
+            myWarning = [warningStart warnings{i, colIdx}];
+            disp(myWarning);
         end
     end
 end
@@ -2648,6 +2708,7 @@ function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
     aux.blockTex = blockTex;
 end
 
+
 function endFake(aux, dpP, drP, prm)
 %% Faz uma transição lenta à cor original
     if aux.logoTex ~= -1, Screen('Close', aux.logoTex); end
@@ -2674,4 +2735,259 @@ function endFake(aux, dpP, drP, prm)
     
     Screen('Close', frozenTex);
     WaitSecs(prm.fadeInDelay1);
+end
+
+
+function endScreen(dpP, drP, prm)
+    % Funções e parâmetros particulares à forma do olho que escolhi
+    % Variáveis x de posição, s era de escala, agora inútil
+    uMaxLid = @(x,s) -(0.203267 + 0.0712797*x - 0.888037*x.^2);
+    lMaxLid = @(x,s) -(-0.181055 - 0.0429848*x + 0.753893*x.^2 + 1.02328*x.^3);
+    lLim = -.545; rLim = .455; dx = .01;
+    X = lLim:dx:rLim;
+    
+    dt = .005;
+    blkDur = .07; totalDur = 100; blkFreq = 1/4;
+    [blkTimes, blkShape] = blkProps(dt, blkDur, totalDur, blkFreq);
+    blkShape = [0 blkShape];
+    lBlk = numel(blkShape);
+    
+    % Para piscar, t \in [0.2, 1]. Para arregalar, [0, 0.2]
+    tRelMin = .2; tRelMax = 1; aRel = .85;
+    alpha1Rel = @(t) aRel*(tRelMin*(1-t)+t*tRelMax);
+    alpha2Rel = @(t) (1-aRel)*(tRelMin*(1-t)+t*tRelMax);
+    uRelLid = @(x,t) alpha1Rel(t)*lMaxLid(x,t) + (1-alpha1Rel(t))*uMaxLid(x,t);
+    lRelLid = @(x,t) alpha2Rel(t)*uMaxLid(x,t) + (1-alpha2Rel(t))*lMaxLid(x,t);
+    
+    % Olhos abertos espremidos usam .5; para piscar, o inferior vai no máximo
+    % até .5 e o superior a 1.75
+    tuSqnMin = .5; tuSqnMax = 1.75; tlSqn = .5;
+    aSqn = .4;
+    alpha1uSqn = @(t) aSqn*(tuSqnMin*(1-t)+t*tuSqnMax);
+    alpha2lSqn = @(t) (1-aSqn)*tlSqn;
+    uSqnLid = @(x,t) alpha1uSqn(t)*lMaxLid(x,t) + (1-alpha1uSqn(t))*uMaxLid(x,t);
+    lSqnLid = @(x,t) alpha2lSqn(t)*uMaxLid(x,t) + (1-alpha2lSqn(t))*lMaxLid(x,t);
+    
+    uLid = @(x,a,t) a*uRelLid(x,t) + (1-a)*uSqnLid(x,t);
+    lLid = @(x,a,t) a*lRelLid(x,t) + (1-a)*lSqnLid(x,t);
+    
+    
+    eyeCols = [drP.blue; drP.darkGreen; drP.brown; drP.darkBrown; drP.greyBrown; drP.paleBrown]; aux = randsample(1:size(eyeCols, 1), 1);
+    eyeColor = eyeCols(aux, :);
+    maskTex = Screen('OpenOffscreenWindow', dpP.window, [0 0 0 0], [], 32);
+    xc = dpP.winCenter(1); yc = dpP.winCenter(2);
+    
+    % Parâmetros importantes
+    scale = dpP.winRect(3)/10; 
+    eyeWindowCenter  = [3*dpP.winRect(3)/8 dpP.winRect(4)/3;
+               5*dpP.winRect(3)/8 dpP.winRect(4)/3]';
+    eyeBallOffset = dpP.winRect(3)/2 - 1.01*eyeWindowCenter(1,1);
+    
+    maxRadius = scale; minRadius = scale/3;
+    eyeD = scale*.85; eyeR = eyeD/2;
+    baseRect = [0 0 eyeD eyeD];
+    
+    eyeBallRect = zeros(2,4);
+    eyeCenter = [dpP.winRect(3)/2-eyeBallOffset, eyeWindowCenter(2,1), 0;
+                 dpP.winRect(3)/2+eyeBallOffset, eyeWindowCenter(2,2), 0];
+    eyeBallRect(1,:) = CenterRectOnPointd(baseRect, dpP.winRect(3)/2-eyeBallOffset, eyeWindowCenter(2,1));
+    eyeBallRect(2,:) = CenterRectOnPointd(baseRect, dpP.winRect(3)/2+eyeBallOffset, eyeWindowCenter(2,2));
+    
+    irisD = scale*.4; irisR = irisD/2;
+    
+    pupilD = scale*.2; pupilR = pupilD/2;
+    
+    Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    tStart = GetSecs;
+    
+    nBlkT = numel(blkTimes); blkPlayed = zeros(1, nBlkT);
+    yawMax   = deg2rad(30); pitchMax = deg2rad(10); zDist = 500;
+    
+    eyeState = 0; % 0 para blink, 1 para pursuit, 2 para sacada
+    waitTime = 3; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
+    yaw = [0 0]; pitch = [0 0]; wAngles = .9; wT0 = 0; wT1 = .50001; wT2 = .5;
+    wT = wT1;
+    vLim1 = 200; vLim2 = 1000; vLim3 = 4000; eyeVLim = 5;
+    w = .9;
+    
+    alpha = 0; start = true;
+    yRange = dpP.winRect(4)*([-.103 .08] + 1/3); 
+    yRange1 = dpP.winRect(4)*([-.0145 .0145] + 1/3);
+    i = 1;
+
+    grey = repmat(drP.grey, [1, 3]); white = repmat(drP.white, [1, 3]); 
+    SetMouse(xc, yc/2, dpP.window); HideCursor(dpP.window);
+    while ~KbCheck
+        [xMouse, yMouse] = GetMouse(dpP.window);
+    %     disp(yMouse > yRange(1) && yMouse < yRange(2))
+        tu = blkShape(i);
+    
+        tNow = mod(GetSecs - tStart, totalDur);
+        target = [xMouse yMouse zDist];
+    
+        if start, lastYaw = yaw; lastPitch = pitch; lastPos = [xMouse; yMouse]; lastTu = tu; start = false; lastVel = 0; nextFix = lastPos; end
+    
+        vel = vecnorm([xMouse; yMouse] - lastPos)/dt;
+    
+        lastPos = [xMouse; yMouse];
+        vel = w*lastVel+(1-w)*vel;
+        lastVel = vel;
+    
+    
+        % Sacada: se alvo estiver se mexendo ou olhos se mexendo durante sacada
+        if vel > vLim1 && vel < vLim2 || (eyeState == 2 && any(vecnorm([yaw; pitch] - [lastYaw; lastPitch])/dt > eyeVLim))
+            % vecnorm(nextFix - [xMouse; yMouse]) > minDist1; vecnorm(nextFix - currFix) < minDist2
+            if vecnorm(nextFix - [xMouse; yMouse]) > minDist1
+                nextFix = [xMouse; yMouse];
+            end
+            eyeState = 2;
+            wT = wT2;
+            startWait = -1;
+        elseif vel > vLim2 && vel < vLim3
+            eyeState = 1;
+            wT = wT1;
+            startWait = -1;
+        else
+            if startWait == -1
+                startWait = tNow;
+            end
+            if tNow - startWait > waitTime
+                eyeState = 0;
+                wT = wT0;
+                yaw = [0 0]; pitch = [0 0];
+                nextFix = [xMouse; yMouse];
+            end
+        end
+    %     disp(vel)
+    %     disp(eyeState)
+    
+        mBlkT = find(blkTimes < tNow, 1, 'last');
+        if eyeState == 0 || (eyeState == 1 && i ~= 1)
+            if ~isempty(mBlkT)
+                if blkPlayed(mBlkT) == 0
+                    i = i + 1;
+                    if i == lBlk+1
+                        i = 1;
+                        blkPlayed(:) = 0;
+                        blkPlayed(mBlkT) = 1;
+                    end
+                end
+            end
+        elseif eyeState >= 1
+            
+            if eyeState == 2
+                target = [nextFix' zDist];
+            end
+    
+            v = target - eyeCenter;
+                
+            yaw = atan2(v(:,1), v(:,3));
+            pitch = atan2(v(:,2), v(:,3));
+    
+            yaw   = max(min(yaw,   yawMax),   -yawMax);
+            pitch = max(min(pitch, pitchMax), -pitchMax);
+            if exist('C', "var")
+%                 disp(C(2))
+                tu = -1+2.3*(min(yRange1(2), max(C(2), yRange1(1)))-yRange1(1))/(yRange1(2)-yRange1(1));
+            else
+%                 disp(-1)
+                tu = -1+2.3*(min(yRange(2), max(yMouse, yRange(1)))-yRange(1))/(yRange(2)-yRange(1));
+            end
+    
+%             disp(min(yRange(2), max(yMouse, yRange(1))))
+    
+        end
+        yaw = wAngles*lastYaw + (1-wAngles)*yaw;
+        pitch = wAngles*lastPitch + (1-wAngles)*pitch;
+        lastYaw = yaw; lastPitch = pitch;
+    
+        tl = blkShape(i);
+        tu = wT*lastTu +(1-wT)*tu;
+    
+        dist = hypot(xMouse - eyeWindowCenter(1,:), yMouse - eyeWindowCenter(2,:));
+        dist = (min(maxRadius, max(dist, minRadius))-minRadius)./(maxRadius-minRadius);
+    
+        [rWindow, lWindow] = drawEye(X, dist, tu, tl, uLid, lLid, scale, eyeWindowCenter');
+        
+        % A máscara não deixa passar nada, a não ser que esteja nos buracos
+        Screen('FillRect', maskTex, [grey 0]);
+        Screen('FillPoly', maskTex, [grey 1], rWindow);
+        Screen('FillPoly', maskTex, [grey 1], lWindow);
+    
+        Screen('FillOval', dpP.window, drP.white, eyeBallRect(1,:));
+        Screen('FillOval', dpP.window, drP.white, eyeBallRect(2,:));
+    
+                
+        [rIrisEl, C] = ellipsePoly(irisR, eyeR, yaw(1), pitch(1), alpha, eyeCenter(1,1:2)', T);
+%         disp(C(2))
+        rPupilEl= ellipsePoly(pupilR, eyeR, yaw(1), pitch(1), alpha, eyeCenter(1,1:2)', T, 1);
+    
+        lIrisEl = ellipsePoly(irisR, eyeR, yaw(2), pitch(2), alpha, eyeCenter(2,1:2)', T);
+        lPupilEl= ellipsePoly(pupilR, eyeR, yaw(2), pitch(2), alpha, eyeCenter(2,1:2)', T, 1);
+        
+                
+        Screen('FillPoly', dpP.window, eyeColor, rIrisEl'); Screen('FillPoly', dpP.window, eyeColor, lIrisEl');
+        Screen('FillPoly', dpP.window, drP.black, rPupilEl'); Screen('FillPoly', dpP.window, drP.black, lPupilEl');
+    
+        Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+        Screen('DrawTexture', dpP.window, maskTex);
+    
+        Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        Screen('FramePoly', dpP.window, drP.black, rWindow, 4);
+        Screen('FramePoly', dpP.window, drP.black, lWindow, 4);
+
+        Screen('TextSize', dpP.window, prm.textSizeEnormous); Screen('TextStyle', dpP.window, 1);
+        DrawFormattedText(dpP.window, 'Sessão concluída!', 'center', 2*dpP.winRect(4)/3, drP.black);
+    
+        msg = [
+            'Aperte qualquer tecla para sair, ou\n'...
+            'mova o cursor para ver o que acontece.\n'
+        ];
+        Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
+        DrawFormattedText(dpP.window, msg, 'center', 2*dpP.winRect(4)/3 + 55, drP.black);
+
+        Screen('FillOval', dpP.window, [white .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px]);
+        Screen('Flip', dpP.window);
+        WaitSecs(dt);
+    end
+end
+
+
+function [rEye, lEye] = drawEye(X, d, tu, tl, uFunc, lFunc, s, c)
+    fX = fliplr(X);
+    nX = -X; fnX = fliplr(-X);
+    rEye = [nX fnX;uFunc(X, d(1), tu) lFunc(fX, d(1), tl)]'.*s+c(1,:);
+    lEye = [X fX;uFunc(X, d(2), tu) lFunc(fX, d(2), tl)]'.*s  +c(2,:);
+end
+
+
+function [bT, bS] = blkProps(tRes, bDur, totDur, bFreq)
+    frac    = .2;  % Fração da piscada que é fechada, frac \in [0,1)
+    bRefrac = 1;  % Período refratário da piscada
+    bDelay  = 1/bFreq;
+    nB      = totDur/bDelay;
+    alpha = 2; theta = (bDelay-bRefrac)/alpha;
+
+    bT = cumsum(gamrnd(alpha, theta, [1, nB]));
+    bT(bT >= totDur) = [];
+    bS = min(1, 1/(1-frac)*(1-abs(1-(2/bDur)*(0:tRes:bDur))));
+end
+
+
+function [e, C] = ellipsePoly(r, R, y, p, al, C, T, mode)
+            if nargin < 8, mode = 0; end
+            if mode == 1
+                a = r* cos(1.3*y) ; b = r * cos(1.3*p);
+            else
+                a = r* cos(1.1*y) ; b = r * cos(1.1*p);
+            end
+            e = [a * cos(T); b * sin(T)];
+            Rot = [cos(al) -sin(al);
+                sin(al)  cos(al)];
+            if mode == 1
+                C = [C(1,:) + R * sin(1.3*y); C(2,:) + R * sin(1.3*p)];
+            else
+                C = [C(1,:) + R * sin(1.1*y); C(2,:) + R * sin(1.1*p)];
+            end
+            e = Rot * e + C;
 end
