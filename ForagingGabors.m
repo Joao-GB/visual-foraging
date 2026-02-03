@@ -1342,9 +1342,9 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                         while true 
                             tNow = GetSecs;
                             if tNow - updateStimOnset > prm.pinkNoiseDur
-                                P3On = tNow - updateStimOnset;
+                                P3Dur = tNow - updateStimOnset;
                                 fixDur = tNow - fixStartTime;
-                                fprintf('Fim ruído rosa por duração: %.4f\n', P3On)
+                                fprintf('Fim ruído rosa por duração: %.4f\n', P3Dur)
                                 if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                 break;
                             end
@@ -1372,9 +1372,9 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                             if check
                                 isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                 if isCurrStim(currStim) == 0
-                                    P3On = tNow - updateStimOnset;
+                                    P3Dur = tNow - updateStimOnset;
                                     fixDur = tNow - fixStartTime;
-                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', P3On)
+                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', P3Dur)
                                     if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
                                     break;
                                 end
@@ -1391,8 +1391,8 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                         updateStimOffset = Screen('Flip', dpP.window);
                         if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
 
-                        P3On = updateStimOffset - updateStimOnset;
-                        fprintf('Tempo total de ruído rosa: %.4f\n', P3On)
+                        P3Dur = updateStimOffset - updateStimOnset;
+                        fprintf('Tempo total de ruído rosa: %.4f\n', P3Dur)
 
                         seenIdx = find(flag ~= 0);
                         notSeenIdx = find(flag == 0);
@@ -1821,7 +1821,7 @@ function T = P3Onset(tkP, prm)
 % Para que, com alta probaiblidade, o estímulo de P3 comece antes e termine 
 % pelo menos perto (ou depois) do fim da fixação, precisamos que
 % P(T + D < (duração da fixação) < T + tf + D) seja grande.
-    alpha = 1;
+    alpha = .25;
     Q = tkP.fixQueue;
     D = prm.minP3Dur;
     tf = prm.pinkNoiseDur; 
