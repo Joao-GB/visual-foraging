@@ -282,8 +282,9 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     outPath = fullfile(params.filePath, params.outFolder);
     winOutFile = fullfile(outPath, ['p' taskProps.edfFile ]);
     winOutFile = fileVersion(winOutFile, '.txt');
+    taskProps.winOutFile = winOutFile;
     
-    diary(winOutFile);
+    if debug == 0, diary(winOutFile); end
 
     taskStart = tic;
 
@@ -298,7 +299,11 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     end
 
     cleanup(displayProps.window);
-    diary off;
+    if debug == 0, diary off; end
+
+    if ~sum(taskState(:)) == 0 && exist(winOutFile, 'file')
+        delete(winOutFile);
+    end
 end
 
 
@@ -598,6 +603,7 @@ end
 function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode, tkS)
         % O modo default é experiment
         if nargin < 7, mode = 'experiment'; end
+        tic;
 
         Screen('Flip', dpP.window);
 
@@ -638,12 +644,15 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                 tkP.nTrials = max(prm.nTrialsTrain, ceil(1*prm.fixTimeQueueSize/L));
             end
         end
-
+        fprintf('Tempo inicial: %.5f\n', toc)
+        tic;
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
         [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions(tkP.nStims, nTrialsBuffered, tkP.nBlocks, prm);
         if mode == 2,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
-
+        
+        fprintf('Tempo getDistr: %.5f\n', toc)
+        tic;
     %% 3) Define matrizes usadas para os estímulos
         % (a) Matrizes com orientação e centros dos estímulos. Sem os alvos,
         %     há distratores com orientações aleatórias
@@ -660,7 +669,8 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
 %             auxAllOri(auxAllOri == targetOri(b)) = [];
 %             orientation(:,:,b) = auxAllOri(randi(length(auxAllOri), tkP.nStims, nTrialsBuffered));
         end
-
+        fprintf('Tempo orientações distratoras: %.5f\n', toc)
+        tic;
         % (b) Tamanho e matrizes para as cruzes de fixação 
         crossSize_px = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.crossSize_dva);
         fixCenters  = zeros(2, nTrialsBuffered, tkP.nBlocks);
@@ -670,14 +680,20 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
         noiseMatrix = zeros(txP.gabor.size_px, tkP.nStims*txP.gabor.size_px);
         oriPinkMatrix = zeros(txP.gabor.size_px, tkP.nStims*txP.gabor.size_px);
 
+        fprintf('Tempo matrizes nulas: %.5f\n', toc)
+        tic;
         noiseCenters = [0:txP.gabor.size_px:(tkP.nStims-1)*txP.gabor.size_px; zeros(1, tkP.nStims)] + txP.gabor.size_px/2;
         baseRect = [0 0 txP.gabor.size_px txP.gabor.size_px];
 
         srcRects = CenterRectOnPointd(repmat(baseRect, [tkP.nStims,1])', noiseCenters(1,:), noiseCenters(2,:));
 
-        minDist_px   = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.minDist_dva);
+        % Já que gaborSize_dva é o diâmetro do Gabor, os centros precisam
+        % distar pelo menos 1 diâmetro mais a minDist
+        minDist_px   = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.minDist_dva+prm.gaborSize_dva);
         minFixDist1 = txP.gabor.size_px*prm.fixDistFactor1;
 
+        fprintf('Tempo rects a centers: %.5f\n', toc);
+        tic;
         for b=1:tkP.nBlocks
             for i=1:nTrialsBuffered
         % (d) Matrizes com os centros dos estímulos (i.e., centros dos dstRects)
@@ -697,7 +713,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
         if strcmp(mode, 'experiment')
             endFake(fakeAux, dpP, drP, prm);
         end
-
+        fprintf('Tempo preencher locais estímulos e orientações de alvos: %.5f\n', toc);
     %% 4) Início dos blocos e trials
         fprintf('----Início da sessão----\n')
         try
@@ -1732,7 +1748,10 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
             if debug ~= 0, tkS(:) = 0; end
             foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
-            diary off
+            if debug == 0, diary off; end
+            if ~sum(tkS(:)) == 0 && exist(tkP.winOutFile, 'file')
+                delete(tkP.winOutFile);
+            end
             psychrethrow(psychlasterror);
         end
 
@@ -1919,53 +1938,135 @@ function [nTs, targetOri, modTimes, nStimsToReport, orderToReportSets] = getFora
 end
 
 
-function [fixCenter, stimCenters] = getStimLocations(ROIparams, nStims, minDist, gridShape, randomize)
-% Se quiser randomizar, independentemente da relação entre nStims e 
-% size(gridSize(:)), divide ao acaso os estímulos por célula do grid;
-%
-% Se nStims < size(gridSize(:)), inevitavelmente randomiza;
-%
-% Se nStims >= size(gridSize(:)) e não quiser randomizar, distribui
-% uniformemente ao longo das células e o que resta randomiza
-    if nargin < 4, gridShape = [2 4]; end
-    if nargin < 5, randomize = true;  end
+function [fixCenter, stimCenters] = getStimLocations(ROIparams, nStims, minDist, ~, ~)
+    % ROIparams: [centerX, centerY, radiusX, radiusY] da elipse
+    % nStims: quantidade de pontos desejados, além do ponto de fixação
+    % minDist: distância mínima entre todos os pontos desejados
     
-    gridSize = prod(gridShape);
+    cx = ROIparams(1); cy = ROIparams(2);
+    rx = ROIparams(3); ry = ROIparams(4);
     
-    if randomize || nStims < gridSize
-    %     meanStim = nStims/gridSize; auxRand = sqrt(meanStim)*randn(gridSize, 1) + meanStim;
-        auxRand = rand(gridSize, 1);
-        nStimsEachCell = floor(auxRand.*nStims./sum(auxRand));
-        
-        rest = nStims - sum(nStimsEachCell);
-    else
-        allocStimsEachCell = floor(nStims/gridSize);
-        rest = nStims - allocStimsEachCell*gridSize;
-        nStimsEachCell = ones(gridShape)*allocStimsEachCell;
-    end
-    for i = 1:rest
-        idx = randi(gridSize);
-        nStimsEachCell(idx) = nStimsEachCell(idx) + 1;
-    end
-    rectLim = [ROIparams(1)-ROIparams(3), ROIparams(1)+ROIparams(3);
-               ROIparams(2)-ROIparams(4), ROIparams(2)+ROIparams(4)];
-    cellXlims = linspace(rectLim(1,1), rectLim(1,2), gridShape(2)+1);
-    cellYlims = linspace(rectLim(2,1), rectLim(2,2), gridShape(1)+1);
+    % Coordenadas para os 4 cantos do menor retângulo que contém a elipse
+    xMin = cx - rx; xMax = cx + rx;
+    yMin = cy - ry; yMax = cy + ry;
+    
+    % Função da elipse
+    inEllipse = @(x,y) ((x-cx)/rx).^2 + ((y-cy)/ry).^2 <= 1;
 
-    nStimsEachCell = reshape(nStimsEachCell, gridShape);
+    % Cria um grid oculto 
+    cellSize = minDist;
+    gridWidth  = ceil((xMax - xMin) / cellSize);
+    gridHeight = ceil((yMax - yMin) / cellSize);
     
-    [X, Y] = meshgrid(cellXlims, cellYlims);
-    
-    stimCenters = [];
-    for j=1:gridShape(2)
-        for i=1:gridShape(1)
-            a = [X(i,j), X(i+1,j+1)]; b = [Y(i,j), Y(i+1,j+1)];
-            aux = disc_rejection_sampling(a, b, nStimsEachCell(i, j), minDist, 'ellipse', ROIparams, stimCenters);
-                 
-             stimCenters = [stimCenters aux]; %#ok<AGROW>
+    accelGrid = cell(gridHeight, gridWidth);
+    % Função que joga o ponto sorteado para o mais próximo do grid
+    toGrid = @(x,y) [floor((y-yMin)/cellSize)+1, floor((x-xMin)/cellSize)+1];
+
+    allPoints = zeros(nStims + 1, 2);
+    count = 0;
+
+    % Ponto de fixação é sorteado primeiro, sem restrição de posição
+    success = false;
+    while ~success
+        cand = [rand*(xMax-xMin)+xMin, rand*(yMax-yMin)+yMin];
+        if inEllipse(cand(1), cand(2))
+            count = count + 1;
+            allPoints(count,:) = cand;
+            gIdx = toGrid(cand(1), cand(2));
+            if gIdx(1)>0 && gIdx(2)>0 && gIdx(1)<=gridHeight && gIdx(2)<=gridWidth
+                accelGrid{gIdx(1), gIdx(2)} = [accelGrid{gIdx(1), gIdx(2)}; count];
+            end
+            success = true;
         end
     end
-      fixCenter = disc_rejection_sampling(rectLim(1,:), rectLim(2,:), 1, minDist, 'ellipse', ROIparams,stimCenters);
+    
+    % Define 4 quadrantes em relação ao centro da tela
+    quadBounds = [
+        cx,   xMax, cy,   yMax; % Q1: Topo, direita
+        xMin, cx,   cy,   yMax; % Q2
+        xMin, cx,   yMin, cy;   % Q3
+        cx,   xMax, yMin, cy    % Q4: Embaixo, direita
+    ];
+
+    % Distribui os estímulos ao longo dos quadrantes, de modo que, se
+    % nStims > 4, todos quadrantes terão ao menos 1 estímulo neles
+    baseCount = floor(nStims / 4);
+    remainder = mod(nStims, 4);
+    
+    % Cria lista que indica qual quadrante conterá cada ponto
+    qList = repmat(1:4, 1, baseCount);
+    if remainder > 0
+        extraQs = randperm(4, remainder);
+        qList = [qList, extraQs];
+    end
+    qList = qList(randperm(length(qList)));
+
+    % sorteia no máximo um candidato 2000 vezes -- com poucos nStims e/ou
+    % espaço suficiente, dificilmente precisará recorrer a essa quantidade
+    % de tentativas
+    maxAttempts = 2000; 
+    
+    for k = 1:nStims
+        % Indica em qual quadrante será feita a busca
+        targetQ = qList(k);
+        qx1 = quadBounds(targetQ, 1); qx2 = quadBounds(targetQ, 2);
+        qy1 = quadBounds(targetQ, 3); qy2 = quadBounds(targetQ, 4);
+        
+        added = false;
+        for attempt = 1:maxAttempts
+            % Ponto aleatório restrito ao quadrante, ...
+            cand = [rand*(qx2-qx1)+qx1, rand*(qy2-qy1)+qy1];
+            
+            % ... dentro da elipse e...
+            if ~inEllipse(cand(1), cand(2))
+                continue; 
+            end
+            
+            % ... não deve colidir com outros já sorteados
+                % (busca em vizinhos 3x3)
+            gIdx = toGrid(cand(1), cand(2));
+            
+            if gIdx(1)<1 || gIdx(1)>gridHeight || gIdx(2)<1 || gIdx(2)>gridWidth
+                continue;
+            end
+            
+            rStart = max(1, gIdx(1)-1); rEnd = min(gridHeight, gIdx(1)+1);
+            cStart = max(1, gIdx(2)-1); cEnd = min(gridWidth,  gIdx(2)+1);
+            
+            collision = false;
+            for r = rStart:rEnd
+                for c = cStart:cEnd
+                    pIndices = accelGrid{r,c};
+                    if isempty(pIndices), continue; end
+                    
+                    neighbors = allPoints(pIndices, :);
+                    distsSq = (neighbors(:,1)-cand(1)).^2 + (neighbors(:,2)-cand(2)).^2;
+                    if any(distsSq < minDist^2)
+                        collision = true;
+                        break; 
+                    end
+                end
+                if collision, break; end
+            end
+            
+            % Se tudo for satisfeito, aceita o ponto
+            if ~collision
+                count = count + 1;
+                allPoints(count,:) = cand;
+                accelGrid{gIdx(1), gIdx(2)} = [accelGrid{gIdx(1), gIdx(2)}; count];
+                added = true;
+                break; 
+            end
+        end
+        
+        % Do contrário, added = false apesar das maxAttempts tentativas
+        if ~added
+            warning('Estímulo %d não pôde ser adicionado ao quadrante %d (talvez ROI muito restrito)', k, targetQ);
+        end
+    end
+
+    fixCenter = allPoints(1,:)';
+    stimCenters = allPoints(2:count, :)'; 
 end
 
 
@@ -2811,7 +2912,7 @@ function endScreen(dpP, drP, prm)
     yawMax   = deg2rad(30); pitchMax = deg2rad(10); zDist = 500;
     
     eyeState = 0; % 0 para blink, 1 para pursuit, 2 para sacada
-    waitTime = 1; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
+    waitTime = 2.5; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
     yaw = [0 0]; pitch = [0 0]; wAngles = .9; wT0 = 0; wT1 = .50001; wT2 = .5;
     wT = wT1;
     vLim1 = 200; vLim2 = 1000; vLim3 = 4000; eyeVLim = 5;
@@ -2822,7 +2923,7 @@ function endScreen(dpP, drP, prm)
     yRange1 = dpP.winRect(4)*([-.0145 .0145] + 1/3);
     i = 1;
 
-    grey = repmat(drP.grey, [1, 3]); white = repmat(drP.white, [1, 3]); 
+    grey = repmat(drP.grey, [1, 3]); white = repmat(drP.white, [1, 3]); black = repmat(drP.black, [1, 3]);
     SetMouse(xc, yc/2, dpP.window); HideCursor(dpP.window);
     while ~KbCheck
         [xMouse, yMouse] = GetMouse(dpP.window);
@@ -2953,7 +3054,9 @@ function endScreen(dpP, drP, prm)
         Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
         DrawFormattedText(dpP.window, msg, 'center', 2*dpP.winRect(4)/3 + 55, drP.black);
 
-        Screen('FillOval', dpP.window, [white .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px]);
+        Screen('FillOval',  dpP.window, [white .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px]);
+        Screen('FrameOval', dpP.window, [black .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px], prm.pW1);
+        
         Screen('Flip', dpP.window);
         WaitSecs(dt);
     end
