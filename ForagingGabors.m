@@ -143,7 +143,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     EyelinkInit(dummymode);
 
     % ii. Abre o arquivo .edf
-    el = {};
+    el = [];
     if debug == 0
         failOpen = Eyelink('OpenFile', edfFile);
         % Interrompe se arquivo não abrir
@@ -300,8 +300,9 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
 
     cleanup(displayProps.window);
     if debug == 0, diary off; end
+    fprintf('Soma dos estados: %d', sum(taskState(:)));
 
-    if ~sum(taskState(:)) == 0 && exist(winOutFile, 'file')
+    if sum(taskState(:)) == 0 && exist(winOutFile, 'file')
         delete(winOutFile);
     end
 end
@@ -1107,7 +1108,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                 tNow = GetSecs;
                             
                                 if checkUpdate
-                                    if tNow < preUpdateDeadline
+                                    if tNow >= preUpdateDeadline
                                         disp('De fato era último estímulo');
                                         break;
                                     end
@@ -1211,6 +1212,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                                 checkUpdate = true;
                                                 preUpdateDeadline = fixStartTime + P3On;
                                                 fprintf('Visita ao (potencialmente) último %d-ésimo estímulo\n', counter+1)
+                                                 fprintf('Tempo pré-ruído rosa disponível: %.4f\n', preUpdateDeadline - GetSecs)
                                             end
                             
                                             % Se ainda estiver fixando o mesmo estímulo
@@ -1786,7 +1788,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
             foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
             if debug == 0, diary off; end
-            if ~sum(tkS(:)) == 0 && exist(tkP.winOutFile, 'file')
+            if sum(tkS(:)) == 0 && exist(tkP.winOutFile, 'file')
                 delete(tkP.winOutFile);
             end
             psychrethrow(psychlasterror);

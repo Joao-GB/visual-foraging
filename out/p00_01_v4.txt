@@ -1,0 +1,151 @@
+Tempo inicial: 0.00875
+Tempo getDistr: 0.00084
+Tempo orientações distratoras: 0.00013
+Tempo matrizes nulas: 0.00015
+Tempo rects a centers: 0.00027
+Tempo preencher locais estímulos e orientações de alvos: 0.00242
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 3
+ATENÇÃO: 3/6 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao (potencialmente) último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0175
+De fato era último estímulo
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0250
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.2508
+Tempo total de ruído rosa: 0.2583
+Trial 3: Visitou o alvo 5 pós-modificação (fim forçado)
+seenStimsQueue final:      1     6     4     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 2
+ATENÇÃO: 4/6 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao (potencialmente) último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0450
+De fato era último estímulo
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0525
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.2502
+Tempo total de ruído rosa: 0.2566
+Trial 2: Visitou o alvo 4 pós-modificação (fim forçado)
+seenStimsQueue final:      3     2     6     1     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 8
+ATENÇÃO: 3/6 visitas até modificar
+
+ans =
+
+   1.7707e+09
+
+currStim final = 0
+Tempo total da tarefa: 77.552 s
+Tempo inicial: 0.00822
+Tempo getDistr: 0.00123
+Tempo orientações distratoras: 0.00029
+Tempo matrizes nulas: 0.00011
+Tempo rects a centers: 0.00022
+Tempo preencher locais estímulos e orientações de alvos: 0.00256
+----Início da sessão----
+
+ans =
+
+   1.7707e+09
+
+Ajuste de pinkNoiseDur
+Tempo total da tarefa: 8.628 s
+Tempo inicial: 8.52517
+Tempo getDistr: 0.00050
+Tempo orientações distratoras: 0.00058
+Tempo matrizes nulas: 0.00011
+Tempo rects a centers: 0.00019
+Tempo preencher locais estímulos e orientações de alvos: 0.00048
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 2
+ATENÇÃO: 4/6 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao (potencialmente) último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1247
+De fato era último estímulo
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.1250
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1561
+Trial 2: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      3     5     6     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 1
+ATENÇÃO: 4/6 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao (potencialmente) último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1545
+De fato era último estímulo
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.1550
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 1: Visitou o alvo 6 pós-modificação (fim forçado)
+seenStimsQueue final:      4     2     5     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Tempo total da tarefa: 97.928 s
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de treino não concluída, mas salva.
+AVISO: Sessão experimental concluída e salva com êxito.
+Tempo total da sessão: 236.240 s
