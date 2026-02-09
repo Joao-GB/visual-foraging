@@ -108,7 +108,7 @@ function params = foragingParams
     % (d) Parâmetros de retentativas
     params.nBufferTrials = 3;   % Número de trials adicionados para evitar
                                     % repetições consecutivas de um trial
-    params.maxRetries = 3;      % Número máximo de vezes que pode se 
+    params.maxRetries = 2;      % Número máximo de vezes que pode se 
                                     % repetir cada trial 
     % (e) Tamanho e cor do cursor
     params.cursorRadius_px   = 4;
@@ -141,6 +141,7 @@ function params = foragingParams
     params.msg.err.blk    = 'BLOCK ABORT TRY';
     params.msg.err.trl{1} = 'TRIAL ABORT TRY';
     params.msg.err.trl{2} = 'TRIAL ABORT IDX';
+    params.msg.err.trl{3} = 'TRIAL ABORT NOP3';
     params.msg.err.P1     = 'TRIAL TIMEOUT PHASE 1';
     params.msg.err.P2     = 'TRIAL TIMEOUT PHASE 2';
 

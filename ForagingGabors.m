@@ -1082,7 +1082,10 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                     end
         
         % vii. O sujeito deve visitar exatamente Ns(i) estímulos
-        %      antes de ocorrerem as modificações pré-sacádicas
+        %      antes de ocorrerem as modificações pré-sacádicas,
+        %      desde que tais modificações não sejam interrompidas
+        %      por movimento ocular -- nesse caso, é aumentado o
+        %      valor de Ns(i)
                     counter = 0;                 % Número de estímulos visitados
                     flag = zeros(1, tkP.nStims); % Quantas vezes cada estímulo foi visitado
                     currStim = 0;
@@ -1095,19 +1098,33 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                             currIdx = randsample(seenIdx, 1);
                             KbPressWait;
                         else
-                            % Esse runTrial está sujeito a duas condições, vide
-                            % fim do while abaixo, e diz respeito ao número
-                            % de estímulos vistos
-                            runTrial = true;
-                            while runTrial
+                            % O loop da fase 2 só é interrompido se tiver que reiniciar o trial (por
+                            % excesso de tempo) ou se o período pré-ruído rosa tiver sido completado
+                            % sem movimento ocular
+                            checkUpdate = false; keepP3 = true; auxModTimes = modTimes(b, idx);
+                            while ~restartTrial
                                 WaitSecs(0.001);
                                 tNow = GetSecs;
-        
+                            
+                                if checkUpdate
+                                    if tNow < preUpdateDeadline
+                                        disp('De fato era último estímulo');
+                                        break;
+                                    end
+                                end
+                            
+                                if auxModTimes == tkP.nStims
+                                    disp('Tenho que descartar esse trial, pois excedeu o máximo de estímulos')
+                                    keepP3 = false;
+                                    break;
+                                end
+                            
+                            
                                 check = false;
                                 if mode > 1
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
-                    
+                            
                                     if Eyelink('NewFloatSampleAvailable') > 0
                                         evt = Eyelink('NewestFloatSample');
                                         x_gaze = evt.gx(tkP.Eye);
@@ -1124,17 +1141,22 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                         lastPos = [x_gaze, y_gaze];
                                     end
                                 end
-            
+                            
                                 if check
                                     % Se o olho (ou cursor) estiver próximo de um
                                     % alvo não antes visto por tempo suficiente, 
                                     % incrementa o contador
                                     isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
                                     currIdx = find(isCurrStim, 1);
-        
+                            
                                     % Quando não está fixando num estímulo mas
                                     % estava, a fixação é registrada se longa
                                     if isempty(currIdx)
+                                        if checkUpdate
+                                            disp('Não era último, vamos incrementar modTimes')
+                                            checkUpdate = false;
+                                            auxModTimes = auxModTimes + 1;
+                                        end
                                         if currStim ~= 0
                                             fixDur = tNow - fixStartTime;
                                 
@@ -1171,7 +1193,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                         if currStim == 0 || currStim ~= currIdx
                                             currStim = currIdx;
                                             fprintf('currStim = %d\n', currStim);
-
+                            
                                             if debug == 0 && mode >= 2
                                                 if flag(currStim) == 0
                                                     Eyelink('Message',prm.msg.on.stm{1});
@@ -1179,24 +1201,25 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                                     Eyelink('Message',prm.msg.on.stm{2});
                                                 end
                                             end
-
-                                            %% IMPORTANTE: Se for iniciada uma fixação
-                                            % num modTimes(b,i)-ésimo estímulo diferente, 
-                                            % inicia incrementa o counter, pois isso encerrará
-                                            % o while runTrial
-                                            if flag(currStim) == 0 && counter == modTimes(b, idx) - 1
-                                                counter = counter + 1;
-                                                fprintf('Visita ao último %d-ésimo estímulo\n', counter)
-                                            end
+                            
                                             fixStartTime = tNow;
+                            
+                                            %% IMPORTANTE: Se for iniciada a modTimes(b,i)-ésima fixação
+                                            % diferente num estímulo, começa a contar o tempo de
+                                            % atualização
+                                            if flag(currStim) == 0 && counter == auxModTimes - 1
+                                                checkUpdate = true;
+                                                preUpdateDeadline = fixStartTime + P3On;
+                                                fprintf('Visita ao (potencialmente) último %d-ésimo estímulo\n', counter+1)
+                                            end
+                            
                                             % Se ainda estiver fixando o mesmo estímulo
                                             % (i.e., currStim == currIdx), não faz nada
                                         end
                                     end
                                 else
-%                                     disp('Check falso')
                                 end
-            % () Se o tempo máximo tiver sido excedido, exibe uma tela especial
+                            % () Se o tempo máximo tiver sido excedido, exibe uma tela especial
                                 tAux = tNow - trialOnset;
                                 if tAux > maxTrialDur
                                     if debug == 0 && mode >= 2
@@ -1217,9 +1240,9 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                     while true
                                         tNow = GetSecs;
                                         alpha = min((tNow - tStart) / prm.fadeInDur1, 1);
-        
+                            
                                         Screen('FrameOval', dpP.window, drP.red, dstRects, prm.pW2);
-        
+                            
                                         Screen('FillRect', dpP.window, [overlayColor alpha*.75*drP.white], overlayRect);
                                         Screen('TextSize', dpP.window, prm.textSizeEnormous); Screen('TextStyle', dpP.window, 1);
                                         DrawFormattedText(dpP.window, 'TEMPO ESGOTADO', 'center', dpP.winRect(4)/2 - 25, [textColor1 alpha*drP.white]);
@@ -1236,9 +1259,9 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                     while true
                                         tNow = GetSecs;
                                         alpha = min((tNow - tStart) / prm.fadeInDur2, 1);
-        
+                            
                                         Screen('FrameOval', dpP.window, drP.red, dstRects, prm.pW2);
-        
+                            
                                         Screen('FillRect', dpP.window, [overlayColor .75*drP.white], overlayRect);
                                         Screen('TextSize', dpP.window, prm.textSizeEnormous); Screen('TextStyle', dpP.window, 1);
                                         DrawFormattedText(dpP.window, 'TEMPO ESGOTADO', 'center', dpP.winRect(4)/2 - 25, [textColor1 drP.white]);
@@ -1253,7 +1276,7 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                         if alpha >= 1, break; end
                                     end
                                     Screen('TextSize', dpP.window, prm.textSizeNormal);
-
+                            
                                     while true
                                         [keyIsDown, ~, keyCode] = KbCheck;
                                         KbReleaseWait;
@@ -1267,8 +1290,6 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                         end
                                     end
                                 end
-                                
-                                runTrial = (counter < modTimes(b, idx)) && ~restartTrial;
                             end
                         end
                     end
@@ -1292,145 +1313,86 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                         auxWin = dpP.window;
                     end
                     if ~restartTrial && keepGoingTrials
-                        blinkIdx = setdiff(1:tkP.nStims, currIdx);
-
-            % (i) Desenha os gratings, somando ambos os sinais
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
-            %             Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [], []);
-                        Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
-
-                        if ~isempty(currIdx)
-                            Screen('DrawTextures', auxWin, noiseTex, srcRects(:, currIdx), dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], []);
-                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                            Screen('DrawTexture', auxWin, txP.gabor.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], [], [], txP.gabor.props);
-                        end
+                        if keepP3
+                            blinkIdx = setdiff(1:tkP.nStims, currIdx);
+    
+                % (i) Desenha os gratings, somando ambos os sinais
+                            Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
+                %             Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,notSeenIdx), dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [], []);
+                            Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
+    
+                            if ~isempty(currIdx)
+                                Screen('DrawTextures', auxWin, noiseTex, srcRects(:, currIdx), dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], []);
+                                Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                                Screen('DrawTexture', auxWin, txP.gabor.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], [], [], txP.gabor.props);
+                            end
+                        
+                % (j) Desenha a abertura gaussiana
+                            Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+                %             Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                            Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                            Screen('Close', oriPinkTex); Screen('Close', noiseTex);
+                            Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                            
+                            %% A tela não modificada deve ser exibida ao todo por 
+                            % medFixTime - prm.pinkNoiseDur, mas devo descontar
+                            % o tempo passado desde o início da fixação
+    %                         P3On = (medFixTime - prm.pinkNoiseDur);#
+    %                         auxT2 = (GetSecs - fixStartTime);
+    %                         timeLeft = max(0, preUpdateDur - auxT2);
+                            fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
+    %                         fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
+    %                         fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
                     
-            % (j) Desenha a abertura gaussiana
-                        Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            %             Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('Close', oriPinkTex); Screen('Close', noiseTex);
-                        Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                        
-                        %% A tela não modificada deve ser exibida ao todo por 
-                        % medFixTime - prm.pinkNoiseDur, mas devo descontar
-                        % o tempo passado desde o início da fixação
-%                         P3On = (medFixTime - prm.pinkNoiseDur);#
-%                         auxT2 = (GetSecs - fixStartTime);
-%                         timeLeft = max(0, preUpdateDur - auxT2);
-                        fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
-%                         fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
-%                         fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
-                
-            % viii. Registra os tempos de início e fim da Fase 3
-                        preUpdateDeadline = fixStartTime + P3On;
-                        if mode == 1
-                            lastPos = [-1 -1];
-                            while GetSecs < preUpdateDeadline
-                                [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
-                                if any([x_gaze, y_gaze] ~= lastPos)
-                                    Screen('DrawTexture', dpP.window, bg);
-                                    Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                    Screen('Flip', dpP.window);
-                                    lastPos = [x_gaze, y_gaze];
-                                end
-                                WaitSecs(0.001);
+                % viii. Registra os tempos de início e fim da Fase 3
+    %                         preUpdateDeadline = fixStartTime + P3On;
+    %                         if mode == 1
+    %                             lastPos = [-1 -1];
+    %                             while GetSecs < preUpdateDeadline
+    %                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
+    %                                 if any([x_gaze, y_gaze] ~= lastPos)
+    %                                     Screen('DrawTexture', dpP.window, bg);
+    %                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+    %                                     Screen('Flip', dpP.window);
+    %                                     lastPos = [x_gaze, y_gaze];
+    %                                 end
+    %                                 WaitSecs(0.001);
+    %                             end
+    % 
+    %                             updateStimOnset = GetSecs;
+    %                         else
+    %                             updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
+    %                         end
+                            if mode == 1
+                                Screen('DrawTexture', dpP.window, bg);
+                                Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                             end
-
-                            updateStimOnset = GetSecs;
-                        else
-                            updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
-                        end
-
-                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
-
-
-                        if mode == 1
-                            Screen('Close', bg);
-                            clear auxWin bg;
-                            % img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
-                        end
-                        
-                        % A fase 3 é encerrada se o estímulo fica tempo
-                        % demais na tela ou quando o olho sai do último
-                        % estímulo
-                        fprintf('currStim último fixado  (agora em P3) = %d\n', currStim);
-                        while true 
-                            tNow = GetSecs;
-                            if tNow - updateStimOnset > prm.pinkNoiseDur
-                                P3Dur = tNow - updateStimOnset;
-                                fixDur = tNow - fixStartTime;
-                                fprintf('Fim ruído rosa por duração: %.4f\n', P3Dur)
-                                if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
-                                break;
+                            
+                            updateStimOnset = Screen('Flip', dpP.window);
+                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
+    
+    
+                            if mode == 1
+                                Screen('Close', bg);
+                                clear auxWin bg;
+                                % img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
                             end
-                            check = false;
-                            if mode > 1
-                                damn = Eyelink('CheckRecording');
-                                if(damn ~= 0), break; end
-                
-                                if Eyelink('NewFloatSampleAvailable') > 0
-                                    evt = Eyelink('NewestFloatSample');
-                                    x_gaze = evt.gx(tkP.Eye);
-                                    y_gaze = evt.gy(tkP.Eye);
-                                    check = true;
-                                end
-                            elseif mode == 1
-                                [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
-                                check = true;
-                                if any([x_gaze, y_gaze] ~= lastPos)
-                                    Screen('DrawTexture', dpP.window, bg1);
-                                    Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                    Screen('Flip', dpP.window);
-                                    lastPos = [x_gaze, y_gaze];
-                                end
-                            end
-                            if check
-                                isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
-                                if isCurrStim(currStim) == 0
+                            
+                            % A fase 3 é encerrada se o estímulo fica tempo
+                            % demais na tela ou quando o olho sai do último
+                            % estímulo
+                            fprintf('currStim último fixado (agora em P3) = %d\n', currStim);
+                            while true 
+                                tNow = GetSecs;
+                                if tNow - updateStimOnset > prm.pinkNoiseDur
                                     P3Dur = tNow - updateStimOnset;
                                     fixDur = tNow - fixStartTime;
-                                    fprintf('Fim ruído rosa por dispersão: %.4f\n', P3Dur)
-                                    if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
+                                    fprintf('Fim ruído rosa por duração: %.4f\n', P3Dur)
+                                    if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
                                     break;
                                 end
-                            end
-                            WaitSecs(.0005);
-                        end
-                        % Como saio do loop da fase 2 assim que inicio a
-                        % última fixação, tenho que adicionar neste momento
-                        % a fixação iniciada lá
-                        seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]];
-                        flag(currStim) = flag(currStim) + 1;
-
-                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        updateStimOffset = Screen('Flip', dpP.window);
-                        if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
-
-                        P3Dur = updateStimOffset - updateStimOnset;
-                        fprintf('Tempo total de ruído rosa: %.4f\n', P3Dur)
-
-                        seenIdx = find(flag ~= 0);
-                        notSeenIdx = find(flag == 0);
-                        
-%                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);
-            
-            %% ix. Verifica se há alguma fixação de duração mínima em estímulo 
-            %     numa janela pós-modificação
-                        fixOnset = updateStimOffset; currIdx = [];
-
-                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.PM); end
-            
-                        if debug == 0 || mode == 1
-                            maxDurReached = true;
-                            tNow = GetSecs;
-                            while tNow - updateStimOffset < prm.postModDur
                                 check = false;
                                 if mode > 1
-                                    if tNow - updateStimOffset > prm.blobPMDur
-                                        Screen('Flip', dpP.window);
-                                    end
-                                        
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
                     
@@ -1443,85 +1405,153 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                                 elseif mode == 1
                                     [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                     check = true;
-                                end
-            
-                                if check
-                                    isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist3;
-
-                                    % Se currIdx estava com valor inicial e isCurrStim não é  
-                                    % totalmente nulo, começou uma fixação 
-                                    if isempty(currIdx)
-                                        if any(isCurrStim)
-                                            currIdx = find(isCurrStim, 1);
-                                            fixOnset = tNow;
-                                            if debug == 0 && mode >= 2
-                                                if flag(currIdx) == 0
-                                                    Eyelink('Message',prm.msg.on.stm{1});
-                                                else
-                                                    Eyelink('Message',prm.msg.on.stm{2});
-                                                end
-                                            end
-                                        end
-                                    % Uma vez que currIdx é não nulo, fica verificando se a
-                                    % fixação saiu dele, o que acontece se isCurrStim(currIdx)
-                                    % voltar a ser nulo. Considera como fixação apenas se for
-                                    % suficientemente longa
-                                    else
-                                        if ~isCurrStim(currIdx)
-                                            fixDur = tNow - fixOnset;
-                                            if fixDur >= prm.minFixTime3
-                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur]];
-                                                disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
-                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{1}); end
-                                                maxDurReached = false;
-                                                break
-                                            end
-                                            % Se a fixação não foi longa o suficiente, pode ser
-                                            % que estava apenas passando pelo estímulo para 
-                                            % fovear outro, então recomeça a busca
-                                            currIdx = [];
-                                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{2}); end
-                                        end
+                                    if any([x_gaze, y_gaze] ~= lastPos)
+                                        Screen('DrawTexture', dpP.window, bg1);
+                                        Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                        Screen('Flip', dpP.window);
+                                        lastPos = [x_gaze, y_gaze];
                                     end
-
-
-                                    if mode == 1
-                                        [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
-                                        if any([x_gaze, y_gaze] ~= lastPos)
-                                            if tNow - updateStimOffset <= prm.blobPMDur
-                                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                                            end
-                                            Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                            Screen('Flip', dpP.window);
-                                            lastPos = [x_gaze, y_gaze];
-                                        end
+                                end
+                                if check
+                                    isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist1;
+                                    if isCurrStim(currStim) == 0
+                                        P3Dur = tNow - updateStimOnset;
+                                        fixDur = tNow - fixStartTime;
+                                        fprintf('Fim ruído rosa por dispersão: %.4f\n', P3Dur)
+                                        if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
+                                        break;
                                     end
                                 end
                                 WaitSecs(.0005);
-                                tNow = GetSecs;
                             end
-                            if maxDurReached && ~isempty(currIdx)
-                               seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
-                               disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
-                               if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
-                            end
+                            % Como saio do loop da fase 2 assim que inicio a
+                            % última fixação, tenho que adicionar neste momento
+                            % a fixação iniciada lá
+                            seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]];
+                            flag(currStim) = flag(currStim) + 1;
+    
+                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                            updateStimOffset = Screen('Flip', dpP.window);
+                            if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
+    
+                            P3Dur = updateStimOffset - updateStimOnset;
+                            fprintf('Tempo total de ruído rosa: %.4f\n', P3Dur)
                         end
-                        fprintf('seenStimsQueue final: '); disp(seenStimsQueue{b,i}(1,:)); fprintf('\n')
 
-                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
-                        Screen('Flip', dpP.window);
+                        seenIdx = find(flag ~= 0);
+                        notSeenIdx = find(flag == 0);
+                        
+%                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);
             
-                        if ~isempty(currIdx)
-                            notSeenIdx(notSeenIdx == currIdx) = [];
-
-                            % Se não tiver mexido os olhos, não será feita
-                            % nenhuma pergunta sobre o estímulo fixado
-                            if currIdx == currStim
-                                seenIdx(seenIdx == currIdx) = [];
-                                currIdx = [];
-                                disp('Não chegou noutro estímulo durante ruído rosa')
+            %% ix. Verifica se há alguma fixação de duração mínima em estímulo 
+            %     numa janela pós-modificação
+                        if keepP3
+                            fixOnset = updateStimOffset; currIdx = [];
+    
+                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.PM); end
+                
+                            if debug == 0 || mode == 1
+                                maxDurReached = true;
+                                tNow = GetSecs;
+                                while tNow - updateStimOffset < prm.postModDur
+                                    check = false;
+                                    if mode > 1
+                                        if tNow - updateStimOffset > prm.blobPMDur
+                                            Screen('Flip', dpP.window);
+                                        end
+                                            
+                                        damn = Eyelink('CheckRecording');
+                                        if(damn ~= 0), break; end
+                        
+                                        if Eyelink('NewFloatSampleAvailable') > 0
+                                            evt = Eyelink('NewestFloatSample');
+                                            x_gaze = evt.gx(tkP.Eye);
+                                            y_gaze = evt.gy(tkP.Eye);
+                                            check = true;
+                                        end
+                                    elseif mode == 1
+                                        [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
+                                        check = true;
+                                    end
+                
+                                    if check
+                                        isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist3;
+    
+                                        % Se currIdx estava com valor inicial e isCurrStim não é  
+                                        % totalmente nulo, começou uma fixação 
+                                        if isempty(currIdx)
+                                            if any(isCurrStim)
+                                                currIdx = find(isCurrStim, 1);
+                                                fixOnset = tNow;
+                                                if debug == 0 && mode >= 2
+                                                    if flag(currIdx) == 0
+                                                        Eyelink('Message',prm.msg.on.stm{1});
+                                                    else
+                                                        Eyelink('Message',prm.msg.on.stm{2});
+                                                    end
+                                                end
+                                            end
+                                        % Uma vez que currIdx é não nulo, fica verificando se a
+                                        % fixação saiu dele, o que acontece se isCurrStim(currIdx)
+                                        % voltar a ser nulo. Considera como fixação apenas se for
+                                        % suficientemente longa
+                                        else
+                                            if ~isCurrStim(currIdx)
+                                                fixDur = tNow - fixOnset;
+                                                if fixDur >= prm.minFixTime3
+                                                    seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur]];
+                                                    disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
+                                                    if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{1}); end
+                                                    maxDurReached = false;
+                                                    break
+                                                end
+                                                % Se a fixação não foi longa o suficiente, pode ser
+                                                % que estava apenas passando pelo estímulo para 
+                                                % fovear outro, então recomeça a busca
+                                                currIdx = [];
+                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{2}); end
+                                            end
+                                        end
+    
+    
+                                        if mode == 1
+                                            [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
+                                            if any([x_gaze, y_gaze] ~= lastPos)
+                                                if tNow - updateStimOffset <= prm.blobPMDur
+                                                    Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                                end
+                                                Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                                Screen('Flip', dpP.window);
+                                                lastPos = [x_gaze, y_gaze];
+                                            end
+                                        end
+                                    end
+                                    WaitSecs(.0005);
+                                    tNow = GetSecs;
+                                end
+                                if maxDurReached && ~isempty(currIdx)
+                                   seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
+                                   disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
+                                   if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
+                                end
                             end
+                            fprintf('seenStimsQueue final: '); disp(seenStimsQueue{b,i}(1,:)); fprintf('\n')
+    
+                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
+                            Screen('Flip', dpP.window);
                         end
+                
+                            if ~isempty(currIdx)
+                                notSeenIdx(notSeenIdx == currIdx) = [];
+    
+                                % Se não tiver mexido os olhos, não será feita
+                                % nenhuma pergunta sobre o estímulo fixado
+                                if currIdx == currStim
+                                    seenIdx(seenIdx == currIdx) = [];
+                                    currIdx = [];
+                                    disp('Não chegou noutro estímulo durante ruído rosa')
+                                end
+                            end
                         
     %% 8) Início Fase 4: reportar em quais posições havia alvos
             % x. Desenha placeholders para os estímulos aleatoriamente, obedecendo
@@ -1631,18 +1661,25 @@ function [tkP, tkS, results] = runForaging(tkP, dpP, drP, txP, prm, debug, mode,
                         else
                             foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
                          end
-                        WaitSecs(1);
+                        WaitSecs(.5);
                         
-                        tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
-                        tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
-                        tkP.fixProps.med   = [tkP.fixProps.med    med];
-                        trialOrder(2, i, b) = 1;
-
-                        i = i + 1;
-                        trialIdxUp = true;
+                        tkP.fixQueue = [tkP.fixQueue(auxModTimes:end), auxFixQueue(1:(auxModTimes-1))];
+                        if keepP3
+                            tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
+                            tkP.fixProps.med   = [tkP.fixProps.med    med];
+                            trialOrder(2, i, b) = 1;
+    
+                            i = i + 1;
+                            trialIdxUp = true;
+                            modTimes(b, idx) = auxModTimes;
+                        else
+                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.trl{3}); end
+                        end
 
                     % A condição é keepGoingTrials = false ou restartTrials = true
-                    else
+                    end
+
+                    if ~(~restartTrial && keepGoingTrials) || ~keepP3
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.trl{1}); end
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;
                         % Só atualizo a fila de trials se eles continuarem
