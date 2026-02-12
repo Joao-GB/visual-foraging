@@ -1,0 +1,58 @@
+Tempo inicial: 0.00759
+Compiling all shaders matching BasicSineGratingShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.vert.txt ...
+Tempo getDistr: 0.00493
+Tempo orientações distratoras: 0.00042
+Tempo matrizes nulas: 0.00017
+Tempo rects a centers: 0.00103
+Tempo preencher locais estímulos e orientações de alvos: 0.00467
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 14
+ATENÇÃO: 5/18 visitas até modificar
+Algo errado!currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 9
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Terminou a visita ao 3-ésimo estímulo
+currStim = 18
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Visita ao (potencialmente) último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1737
+De fato era último estímulo
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.1750
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1001
+Tempo total de ruído rosa: 0.1083
+Trial 14: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      2     9     8    18     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 5
+ATENÇÃO: 2/18 visitas até modificar
+
+ans =
+
+   1.7709e+09
+
+currStim final = 0
+Ajuste de pinkNoiseDur
+Tempo total da tarefa: 64.002 s
+
+ans =
+
+   1.7709e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de treino não concluída, mas salva.
+Tempo total da sessão: 69.484 s

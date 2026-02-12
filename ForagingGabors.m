@@ -300,7 +300,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
 
     cleanup(displayProps.window);
     if debug == 0, diary off; end
-    fprintf('Soma dos estados: %d', sum(taskState(:)));
+    fprintf('Soma dos estados: %d\n', sum(taskState(:)));
 
     if sum(taskState(:)) == 0 && exist(winOutFile, 'file')
         disp('Deletando registros em texto...')
@@ -2045,7 +2045,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     restartTrial = false;
                     fprintf('\nIdx Bloco: %d\n# Trial: %d\n Idx Trial: %d\n', b, i, idx)
                     fprintf('ATENÇÃO: %d/%d visitas até modificar\n', modTimes(b, idx), nStims-1)
-                    if modTimes(b, idx) >= tkP.nStims
+                    if modTimes(b, idx) >= tkP.nStims-1
                         fprintf('Algo errado!')
                     end
 
@@ -2334,7 +2334,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     end
                                 end
                             
-                                if auxModTimes == tkP.nStims
+                                if auxModTimes == nStims-1
                                     disp('Tenho que descartar esse trial, pois excedeu o máximo de estímulos')
                                     keepP3 = false;
                                     break;
