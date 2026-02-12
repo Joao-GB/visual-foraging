@@ -56,26 +56,26 @@ function params = foragingParams
     params.propTrialsPSA = .8;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .15;
+    params.pinkNoiseDur = .1;
 
     % (l) Parâmetros temporais de fixação
-    params.minFixTime1 = .5;                    % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .12;                   % Tempo mínimo de fixação nos estímulos, em s
-    params.medFixTime2 = .3;                    % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
-    params.minFixTime3 = .1;                   % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .5;                    % Janela temporal (após offset dos estímulos) durante a qual se 
-                                                    % espera a fixação com duração mínima minFixTime3, em s
-    params.blobPMDur   = .08;
+    params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
+    params.minFixTime2 = .12;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.medFixTime2 = .3;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
+    params.minFixTime3 = .1;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
+    params.postModDur  = .5;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+                                                         % espera a fixação com duração mínima minFixTime3, em s
+    params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     % (m) Tamanho da fila de tempos de fixação
     params.fixTimeQueueSize = 30;
-    % (n) Percentil de fixações curtas, para ajustar pinkNoiseDur
-    params.shortFixPerc     = 20;
-    params.successP3Perc    = 75;
-    params.minP3Dur         = .025;
+    % (n) Percentis úteis
+    params.shortFixPerc = 20;
+    params.nbhd1Perc    = 75;
+    params.minP3Dur     = .025;
 
     % (o) Fatores multiplicativos para se considerar ou não fixação
-    params.fixDistFactor1 = 1;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.3;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+    params.fixDistFactor1 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
+    params.fixDistFactor3 = 1.5;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 
