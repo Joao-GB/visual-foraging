@@ -2820,8 +2820,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         % Divide em vizinhanças os demais pontos que não o
-                        % atual
-                        [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods(stimCenters(:, :, idx, b), currIdx);
+                        % fixado antes da atual
+                        [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods(stimCenters(:, :, idx, b), currStim);
 
                         % O do passado não importa de onde eu pergunto
                         auxIdx = setdiff(seenIdx, currIdx);
@@ -2832,18 +2832,21 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
                         % O não visto eu pergunto preferencialmente da
                         % primeira vizinhança
-                        chooseNbhd1 = prm.nbhd1Perc/100 <= rand;
+                        chooseNbhd1 = prm.nbhd1Perc >= rand;
                         if chooseNbhd1
                             auxNotSeenIdx = intersect(notSeenIdx, nbhd1); 
                             nSnbhd(b, i) = 1;
+                            disp('Vai perguntar da vizinhança próxima')
                         else
                             auxNotSeenIdx = intersect(notSeenIdx, nbhd2);
                             nSnbhd(b, i) = 2;
+                            disp('Vai perguntar da vizinhança segunda')
                         end
 
                         if isempty(auxNotSeenIdx)
                             auxNotSeenIdx = intersect(notSeenIdx, nbhdElse);
                             nSnbhd(b, i) = 3;
+                            disp('Vai perguntar da vizinhança distante')
                         end
 
                         if isempty(auxNotSeenIdx)
