@@ -1,0 +1,9 @@
+Tempo inicial: 0.00830
+Compiling all shaders matching BasicSineGratingShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicSineGratingShader.vert.txt ...
+Tempo getDistr: 0.00579
+Tempo orientações distratoras: 0.00031
+Tempo matrizes nulas: 0.00023
+Tempo rects a centers: 0.00185
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/getStimLocations1.m',5,1)">5   </a>    hexCenter = sampleCircleInRect(ROIparams, totalRad);
