@@ -1,4 +1,4 @@
-function ForagingGabors(nStims, nTrials, nBlocks, options)
+function ForagingGabors(nMaxFix, nTrials, nBlocks, options)
 % A tarefa consiste em nTrials X nBlocks trials, cada um com nStims estímulos, 
 % sendo, em média, metade deles alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
@@ -18,11 +18,12 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
 % nTrials é sempre a 2a dimensão)
     
     arguments
-        nStims {mustBeNumeric}    = 8;
+        nMaxFix {mustBeNumeric}    = 8;
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
+    nStims = 18;
     
     rng('shuffle');
     cleanup
@@ -222,7 +223,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     PMBlob = foragingBlob(window,  gabor.size_px, grey, params, 0);
 
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
-    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nStims)));
+    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nMaxFix)));
 
     displayProps.window       = window;
     displayProps.winCol       = grey;
@@ -271,6 +272,7 @@ function ForagingGabors(nStims, nTrials, nBlocks, options)
     taskProps.edfFile   = edfFile;
     taskProps.fixQueue  = fixQueue;
     taskProps.nStims    = nStims;
+    taskProps.nMaxFix   = nMaxFix;
     taskProps.nTrials   = nTrials;
     taskProps.nBlocks   = nBlocks;
     taskProps.keys      = keys;
@@ -1861,11 +1863,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         tic;
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
-        [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, nTrialsBuffered, tkP.nBlocks, prm);
+        [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
         if mode == 2,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
         % Redefine os gabores conforme a quantidade de estímulos
-        txP.gabor     = foragingGabor(dpP.window, dpP.screenRes, nStims-1, prm, dpP.monitorW_mm);
+        txP.gabor     = foragingGabor(dpP.window, dpP.screenRes, nStims, prm, dpP.monitorW_mm);
         drP.allColors = drP.white*ones(3, nStims);
         drP.allPW     = prm.pW1*ones(1,nStims);
         
@@ -1875,12 +1877,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % (a) Matrizes com orientação e centros dos estímulos. Sem os alvos,
         %     há distratores com orientações aleatórias
         %     (cf. (e) para adição de alvos)
-        stimCenters = zeros(2, nStims-1, nTrialsBuffered, tkP.nBlocks);
-        orientation = zeros(nStims-1, nTrialsBuffered, tkP.nBlocks);
+        stimCenters = zeros(2, nStims, nTrialsBuffered, tkP.nBlocks);
+        orientation = zeros(nStims, nTrialsBuffered, tkP.nBlocks);
         for b=1:tkP.nBlocks
             lowerBound = targetOri(b) + prm.nbhdRadius;
             upperBound = 180 + (targetOri(b) - prm.nbhdRadius);
-            orientation(:,:,b) = mod(rand(nStims-1, nTrialsBuffered)*(upperBound-lowerBound)+lowerBound, 180);
+            orientation(:,:,b) = mod(rand(nStims, nTrialsBuffered)*(upperBound-lowerBound)+lowerBound, 180);
         % Versão anterior para escolher distratores com base nas demais
         % orientações
 %             auxAllOri = prm.allOri;
@@ -1895,15 +1897,15 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         % (c) Matrizes com os ruído e o centro dos retângulos a serem
         %     plotados (srcRect)
-        noiseMatrix = zeros(txP.gabor.size_px, (nStims-1)*txP.gabor.size_px);
-        oriPinkMatrix = zeros(txP.gabor.size_px, (nStims-1)*txP.gabor.size_px);
+        noiseMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
+        oriPinkMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
 
         fprintf('Tempo matrizes nulas: %.5f\n', toc)
         tic;
-        noiseCenters = [0:txP.gabor.size_px:(nStims-2)*txP.gabor.size_px; zeros(1, nStims-1)] + txP.gabor.size_px/2;
+        noiseCenters = [0:txP.gabor.size_px:(nStims-1)*txP.gabor.size_px; zeros(1, nStims)] + txP.gabor.size_px/2;
         baseRect = [0 0 txP.gabor.size_px txP.gabor.size_px];
 
-        srcRects = CenterRectOnPointd(repmat(baseRect, [nStims-1,1])', noiseCenters(1,:), noiseCenters(2,:));
+        srcRects = CenterRectOnPointd(repmat(baseRect, [nStims,1])', noiseCenters(1,:), noiseCenters(2,:));
 
         % Já que gaborSize_dva é o diâmetro do Gabor, os centros precisam
         % distar pelo menos 1 diâmetro mais a minDist
@@ -1920,7 +1922,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 fixCenters(:, i, b)     = currFixCenter;
                 stimCenters(:, :, i, b) = currStimCenter;
         % (e) Matriz com orientações tem os alvos adicionados
-                orientation(randperm(nStims-1, nTs(b, i)), i, b) = targetOri(b);
+                orientation(randperm(nStims, nTs(b, i)), i, b) = targetOri(b);
             end
         end
 
@@ -1928,7 +1930,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % pós-modificação (raio, não diâmetro)
         minFixDist3 = (txP.gabor.size_px/2)*prm.fixDistFactor3;
 
-        auxFixQueue = zeros(1, nStims-1);
+        auxFixQueue = zeros(1, nStims);
         if strcmp(mode, 'experiment')
             endFake(fakeAux, dpP, drP, prm);
         end
@@ -2044,8 +2046,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     trialOrder(1, i, b) = idx;
                     restartTrial = false;
                     fprintf('\nIdx Bloco: %d\n# Trial: %d\n Idx Trial: %d\n', b, i, idx)
-                    fprintf('ATENÇÃO: %d/%d visitas até modificar\n', modTimes(b, idx), nStims-1)
-                    if modTimes(b, idx) >= tkP.nStims-1
+                    fprintf('ATENÇÃO: %d/%d visitas até modificar\n', modTimes(b, idx), nStims)
+                    if modTimes(b, idx) >= tkP.nStims
                         fprintf('Algo errado!')
                     end
 
@@ -2060,7 +2062,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     end
         % (c) Cria os retângulos de destino com base nas coordenadas dos
         %     centros dos estímulos
-                    dstRects = CenterRectOnPointd(repmat(baseRect, [nStims-1,1])', stimCenters(1,:, idx, b), stimCenters(2,:, idx, b));
+                    dstRects = CenterRectOnPointd(repmat(baseRect, [nStims,1])', stimCenters(1,:, idx, b), stimCenters(2,:, idx, b));
                     
                 
                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2098,12 +2100,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     end
 
         % (d) Cria as texturas de ruído (pois não faz sentido armazená-las), sem desenhá-las
-                    auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims-1)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                    auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
                     noiseMatrix(:,:) = prm.noiseAlpha*(prm.noiseContrast*rescale(auxNoiseMatrix, -prm.noiseAmplitude, prm.noiseAmplitude))+drP.grey;
                     noiseTex = Screen('MakeTexture', dpP.window, noiseMatrix, [], [], [], [], []);
         
         % (e) Cria as texturas dos ruídos com orientação, sem desenhá-las
-                    for j=1:(nStims-1)
+                    for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         oriPinkMatrix(:,colRange) = ApplyOriFilter(txP.oriFilter', txP.OFsize, auxNoiseMatrix(:,colRange));
                     end
@@ -2308,13 +2310,13 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %      por movimento ocular -- nesse caso, é aumentado o
         %      valor de Ns(i)
                     counter = 0;                 % Número de estímulos visitados
-                    flag = zeros(1, nStims-1); % Quantas vezes cada estímulo foi visitado
+                    flag = zeros(1, nStims); % Quantas vezes cada estímulo foi visitado
                     currStim = 0;
                     fixStartTime = NaN;
                     if keepGoingTrials && ~restartTrial
 %                         checkFixOnset = trialOnset;
                         if debug > 0 && mode > 1
-                            seenIdx = sort(randsample(nStims-1,modTimes(b, idx)))';
+                            seenIdx = sort(randsample(nStims,modTimes(b, idx)))';
                             flag(seenIdx) = 1;
                             currIdx = randsample(seenIdx, 1);
                             KbPressWait;
@@ -2334,7 +2336,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     end
                                 end
                             
-                                if auxModTimes == nStims-1
+                                if auxModTimes == nStims
                                     disp('Tenho que descartar esse trial, pois excedeu o máximo de estímulos')
                                     keepP3 = false;
                                     break;
@@ -2536,7 +2538,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     end
                     if ~restartTrial && keepGoingTrials
                         if keepP3
-                            blinkIdx = setdiff(1:(nStims-1), currIdx);
+                            blinkIdx = setdiff(1:(nStims), currIdx);
     
                 % (i) Desenha os gratings, somando ambos os sinais
                             Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
@@ -2816,7 +2818,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             disp(nStimsToReport(:, idx, b))
                         end
 
-                        allTargets = nan(1,nStims-1); allColors2 = drP.allColors;
+                        allTargets = nan(1,nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         % Divide em vizinhanças os demais pontos que não o

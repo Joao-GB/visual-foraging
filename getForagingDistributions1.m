@@ -1,5 +1,5 @@
-function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(nTMax, nTrials, nBlocks, params)
-    nStims = 19;
+function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(nStims, nTMax, nTrials, nBlocks, params)
+    % nStims = 18;
 
 % (a) Distribuição da quantidade de alvos: binomial, de modo que (1) não requer
 %     número de alvos; (2) em média, metade serão alvos; (3) um estímulo é 
@@ -7,7 +7,7 @@ function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] =
 %     olhado é alvo ou não acima da chance -- i.e., a predição ótima com base
 %     no passado é sempre 1/2
         p = .5;
-        nTs = binornd(nStims, p, nBlocks, nTrials);
+        nTs = binornd(nStims-1, p, nBlocks, nTrials);
 
 %         if nTargets > 1 && nTargets < nStims
 %             numTargetsPMF = [.25 .50 .25];

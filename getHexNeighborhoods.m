@@ -1,8 +1,9 @@
 function [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods(points, Pidx)
     if size(points,2) > size(points,1), points = points'; end
 
-    if isempty(Pidx)
-        aux = 1:size(points,2);
+    S = size(points,2);
+    if isempty(Pidx) || Pidx <= 0 || Pidx > S
+        aux = 1:S;
         nbhd1 = aux; nbhd2 = aux; nbhdElse = aux;
         return
     end
