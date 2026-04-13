@@ -23,7 +23,7 @@ function ForagingGabors(nMaxFix, nTrials, nBlocks, options)
         nBlocks {mustBeNumeric}   = 15;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
-    nStims = 18;
+    nStims = 8;
     
     rng('shuffle');
     cleanup
@@ -1918,7 +1918,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             for i=1:nTrialsBuffered
         % (d) Matrizes com os centros dos estímulos (i.e., centros dos dstRects)
         %     e das cruzes de fixação
-                [currFixCenter, currStimCenter] = getStimLocations1(dpP.ellipseProps, txP.gabor.size_px, minDist_px);
+%                 [currFixCenter, currStimCenter] = getStimLocations1(dpP.ellipseProps, txP.gabor.size_px, minDist_px);
+                [currFixCenter, currStimCenter] = getStimLocations2(dpP.ellipseProps, 8, minDist_px);
                 fixCenters(:, i, b)     = currFixCenter;
                 stimCenters(:, :, i, b) = currStimCenter;
         % (e) Matriz com orientações tem os alvos adicionados

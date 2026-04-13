@@ -36,8 +36,8 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(3, params.gaborSize_dva); 
-    params.ellipseToScreenRatio = [3/4 3/4];
+    params.minDist_dva = max(2.5, params.gaborSize_dva); 
+    params.ellipseToScreenRatio = [4/5 4/5];
     params.gridShape   = [2 4];
     params.randomize = false;
 
