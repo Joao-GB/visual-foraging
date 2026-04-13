@@ -1,5 +1,10 @@
-function [fixCenter, stimCenters] = getStimLocations2(ROIparams, nStims, minDist, ~, ~)
-    % Poisson disk sampling exato
+function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, minDist, specialFix, ~)
+    % Poisson disk sampling com busca restrita ao intervalo [minDist, minDist*(1+c)]
+    % Para o algoritmo original, c = 1; para distancias mais uniformes,
+    % usar c = 0.05
+
+    c = .1;
+    rMax = minDist * (1 + c);
     
     cx = ROIparams(1); cy = ROIparams(2);
     rx = ROIparams(3); ry = ROIparams(4);
@@ -36,7 +41,13 @@ function [fixCenter, stimCenters] = getStimLocations2(ROIparams, nStims, minDist
     accelGrid{gIdx(1), gIdx(2)} = 1;
     
     % --- Step 2: grow samples ---
-    while ~isempty(activeList) && size(allPoints,1) < (nStims + 1)
+    if specialFix
+        nStimsAux = nStims;
+    else
+        nStimsAux = nStims + 1;
+    end
+
+    while ~isempty(activeList) && size(allPoints,1) < nStimsAux
         
         idx = randi(size(activeList,1));
         basePoint = activeList(idx,:);
@@ -44,7 +55,7 @@ function [fixCenter, stimCenters] = getStimLocations2(ROIparams, nStims, minDist
         found = false;
         
         for i = 1:k
-            r = minDist * (1 + rand); % r = minDist * (1 + 0.05*rand);
+            r = minDist * (1 + c*rand);
             theta = 2*pi*rand;
             cand = basePoint + [r*cos(theta), r*sin(theta)];
             
@@ -93,7 +104,52 @@ function [fixCenter, stimCenters] = getStimLocations2(ROIparams, nStims, minDist
             activeList(idx,:) = []; % remove exhausted point
         end
     end
-    
-    fixCenter = allPoints(1,:)';
-    stimCenters = allPoints(2:end,:)';
+    if specialFix
+        % --- Boundary candidates ---
+        fx = ((allPoints(:,1)-cx)/rx).^2 + ((allPoints(:,2)-cy)/ry).^2;
+        distToBoundary = abs(1 - fx);
+        
+        [aux, order] = sort(distToBoundary);
+        order(aux > .5) = [];
+        candidates = order(1:min(6, numel(order)));
+        
+        % --- Pick first point ---
+        i1 = candidates(randi(numel(candidates)));
+        p1 = allPoints(i1,:);
+        
+        % --- Pick closest neighbor ---
+        others = candidates(candidates ~= i1);
+        
+        if isempty(others)
+            p2 = p1;
+        else
+            dists = sum((allPoints(others,:) - p1).^2, 2);
+            [~, idxMin] = min(dists);
+            p2 = allPoints(others(idxMin),:);
+        end
+        
+        % --- Midpoint ---
+        pmid = (p1 + p2)/2;
+        
+        % --- Outward direction ---
+        dir = [(pmid(1)-cx)/rx^2, (pmid(2)-cy)/ry^2];
+        dir(2) = 0;
+        
+        if norm(dir) < 1e-6
+            dir = [sign(pmid(1)-cx), 0];
+        else
+            dir = dir / norm(dir);
+        end
+        
+        % --- Distance ---
+        r = minDist * (1 + c*rand);
+        
+        fixCenter = pmid + r * dir;
+        
+        stimCenters = allPoints';
+        
+    else
+        fixCenter = allPoints(1,:)';
+        stimCenters = allPoints(2:end,:)';
+    end
 end

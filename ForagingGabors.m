@@ -1,4 +1,4 @@
-function ForagingGabors(nMaxFix, nTrials, nBlocks, options)
+function ForagingGabors(nStims, nTrials, nBlocks, nMaxFix, options)
 % A tarefa consiste em nTrials X nBlocks trials, cada um com nStims estímulos, 
 % sendo, em média, metade deles alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
@@ -18,12 +18,12 @@ function ForagingGabors(nMaxFix, nTrials, nBlocks, options)
 % nTrials é sempre a 2a dimensão)
     
     arguments
-        nMaxFix {mustBeNumeric}    = 8;
+        nStims  {mustBeNumeric}    = 8;
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
+        nMaxFix {mustBeNumeric}    = 6;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
-    nStims = 8;
     
     rng('shuffle');
     cleanup
@@ -1919,7 +1919,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % (d) Matrizes com os centros dos estímulos (i.e., centros dos dstRects)
         %     e das cruzes de fixação
 %                 [currFixCenter, currStimCenter] = getStimLocations1(dpP.ellipseProps, txP.gabor.size_px, minDist_px);
-                [currFixCenter, currStimCenter] = getStimLocations2(dpP.ellipseProps, 8, minDist_px);
+                [currFixCenter, currStimCenter, rMax] = getStimLocations2(dpP.ellipseProps, nStims, minDist_px, false);
                 fixCenters(:, i, b)     = currFixCenter;
                 stimCenters(:, :, i, b) = currStimCenter;
         % (e) Matriz com orientações tem os alvos adicionados
@@ -2824,7 +2824,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
                         % Divide em vizinhanças os demais pontos que não o
                         % fixado antes da atual
-                        [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods(stimCenters(:, :, idx, b), currStim);
+                        [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods2(stimCenters(:, :, idx, b), currStim, rMax);
 
                         % O do passado não importa de onde eu pergunto
                         auxIdx = setdiff(seenIdx, currIdx);
@@ -2850,6 +2850,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             auxNotSeenIdx = intersect(notSeenIdx, nbhdElse);
                             nSnbhd(b, i) = 3;
                             disp('Vai perguntar da vizinhança distante')
+                        end
+                        
+                        if currStim ~= 0
+                            fprintf('Distâncias (rMax = %.4f): ', rMax);
+                            disp(vecnorm(stimCenters(:, currStim, idx, b) - stimCenters(:, auxNotSeenIdx, idx, b)));
                         end
 
                         if isempty(auxNotSeenIdx)

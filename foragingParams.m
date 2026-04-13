@@ -36,8 +36,8 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(2.5, params.gaborSize_dva); 
-    params.ellipseToScreenRatio = [4/5 4/5];
+    params.minDist_dva = max(3, params.gaborSize_dva); 
+    params.ellipseToScreenRatio = [1/2 1/2];
     params.gridShape   = [2 4];
     params.randomize = false;
 
@@ -61,7 +61,7 @@ function params = foragingParams
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
     params.minFixTime2 = .04;                          % Tempo mínimo de fixação nos estímulos, em s
-    params.medFixTime2 = .5;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
+    params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = .6;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
