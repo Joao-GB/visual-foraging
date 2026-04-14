@@ -1,22 +1,27 @@
-function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, minDist, specialFix, ~)
+function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, minDist, specialFix, skipEllipse, c)
+
     % Poisson disk sampling com busca restrita ao intervalo [minDist, minDist*(1+c)]
     % Para o algoritmo original, c = 1; para distancias mais uniformes,
     % usar c = 0.05
 
-    c = .1;
+    if nargin < 5, skipEllipse = false; end
+    if nargin < 6, c = 1; end
+
+    % --- NEW: fill mode ---
+    fillMode = isempty(nStims);
+
     rMax = minDist * (1 + c);
     
     cx = ROIparams(1); cy = ROIparams(2);
     rx = ROIparams(3); ry = ROIparams(4);
     
-    % Coordenadas para os 4 cantos do menor retângulo que contém a elipse
     xMin = cx - rx; xMax = cx + rx;
     yMin = cy - ry; yMax = cy + ry;
     
-    % Função da elipse
     inEllipse = @(x,y) ((x-cx)/rx).^2 + ((y-cy)/ry).^2 <= 1;
+    inRect = @(x,y) (x >= xMin) & (x <= xMax) & (y >= yMin) & (y <= yMax);
 
-    % Cria um grid oculto 
+    % --- Grid ---
     cellSize = minDist / sqrt(2);
     gridWidth  = ceil((xMax - xMin) / cellSize);
     gridHeight = ceil((yMax - yMin) / cellSize);
@@ -24,13 +29,15 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
     
     toGrid = @(x,y) [floor((y-yMin)/cellSize)+1, floor((x-xMin)/cellSize)+1];
     
-    k = 60; % attempts per active point
+    k = 60;
     
-    % --- Step 1: initial point (fixation) ---
+    % --- Step 1: initial point ---
     while true
         p0 = [rand*(xMax-xMin)+xMin, rand*(yMax-yMin)+yMin];
-        if inEllipse(p0(1), p0(2))
-            break;
+        if skipEllipse
+            break
+        else
+            if inEllipse(p0(1), p0(2)), break; end
         end
     end
     
@@ -40,14 +47,16 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
     gIdx = toGrid(p0(1), p0(2));
     accelGrid{gIdx(1), gIdx(2)} = 1;
     
-    % --- Step 2: grow samples ---
-    if specialFix
-        nStimsAux = nStims;
-    else
-        nStimsAux = nStims + 1;
+    % --- Step 2: growth ---
+    if ~fillMode
+        if specialFix
+            nStimsAux = nStims;
+        else
+            nStimsAux = nStims + 1;
+        end
     end
 
-    while ~isempty(activeList) && size(allPoints,1) < nStimsAux
+    while ~isempty(activeList) && (fillMode || size(allPoints,1) < nStimsAux)
         
         idx = randi(size(activeList,1));
         basePoint = activeList(idx,:);
@@ -59,8 +68,11 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
             theta = 2*pi*rand;
             cand = basePoint + [r*cos(theta), r*sin(theta)];
             
-            if ~inEllipse(cand(1), cand(2))
-                continue;
+            % --- ROI check ---
+            if skipEllipse
+                if ~inRect(cand(1), cand(2)), continue; end
+            else
+                if ~inEllipse(cand(1), cand(2)), continue; end
             end
             
             gIdx = toGrid(cand(1), cand(2));
@@ -69,6 +81,7 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
                 continue;
             end
             
+            % --- collision ---
             rStart = max(1, gIdx(1)-2);
             rEnd   = min(gridHeight, gIdx(1)+2);
             cStart = max(1, gIdx(2)-2);
@@ -90,6 +103,7 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
                 if collision, break; end
             end
             
+            % --- accept ---
             if ~collision
                 allPoints = [allPoints; cand];
                 activeList = [activeList; cand];
@@ -101,11 +115,20 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
         end
         
         if ~found
-            activeList(idx,:) = []; % remove exhausted point
+            activeList(idx,:) = [];
         end
     end
+
+    % --- Output ---
+    if fillMode
+        % no special fixation logic in fill mode
+        fixCenter = [];
+        stimCenters = allPoints';
+        return;
+    end
+
     if specialFix
-        % --- Boundary candidates ---
+        % (unchanged)
         fx = ((allPoints(:,1)-cx)/rx).^2 + ((allPoints(:,2)-cy)/ry).^2;
         distToBoundary = abs(1 - fx);
         
@@ -113,11 +136,9 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
         order(aux > .5) = [];
         candidates = order(1:min(6, numel(order)));
         
-        % --- Pick first point ---
         i1 = candidates(randi(numel(candidates)));
         p1 = allPoints(i1,:);
         
-        % --- Pick closest neighbor ---
         others = candidates(candidates ~= i1);
         
         if isempty(others)
@@ -128,10 +149,8 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
             p2 = allPoints(others(idxMin),:);
         end
         
-        % --- Midpoint ---
         pmid = (p1 + p2)/2;
         
-        % --- Outward direction ---
         dir = [(pmid(1)-cx)/rx^2, (pmid(2)-cy)/ry^2];
         dir(2) = 0;
         
@@ -141,9 +160,7 @@ function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, m
             dir = dir / norm(dir);
         end
         
-        % --- Distance ---
         r = minDist * (1 + c*rand);
-        
         fixCenter = pmid + r * dir;
         
         stimCenters = allPoints';

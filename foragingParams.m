@@ -98,7 +98,7 @@ function params = foragingParams
                                             % Por exemplo, se revisitFactor = 1/2 e sacFixDurRatio = 1/2, sendo m o 
                                             % tempo de cada fixação (logo m/2 de cada sacada), o tempo máximo é 
                                             % 1.5(N*m + N*(.5*m)) = 2.25*N*m
-    params.cursorSacFixDurRatio = 3;    % Mesma finalidade que sacFixDurRatio,
+    params.cursorSacFixDurRatio = 10;    % Mesma finalidade que sacFixDurRatio,
                                             % mas para demonstração com cursor
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
