@@ -1,6 +1,7 @@
 function [fixCenter, stimCenters, rMax] = getStimLocations2(ROIparams, nStims, minDist, specialFix, skipEllipse, c)
 
-    % Poisson disk sampling com busca restrita ao intervalo [minDist, minDist*(1+c)]
+    % Poisson disk sampling com raio de busca de vizinhos restrito ao 
+    % intervalo [minDist, minDist*(1+c)].
     % Para o algoritmo original, c = 1; para distancias mais uniformes,
     % usar c = 0.05
 

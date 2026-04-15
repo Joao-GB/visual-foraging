@@ -220,7 +220,7 @@ function params = foragingParams
 %% Durações e delays de detalhes
     params.repeatDelay = 0.5;   % Tempo que demora para considerar um segundo
                                     % aperto de tecla (se for mantida apertada)
-    params.repeatRate  = 0.1;   % Tempo com que uma tecla é reconsiderada 
+    params.repeatRate  = 0.8;   % Tempo com que uma tecla é reconsiderada 
                                     % apertada passado o repeatDelay
     params.pauseMaxDur = 15;    % Duração máxima de uma pausa sem se seja exibida
                                     % tela relembrando alvo
