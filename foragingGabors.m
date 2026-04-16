@@ -21,7 +21,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, options)
         nStims  {mustBeNumeric}    = 10;
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
-        nMaxFix {mustBeNumeric}    = 6;
+        nMaxFix {mustBeNumeric}    = 8;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
     
@@ -1607,9 +1607,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         allTargets = nan(1,nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-                        % Divide em vizinhanças os demais pontos que não o
-                        % fixado antes da atual
-                        [nbhd1, nbhd2, nbhdElse] = getHexNeighborhoods2(stimCenters(:, :, idx, b), currStim, rMax);
+                        % Os demais pontos que não o fixado antes da atual
+                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim);
 
                         % O do passado não importa de onde eu pergunto
                         auxIdx = setdiff(seenIdx, currIdx);
@@ -1618,33 +1617,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         
                         if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
 
-                        % O não visto eu pergunto preferencialmente da
-                        % primeira vizinhança
-                        chooseNbhd1 = prm.nbhd1Perc >= rand;
-                        if chooseNbhd1
-                            auxNotSeenIdx = intersect(notSeenIdx, nbhd1); 
-                            nSnbhd(b, i) = 1;
-                            disp('Vai perguntar da vizinhança próxima')
-                        else
-                            auxNotSeenIdx = intersect(notSeenIdx, nbhd2);
-                            nSnbhd(b, i) = 2;
-                            disp('Vai perguntar da vizinhança segunda')
-                        end
+                        % O não visto eu pergunto o mais próximo de
+                        % currStim que não seja currIdx e nem já visto
+                        notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
+                        notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
 
-                        if isempty(auxNotSeenIdx)
-                            auxNotSeenIdx = intersect(notSeenIdx, nbhdElse);
-                            nSnbhd(b, i) = 3;
-                            disp('Vai perguntar da vizinhança distante')
-                        end
-                        
-                        if currStim ~= 0
-                            fprintf('Distâncias (rMax = %.4f): ', rMax);
-                            disp(vecnorm(stimCenters(:, currStim, idx, b) - stimCenters(:, auxNotSeenIdx, idx, b)));
-                        end
-
-                        if isempty(auxNotSeenIdx)
-                            nSnbhd(b, i) = 0;
-                        end
+                        auxNotSeenIdx = notSeenNbhd(1);
 
                         notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
                         % Tanto seenAux como notSeenAux devem ser linhas
@@ -1914,75 +1892,6 @@ function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
         end
     end
 end
-
-
-function T = P3Onset(tkP, prm)
-% Para que, com alta probaiblidade, o estímulo de P3 comece antes e termine 
-% pelo menos perto (ou depois) do fim da fixação, precisamos que
-% P(T + D < (duração da fixação) < T + tf + D) seja grande.
-    alpha = .25;
-    Q = tkP.fixQueue;
-    D = prm.minP3Dur;
-    tf = prm.pinkNoiseDur; 
-    prevT = tkP.fixProps.preP3;
-    
-    steps = (0:.005:max(Q))';
-
-    L = steps + D;
-    U = steps + tf + D;
-
-    inWindow = (Q > L) & (Q < U);
-    counts = sum(inWindow, 2);
-    [~, idx] = max(counts);
-    bestT = steps(idx);
-    
-    if isempty(prevT), prevT = bestT;
-    else, prevT = prevT(end);
-    end
-
-    T = (1 - alpha) * prevT + alpha * bestT;
-end
-
-
-function T = P3Onset1(tkP, prm, auxN)
-% Versão para usar no início de cada trial
-% Estima o início de P3 usando média móvel exponencial (EMA) das durações
-% de fixação. A ideia é prever a duração típica da fixação atual e 
-% posicionar o início de P3 de modo a ocupar um mínimo da fixação
-
-    beta  = 1/4;  % taxa de atualização da EMA; 1/beta indica a cte de tempo
-                  % do processo, a saber, a quantidade de pontos do passado 
-                  % que concentram cerca de 63% do peso
-
-    Q = tkP.fixQueue(:);
-    D = prm.minP3Dur;
-    tf = prm.pinkNoiseDur; 
-
-    emaFix = tkP.fixProps.emaFix;
-
-    if nargin < 3 || isempty(auxN) || auxN < 1
-        emaFix = (1 - beta) * emaFix + beta * Q(end);
-    else
-        N = min(auxN, length(Q));
-        Qsub = Q(end-N+1:end);
-        Qsub = [emaFix; Qsub];
-        k = (0:N-1)';
-        w = beta * (1 - beta).^k;
-        wEMA = (1 - beta).^(N);
-        w = [w; wEMA];
-        w = flip(w);
-        w = w / sum(w);
-
-        emaFix = sum(w .* Qsub);
-
-    end
-    
-    tkP.fixProps.emaFix = emaFix;
-
-    % estimativa do onset
-    T = emaFix - tf; % (D + tf);
-end
-
 
 function T = P3Onset2(tkP, prm, newFix)
 % Versão para usar online, durante o trial
