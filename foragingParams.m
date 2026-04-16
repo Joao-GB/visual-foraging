@@ -57,10 +57,11 @@ function params = foragingParams
 
     % (k) Duração do estímulo (ruído rosa), em s
     params.pinkNoiseDur = .1;
+    params.minP3Dur     = .025;
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .04;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = .6;                           % Janela temporal (após offset dos estímulos) durante a qual se 
@@ -71,7 +72,6 @@ function params = foragingParams
     % (n) Percentis úteis
     params.shortFixPerc = 20;
     params.nbhd1Perc    = .80;
-    params.minP3Dur     = .025;
 
     % (o) Fatores multiplicativos para se considerar ou não fixação
     params.fixDistFactor1 = 1.25;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
