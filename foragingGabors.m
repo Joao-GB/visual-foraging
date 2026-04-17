@@ -712,8 +712,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             for i=1:nTrialsBuffered
         % (d) Matrizes com os centros dos estímulos (i.e., centros dos dstRects)
         %     e das cruzes de fixação
-%                 [currFixCenter, currStimCenter] = getStimLocations1(dpP.ellipseProps, txP.gabor.size_px, minDist_px);
-                [currFixCenter, currStimCenter, rMax] = getStimLocations2(dpP.ellipseProps, nStims, minDist_px, false);
+                % [currFixCenter, currStimCenter, ~] = getStimLocations2_1(dpP.ellipseProps, nStims, minDist_px, false);
+                [currFixCenter, currStimCenter, ~] = getStimLocations2_1(dpP.winRect(3:4), [dpP.winCenter 1], nStims, minDist_px, txP.gabor.size_px);
                 fixCenters(:, i, b)     = currFixCenter;
                 stimCenters(:, :, i, b) = currStimCenter;
         % (e) Matriz com orientações tem os alvos adicionados
@@ -875,6 +875,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         WaitSecs(.1);
     
         % iii. Desenha, na tela do Host PC, linhas indicando a orientação de cada estímulo
+                        % Preciso do sinal de menos no dy pois as coord.
+                        % do Eyelink são diferentes das do PTB
                         Eyelink('Command', 'clear_screen 0');
                         for j=1:size(dstRects, 2)
                             hostRect = dstRects(:,j);
@@ -883,7 +885,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             hostRect = round(hostRect);
                             radius = (hostRect(3)-hostRect(1))/2;
                             theta = orientation(j, idx, b); lineLen = radius * 0.8;
-                            dx = lineLen * sind(theta); dy = lineLen * cosd(theta);
+                            dx = lineLen * sind(theta); dy = -lineLen * cosd(theta);
                             Eyelink('Command', 'draw_line %d %d %d %d 12', round(cX-dx), round(cY-dy), round(cX+dx), round(cY+dy));
                         end
                     end
@@ -1331,7 +1333,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     
             % (j) Desenha a abertura gaussiana
                         Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            %             Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:,notSeenIdx), orientation(notSeenIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('Close', oriPinkTex); Screen('Close', noiseTex);
                         Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1339,32 +1340,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
                         % o tempo passado desde o início da fixação
-%                         P3On = (medFixTime - prm.pinkNoiseDur);#
-%                         auxT2 = (GetSecs - fixStartTime);
-%                         timeLeft = max(0, preUpdateDur - auxT2);
                         fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
-%                         fprintf('Tempo transcorrido desde início da fixação: %.4f\n', auxT2)
-%                         fprintf('Tempo restante ate exibir ruído rosa: %.4f\n', timeLeft)
                 
             % viii. Registra os tempos de início e fim da Fase 3
                         preUpdateDeadline = fixStartTime + P3On;
-%                         if mode == 1
-%                             lastPos = [-1 -1];
-%                             while GetSecs < preUpdateDeadline
-%                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
-%                                 if any([x_gaze, y_gaze] ~= lastPos)
-%                                     Screen('DrawTexture', dpP.window, bg);
-%                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-%                                     Screen('Flip', dpP.window);
-%                                     lastPos = [x_gaze, y_gaze];
-%                                 end
-%                                 WaitSecs(0.001);
-%                             end
-% 
-%                             updateStimOnset = GetSecs;
-%                         else
-%                             updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
-%                         end
                         if mode == 1
                             lastPos = [-1 -1];
                             while GetSecs < preUpdateDeadline
@@ -1388,7 +1367,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         if mode == 1
                             Screen('Close', bg);
                             clear auxWin bg;
-                            % img = Screen('GetImage', dpP.window); bg = Screen('MakeTexture', dpP.window, img);
                         end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
@@ -1453,7 +1431,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         seenIdx = find(flag ~= 0);
                         notSeenIdx = find(flag == 0);
                         
-%                         updateStimOffset = Screen('Flip', dpP.window, updateStimOnset + prm.pinkNoiseDur);
             
             %% ix. Verifica se há alguma fixação de duração mínima em estímulo 
             %     numa janela pós-modificação
@@ -1570,12 +1547,25 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             Screen('Close', bg1); clear auxWin bg1;
                         end
 
-                        % Se houver fixado em algum estímulo em PM...
+                        % % Se houver fixado em algum estímulo em PM...
                         if ~isempty(currIdx)
+                            fprintf('Há currIdx... ')
+                            fprintf('então será perguntado sobre\n');
+                        else
                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
-                        
-                        % ... garante que serão perguntadas as orientações
-                        % de 2 ou 3 estímulos sempre (nunca só 1)
+                            fprintf('Não há currIdx... ')
+                            if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
+                                fprintf('... então pré-s. vira visto\n')
+                                nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
+                            else
+                                fprintf('... então pré-s. vira não visto\n')
+
+                                nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
+                            end
+                            nStimsToReport(1, idx, b) = nPre;
+                            nStimsToReport(2, idx, b) = 0;
+                            nStimsToReport(3, idx, b) = nPost;
+                            
                             if numel(seenIdx) < nPre
                                 dif = nPre - numel(seenIdx);
                                 nStimsToReport(1, idx, b) = numel(seenIdx);
@@ -1586,22 +1576,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 nStimsToReport(3, idx, b) = numel(notSeenIdx);
                                 nStimsToReport(1, idx, b) = nPre + dif;
                             end
-                            nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
-
-
-                        % ... e substitui um dos a ser perguntado
-                        % (preferencialmente o já visto)
-                            fprintf('Há currIdx... ')
-                            nStimsToReport(2, idx, b) = 1;
-                            if nPre+nPost == 2
-                                nStimsToReport(1, idx, b) = max(0, nStimsToReport(1, idx, b) - 1);
-                            elseif nPre+nPost >=3
-                                if nPre > nPost, nStimsToReport(1, idx, b) = nPre-1;
-                                else, nStimsToReport(3, idx, b) = nPost-1;
-                                end
-                            end
-                            fprintf('então será perguntado sobre\n');
-                            disp(nStimsToReport(:, idx, b))
+                        end
+                        disp(nStimsToReport(:, idx, b))
+                        if sum(nStimsToReport(:, idx, b)) ~= 3
+                            disp('ERRO')
                         end
 
                         allTargets = nan(1,nStims); allColors2 = drP.allColors;
@@ -1611,7 +1589,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim);
 
                         % O do passado não importa de onde eu pergunto
-                        auxIdx = setdiff(seenIdx, currIdx);
+                        auxIdx = setdiff(seenIdx, currStim);
                         seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
                         currAux = []; 
                         
@@ -1622,11 +1600,15 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
                         notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
 
-                        auxNotSeenIdx = notSeenNbhd(1);
+                        notSeenAux = notSeenNbhd(1:nStimsToReport(3, idx, b));
 
-                        notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
+                        % notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
                         % Tanto seenAux como notSeenAux devem ser linhas
                         % para concatenar 
+                        fprintf('Vistos: '); fprintf(num2str(seenAux));
+                        fprintf('\nPré-s: '); fprintf(num2str(currAux));
+                        fprintf('\nNão vistos: '); fprintf(num2str(notSeenAux));
+                        fprintf('\n');
                         orderToReportStimsCell = {seenAux, currAux, notSeenAux};
                         orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
                         if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
@@ -1895,7 +1877,7 @@ end
 
 function T = P3Onset2(tkP, prm, newFix)
 % Versão para usar online, durante o trial
-    beta  = 1/4;
+    beta  = prm.betaP3;
 
     tf = prm.pinkNoiseDur; 
     emaFix = tkP.fixProps.emaFix;

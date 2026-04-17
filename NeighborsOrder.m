@@ -11,6 +11,7 @@ function [nbhd] = NeighborsOrder(points, Pidx)
     % 2. Calcula a distancia entre P e os demais
     qDists = sum((points - P).^2, 2);
     [~, nbhd] = sort(qDists);
+    nbhd = nbhd';
 
     % Remove o próprio ponto
     nbhd(nbhd == Pidx) = [];

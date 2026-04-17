@@ -43,27 +43,29 @@ function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] =
     %     um já visto e os recém-fixados eu decido se pergunto na hora, com
     %     base na quantidade de estímulos fixados entre a fase 3 e PM.
 
-        nStimsToReport = round((params.maxToReport - params.minToReport)*rand(nBlocks,nTrials) + params.minToReport);
-        nStimsPM = zeros(nBlocks, nTrials);
-        nStimsPost = ones(nBlocks, nTrials);
-        nStimsPre = ones(nBlocks, nTrials);
+        % nStimsToReport = round((params.maxToReport - params.minToReport)*rand(nBlocks,nTrials) + params.minToReport);
+        % nStimsPM = zeros(nBlocks, nTrials);
+        % nStimsPost = ones(nBlocks, nTrials);
+        % nStimsPre = ones(nBlocks, nTrials);
+        % 
+        % % remainder = nStimsToReport - nStimsPM - nStimsPost;
+        % remainder = nStimsToReport - nStimsPM - nStimsPost - nStimsPre;
+        % 
+        % % Garante que, se houver 2 ou mais estímulos no resto, pelo menos
+        % % um vá para o pós. Ao fim, espera-se que remainder seja de uns
+        % % nStimsPre = remainder >= 2;
+        % % remainder = remainder - nStimsPre;
+        % 
+        % % Escolhe uniformemente quem do remainder vai para pré e pós
+        % addPre  = round(rand(size(remainder)).*remainder);
+        % addPost = remainder - addPre;
+        % 
+        % nStimsPre = nStimsPre + addPre;
+        % nStimsPost = nStimsPost + addPost;
+        % 
+        % nStimsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
 
-        % remainder = nStimsToReport - nStimsPM - nStimsPost;
-        remainder = nStimsToReport - nStimsPM - nStimsPost - nStimsPre;
-
-        % Garante que, se houver 2 ou mais estímulos no resto, pelo menos
-        % um vá para o pós. Ao fim, espera-se que remainder seja de uns
-        % nStimsPre = remainder >= 2;
-        % remainder = remainder - nStimsPre;
-
-        % Escolhe uniformemente quem do remainder vai para pré e pós
-        addPre  = round(rand(size(remainder)).*remainder);
-        addPost = remainder - addPre;
-
-        nStimsPre = nStimsPre + addPre;
-        nStimsPost = nStimsPost + addPost;
-
-        nStimsToReport = cat(1, permute(nStimsPre,[3,2,1]), permute(nStimsPM, [3, 2, 1]), permute(nStimsPost,[3,2,1]));
+        nStimsToReport = ones(params.maxToReport, nTrials, nBlocks);
         
         % Em cada trial, o sujeito deve reportar dos estímulos vistos
         % anteriormente, do atual ou dos não vistos em ordem aleatória

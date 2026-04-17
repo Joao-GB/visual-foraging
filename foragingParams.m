@@ -53,18 +53,19 @@ function params = foragingParams
     %     longo dos trials
     params.minToReport = 2;
     params.maxToReport = 3;
-    params.propTrialsPSA = .8;                 % Proporção de trials em que se deve reportar estímulo fixado pós-modificação
+    params.seenNotSeenRatio = 1;                 % O quanto se deve priorizar os estímulos vistos em relação aos não vistos
 
     % (k) Duração do estímulo (ruído rosa), em s
     params.pinkNoiseDur = .1;
     params.minP3Dur     = .025;
+    params.betaP3       = 1/5;                   % Taxa da EMA para a função P3Onset2
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .6;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.postModDur  = .7;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     % (m) Tamanho da fila de tempos de fixação
