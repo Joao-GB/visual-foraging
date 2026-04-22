@@ -32,6 +32,7 @@ function params = foragingParams
 
     % (g) Parâmetros dos blobs
     params.blobContrast = 1;
+    params.PMblobContrast = .5;
     params.blobAspect   = 1;
 
     % (h) Regras de disposição dos estímulos
@@ -62,9 +63,9 @@ function params = foragingParams
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .07;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
-    params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
+    params.minFixTime3 = .05;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = .7;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação

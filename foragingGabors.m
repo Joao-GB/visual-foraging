@@ -1444,9 +1444,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             while tNow - updateStimOffset < prm.postModDur
                                 check = false;
                                 if mode > 1
-                                    if tNow - updateStimOffset > prm.blobPMDur
-                                        Screen('Flip', dpP.window);
-                                    end
+%                                     if tNow - updateStimOffset > prm.blobPMDur
+%                                         Screen('Flip', dpP.window);
+%                                     end
                                         
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
@@ -1505,9 +1505,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     if mode == 1
                                         [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                         if any([x_gaze, y_gaze] ~= lastPos)
-                                            if tNow - updateStimOffset <= prm.blobPMDur
-                                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                                            end
+%                                             if tNow - updateStimOffset <= prm.blobPMDur
+                                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+%                                             end
                                             Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                             Screen('Flip', dpP.window);
                                             lastPos = [x_gaze, y_gaze];
@@ -1526,7 +1526,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         fprintf('seenStimsQueue final: '); disp(seenStimsQueue{b,i}(1,:)); fprintf('\n')
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.PM); end
-                        Screen('Flip', dpP.window);
+%                         Screen('Flip', dpP.window);
                 
                             if ~isempty(currIdx)
                                 notSeenIdx(notSeenIdx == currIdx) = [];
@@ -1647,7 +1647,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 end
                         
                                 allTargets(orderToReportStims(j)) = currTarget;
-                        
+                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                                 foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, rectColors, allTargets, targetOri(b), rectPW);
                         
                             end
@@ -1662,8 +1662,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         trialFeedback{b, i} = [orderToReportStims; orderRemapped; feedback(orderToReportStims)];
                         
                         if mode < 3
+                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                             foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         else
+                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                             foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
                          end
                         WaitSecs(.5);
@@ -1808,7 +1810,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         end
     end
 end
-
 
 
 function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
@@ -1970,7 +1971,8 @@ function blob  = foragingBlob(window, blobSize, grey, params, blobMode)
     if blobMode == 1
         blobColorOffset = [grey grey grey 0];
     else
-        blobColorOffset = [grey grey grey 1];
+        blobColorOffset = [grey grey grey 0];
+        params.blobContrast = params.PMblobContrast;
     end
     [blobTex, ~] = CreateProceduralGaussBlob(window, blobSize, blobSize, blobColorOffset, 1, 1);
     blobSigma = blobSize/6;
