@@ -1,4 +1,4 @@
-function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, options)
+function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 % A tarefa consiste em nTrials X nBlocks trials, cada um com nStims estímulos, 
 % sendo, em média, metade deles alvos, espalhados pseudoaleatoriamente na 
 % tela. A tarefa do sujeito é encontrar, dentre gabores de alta frequência 
@@ -22,11 +22,14 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, options)
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
         nMaxFix {mustBeNumeric}    = 8;
+        nMinFix {mustBeNumeric}    = 2;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
     
     rng('shuffle');
     cleanup
+
+    nMaxFix = min(nMaxFix, nStims-2);
 
     % Verifica se o programa será executado no modo debug ou não
     debug = 0;
@@ -273,6 +276,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, options)
     taskProps.fixQueue  = fixQueue;
     taskProps.nStims    = nStims;
     taskProps.nMaxFix   = nMaxFix;
+    taskProps.nMinFix   = nMinFix;
     taskProps.nTrials   = nTrials;
     taskProps.nBlocks   = nBlocks;
     taskProps.keys      = keys;
@@ -657,7 +661,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         tic;
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
-        [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
+        [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
         if mode == 2,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
         % Redefine os gabores conforme a quantidade de estímulos
@@ -704,7 +708,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % Já que gaborSize_dva é o diâmetro do Gabor, os centros precisam
         % distar pelo menos 1 diâmetro mais a minDist
         minDist_px   = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.minDist_dva+prm.gaborSize_dva);
-        minFixDist1 = (txP.gabor.size_px/2)*prm.fixDistFactor1;
+        minFixDist1 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius1_dva);
 
         fprintf('Tempo rects a centers: %.5f\n', toc);
         tic;
@@ -723,7 +727,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         % (f) Distância mínima para considerar fixação em alvo
         % pós-modificação (raio, não diâmetro)
-        minFixDist3 = (txP.gabor.size_px/2)*prm.fixDistFactor3;
+        minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
         auxFixQueue = zeros(1, nStims);
         if strcmp(mode, 'experiment')
@@ -866,13 +870,13 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 
                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                     if debug == 0 && mode >= 2
-        % i. Deixa de registrar até StartRecording
-                        if wasRecording, Eyelink('StopRecording'); end
-                        Eyelink('SetOfflineMode');
-                        WaitSecs(.1);
-        % ii. Faz drift correction
-                        EyelinkDoDriftCorrection(tkP.el);
-                        WaitSecs(.1);
+%         % i. Deixa de registrar até StartRecording
+%                         if wasRecording, Eyelink('StopRecording'); end
+%                         Eyelink('SetOfflineMode');
+%                         WaitSecs(.1);
+%         % ii. Faz drift correction
+%                         EyelinkDoDriftCorrection(tkP.el);
+%                         WaitSecs(.1);
     
         % iii. Desenha, na tela do Host PC, linhas indicando a orientação de cada estímulo
                         % Preciso do sinal de menos no dy pois as coord.
@@ -918,7 +922,17 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     fixCoords = [xFix; yFix];
                     fixAcquired = false;
                     while ~fixAcquired && keepGoingTrials && ~restartTrial
+
                         Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                        if debug == 0 && mode >= 2
+        % i. Deixa de registrar até StartRecording
+                            if wasRecording, Eyelink('StopRecording'); end
+                            Eyelink('SetOfflineMode');
+                            WaitSecs(.1);
+        % ii. Faz drift correction
+                            EyelinkDoDriftCorrection(tkP.el);
+                            WaitSecs(.1);
+                        end
                         Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, fixCenters(:, idx, b)', 2);
         
         % (g) Atualiza a tela para exibir a cruz de fixação
@@ -1588,8 +1602,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         % Os demais pontos que não o fixado antes da atual
                         nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim);
 
-                        % O do passado não importa de onde eu pergunto
-                        auxIdx = setdiff(seenIdx, currStim);
+                        % O do passado não importa de onde eu pergunto,
+                        % desde que não seja a última fixação nem o pós
+                        % sacádico
+                        auxIdx = setdiff(seenIdx, [currStim currIdx]);
                         seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
                         currAux = []; 
                         

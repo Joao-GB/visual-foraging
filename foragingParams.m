@@ -63,10 +63,10 @@ function params = foragingParams
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .07;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
-    params.minFixTime3 = .05;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .7;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
+    params.postModDur  = .5;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     % (m) Tamanho da fila de tempos de fixação
@@ -75,10 +75,14 @@ function params = foragingParams
     params.shortFixPerc = 20;
     params.nbhd1Perc    = .80;
 
-    % (o) Fatores multiplicativos para se considerar ou não fixação
-    params.fixDistFactor1 = 1.25;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
-    params.fixDistFactor3 = 1.8;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
-                                        % (maior tolerância a erro, já que o estímulo é removido)
+    % (o) Raio da área ao redor dos estímulos em que se considera uma
+    % fixação
+    params.fixROIradius1_dva = 1.5;          % Para fixações pré-modificação
+    params.fixROIradius3_dva = 2.5;          % Para fixações pós-modificação
+%     % Fatores multiplicativos para se considerar ou não fixação
+%     params.fixDistFactor1 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
+%     params.fixDistFactor3 = 1.8;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
+%                                         % (maior tolerância a erro, já que o estímulo é removido)
 
 
 %% -----
@@ -215,6 +219,7 @@ function params = foragingParams
     params.upFrac = 2/3;                % Proporção do botão reservada para ícones
     params.iconScaleFactor = 0.6;       % Proporção da porção reservada realmente 
                                             % ocupada
+    params.currFolder      = fileparts(mfilename('fullpath'));
     params.outFolder       = 'out';     % Nome da pasta com imagens dos ícones
     params.imgFolder       = 'img';     % Nome da pasta com imagens dos ícones
     params.imgExtension    = '.png';    % Extensão das imagens

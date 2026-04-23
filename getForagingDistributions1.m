@@ -1,4 +1,4 @@
-function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(nStims, nTMax, nTrials, nBlocks, params)
+function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(nStims, nTMin, nTMax, nTrials, nBlocks, params)
     % nStims = 18;
 
 % (a) Distribuição da quantidade de alvos: binomial, de modo que (1) não requer
@@ -33,8 +33,8 @@ function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] =
         
         % modeDistr = floor(3*nStims/4);
         % targetModTimePMF = robust_beta_pmf(nStims, modeDistr, 'peakness', 1.5);
-        targetModTimePMF = modTime_pmf(nTMax);
-        modTimes = randsample(1:nTMax, nBlocks*nTrials, true, targetModTimePMF);
+%         targetModTimePMF = modTime_pmf(nTMax);
+        modTimes = randsample(nTMin:nTMax, nBlocks*nTrials, true);
         modTimes = reshape(modTimes, nBlocks, nTrials);
 %         modTimes = modTimes - 1;
 
