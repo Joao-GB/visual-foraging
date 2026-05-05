@@ -17,6 +17,6 @@ function [oriFilter, filtSize] = MakeOriFilter(stimDiam_pix, aSigma, rSigma2)
             oriFilter(ImSize_y-id_Y+1,ImSize_x-id_X+1) = fVal;
         end
     end
-%     oriFilter = rot90(oriFilter);
+    oriFilter = rot90(oriFilter);
     
 end

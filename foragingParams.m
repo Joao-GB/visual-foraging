@@ -11,15 +11,12 @@ function params = foragingParams
     % (c) Tamanhos, frequência e outras propriedades dos gabores
     params.gaborSize_dva  = 1.5;
     params.gaborFreq_cpd  = 15; % Rucci et al. (2007) usam 11, em cpd
-    params.gaborAmplitude = .5;
-    params.gaborContrast  = 1;
-    params.gaborAlpha     = .5;
     params.gaborPhase     = 0;
 
-    % (d) Parâmetros do ruído
-    params.noiseAmplitude = .5;
-    params.noiseAlpha     = 1 - params.gaborAlpha;
-    params.noiseContrast  = 1;
+    % (d) Parâmetros do sinal
+    params.stimContrast = 1;       % Contraste final
+    params.signalAlpha = 0.5;
+    params.ampRange    = [-.5 .5];
 
     % (e) Frequências de corte para filtro a ser aplicado no ruído, em cpd
     params.noiseLoCutFreq_cpd = 1/params.gaborSize_dva;
@@ -45,7 +42,7 @@ function params = foragingParams
     % (i) Orientações possíveis dos estímulos, em graus
     params.allOri = [0 90];%[0 45 77 160]; %
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'vertical', 'horizontal'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%
+    params.allOriName = {'horizontal', 'vertical'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%
     sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
     params.nbhdRadius = min(diff(sortedOri))/2;
 
@@ -59,7 +56,7 @@ function params = foragingParams
     % (k) Duração do estímulo (ruído rosa), em s
     params.pinkNoiseDur = .1;
     params.minP3Dur     = .025;
-    params.betaP3       = 1/5;                   % Taxa da EMA para a função P3Onset2
+    params.betaP3       = 1/20;                   % Taxa da EMA para a função P3Onset2
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
