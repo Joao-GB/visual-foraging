@@ -1,0 +1,39 @@
+Tempo inicial: 0.00798
+Tempo getDistr: 0.00145
+Tempo orientações distratoras: 0.00031
+Tempo matrizes nulas: 0.00012
+Tempo rects a centers: 0.00119
+Tempo preencher locais estímulos e orientações de alvos: 0.09925
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 4
+ATENÇÃO: 5/8 visitas até modificar
+
+ans =
+
+   1.7786e+09
+
+currStim final = 0
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 18
+ATENÇÃO: 6/8 visitas até modificar
+
+ans =
+
+   1.7786e+09
+
+currStim final = 0
+Ajuste de pinkNoiseDur
+Tempo total da tarefa: 58.596 s
+
+ans =
+
+   1.7786e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de treino não concluída, mas salva.
+Tempo total da sessão: 62.676 s

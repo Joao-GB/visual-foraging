@@ -2629,10 +2629,11 @@ function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
         if logoTex == -1
             Screen('TextSize', dpP.window, prm.textSizeNormal);
             Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
-            Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], targetOri(b), [], [], [], [], []);
+            Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], ori, [], [], [], [], []);
             Screen('DrawTexture', dpP.window, txP.exampleNoise.tex, [], [], [], [], [], [], [], []);
             Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            Screen('DrawTextures', dpP.window, txP.exampleBlob.tex, [], [], targetOri(b), [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
+            Screen('DrawTextures', dpP.window, txP.exampleBlob.tex, [], [], ori, [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
+            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         else
             Screen('DrawTexture', dpP.window, logoTex, [], imgRect);
         end
