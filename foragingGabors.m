@@ -229,11 +229,6 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 
     exampleGabor.matrix = params.gaborSTDmult*gaborMatrix;
     exampleNoise.matrix = params.noiseSTDmult*exampleNoise.matrix;
-
-%     exampleMatrix = exampleNoise.matrix + exampleGabor.matrix;
-%     exampleMatrix = (grey*params.stimRMScontrast)*exampleMatrix; %+ grey;
-
-%     exampleTex    = Screen('MakeTexture', window, exampleMatrix, [], [], 1);
     exampleGabor.tex = Screen('MakeTexture', window, exampleGabor.matrix, [], [], 1);
     exampleNoise.tex = Screen('MakeTexture', window, exampleNoise.matrix, [], [], 1);
 
@@ -896,7 +891,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             hostRect = round(hostRect);
                             radius = (hostRect(3)-hostRect(1))/2;
                             theta = orientation(j, idx, b); lineLen = radius * 0.8;
-                            dx = lineLen * sind(theta); dy = lineLen * cosd(theta);
+                            dx = lineLen * cosd(theta); dy = lineLen * sind(theta);
                             Eyelink('Command', 'draw_line %d %d %d %d 12', round(cX-dx), round(cY-dy), round(cX+dx), round(cY+dy));
                         end
                     end
@@ -2633,11 +2628,11 @@ function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
         
         if logoTex == -1
             Screen('TextSize', dpP.window, prm.textSizeNormal);
-            Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
-            Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], imgRect, ori, [], [], [], [], []);
+            Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
+            Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], targetOri(b), [], [], [], [], []);
+            Screen('DrawTexture', dpP.window, txP.exampleNoise.tex, [], [], [], [], [], [], [], []);
             Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            Screen('DrawTexture', dpP.window, txP.exampleBlob.tex, [], imgRect, ori, [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
-            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            Screen('DrawTextures', dpP.window, txP.exampleBlob.tex, [], [], targetOri(b), [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
         else
             Screen('DrawTexture', dpP.window, logoTex, [], imgRect);
         end
