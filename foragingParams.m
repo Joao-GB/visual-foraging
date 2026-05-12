@@ -14,18 +14,32 @@ function params = foragingParams
     params.gaborPhase     = 0;
 
     % (d) Parâmetros do sinal
-    params.stimContrast = 1;       % Contraste final
-    params.signalAlpha = 0.5;
+    %% AJUSTAR o stimContrast
+%     params.stimContrast = .15;       % Contraste final
+    params.stimRMScontrast  = .2;
+    params.gaborAlpha       = 0.5;
+    params.gaborAlpha       = min(1, max(0, params.gaborAlpha));
+    params.noiseAlpha       = 1 - params.gaborAlpha;
+    params.gaborRMScontrast = params.stimRMScontrast*sqrt(params.gaborAlpha);
+    params.noiseRMScontrast = params.stimRMScontrast*sqrt(params.noiseAlpha);
     params.ampRange    = [-.5 .5];
+
+%     params.stimContrast     = .5;       % Contraste total do estímulo, tanto 
+%                                         % do grating + ruído como do ruído
+%                                         % rosa com orientação
+%     params.gaborMContrast   = .5;
+%     params.gaborRMSContrast = min(params.gaborMContrast/sqrt(2), params.stimContrast);
+%     params.noiseRMSContrast = sqrt(params.stimContrast^2 - params.gaborRMSContrast^2);
+%     params.ampRange    = [-.5 .5];
 
     % (e) Frequências de corte para filtro a ser aplicado no ruído, em cpd
     params.noiseLoCutFreq_cpd = 1/params.gaborSize_dva;
     params.noiseHiCutFreq_cpd = max(5,2*params.noiseLoCutFreq_cpd);
 
     % (f) Parâmetros do ruído rosa com orientação
-    %% Arrumar parâmetros
+    %% Arrumar parâmetros conforme o sujeito
     params.aSigma = 60;
-    params.rSigma2 = .76;
+    params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
     params.blobContrast = 1;
@@ -40,9 +54,9 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [0 90];%[0 45 77 160]; %
+    params.allOri = [0 90];%[0 45 90 135]; %
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'horizontal', 'vertical'};%{'vertical', 'diagonal crescente', 'horizontal', 'diagonal decrescente'};%
+    params.allOriName = {'horizontal', 'vertical'};%{'horizontal', 'diagonal decrescente', 'vertical', 'diagonal crescente'};%
     sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
     params.nbhdRadius = min(diff(sortedOri))/2;
 

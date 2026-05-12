@@ -18,11 +18,11 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 % nTrials é sempre a 2a dimensão)
     
     arguments
-        nStims  {mustBeNumeric}    = 10;
+        nStims  {mustBeNumeric}   = 10;
         nTrials {mustBeNumeric}   = 20;
         nBlocks {mustBeNumeric}   = 15;
-        nMaxFix {mustBeNumeric}    = 8;
-        nMinFix {mustBeNumeric}    = 2;
+        nMaxFix {mustBeNumeric}   = 8;
+        nMinFix {mustBeNumeric}   = 2;
         options.mode string       = 'experiment' % 'experiment', 'debug' ou 'debugTV'
     end
     
@@ -137,6 +137,10 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     greyBrown = white*params.greyBrown;
     paleBrown = white*params.paleBrown;
 
+    params.stimSTDmult  = grey* params.stimRMScontrast;
+    params.gaborSTDmult = grey*params.gaborRMScontrast;
+    params.noiseSTDmult = grey*params.noiseRMScontrast;
+
     params    = rmfield(params, {'blue', 'darkBlue', 'green', 'darkGreen', 'brown', 'darkBrown', 'greyBrown', 'paleBrown', 'orange', 'red'});
     
     allColors = white*ones(3, nStims);
@@ -213,24 +217,25 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     noiseHiCutFreq = params.noiseHiCutFreq_cpd/gabor.ppd; % Parâmetros do filtro para ruído
     noiseLoCutFreq = params.noiseLoCutFreq_cpd/gabor.ppd;
 
-    [oriFilter, OFsize] = MakeOriFilter(gabor.size_px, params.aSigma, params.rSigma2); % Filtro de orientação
+    [oriFilter, OFsize] = MakeOriFilter1(gabor.size_px, params.aSigma, params.rSigma2); % Filtro de orientação
 
     % (b) Estímulos para a tela entre blocos
     exampleParams = params; exampleGaborFactor = 3;
     exampleParams.gaborFreq_cpd = params.gaborFreq_cpd/exampleGaborFactor;
     exampleParams.gaborSize_dva = params.gaborSize_dva*exampleGaborFactor;
     [exampleGabor, gaborMatrix] = foragingGabor(screenRes, 1, exampleParams, monitorW_mm);
-    exampleGabor.matrix = gaborMatrix;
     exampleBlob = foragingBlob(window, exampleGabor.size_px, grey, params);
     exampleNoise = foragingNoise(exampleGabor.size_px, 1, params);
 
-    exampleMatrix = (1 - params.signalAlpha)*exampleNoise.matrix + params.signalAlpha*exampleGabor.matrix;
-    exampleMatrix = params.stimContrast*exampleMatrix + grey;
-%     exampleMatrix = exampleNoise.matrix + params.lambda*exampleGabor.matrix;
-%     exampleMatrix = params.stimContrast*(exampleMatrix - mean(exampleMatrix(:)))/std(exampleMatrix(:)) + grey;
+    exampleGabor.matrix = params.gaborSTDmult*gaborMatrix;
+    exampleNoise.matrix = params.noiseSTDmult*exampleNoise.matrix;
 
-    exampleTex    = Screen('MakeTexture', window, exampleMatrix);
-    exampleGabor.tex = exampleTex;
+%     exampleMatrix = exampleNoise.matrix + exampleGabor.matrix;
+%     exampleMatrix = (grey*params.stimRMScontrast)*exampleMatrix; %+ grey;
+
+%     exampleTex    = Screen('MakeTexture', window, exampleMatrix, [], [], 1);
+    exampleGabor.tex = Screen('MakeTexture', window, exampleGabor.matrix, [], [], 1);
+    exampleNoise.tex = Screen('MakeTexture', window, exampleNoise.matrix, [], [], 1);
 
     % (c) Blobs pós-modificação
     PMBlob = foragingBlob(window, gabor.size_px, grey, params, 0);
@@ -270,6 +275,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     texProps.gabor          = gabor;
     texProps.blob           = blob;
     texProps.exampleGabor   = exampleGabor;
+    texProps.exampleNoise   = exampleNoise; 
     texProps.exampleBlob    = exampleBlob;
     texProps.noiseHiCutFreq = noiseHiCutFreq;
     texProps.noiseLoCutFreq = noiseLoCutFreq;
@@ -699,12 +705,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %     plotados (srcRect)
         noiseMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
         oriPinkMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
-        gaborMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
-        for i = 1:nStims
-            colRange = ((i-1)*txP.gabor.size_px+1):(i*txP.gabor.size_px);
-            gaborMatrix(:, colRange) = txP.gabor.matrix;
-        end
-        stimMatrix = zeros(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
 
         fprintf('Tempo matrizes nulas: %.5f\n', toc)
         tic;
@@ -734,7 +734,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         % (f) Distância mínima para considerar fixação em alvo
         % pós-modificação (raio, não diâmetro)
-        minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
+         minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
         auxFixQueue = zeros(1, nStims);
         if strcmp(mode, 'experiment')
@@ -785,8 +785,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 repeatMessage = true;
                 
                 while repeatMessage && keepGoingBlocks
-                    Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                    Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
                     Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], targetOri(b), [], [], [], [], []);
+                    Screen('DrawTexture', dpP.window, txP.exampleNoise.tex, [], [], [], [], [], [], [], []);
                     Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                     Screen('DrawTextures', dpP.window, txP.exampleBlob.tex, [], [], targetOri(b), [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
         
@@ -814,8 +815,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         
                     Screen('Flip', dpP.window);
         
-                    KbReleaseWait;
-                       KbWait;
+                     KbReleaseWait;
+                     KbWait;
                     
                     [~,~,keyCode] = KbCheck;
                     
@@ -904,7 +905,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     % Se estiver no modo de cursor, cria uma textura em janela
                     % offscreen sobre a qual será desenhado o símbolo do cursor
                     if mode == 1
-                        bg = Screen('OpenOffscreenWindow', dpP.window, drP.grey);
+                        bg = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
                         auxWin  = bg;
                     else
                         auxWin = dpP.window;
@@ -912,24 +913,17 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         % (d) Cria as texturas de gabores e de ruído com e sem orientação
         %     (pois não faz sentido armazená-las), sem desenhá-las
+
                     auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
-                        noiseMatrix(:,colRange) = rescale(auxNoiseMatrix(:,colRange), prm.ampRange(1), prm.ampRange(2));
-                        aux = ApplyOriFilter(txP.oriFilter', txP.OFsize, auxNoiseMatrix(:,colRange));
-                        oriPinkMatrix(:,colRange) = prm.stimContrast*rescale(aux, prm.ampRange(1), prm.ampRange(2)) + drP.grey;
+                        aux = auxNoiseMatrix(:,colRange);
+                        noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
+                        oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter', txP.OFsize, aux);
                     end
-                    oriPinkTex = Screen('MakeTexture', dpP.window, oriPinkMatrix);
-
-        % (f) Mistura as matrizes
-                    stimMatrix(:,:) = (1 - prm.signalAlpha)*noiseMatrix + prm.signalAlpha*gaborMatrix;
-                    for j=1:(nStims)
-                        colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
-                        stimMatrix(:, colRange) = prm.stimContrast*stimMatrix(:, colRange) + drP.grey;
-                    end
-
-%                     noiseTex = Screen('MakeTexture', dpP.window, noiseMatrix);
-                    stimTex  = Screen('MakeTexture', dpP.window, stimMatrix);
+                    noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);
+                    gaborTex   = Screen('MakeTexture', dpP.window,  prm.gaborSTDmult*txP.gabor.matrix, [], [], 1);
+                    oriPinkTex = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix,    [], [], 1);
 
         % (f) Desenha a cruz de fixação
                     xFix = [-crossSize_px/2 crossSize_px/2 0 0];
@@ -951,7 +945,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, fixCenters(:, idx, b)', 2);
 
         % (g) Atualiza a tela para exibir a cruz de fixação
-                        if mode == 1, Screen('DrawTexture', dpP.window, bg); lastPos = [-1 -1]; end
+                        if mode == 1
+                            Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                            Screen('DrawTexture', dpP.window, bg); 
+                            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                            lastPos = [-1 -1];
+                        end
                         % disp('Vai calcular FSOnset')
                         FSonset = Screen('Flip', dpP.window);
                         FPonset = FSonset;
@@ -1102,36 +1101,42 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         % Novamente, no modo cursor é usada textura de tela cheia
                         if mode == 1
                             Screen('Close', bg); clear auxWin bg;
-                            bg = Screen('OpenOffscreenWindow', dpP.window, drP.grey);
-                            auxWin  = bg;
+                            bg = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
+                            auxWin = bg;
                         else
                             auxWin = dpP.window;
                         end
             
             % (h) Desenha os ruídos com os gratings
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
-                        Screen('DrawTextures', auxWin, stimTex, srcRects, dstRects, orientation(:, idx, b));
+                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                        Screen('DrawTextures', auxWin, gaborTex, [], dstRects, orientation(:, idx, b));
+                        Screen('DrawTextures', auxWin, noiseTex, srcRects, dstRects, orientation(:, idx, b));
                     
             % (j) Desenha a abertura gaussiana
                         Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                         Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
             
             % (k) Atualiza a tela para exibir os estímulos
-                        if mode == 1, Screen('DrawTexture', dpP.window, bg); lastPos = [-1 -1]; end
+                        if mode == 1
+                            Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                            Screen('DrawTexture',   dpP.window, bg); 
+                            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                            lastPos = [-1 -1];
+                        end
                         trialOnset = Screen('Flip', dpP.window, vbl + 0.5 * dpP.ifi);
             
             % vi. Registra o momento de início do trial
                         if debug == 0  && mode >= 2 && keepGoingTrials
                             Eyelink('Message',prm.msg.on.P2);
                         end
-                    else 
+                    else
                         trialOnset = GetSecs;
                     end
         
         % vii. O sujeito deve visitar exatamente Ns(i) estímulos
         %      antes de ocorrerem as modificações pré-sacádicas
                     counter = 0;                 % Número de estímulos visitados
-                    flag = zeros(1, nStims); % Quantas vezes cada estímulo foi visitado
+                    flag = zeros(1, nStims);     % Quantas vezes cada estímulo foi visitado
                     currStim = 0;
                     fixStartTime = NaN;
                     if keepGoingTrials && ~restartTrial
@@ -1165,7 +1170,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                     check = true;
                                     if any([x_gaze, y_gaze] ~= lastPos)
-                                        Screen('DrawTexture', dpP.window, bg);
+                                        Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                                        Screen('DrawTexture',   dpP.window, bg); 
+                                        Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                         Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                         Screen('Flip', dpP.window);
                                         lastPos = [x_gaze, y_gaze];
@@ -1335,7 +1342,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %     não vistos. Atrasa a apresentação para o estímulo durar
         %     medFixTime segundo antes de o ruído rosa substituí-lo
                     if mode == 1
-                        bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey);
+                        bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
                         auxWin  = bg1;
                     else
                         auxWin = dpP.window;
@@ -1345,20 +1352,22 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
             % (i) Desenha os ruídos orientados e o mesmo grating se a
             %     fixação tiver sido mantida
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ZERO);
+                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
                         Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
 
                         if ~isempty(currIdx)
-                            Screen('DrawTextures', auxWin, stimTex, srcRects(:, currIdx), dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [], []);
+                            Screen('DrawTextures', auxWin, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
+                            Screen('DrawTextures', auxWin, noiseTex, srcRects(:,currIdx), dstRects(:,currIdx), orientation(currIdx, idx, b));
                             
                             Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                             Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                        else
+                            Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                         end
                     
             % (j) Desenha a abertura gaussiana
-                        Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                         Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('Close', oriPinkTex); Screen('Close', stimTex);
+                        Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
                         Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         
                         %% A tela não modificada deve ser exibida ao todo por 
@@ -1373,8 +1382,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             while GetSecs < preUpdateDeadline
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                 if any([x_gaze, y_gaze] ~= lastPos)
-                                    Screen('DrawTexture', dpP.window, bg);
+                                    Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
+                                    Screen('DrawTexture', dpP.window, bg1);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                    Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('Flip', dpP.window);
                                     lastPos = [x_gaze, y_gaze];
                                 end
@@ -1421,8 +1432,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                 check = true;
                                 if any([x_gaze, y_gaze] ~= lastPos)
+                                    Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
                                     Screen('DrawTexture', dpP.window, bg1);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                    Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('Flip', dpP.window);
                                     lastPos = [x_gaze, y_gaze];
                                 end
@@ -1983,8 +1996,8 @@ function [gabor, matrices] = foragingGabor(screenRes, nStims, params, monitorW_m
     matrices = zeros(gaborSize_px, nStims*gaborSize_px);
     for i = 1:nStims
         colRange = ((i-1)*gaborSize_px+1):(i*gaborSize_px);
-        matrices(:, colRange) = CreateGrating(gaborSize_px,gaborFreq,gaborAngle(i),rand,1);
-%         matrices(:, colRange) = (maux - mean(maux(:)))/std(maux(:));
+        maux = CreateGrating(gaborSize_px,gaborFreq,gaborAngle(i),rand,1); % matrices(:, colRange) = CreateGrating(gaborSize_px,gaborFreq,gaborAngle(i),rand,1);
+        matrices(:, colRange) = (maux - mean(maux(:)))/std(maux(:));
     end
 
     gabor.size_px = gaborSize_px;
@@ -2013,13 +2026,13 @@ function blob  = foragingBlob(window, blobSize, grey, params, blobMode)
 end
 
 
-function noise = foragingNoise(noiseSize, nStims, prm, loCut, hiCut)
+function noise = foragingNoise(noiseSize, nStims, prm, loCut, hiCut) %#ok<INUSD> 
     auxNoiseMatrix = pinkNoise(noiseSize, nStims*noiseSize);
     if nargin >= 4
         auxNoiseMatrix = butterFilter(auxNoiseMatrix, loCut, hiCut);
     end
-    noiseMatrix = rescale(auxNoiseMatrix, prm.ampRange(1), prm.ampRange(2));
-%     noiseMatrix = (auxNoiseMatrix - mean(auxNoiseMatrix(:))) / std(auxNoiseMatrix(:));
+%     noiseMatrix = rescale(auxNoiseMatrix, prm.ampRange(1), prm.ampRange(2));
+    noiseMatrix = (auxNoiseMatrix - mean(auxNoiseMatrix(:))) / std(auxNoiseMatrix(:));
     noise.matrix  = noiseMatrix;
     noise.size_px = [noiseSize nStims*noiseSize];
 end
