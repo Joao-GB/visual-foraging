@@ -10,7 +10,7 @@ function params = foragingParams
 
     % (c) Tamanhos, frequência e outras propriedades dos gabores
     params.gaborSize_dva  = 1.5;
-    params.gaborFreq_cpd  = 15; % Rucci et al. (2007) usam 11, em cpd
+    params.gaborFreq_cpd  = 11; % Rucci et al. (2007) usam 11, em cpd
     params.gaborPhase     = 0;
 
     % (d) Parâmetros do sinal
@@ -38,7 +38,7 @@ function params = foragingParams
 
     % (f) Parâmetros do ruído rosa com orientação
     %% Arrumar parâmetros conforme o sujeito
-    params.aSigma = 60;
+    params.aSigma = 40;
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -68,16 +68,16 @@ function params = foragingParams
     params.seenNotSeenRatio = 1;                 % O quanto se deve priorizar os estímulos vistos em relação aos não vistos
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .1;
+    params.pinkNoiseDur = .15;
     params.minP3Dur     = .025;
     params.betaP3       = 1/20;                   % Taxa da EMA para a função P3Onset2
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
     params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
-    params.medFixTime2 = .2;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
+    params.medFixTime2 = .25;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .5;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.postModDur  = .8;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     % (m) Tamanho da fila de tempos de fixação
@@ -89,7 +89,7 @@ function params = foragingParams
     % (o) Raio da área ao redor dos estímulos em que se considera uma
     % fixação
     params.fixROIradius1_dva = 1.5;          % Para fixações pré-modificação
-    params.fixROIradius3_dva = 2.5;          % Para fixações pós-modificação
+    params.fixROIradius3_dva = 3;            % Para fixações pós-modificação
 %     % Fatores multiplicativos para se considerar ou não fixação
 %     params.fixDistFactor1 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
 %     params.fixDistFactor3 = 1.8;    % Fator de tolerância para distância entre fixação e alvos pós-modificação

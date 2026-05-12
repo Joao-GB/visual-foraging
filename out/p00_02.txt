@@ -1,0 +1,2318 @@
+Tempo inicial: 0.00841
+Tempo getDistr: 0.00066
+Tempo orientações distratoras: 0.00002
+Tempo matrizes nulas: 0.00014
+Tempo rects a centers: 0.00028
+Tempo preencher locais estímulos e orientações de alvos: 0.08966
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 6
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0698
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0701
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 6: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      1     5     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 5  1
+Pré-s: 
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 9
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0632
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0634
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1603
+Trial 9: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      3     4     6     1     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 1
+Pré-s: 
+Não vistos: 7  2
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 18
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0644
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0646
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 18: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      6     8     2     5     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 8  2
+Pré-s: 
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 15
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Terminou a visita ao 5-ésimo estímulo
+currStim = 6
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0635
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0637
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1582
+Trial 15: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      4     2     8     3     1     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 5  7
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 7
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0567
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0571
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 7: Visitou o alvo 8 pós-modificação
+seenStimsQueue final:      2     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 5  1
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 14
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0594
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0599
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 14: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      6     8     7     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 6  7
+Pré-s: 
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 1
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0675
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0677
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 1: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      8     4     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 8
+Pré-s: 
+Não vistos: 2  3
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 17
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+currStim = 7
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0605
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.0608
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 17: Visitou o alvo 7 pós-modificação
+seenStimsQueue final:      5     4     2     1     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 3  6
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 3
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 1
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 8
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0574
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0576
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 3: Visitou o alvo 8 pós-modificação
+seenStimsQueue final:      2     7     6     1     3     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 1  3
+Pré-s: 
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 11
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+currStim = 3
+currStim = 3
+currStim = 3
+currStim = 3
+currStim = 3
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 8
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0505
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0507
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1584
+Trial 11: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      1     4     2     6     3     8     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 7
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 10
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0663
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0664
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1599
+Trial 10: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      7     8     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 8  7
+Pré-s: 
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 12
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0625
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.0627
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 12: Visitou o alvo 7 pós-modificação
+seenStimsQueue final:      8     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 8
+Pré-s: 
+Não vistos: 3  1
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 13
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0612
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0614
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1584
+Trial 13: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      4     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 4
+Pré-s: 
+Não vistos: 1  5
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 5
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0566
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0568
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1584
+Trial 5: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      4     2     7     8     3     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 4  7
+Pré-s: 
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 4
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Terminou a visita ao 5-ésimo estímulo
+currStim = 8
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0518
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0520
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 4: Visitou o alvo 8 pós-modificação (fim forçado)
+seenStimsQueue final:      7     5     1     2     4     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 2  7
+Pré-s: 
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 9
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Terminou a visita ao 5-ésimo estímulo
+currStim = 3
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0622
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0626
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 9: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      8     6     2     7     4     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 4  7
+Pré-s: 
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 2
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0646
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0648
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      5     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 5
+Pré-s: 
+Não vistos: 1  2
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 4
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0569
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0571
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1581
+Trial 4: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      7     2     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 7
+Pré-s: 
+Não vistos: 8  1
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 13
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0572
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0581
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1600
+Trial 13: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      7     8     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 7  8
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 1
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0570
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0571
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1604
+Trial 1: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      6     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 2  4
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 12
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0630
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.0631
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 12: Visitou o alvo 5 pós-modificação (fim forçado)
+seenStimsQueue final:      4     2     7     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 5
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 17
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0564
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0566
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1584
+Trial 17: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      2     7     4     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 7  2
+Pré-s: 
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 5
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0569
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0573
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1601
+Trial 5: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      3     4     2     1     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 3  2
+Pré-s: 
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 14
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0542
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0544
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1608
+Trial 14: Visitou o alvo 2 pós-modificação
+seenStimsQueue final:      5     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 5
+Pré-s: 
+Não vistos: 6  8
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 3
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0570
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0572
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1598
+Trial 3: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      1     2     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 4  8
+
+Idx Bloco: 2
+# Trial: 11
+ Idx Trial: 16
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0556
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0558
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1582
+Trial 16: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      7     2     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 2  7
+Pré-s: 
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 12
+ Idx Trial: 10
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0548
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0550
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1575
+Trial 10: Visitou o alvo 8 pós-modificação (fim forçado)
+seenStimsQueue final:      7     4     3     1     5     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 13
+ Idx Trial: 18
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0636
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0637
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 18: Visitou o alvo 8 pós-modificação
+seenStimsQueue final:      1     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 1
+Pré-s: 
+Não vistos: 3  5
+
+Idx Bloco: 2
+# Trial: 14
+ Idx Trial: 11
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0583
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0585
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1575
+Trial 11: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      6     1     2     8     4     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 7
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 15
+ Idx Trial: 8
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0617
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0620
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por dispersão: 0.1058
+Tempo total de ruído rosa: 0.1083
+Trial 8: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      2     8     3     1     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 7
+Não vistos: 6
+Ajuste de pinkNoiseDur
+Tempo total da tarefa: 266.585 s
+Tempo inicial: 1.09287
+Tempo getDistr: 0.00026
+Tempo orientações distratoras: 0.00002
+Tempo matrizes nulas: 0.00003
+Tempo rects a centers: 0.00010
+Tempo preencher locais estímulos e orientações de alvos: 0.11461
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 1
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0563
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0565
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 1: Visitou o alvo 1 pós-modificação (fim forçado)
+seenStimsQueue final:      8     2     3     5     6     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 4
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0575
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0577
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1589
+Trial 4: Visitou o alvo 2 pós-modificação
+seenStimsQueue final:      6     7     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 6  7
+Pré-s: 
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 13
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+currStim = 7
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0529
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0531
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1593
+Trial 13: Visitou o alvo 8 pós-modificação (fim forçado)
+seenStimsQueue final:      5     4     2     7     3     1     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 8
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 9
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0630
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0632
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 9: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      7     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 7
+Pré-s: 
+Não vistos: 3  1
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 21
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0553
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0559
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1584
+Trial 21: Visitou o alvo 4 pós-modificação (fim forçado)
+seenStimsQueue final:      6     3     2     1     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 4
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 8
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0633
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0636
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 8: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      5     3     1     2     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 1  3
+Pré-s: 
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 14
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0553
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.0555
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 14: Visitou o alvo 1 pós-modificação (fim forçado)
+seenStimsQueue final:      8     6     2     5     7     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 1
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 18
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0658
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0661
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 18: Visitou o alvo 2 pós-modificação (fim forçado)
+seenStimsQueue final:      5     6     1     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 2
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 2
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+currStim = 2
+Terminou a visita ao 5-ésimo estímulo
+currStim = 3
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0525
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0527
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1581
+Trial 2: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      5     1     4     6     2     3     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 7
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 20
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+currStim = 5
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0572
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0576
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 20: Visitou o alvo 1 pós-modificação (fim forçado)
+seenStimsQueue final:      3     6     6     5     4     7     2     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 1
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 22
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0568
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0573
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 22: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      6     4     1     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 1  6
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 7
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0572
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0574
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1591
+Trial 7: Visitou o alvo 2 pós-modificação
+seenStimsQueue final:      5     3     4     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 4  3
+Pré-s: 
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 16
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0631
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0633
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1601
+Trial 16: Visitou o alvo 2 pós-modificação
+seenStimsQueue final:      3     7     8     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 8
+Pré-s: 
+Não vistos: 5  1
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 19
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0606
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0608
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1583
+Trial 19: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      5     7     1     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 7  1
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 15
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Terminou a visita ao 5-ésimo estímulo
+currStim = 4
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0551
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0553
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1565
+Trial 15: Visitou o alvo 8 pós-modificação (fim forçado)
+seenStimsQueue final:      5     6     2     3     1     4     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 8
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 16
+ Idx Trial: 11
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0583
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0585
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 11: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      7     3     1     6     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 2  8
+
+Idx Bloco: 1
+# Trial: 17
+ Idx Trial: 6
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0668
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0670
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1564
+Trial 6: Visitou o alvo 8 pós-modificação
+seenStimsQueue final:      6     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 2  7
+
+Idx Bloco: 1
+# Trial: 18
+ Idx Trial: 23
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0559
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0561
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 23: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      4     6     7     8     3     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 4  8
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 19
+ Idx Trial: 5
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0636
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0637
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1584
+Trial 5: Visitou o alvo 1 pós-modificação (fim forçado)
+seenStimsQueue final:      3     4     2     8     7     5     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 1
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 20
+ Idx Trial: 17
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+currStim = 1
+currStim = 5
+currStim = 5
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0611
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0613
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1583
+Trial 17: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      7     5     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 5
+Pré-s: 
+Não vistos: 2  6
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 1
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0593
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0596
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 1: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      6     3     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 1  5
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 6
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0542
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0544
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 6: Visitou o alvo 4 pós-modificação
+seenStimsQueue final:      5     6     1     7     4     4
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 1
+Pré-s: 
+Não vistos: 8  2
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 19
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0639
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.0643
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1582
+Trial 19: Visitou o alvo 2 pós-modificação (fim forçado)
+seenStimsQueue final:      7     6     1     5     4     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 2
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 22
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0556
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0559
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1584
+Trial 22: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      8     2     7     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 8  7
+Pré-s: 
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 14
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0596
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.0598
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1593
+Trial 14: Visitou o alvo 5 pós-modificação
+seenStimsQueue final:      6     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 1  4
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 16
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Terminou a visita ao 5-ésimo estímulo
+currStim = 8
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0553
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0554
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1565
+Trial 16: Visitou o alvo 4 pós-modificação (fim forçado)
+seenStimsQueue final:      2     3     7     5     1     8     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 4
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 21
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+currStim = 1
+currStim = 1
+currStim = 1
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0534
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0536
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1601
+Trial 21: Visitou o alvo 5 pós-modificação (fim forçado)
+seenStimsQueue final:      8     4     7     3     1     2     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 5
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 11
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0584
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0585
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 11: Visitou o alvo 2 pós-modificação
+seenStimsQueue final:      4     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 4
+Pré-s: 
+Não vistos: 7  1
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 15
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0693
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0698
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1583
+Trial 15: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      7     2     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 2  7
+Pré-s: 
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 18
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0590
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.0594
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1581
+Trial 18: Visitou o alvo 3 pós-modificação
+seenStimsQueue final:      8     2     1     5     3     3
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 8  1
+Pré-s: 
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 11
+ Idx Trial: 20
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 4
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0556
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0559
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1583
+Trial 20: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      4     3     5     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 5
+Pré-s: 
+Não vistos: 6  2
+
+Idx Bloco: 2
+# Trial: 12
+ Idx Trial: 5
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0626
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0628
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1599
+Trial 5: Visitou o alvo 3 pós-modificação (fim forçado)
+seenStimsQueue final:      8     4     5     1     2     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 3
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 13
+ Idx Trial: 8
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0652
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.0654
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1583
+Trial 8: Visitou o alvo 7 pós-modificação
+seenStimsQueue final:      3     6     1     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 6  3
+Pré-s: 
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 14
+ Idx Trial: 4
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+currStim = 5
+Terminou a visita ao 5-ésimo estímulo
+currStim = 8
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0592
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0594
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1617
+Trial 4: Visitou o alvo 8 pós-modificação
+seenStimsQueue final:      3     1     2     7     5     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 1  3
+Pré-s: 
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 15
+ Idx Trial: 13
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 2
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+currStim = 5
+currStim = 5
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0496
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0498
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1565
+Trial 13: Visitou o alvo 3 pós-modificação (fim forçado)
+seenStimsQueue final:      2     8     5     1     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 3
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 16
+ Idx Trial: 7
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0567
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0569
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1502
+Tempo total de ruído rosa: 0.1565
+Trial 7: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      3     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+Vistos: 3
+Pré-s: 
+Não vistos: 4  7
+
+Idx Bloco: 2
+# Trial: 17
+ Idx Trial: 12
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0606
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.0608
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1582
+Trial 12: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      3     7     5     1     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 7
+Pré-s: 
+Não vistos: 8  2
+
+Idx Bloco: 2
+# Trial: 18
+ Idx Trial: 23
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0575
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.0577
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 23: Visitou o alvo 2 pós-modificação (fim forçado)
+seenStimsQueue final:      6     3     4     1     8     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 2
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 19
+ Idx Trial: 2
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+currStim = 1
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0596
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.0600
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 8 pós-modificação (fim forçado)
+seenStimsQueue final:      6     4     5     1     3     2     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 8
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 20
+ Idx Trial: 3
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0547
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.0549
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1601
+Trial 3: Visitou o alvo 6 pós-modificação (fim forçado)
+seenStimsQueue final:      7     2     8     4     1     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 6
+Não vistos: 5
+Tempo total da tarefa: 279.266 s
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de treino concluída e salva com êxito.
+AVISO: Sessão experimental concluída e salva com êxito.
+Tempo total da sessão: 550.427 s
