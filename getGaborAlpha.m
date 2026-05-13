@@ -1,0 +1,6 @@
+function alphas = getGaborAlpha(tNow, stimTimes, prm)
+    stimTimes(isnan(stimTimes)) = Inf;
+    alphas = 1 - (min(prm.maxDurStim, ...
+             max(tNow - stimTimes, prm.minDurStim)) ...
+             - prm.minDurStim) / prm.fadeOutStimDur;
+end

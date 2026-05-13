@@ -1101,15 +1101,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         else
                             auxWin = dpP.window;
                         end
-            
-            % (h) Desenha os ruídos com os gratings
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                        Screen('DrawTextures', auxWin, gaborTex, [], dstRects, orientation(:, idx, b));
-                        Screen('DrawTextures', auxWin, noiseTex, srcRects, dstRects, orientation(:, idx, b));
-                    
-            % (j) Desenha a abertura gaussiana
-                        Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-                        Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects, orientation(:, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+
+                        alphas = ones(nStims, 1);
+
+                        foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP, [repmat(alphas', [3,1]); ones(1, nStims)]);
             
             % (k) Atualiza a tela para exibir os estímulos
                         if mode == 1
@@ -1132,6 +1127,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %      antes de ocorrerem as modificações pré-sacádicas
                     counter = 0;                 % Número de estímulos visitados
                     flag = zeros(1, nStims);     % Quantas vezes cada estímulo foi visitado
+                    stimTimes = nan(nStims,1);
                     currStim = 0;
                     fixStartTime = NaN;
                     if keepGoingTrials && ~restartTrial
@@ -1147,8 +1143,18 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             % sem movimento ocular
                             runTrial = true;
                             while runTrial
+
                                 WaitSecs(0.001);
                                 tNow = GetSecs;
+                                alphasPrev = alphas;
+                                alphas = getGaborAlpha(tNow, stimTimes, prm);
+                                alphaChanged = ~isequal(alphasPrev, alphas);
+                                if alphaChanged
+                                    if mode == 1
+                                        Screen('FillRect', auxWin, drP.grey);
+                                    end
+                                    foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP, [repmat(alphas', [3,1]); ones(1, nStims)])
+                                end
                             
                                 check = false;
                                 if mode > 1
@@ -1161,10 +1167,13 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                         y_gaze = evt.gy(tkP.Eye);
                                         check = true;
                                     end
+                                    if alphaChanged
+                                        Screen('Flip', dpP.window);
+                                    end
                                 elseif mode == 1
                                     [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                     check = true;
-                                    if any([x_gaze, y_gaze] ~= lastPos)
+                                    if any([x_gaze, y_gaze] ~= lastPos) || alphaChanged
                                         Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
                                         Screen('DrawTexture',   dpP.window, bg); 
                                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1229,8 +1238,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                     Eyelink('Message',prm.msg.on.stm{2});
                                                 end
                                             end
-                            
                                             fixStartTime = tNow;
+                                            if flag(currStim) == 0
+                                                stimTimes(currStim) = fixStartTime;
+                                            end
                             
                                             %% IMPORTANTE: Se for iniciada a modTimes(b,i)-ésima fixação
                                             % diferente num estímulo, começa a contar o tempo de
@@ -1550,9 +1561,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 tNow = GetSecs;
                             end
                             if maxDurReached && ~isempty(currIdx)
-                               seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
-                               disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
-                               if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
+                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
+                                disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
+                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
+                            elseif ~isempty(currIdx)
+                                 WaitSecs(prm.postModDur - (tNow - updateStimOffset));
                             end
                         end
                         fprintf('seenStimsQueue final: '); disp(seenStimsQueue{b,i}(1,:)); fprintf('\n')

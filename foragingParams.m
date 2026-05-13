@@ -77,7 +77,7 @@ function params = foragingParams
     params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .25;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
     params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .8;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.postModDur  = .5;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     % (m) Tamanho da fila de tempos de fixação
@@ -126,17 +126,23 @@ function params = foragingParams
     params.nBufferTrials = 3;   % Número de trials adicionados para evitar
                                     % repetições consecutivas de um trial
     params.maxRetries = 2;      % Número máximo de vezes que pode se 
-                                    % repetir cada trial 
-    % (e) Tamanho e cor do cursor
+                                    % repetir cada trial
+
+    % (e) Parâmetros para remoção de estímulos já fixados
+    params.minDurStim     = .40;
+    params.fadeOutStimDur = .05;
+    params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
+
+    % (f) Tamanho e cor do cursor
     params.cursorRadius_px   = 4;
     params.cursorColor       = [1 1 1];
 
-    % (f) Parâmetros de fixação com cursor
+    % (g) Parâmetros de fixação com cursor
     params.cursorMinFixTime2 = .2;
     params.cursorMedFixTime2 = .5;
     params.cursorMinFixTime3 = .35;
 
-    % (g) Textos de início, fim, pausa e interrupção de sessão, blocos e
+    % (h) Textos de início, fim, pausa e interrupção de sessão, blocos e
     %     trials
     params.msg.suffix     = {'cur', 'trn', 'exp'};
     params.msg.on.ses{1}     = 'SESSION ONSET (%s)';
@@ -185,10 +191,10 @@ function params = foragingParams
     params.msg.off.pse    = 'PAUSE OFFSET';
 
 %% Parâmetros de formatação: fontes, espessuras, cores, tamanhos e posições de textos e ícones...
-    % (g) Fonte para os textos
+    % (i) Fonte para os textos
     params.textFont          = 'Roboto';
 
-    % (h) Diferentes tamanhos de fonte
+    % (j) Diferentes tamanhos de fonte
     params.textSizeTitle     = 110;
     params.textSizeEnormous  = 90;
     params.textSizeHuger     = 80;
@@ -202,12 +208,12 @@ function params = foragingParams
     params.textSizeTiny      = 8;
     params.textSizeTinier    = 5;
 
-    % (i) Espessura de caneta de desenho
+    % (k) Espessura de caneta de desenho
     params.pW1 = 3;
     params.pW2 = 5;
     params.pW3 = 10;
 
-    % (j) Cores escolhidas a dedo
+    % (l) Cores escolhidas a dedo
     params.orange    = [.98 .55 .06];
     params.red       = [.86 .20 .20];
     params.blue      = [.57 .64 .72];
@@ -220,7 +226,7 @@ function params = foragingParams
     params.greyBrown = [.58 .44 .384];
     
 
-    % (k) Tamanhos e posições dos símbolos de Menu e Pause
+    % (m) Tamanhos e posições dos símbolos de Menu e Pause
     params.titleMarginFactor = .05;     % Distância entre título e limites da tela
 
     params.btnW   = 300;                % Tamanho dos botões clicáveis
@@ -242,11 +248,11 @@ function params = foragingParams
                                     % apertada passado o repeatDelay
     params.pauseMaxDur = 15;    % Duração máxima de uma pausa sem se seja exibida
                                     % tela relembrando alvo
-    % (l) Atrasos para começar efeitos de fade in
+    % (n) Atrasos para começar efeitos de fade in
     params.fadeInDelay1 = 0.3;
     params.fadeInDelay2 = 0.5;
 
-    % (m) Durações de efeitos de fade in
+    % (o) Durações de efeitos de fade in
     params.fadeInDur1   = 0.1;
     params.fadeInDur2   = 0.35;
 end
