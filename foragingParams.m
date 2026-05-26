@@ -13,9 +13,7 @@ function params = foragingParams
     params.gaborFreq_cpd  = 11; % Rucci et al. (2007) usam 11, em cpd
     params.gaborPhase     = 0;
 
-    % (d) Parâmetros do sinal
-    %% AJUSTAR o stimContrast
-%     params.stimContrast = .15;       % Contraste final
+    % (d) Parâmetros dos estímulos
     params.stimRMScontrast  = .2;
     params.gaborAlpha       = 0.5;
     params.gaborAlpha       = min(1, max(0, params.gaborAlpha));
@@ -23,14 +21,6 @@ function params = foragingParams
     params.gaborRMScontrast = params.stimRMScontrast*sqrt(params.gaborAlpha);
     params.noiseRMScontrast = params.stimRMScontrast*sqrt(params.noiseAlpha);
     params.ampRange    = [-.5 .5];
-
-%     params.stimContrast     = .5;       % Contraste total do estímulo, tanto 
-%                                         % do grating + ruído como do ruído
-%                                         % rosa com orientação
-%     params.gaborMContrast   = .5;
-%     params.gaborRMSContrast = min(params.gaborMContrast/sqrt(2), params.stimContrast);
-%     params.noiseRMSContrast = sqrt(params.stimContrast^2 - params.gaborRMSContrast^2);
-%     params.ampRange    = [-.5 .5];
 
     % (e) Frequências de corte para filtro a ser aplicado no ruído, em cpd
     params.noiseLoCutFreq_cpd = 1/params.gaborSize_dva;
@@ -95,6 +85,18 @@ function params = foragingParams
 %     params.fixDistFactor3 = 1.8;    % Fator de tolerância para distância entre fixação e alvos pós-modificação
 %                                         % (maior tolerância a erro, já que o estímulo é removido)
 
+%% Porpriedades do staircase
+    params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
+    addpath(genpath(params.palPath));
+    params.sigmaMin = 5;
+    params.sigmaMax = 70;
+    params.nBlocksStair = numel(params.allOri);
+    params.nTrialsStair = 40;
+    params.priorMeanStair = 35; 
+    params.priorStdStair  = 20; 
+    params.minJitterStair  = .5; 
+    params.maxJitterStair  = 1;
+    params.postModDurStair = .3;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
@@ -159,6 +161,7 @@ function params = foragingParams
     params.msg.on.PM      = 'POST-MOD ONSET';
     params.msg.on.P4      = 'PHASE 4 ONSET';
     params.msg.on.pse     = 'PAUSE ONSET';
+    params.msg.on.stc     = 'STAIRCASE ONSET';
     
 
     params.msg.err.blk    = 'BLOCK ABORT TRY';

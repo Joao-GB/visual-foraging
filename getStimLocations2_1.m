@@ -1,4 +1,4 @@
-function [fixCenter, stimCenters, rMax] = getStimLocations2_1(screenRes, ROIparams, nStims, minDist, rStim, c)
+function [fixCenter, stimCenters, rMax, fixIdx] = getStimLocations2_1(screenRes, ROIparams, nStims, minDist, rStim, c)
 % Poisson disk sampling com raio de busca de vizinhos restrito ao 
 % intervalo [minDist, minDist*(1+c)]. 
 % A nova lógica: 
@@ -216,9 +216,11 @@ end
 stimCenters = selected';
 
 if isempty(selected)
+    fixIdx    = [];
     fixCenter = [];
 else
-    fixCenter = selected(randi(size(selected,1)), :)';
+    fixIdx    = randi(size(selected,1));
+    fixCenter = selected(fixIdx, :)';
 end
 
 end

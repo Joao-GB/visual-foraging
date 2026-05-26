@@ -305,7 +305,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     taskStart = tic;
 
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
-    [~, taskState] = menuScreen(taskProps, displayProps, drawProps, texProps, debug, params);
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
 
     taskEnd = toc(taskStart);
     fprintf('Tempo total da sessão: %.3f s\n', taskEnd);
@@ -325,8 +325,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 end
 
 
-function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
-    if nargin < 7, menuMode = 'normal'; end
+function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 %% Interpretação da variável taskState:
     % Linhas: treino e experimento; 
     % Colunas: começou e concluiu
@@ -343,30 +342,42 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     if debug == 0,  HideCursor(dpP.window); end
 
     titleText = 'MENU'; titleMargin = cX*prm.titleMarginFactor;
+    currentScreen = 'main'; % Pode ser 'main' ou 'training'
+    refreshLayout = true;
 
     % Cria texturas de cursor e treino
-    if strcmp(menuMode, 'normal')
-        options     = {'cursor', 'training'};
-        optionsName = {'Demo Mouse', 'Treino'};
-        optionsMsg = {['Demonstração com o cursor (mouse), para\n'...
-               'familiarização com a estrutura da tarefa.'],...
-               ['Treino para o experimento, já com movimentos\n'...
-               'oculares, e feedback ao fim de cada tentativa.\n\n'...
-               'Recomendado antes de toda sessão experimental.'],...
-               'Inicia a sessão experimental propriamente.'};
-    else
-        options     = {'staircase', 'cursor', 'training'};
-        optionsName = {'Staircase', 'Demo Mouse', 'Treino'};
-        optionsMsg = {['Ajusta os parâmetros do ruído conforme o\n'...
-               'participante usando o método de staircase.'],...
-               ['Demonstração com o cursor (mouse), para\n'...
-               'familiarização com a estrutura da tarefa.'],...
-               ['Treino para o experimento, já com movimentos\n'...
-               'oculares, e feedback ao fim de cada tentativa.\n\n'...
-               'Recomendado antes de toda sessão experimental.'],...
-               'Inicia a sessão experimental propriamente.'};
-    end
+    mainOptions     = {'staircase', 'training', 'experiment'};
+    mainOptionsName = {'Staircase', 'Treino', 'Experimento'};
+    mainOptionsMsg  = {['Ajusta os parâmetros do ruído conforme o\n'...
+                        'participante usando o método de staircase.'],...
+                       ['Diferentes tipos de treino para o experimento,\n'...
+                        'com e sem movimentos oculares, e feedback ao \n'...
+                        'fim de cada tentativa.\n\n'...
+                        'Recomendado antes de toda sessão experimental.'],...
+                        'Inicia a sessão experimental propriamente.'};
+
+    trainOptions     = {'cursor', 't1', 't2'};
+    trainOptionsName = {'Demo Mouse', 'Treino 1', 'Treino 2'};
+    trainOptionsMsg  = {['Demonstração com o cursor (mouse), para\n'...
+                         'familiarização com a estrutura da tarefa.'],...
+                        'Treino dos aspectos de busca visual da tarefa.',...
+                        ['Treino dos aspectos de acuidade visual da \n'...
+                         'tarefa.']};
+    
+    backText = 'Voltar';
+    backRect = Screen('TextBounds', dpP.window, backText); 
+    backRect(1) = 60;                                     % Posição X (Canto esquerdo)
+    backRect(2) = dpP.winRect(4) - 70;                    % Posição Y (Canto inferior)
+    backRect(3) = backRect(1) + 140;                      % Largura do bounding box do botão
+    backRect(4) = backRect(2) + 40;                       % Altura do bounding box do botão
+    
+    % Seta invertida no eixo X para apontar para a ESQUERDA (Voltar)
+    arrow = [25 -8; -20 -8; -25 0; -20 8; 25 8; 20 0];
+    scale = 3.5;
+    arrowCoords = arrow * scale + [backRect(1) + 30, backRect(2) + 20];
+
     parentDir = prm.filePath;
+    options = mainOptions;
     iconsDir = cellfun(@(x) fullfile(parentDir, prm.imgFolder, [x prm.imgExtension]), options, 'UniformOutput', false);
     clear parentDir
 
@@ -402,22 +413,6 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     detailRect = CenterRectOnPoint([0 0 2*prm.btnW (1.2/3)*prm.btnH], cX, 1.75*cY);
     drawBox = false;
     
-    %% Seta para sair do menu/avançar
-    skipText = 'Avançar';
-    skipRect = Screen('TextBounds', dpP.window, skipText); %[dpP.winRect(3)-150, dpP.winRect(4)-60, 110, 40];
-    skipRect(1) = dpP.winRect(3)-150; skipRect(2) = dpP.winRect(4)-60;
-
-    arrow = [-25 -8;
-              20 -8;
-              25  0;
-              20  8;
-             -25  8;
-             -20  0];
-    
-    scale = 3.5;
-    arrow = arrow*scale + [skipRect(1) + skipRect(3)/2 skipRect(2) + skipRect(4)/2];
-    clear lRectSplit rRectSplit scale
-    
     %% Estados
     if (L+1)/2 == floor((L+1)/2)
         firstSelectL = (L+1)/2;
@@ -426,7 +421,7 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
         firstSelectL = floor((L+1)/2);
         firstSelectR = ceil((L+1)/2);
     end
-    selected = 0;
+    selected = -1;
     [prevMx, prevMy, prevBut] = GetMouse(dpP.window);
     prevMouse = [prevMx, prevMy, prevBut];
     
@@ -434,10 +429,50 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     keyWasDown = false;
     lastActionTime = 0; lastRepeatTime = -Inf;
     doAction = false;
-    mode = '';
     quitSes = 0;
 
     while true
+
+
+
+        if refreshLayout
+            if strcmp(currentScreen, 'main')
+                options = mainOptions; optionsName = mainOptionsName; optionsMsg = mainOptionsMsg;
+                titleText = 'MENU';
+            else
+                options = trainOptions; optionsName = trainOptionsName; optionsMsg = trainOptionsMsg;
+                titleText = 'TREINO';
+            end
+            
+            % Fecha texturas anteriores para evitar estouro de memória de vídeo
+            if exist('iconsTex', 'var'); for i=1:numel(iconsTex); Screen('Close', iconsTex(i)); end; end
+            
+            L = numel(options);
+            btnW = min(300, (dpP.winRect(3)-(L+1)*gap)/L);
+            totalW = L*btnW + (L-1)*gap;
+            leftX0 = cX - totalW/2;
+            leftX  = leftX0 + (0:L-1) * (btnW + gap);
+            btnRects = zeros(4, L);
+            btnRects(1,:) = leftX; btnRects(2,:) = cY - btnH/2;
+            btnRects(3,:) = leftX + btnW; btnRects(4,:) = cY + btnH/2;
+            
+            prm.upFrac = 2/3;
+            RectSplit = btnRects(2,:)+btnH*prm.upFrac;
+            upRects = btnRects; upRects(4,:) = RectSplit; downRects = btnRects; downRects(2,:) = RectSplit;
+            uRH = RectHeight(upRects(:,1)'); uRW = RectWidth(upRects(:,1)');
+            uRHW = min(uRH, uRW);
+            for i=1:L
+                [cXaux, cYaux] = RectCenter(upRects(:,i));
+                upRects(:,i) = CenterRectOnPoint([0 0, uRHW, uRHW]*prm.iconScaleFactor, cXaux, cYaux);
+            end
+            
+            % Carrega novos ícones baseados na pasta de imagens
+            iconsDir = cellfun(@(x) fullfile(prm.filePath, prm.imgFolder, [x prm.imgExtension]), options, 'UniformOutput', false);
+            iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
+            
+            % Reseta seleções
+            selected = -1; backSelected = false; refreshLayout = false;
+        end
 
         % Lê posição do mouse
         [mx, my, buttons] = GetMouse(dpP.window);
@@ -448,15 +483,16 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
         if mouseMoved || isMouseMostRecent
             cursorVisible = true;
             isMouseMostRecent = true;
-            selected = 0;
+            selected = -1;
             for i=1:L
                 if IsInRect(mx, my, btnRects(:,i))
                     selected = i;
                     break;
                 end
             end
-            if inpolygon(mx, my, arrow(:,1), arrow(:,2))
-                selected = L+1;
+            % Verifica botão Voltar (Apenas na tela de treino)
+            if strcmp(currentScreen, 'training') && IsInRect(mx, my, backRect)
+                selected = 0;
             end
         end
     
@@ -465,11 +501,10 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
         Screen('TextSize', dpP.window, prm.textSizeTitle);
         Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
         Screen('TextSize', dpP.window, prm.textSizeNormal);
-        if selected == 0, drawBox = false; end
+        if selected <= 0, drawBox = false; end
 
         % Desenha os retângulos (e seta) e textos e texturas
         Screen('FillRect', dpP.window, drP.blue, btnRects);
-        Screen('FillPoly', dpP.window, drP.blue, arrow);
 
         Screen('DrawTextures', dpP.window, iconsTex, [], upRects);
 
@@ -478,17 +513,12 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
             DrawFormattedText(dpP.window, optionsName{i}, 'center', 'center',  drP.black, [], [], [], [], [], downRects(:,i)');
         end
         Screen('TextSize', dpP.window, prm.textSizeNormalish);
-        Screen('DrawText', dpP.window, skipText, skipRect(1), skipRect(2),  drP.black);
 
         % Se houver algum retângulo selecionado, adiciona contorno
-        if selected ~= 0
+        if selected > 0
             drawBox = true;
             msg = optionsMsg{selected};
-            if selected < L+1
-                Screen('FrameRect', dpP.window,  drP.darkBlue, btnRects(:, selected), prm.pW2);
-            else
-                Screen('FramePoly', dpP.window, drP.darkBlue, arrow, prm.pW2);
-            end
+            Screen('FrameRect', dpP.window,  drP.darkBlue, btnRects(:, selected), prm.pW2);
         end
         Screen('TextStyle', dpP.window, 0);
 
@@ -503,6 +533,18 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
         if cursorVisible
             Screen('FillOval', dpP.window, prm.cursorColor, ...
                 [mx-prm.cursorRadius_px my-prm.cursorRadius_px mx+prm.cursorRadius_px my+prm.cursorRadius_px]);
+        end
+
+        % --- DESENHA O BOTÃO VOLTAR SE ESTIVER NO SUBMENU ---
+        if strcmp(currentScreen, 'training')
+            Screen('FillPoly', dpP.window, drP.blue, arrowCoords);
+
+            Screen('TextSize', dpP.window, prm.textSizeNormalish);
+            Screen('DrawText', dpP.window, backText, backRect(1), backRect(2)+8, drP.black);
+            
+            if selected == 0
+                Screen('FramePoly', dpP.window, drP.darkBlue, arrowCoords, prm.pW2);
+            end
         end
     
         Screen('Flip', dpP.window);
@@ -527,63 +569,65 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
             if doAction
                 doAction = false;
                 if keyCode(leftKey)
-                    if selected == 0
+                    if selected == -1
                         selected = firstSelectL;
                     else
-                        selected = max(1, selected - 1);
+                        if strcmp(currentScreen, 'training')
+                            selected = max(0, selected - 1);
+                        else
+                            selected = max(1, selected - 1);
+                        end
                     end
-%                     cursorVisible = false;
                     isMouseMostRecent = false;
                 elseif keyCode(rightKey)
-                    if selected == 0
+                    if selected == -1
                         selected = firstSelectR;
                     else
-                        selected = min(L+1, selected + 1);
+                        selected = min(L, selected + 1);
                     end
-%                     cursorVisible = false;
                     isMouseMostRecent = false;
                 elseif keyCode(spaceKey) || any(buttons)
                     KbReleaseWait;
-                    while any(buttons)
-                        [~, ~, buttons] = GetMouse(dpP.window);
-                        WaitSecs(0.001); 
+                    while any(buttons); [~, ~, buttons] = GetMouse(dpP.window); WaitSecs(0.001); end
+                    
+                    % Ação 1: Clicou no botão Voltar
+                    if strcmp(currentScreen, 'training') && selected == 0
+                        currentScreen = 'main';
+                        refreshLayout = true;
+                        continue;
                     end
-                    if selected ~=0
-                        if selected < L+1
-                            mode = options{selected};
+                    
+                    % Ação 2: Selecionou um botão padrão do menu
+                    if selected > 0
+                        mode = options{selected};
+                        
+                        if strcmp(currentScreen, 'main')
+                            % Lógica da Tela Principal
+                            if strcmp(mode, 'training')
+                                currentScreen = 'training';
+                                refreshLayout = true;
+                                continue;
+                            elseif strcmp(mode, 'staircase')
+                                for i=1:L, Screen('Close', iconsTex(i)); end
+                                [tkP, taskState] = runStaircase(tkP, dpP, drP, txP, prm, debug, taskState);
+                            elseif strcmp(mode, 'experiment')
+                                taskState(2,1) = 1;
+                                for i=1:L, Screen('Close', iconsTex(i)); end
+                                [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            end
                         else
-                            mode = 'experiment';
-                        end
-                    end
-                    if strcmp(mode,'training')
-                        taskState(1,1) = 1;
-                    elseif strcmp(mode,'experiment')
-                        taskState(2,1) = 1;
-                    end
-                    if selected ~= 0
-                        for i=1:L, Screen('Close', iconsTex(i)); end
-                        Screen('Flip', dpP.window);
-                        WaitSecs(0.05);
-                        % Apenas importa a fila de fixações se a tarefa não for de cursor
-                        taskStart = tic;
-                        if strcmp(mode, 'cursor')
+                            % Lógica da Tela de Sub-Treinos
+                            taskState(1,1) = 1;
+                            for i=1:L, Screen('Close', iconsTex(i)); end
                             [~, taskState, ~] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
-                        elseif strcmp(mode, 'staircase')
-                            disp('Vai para staircase...')
-                        else
-                            [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                         end
-                        taskEnd = toc(taskStart);
-                        fprintf('Tempo total da tarefa: %.3f s\n', taskEnd);
-
-                        % Se o experimento tiver sido concluído, não volta
-                        % pro menu
+                        
+                        % Rotina pós-retorno de qualquer tarefa
                         if taskState(2,2) == 1
-                            break;
+                            break; % Encerra se o experimento acabou
                         else
-                            iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
+                            refreshLayout = true; % Força recarregamento da tela atual
                             SetMouse(cX, cY, dpP.window);
-                            selected = 0;
                         end
                     end
                 elseif keyCode(escapeKey)
@@ -606,7 +650,6 @@ function [tkP, taskState] = menuScreen(tkP, dpP, drP, txP, debug, prm, menuMode)
     if ~exist('results', 'var'), results = []; end
     foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
 end
-
 
 function [iconsTex] = getMenuTex(win, iconsDir, col)
     % Cria texturas de cursor e treino
