@@ -1,9 +1,0 @@
-----Início do staircase----
-
-Idx Bloco: 1
-# Trial: 1
- Idx Trial: 37
-
-Idx Bloco: 2
-# Trial: 1
- Idx Trial: 36
