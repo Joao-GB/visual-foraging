@@ -1,0 +1,59 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 12
+Elapsed time is 0.149144 seconds.
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 3
+Elapsed time is 0.149283 seconds.
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 7
+Elapsed time is 0.149794 seconds.
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 9
+Elapsed time is 0.149793 seconds.
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 8
+Elapsed time is 0.150086 seconds.
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 7
+Elapsed time is 0.149713 seconds.
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 9
+Elapsed time is 0.149775 seconds.
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 4
+Elapsed time is 0.149967 seconds.
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 13
+Elapsed time is 0.149863 seconds.
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',482,1)">482 </a>            resultsStair.fixCenters = fixCenters;
+sca
+if system_dependent('IsDebugMode')==1, dbquit all; end
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

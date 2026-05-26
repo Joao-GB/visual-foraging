@@ -1,0 +1,78 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 20
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',341,1)">341 </a>                            if check
+sca
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+vecnorm([x_gaze; y_gaze] - fixCenters(:, idx, b))
+
+ans =
+
+   13.5122
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+cleanup
+sca
+cleanup
+foragingGabors(8, 20, 2)
+
+
+----- ! PTB - ERROR: SYNCHRONIZATION FAILURE ! -----
+
+One or more internal checks (see Warnings above) indicate that synchronization
+of Psychtoolbox to the vertical retrace (VBL) is not working on your setup.
+
+This will seriously impair proper stimulus presentation and stimulus presentation timing!
+Please read 'help SyncTrouble' for information about how to solve or work-around the problem.
+You can force Psychtoolbox to continue, despite the severe problems, by adding the command
+Screen('Preference', 'SkipSyncTests', 1); at the top of your script, if you really know what you are doing.
+
+
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('Screen')" style="font-weight:bold">Screen</a>
+See error message printed above.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 2470)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',2470,0)">line 2470</a>)
+            [win, winRect] = Screen('OpenWindow', screenid, clearcolor, winRect, pixelSize, numbuffers, stereomode, multiSample, imagingMode, specialFlags, clientRect, fbOverrideRect, vrrParams);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 113)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',113,0)">line 113</a>)
+    [window, winRect] = PsychImaging('OpenWindow', screenNumber, black, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+foragingGabors(8, 20, 2)
+
+
+----- ! PTB - ERROR: SYNCHRONIZATION FAILURE ! -----
+
+One or more internal checks (see Warnings above) indicate that synchronization
+of Psychtoolbox to the vertical retrace (VBL) is not working on your setup.
+
+This will seriously impair proper stimulus presentation and stimulus presentation timing!
+Please read 'help SyncTrouble' for information about how to solve or work-around the problem.
+You can force Psychtoolbox to continue, despite the severe problems, by adding the command
+Screen('Preference', 'SkipSyncTests', 1); at the top of your script, if you really know what you are doing.
+
+
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('Screen')" style="font-weight:bold">Screen</a>
+See error message printed above.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 2470)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',2470,0)">line 2470</a>)
+            [win, winRect] = Screen('OpenWindow', screenid, clearcolor, winRect, pixelSize, numbuffers, stereomode, multiSample, imagingMode, specialFlags, clientRect, fbOverrideRect, vrrParams);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 113)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',113,0)">line 113</a>)
+    [window, winRect] = PsychImaging('OpenWindow', screenNumber, black, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

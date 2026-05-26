@@ -1,4 +1,4 @@
-function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, tkS)
+function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
 %% Pré
 % A tela de estímulos deve ser similar à do experimento, quanto à
 % quantidade de estímulos e ao início aleatório. 
@@ -73,7 +73,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
         aSigma = ones(1, nBlocks)*prm.aSigma;
 
         oriFilter = repmat(txP.oriFilter, [1, 1, nBlocks]);
-        OFSize = repmat(txP.OFSize, [1, 1, nBlocks]);
+        OFsize = repmat(txP.OFsize, [1, 1, nBlocks]);
         jitterTimes = rand(nBlocks, nTrialsBuffered)*(prm.maxJitterStair-prm.minJitterStair)+prm.minJitterStair;
 
 %% Tarefa
@@ -84,7 +84,6 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
             keepGoingBlocks = true;
             wasRecording = false;
             restartBlock = false;
-            blocksCompleted = false;
             b = 1;
 
             trialOrder = zeros(2, nTrials, nBlocks);
@@ -144,7 +143,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                     
                     elseif keyCode(escapeKey)
                         KbReleaseWait;
-                        [keepGoingBlocks, ~, ~, ~] = pauseHandle(keepGoingBlocks, [], [], [], wasRecording, tkP, txP, dpP, drP, prm, 'block', debug, 2, []);
+                        [keepGoingBlocks, ~, ~, ~] = pauseHandle(keepGoingBlocks, [], [], [], wasRecording, tkP, txP, dpP, drP, prm, 'block', 0, 2, []);
                     end
                 end
 
@@ -240,7 +239,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                             if keyIsDown
                                 if keyCode(escapeKey)
                                     KbReleaseWait;
-                                    [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, 2, targetOri(b));
+                                    [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', 0, 2, targetOri(b));
                                     break;
                                 end
                             end
@@ -287,7 +286,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                                         disp('Prossegue sem recalibragem')
                                         break;
                                     elseif keyCode(escapeKey)
-                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', debug, 2, targetOri(b));
+                                        [keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial] = pauseHandle(keepGoingBlocks, restartBlock, keepGoingTrials, restartTrial, wasRecording, tkP, txP, dpP, drP, prm, 'trial', 0, 2, targetOri(b));
                                         break;
                                     end
                                 end
@@ -297,6 +296,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                     end
                     
 %% Fase 2: tela de estímulos
+                    blinkIdx = setdiff(1:nStims, fixIdx(b, idx));
                     vbl = Screen('Flip', dpP.window);
                     if keepGoingTrials && ~restartTrial
                         alphas = ones(nStims, 1);
@@ -304,30 +304,30 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                         P2On = Screen('Flip', dpP.window, vbl + 0.5 * dpP.ifi);
                         Eyelink('Message',prm.msg.on.P2);
                     end
+
     
 %% Fase 3: tela com ruído rosa
                     if ~restartTrial && keepGoingTrials
                         Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
                         Screen('DrawTextures', dpP.window, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
 
-                        if ~isempty(currIdx)
-                            Screen('DrawTextures', dpP.window, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
-                            Screen('DrawTextures', dpP.window, noiseTex, srcRects(:,currIdx), dstRects(:,currIdx), orientation(currIdx, idx, b));
-                            
-                            Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-                            Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        else
-                            Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-                        end
+                        Screen('DrawTextures', dpP.window, gaborTex, [], dstRects(:,fixIdx(b, idx)), orientation(fixIdx(b, idx), idx, b));
+                        Screen('DrawTextures', dpP.window, noiseTex, srcRects(:,fixIdx(b, idx)), dstRects(:,fixIdx(b, idx)), orientation(fixIdx(b, idx), idx, b));
+                        
+                        Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+                        Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:, fixIdx(b, idx)), orientation(fixIdx(b, idx), idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                        
                         Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         P3On = Screen('Flip', dpP.window, P2On + jitterTimes(b, idx));
+                        
                         Eyelink('Message',prm.msg.on.P3);
 
                         tNow = GetSecs;
-                        keptFixP3 = false;  
+                        keptFixP3 = false; 
+                        tic
                         while tNow - P3On < prm.pinkNoiseDur
                             check = false;
                             damn = Eyelink('CheckRecording');
@@ -340,22 +340,23 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                             end
         
                             if check
-                                keptFixP3 = vecnorm([x_gaze; y_gaze] - fixCenters(:, i, b)) <= minFixDist3;
+                                keptFixP3 = vecnorm([x_gaze; y_gaze] - fixCenters(:, idx, b)) <= minFixDist3;
                                 if ~keptFixP3, break; end
                             end
                             WaitSecs(.0005);
                             tNow = GetSecs;
                         end
+                        toc
 
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        Screen('Flip', dpP.window);
+                        PMOn = Screen('Flip', dpP.window);
                         Eyelink('Message',prm.msg.off.P3);
                         
 %% Fase PM: pedestais
                         Eyelink('Message',prm.msg.on.PM);
                         keptFixPM = false;  
                         tNow = GetSecs;
-                        while tNow - updateStimOffset < prm.postModDurStair
+                        while tNow - PMOn < prm.postModDurStair
                             check = false;
                             damn = Eyelink('CheckRecording');
                             if(damn ~= 0), break; end
@@ -381,7 +382,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         % Os demais pontos que não o fixado antes da atual
-                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim);
+                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), fixIdx(b, idx));
 
                         stimsToReport = nbhd(1:3);
                         orderToReportStims = stimsToReport(randperm(3));
@@ -422,11 +423,11 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                         feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
                         feedback = feedback/2;
 
-                        trialFeedback{b, i} = [orderToReportStims; orderRemapped; feedback(orderToReportStims)];
+                        trialFeedback{b, i} = [orderToReportStims; zeros(1, 3); feedback(orderToReportStims)];
                         
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
-                        %foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                        % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
+                        foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         WaitSecs(.5);
 
                         trialOrder(2, i, b) = 1;
@@ -434,15 +435,15 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                         i = i + 1;
                         trialIdxUp = true;
 
-                        keepGoingTrials = keptFixP3 && keptFixPM;
+                        restartTrial = keptFixP3 && keptFixPM;
                     end
 
-                    if ~keepGoingTrials || restartTrials
+                    if ~keepGoingTrials || restartTrial
                         Eyelink('Message',prm.msg.err.trl{1});
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;
                         if keepGoingTrials
                             if retryCount(trialQueue(i)) > prm.maxRetries
-                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.trl{2}); end
+                                Eyelink('Message',prm.msg.err.tsrl{2});
                                 warning('Trial %d excede o máximo de repetições. Prosseguindo', trialQueue(i));
                                 i = i + 1;
                                 trialIdxUp = true;
@@ -453,12 +454,12 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                     else
 %% Atualiza o staircase se o trial foi útil
                         for j=1:length(orderToReportStims)
-                            RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(j));
+                            RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
                         end
                         aSigma(b) = -RF(b).mean;
                         [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;
-                        OFSize(:,:,b)    = auxOFsize;
+                        OFsize(:,:,b)    = auxOFsize;
                     end
                     trialOffset = GetSecs; %#ok<NASGU>
                     Eyelink('Message', sprintf(prm.msg.off.trl{1}, i - trialIdxUp, nTrials));
@@ -477,13 +478,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
                     b = b+1;
                 end
             end
-            if b == nBlocks+1 && keepGoingBlocks
-                Eyelink('Message',sprintf(prm.msg.off.ses{1}, suffix));
-                blocksCompleted = true;
-            else
-                Eyelink('Message',sprintf(prm.msg.off.ses{2}, suffix)); 
-            end
-            tkS(mode - 1, 2) = blocksCompleted;
+            Eyelink('Message',prm.msg.off.stc);
             resultsStair.fixCenters = fixCenters;
             resultsStair.stimCenters = stimCenters;
             resultsStair.orientation = orientation;
@@ -494,7 +489,7 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
             resultsStair.trialFeedback = trialFeedback;
             resultsStair.aSigma    = aSigma;
             resultsStair.oriFilter = oriFilter;
-            resultsStair.OFSize   = OFSize;
+            resultsStair.OFsize   = OFsize;
             resultsStair.staircase   = RF;
         catch
             if ~exist('fixCenters', 'var'),   fixCenters = []; end
@@ -517,7 +512,6 @@ function [tkP, prm, resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, t
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
             
-            tkS(:) = 0;
 %             foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
             diary off;

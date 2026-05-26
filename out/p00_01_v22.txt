@@ -1,0 +1,119 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 33
+Elapsed time is 0.149780 seconds.
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 19
+Elapsed time is 0.149981 seconds.
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 27
+Elapsed time is 0.149983 seconds.
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 34
+Elapsed time is 0.149881 seconds.
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 3
+Elapsed time is 0.149320 seconds.
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 28
+Elapsed time is 0.149885 seconds.
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 21
+Elapsed time is 0.150120 seconds.
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 12
+Elapsed time is 0.150163 seconds.
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 13
+Elapsed time is 0.149985 seconds.
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 7
+Elapsed time is 0.150131 seconds.
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 43
+Elapsed time is 0.149655 seconds.
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 11
+Elapsed time is 0.149643 seconds.
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 15
+Elapsed time is 0.150065 seconds.
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 22
+Elapsed time is 0.150055 seconds.
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 20
+Elapsed time is 0.149669 seconds.
+
+Idx Bloco: 1
+# Trial: 16
+ Idx Trial: 40
+Elapsed time is 0.149736 seconds.
+
+Idx Bloco: 1
+# Trial: 17
+ Idx Trial: 38
+Elapsed time is 0.149942 seconds.
+
+Idx Bloco: 1
+# Trial: 18
+ Idx Trial: 14
+Elapsed time is 0.149782 seconds.
+{Operation terminated by user during <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('KbWait', '/usr/share/psychtoolbox-3/PsychBasic/KbWait.m', 142)" style="font-weight:bold">KbWait</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychBasic/KbWait.m',142,0)">line 142</a>)
+
+
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('KbReleaseWait', '/usr/share/psychtoolbox-3/PsychBasic/KbReleaseWait.m', 29)" style="font-weight:bold">KbReleaseWait</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychBasic/KbReleaseWait.m',29,0)">line 29</a>)
+[secs, keyCode, deltaSecs] = KbWait(deviceNumber, 1, varargin{:});
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('runStaircase', '/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m', 135)" style="font-weight:bold">runStaircase</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',135,0)">line 135</a>)
+                    KbReleaseWait;
+                    ^^^^^^^^^^^^^
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 612)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',612,0)">line 612</a>)
+                                [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 308)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',308,0)">line 308</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+sca
+cleanup
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

@@ -1,0 +1,97 @@
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('runStaircase')" style="font-weight:bold">runStaircase</a>
+Too many input arguments.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 612)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',612,0)">line 612</a>)
+                                [tkP, taskState] = runStaircase(tkP, dpP, drP, txP, prm, debug, taskState);
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 308)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',308,0)">line 308</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+sca
+opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',612,0)
+foragingGabors(8, 20, 2)
+
+
+----- ! PTB - ERROR: SYNCHRONIZATION FAILURE ! -----
+
+One or more internal checks (see Warnings above) indicate that synchronization
+of Psychtoolbox to the vertical retrace (VBL) is not working on your setup.
+
+This will seriously impair proper stimulus presentation and stimulus presentation timing!
+Please read 'help SyncTrouble' for information about how to solve or work-around the problem.
+You can force Psychtoolbox to continue, despite the severe problems, by adding the command
+Screen('Preference', 'SkipSyncTests', 1); at the top of your script, if you really know what you are doing.
+
+
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('Screen')" style="font-weight:bold">Screen</a>
+See error message printed above.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 2470)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',2470,0)">line 2470</a>)
+            [win, winRect] = Screen('OpenWindow', screenid, clearcolor, winRect, pixelSize, numbuffers, stereomode, multiSample, imagingMode, specialFlags, clientRect, fbOverrideRect, vrrParams);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 113)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',113,0)">line 113</a>)
+    [window, winRect] = PsychImaging('OpenWindow', screenNumber, black, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+foragingGabors(8, 20, 2)
+Tried to prepare a new configuration phase via PsychImaging('PrepareConfiguration'), but did not finalize the previous phase yet.
+You must call the PsychImaging('OpenWindow', ...); command at least once to open an onscreen
+window according to the provided settings, before you can specify settings for additional onscreen windows.
+
+The most likely reason you see this error message is because your script aborted with some error
+before it managed to open the onscreen window. In that case it is best practice to execute a 'clear all'
+command at the Matlab/Octave prompt before you restart your script.
+
+I will restart configuration now and forget the previously made PsychImaging('AddTask', ...); settings.
+[Warning: Tried to prepare a new configuration phase, but you did not finalize the previous phase yet!] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 1779)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',1779,0)">line 1779</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 98)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',98,0)">line 98</a>)] 
+
+
+----- ! PTB - ERROR: SYNCHRONIZATION FAILURE ! -----
+
+One or more internal checks (see Warnings above) indicate that synchronization
+of Psychtoolbox to the vertical retrace (VBL) is not working on your setup.
+
+This will seriously impair proper stimulus presentation and stimulus presentation timing!
+Please read 'help SyncTrouble' for information about how to solve or work-around the problem.
+You can force Psychtoolbox to continue, despite the severe problems, by adding the command
+Screen('Preference', 'SkipSyncTests', 1); at the top of your script, if you really know what you are doing.
+
+
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('Screen')" style="font-weight:bold">Screen</a>
+See error message printed above.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 2470)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',2470,0)">line 2470</a>)
+            [win, winRect] = Screen('OpenWindow', screenid, clearcolor, winRect, pixelSize, numbuffers, stereomode, multiSample, imagingMode, specialFlags, clientRect, fbOverrideRect, vrrParams);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 113)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',113,0)">line 113</a>)
+    [window, winRect] = PsychImaging('OpenWindow', screenNumber, black, [], 32, 2, [], [],  kPsychNeed32BPCFloat);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',113,0)
+sca
+cleanup
+foragingGabors(8, 20, 2)
+Tried to prepare a new configuration phase via PsychImaging('PrepareConfiguration'), but did not finalize the previous phase yet.
+You must call the PsychImaging('OpenWindow', ...); command at least once to open an onscreen
+window according to the provided settings, before you can specify settings for additional onscreen windows.
+
+The most likely reason you see this error message is because your script aborted with some error
+before it managed to open the onscreen window. In that case it is best practice to execute a 'clear all'
+command at the Matlab/Octave prompt before you restart your script.
+
+I will restart configuration now and forget the previously made PsychImaging('AddTask', ...); settings.
+[Warning: Tried to prepare a new configuration phase, but you did not finalize the previous phase yet!] 
+[> In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('PsychImaging', '/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m', 1779)" style="font-weight:bold">PsychImaging</a> (<a href="matlab: opentoline('/usr/share/psychtoolbox-3/PsychGLImageProcessing/PsychImaging.m',1779,0)">line 1779</a>)
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 98)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',98,0)">line 98</a>)] 
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

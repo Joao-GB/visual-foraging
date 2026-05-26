@@ -91,7 +91,7 @@ function params = foragingParams
     params.sigmaMin = 5;
     params.sigmaMax = 70;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 40;
+    params.nTrialsStair = 10;
     params.priorMeanStair = 35; 
     params.priorStdStair  = 20; 
     params.minJitterStair  = .5; 
@@ -192,6 +192,7 @@ function params = foragingParams
     params.msg.off.PM      = 'POST-MOD OFFSET';
     params.msg.off.P4     = 'PHASE 4 OFFSET';
     params.msg.off.pse    = 'PAUSE OFFSET';
+    params.msg.off.stc     = 'STAIRCASE OFFSET';
 
 %% Parâmetros de formatação: fontes, espessuras, cores, tamanhos e posições de textos e ícones...
     % (i) Fonte para os textos

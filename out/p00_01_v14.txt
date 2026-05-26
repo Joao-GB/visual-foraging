@@ -1,0 +1,23 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 24
+   1.7798e+09
+
+   6.1774e-04
+
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',438,1)">438 </a>                    end
+sca
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

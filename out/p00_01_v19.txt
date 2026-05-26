@@ -1,0 +1,6 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 10
+Elapsed time is 0.149913 seconds.

@@ -7,6 +7,10 @@ function cleanup(win)
         Eyelink('Shutdown');
     end
     sca;
+    clear Screen;
+    clear PsychImaging;
+    clear mex;
+    
     ShowCursor();
     ListenChar(0);
     Priority(0);

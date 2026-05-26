@@ -1,0 +1,55 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 39
+Elapsed time is 0.149550 seconds.
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',439,1)">439 </a>                    end
+sca
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
+j=3
+
+j =
+
+     3
+
+orderToReportStims(j)
+
+ans =
+
+     8
+
+RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
+if system_dependent('IsDebugMode')==1, dbstep; end
+aSigma(b) = -RF(b).mean;
+[auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
+oriFilter(:,:,b) = auxOriFilter;
+OFsize(:,:,b)    = auxOFsize
+
+OFsize(:,:,1) =
+
+    64    64
+
+
+OFsize(:,:,2) =
+
+    64    64
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+cleanup
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

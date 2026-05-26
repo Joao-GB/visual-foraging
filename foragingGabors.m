@@ -50,7 +50,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
             repeat = false;
             prompt = {'\fontsize{14} Sujeito', '\fontsize{14} Número da sessão', '\fontsize{14} Olho dominante (E ou D)', '\fontsize{14} Seta para alvo (E ou D)'};
             dlg_title = 'Info. sessão';
-            def = {'00', '01', 'D', 'D'};
+            def = {'00', '01', 'E', 'D'};
             options.Resize = 'on'; options.Interpreter = 'tex';
             answer = inputdlg(prompt, dlg_title, [1 40; 1 40; 1 40; 1 40], def, options);
     
@@ -471,7 +471,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
             
             % Reseta seleções
-            selected = -1; backSelected = false; refreshLayout = false;
+            selected = -1; refreshLayout = false;
         end
 
         % Lê posição do mouse
@@ -609,7 +609,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 continue;
                             elseif strcmp(mode, 'staircase')
                                 for i=1:L, Screen('Close', iconsTex(i)); end
-                                [tkP, taskState] = runStaircase(tkP, dpP, drP, txP, prm, debug, taskState);
+                                [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
                             elseif strcmp(mode, 'experiment')
                                 taskState(2,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); end
@@ -1978,55 +1978,6 @@ function T = P3Onset2(tkP, prm, newFix)
 
     % estimativa do onset
     T = emaFix - tf; % (D + tf);
-end
-
-
-function currTime = foragingFlip(win, centers, dstCoord, idxForOvals, s, colors, aT, tOri, pW, fb, wrongCol, rightCol)
-    if nargin >= 10
-        rightCount = sum(fb == 1);
-        wrongCount = sum(fb == 0);
-        colors(:, fb == 1) = repmat(rightCol', [1, rightCount]);
-        colors(:, fb == 0) = repmat(wrongCol', [1, wrongCount]);
-    end
-    Screen('FrameOval', win, colors(:, idxForOvals), dstCoord(:, idxForOvals), pW(:, idxForOvals));
-
-    targets = (aT == 1);
-%     neutralStim = (aT == -1);
-    nonTargets = (aT == 0);
-    drawInclinedLines(win, centers(:,targets), s*.8, tOri, colors(:,targets), pW(:, targets));
-    drawDots(win, centers(:,nonTargets), s/5, colors(:,nonTargets));
-
-    currTime = Screen('Flip', win);
-    WaitSecs(0.001); 
-end
-
-
-function drawDots(windowPtr, centers, len, color)
-    if ~isempty(centers)
-        Screen('DrawDots', windowPtr, centers, len, color, [], 2);
-    end
-end
-
-
-function drawInclinedLines(windowPtr, centers, len, ang, color, width)
-
-    if ~isempty(centers)
-        % Simplified version for uniform lines
-        numLines = size(centers, 2);
-        angRad = deg2rad(ang);
-        hl = len/2;
-        
-        % Calculate offsets
-        dx = hl .* cos(angRad);
-        dy = hl .* sin(angRad);
-        
-        % Create interleaved start and end points
-        xy = [centers(1,:) - dx; centers(2,:) - dy; 
-              centers(1,:) + dx; centers(2,:) + dy];
-        xy = reshape(xy, 2, 2 * numLines);
-        
-        Screen('DrawLines', windowPtr, xy, width, color(:,repelem(1:size(color,2), 2)));
-    end
 end
 
 
