@@ -441,7 +441,7 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                     end
 
                     if ~keepGoingTrials || restartTrial
-                        fprintf('Trial ruim, pois ~keepGoingTrials = %d e restartTrial = %d\n keptFixP3 = %d, keptFixPM = %d\n', ~keepGoingTrials, restartTrial, keptFixP3, keptFixPM)
+                        % fprintf('Trial ruim, pois ~keepGoingTrials = %d e restartTrial = %d\n keptFixP3 = %d, keptFixPM = %d\n', ~keepGoingTrials, restartTrial, keptFixP3, keptFixPM)
                         Eyelink('Message',prm.msg.err.trl{1});
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;
                         if keepGoingTrials

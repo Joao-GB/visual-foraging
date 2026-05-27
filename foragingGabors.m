@@ -607,7 +607,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
                                 tkP.stair = resultsStair; clear resultsStair;
-                                prm.aSigma = mean(tkP.resultsStair.aSigma);
+                                prm.aSigma = mean(tkP.stair.aSigma);
                             elseif strcmp(mode, 'experiment')
                                 taskState(2,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
@@ -1401,10 +1401,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
             % (i) Desenha os ruídos orientados e o mesmo grating se a
             %     fixação tiver sido mantida
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                        Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
-
+                        if  mode <= 2
+                            foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), txP, [repmat(alphas(blinkIdx)', [3,1]); ones(1, numel(blinkIdx))], 1);
+                        else
+                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                            Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
+                        end
                         if ~isempty(currIdx)
+                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
                             Screen('DrawTextures', auxWin, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
                             Screen('DrawTextures', auxWin, noiseTex, srcRects(:,currIdx), dstRects(:,currIdx), orientation(currIdx, idx, b));
                             

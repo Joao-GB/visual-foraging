@@ -9,14 +9,15 @@ function inspectStaircase(dpP, drP, prm, RF, thrs)
                   dpP.winCenter(1) + targetW/2, ...
                   dpP.winCenter(2) + targetH/2];
 % Cria uma figura invisível
-    hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
-    hold on;
+    % hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+    hFig = figure('Units', 'pixels', 'Position', [0 0 targetW targetH]);
+    
     B = numel(RF);
     for b = 1:B
         trialNum = 1:length(RF(b).x);
         presentedSigma = -RF(b).x;
         
-        subplot(1,B,b)
+        subplot(1,B,b); hold on;
         
         % Trajetória
         plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
@@ -31,7 +32,7 @@ function inspectStaircase(dpP, drP, prm, RF, thrs)
         yline(thrs(b), '--k', 'LineWidth', 2);
         
         xlabel('Trial');
-        title(fprintf('Staircase: %s', prm.allOriName{b}))
+        title(sprintf('Staircase: %s', prm.allOriName{b}))
         if b == 1, ylabel('Sigma'); end
         grid on;
         
@@ -54,7 +55,7 @@ function inspectStaircase(dpP, drP, prm, RF, thrs)
     Screen('Flip', dpP.window);
 
     KbReleaseWait;
-     KbWait;
+    KbWait;
 
     Screen('Close', graphTex);
     Screen('Flip', dpP.window);

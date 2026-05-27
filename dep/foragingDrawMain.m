@@ -1,4 +1,5 @@
-function foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects, dstRects, ori, txP, alphas)
+function foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects, dstRects, ori, txP, alphas, aux)
+if nargin<9, aux=0; end
 
     Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
     Screen('DrawTextures', auxWin, gaborTex, [], dstRects, ori, [], [], alphas);
