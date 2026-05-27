@@ -520,12 +520,11 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
             
-%             foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             cleanup(dpP.window);
             diary off;
             psychrethrow(psychlasterror);
         end
-        if b == nBlocks && keepGoingBlocks
-            plotStaircase(RF)
+        if b == nBlocks + 1 && keepGoingBlocks
+            inspectStaircase(dpP, drP, prm, RF, aSigma);
         end
 end

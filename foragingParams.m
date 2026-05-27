@@ -28,7 +28,7 @@ function params = foragingParams
 
     % (f) Parâmetros do ruído rosa com orientação
     %% Arrumar parâmetros conforme o sujeito
-    params.aSigma = 40;
+    params.aSigma = 10;
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -91,9 +91,9 @@ function params = foragingParams
     params.sigmaMin = 5;
     params.sigmaMax = 70;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 10;
-    params.priorMeanStair = 35; 
-    params.priorStdStair  = 20; 
+    params.nTrialsStair = 40;
+    params.priorMeanStair  = 20;
+    params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .2;
@@ -146,7 +146,7 @@ function params = foragingParams
 
     % (h) Textos de início, fim, pausa e interrupção de sessão, blocos e
     %     trials
-    params.msg.suffix     = {'cur', 'trn', 'exp'};
+    params.msg.suffix     = {'cur', 'tr1', 'tr2', 'exp'};
     params.msg.on.ses{1}     = 'SESSION ONSET (%s)';
     params.msg.on.ses{2}     = 'SESSION ONSET';
     params.msg.on.blk{1}  = 'BLOCK ONSET %d/%d';

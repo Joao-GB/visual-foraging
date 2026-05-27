@@ -431,11 +431,8 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     lastActionTime = 0; lastRepeatTime = -Inf;
     doAction = false;
     quitSes = 0;
-
+    alreadyClosed = false;
     while true
-
-
-
         if refreshLayout
             if strcmp(currentScreen, 'main')
                 options = mainOptions; optionsName = mainOptionsName; optionsMsg = mainOptionsMsg;
@@ -446,7 +443,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             end
             
             % Fecha texturas anteriores para evitar estouro de memória de vídeo
-            if exist('iconsTex', 'var'); for i=1:numel(iconsTex); Screen('Close', iconsTex(i)); end; end
+            if exist('iconsTex', 'var') && ~alreadyClosed, for i=1:numel(iconsTex); Screen('Close', iconsTex(i)); alreadyClosed = true; end; end
             
             L = numel(options);
             btnW = min(300, (dpP.winRect(3)-(L+1)*gap)/L);
@@ -498,7 +495,6 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
         end
     
         %% Desenho
-
         Screen('TextSize', dpP.window, prm.textSizeTitle);
         Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
         Screen('TextSize', dpP.window, prm.textSizeNormal);
@@ -601,7 +597,6 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                     % Ação 2: Selecionou um botão padrão do menu
                     if selected > 0
                         mode = options{selected};
-                        
                         if strcmp(currentScreen, 'main')
                             % Lógica da Tela Principal
                             if strcmp(mode, 'training')
@@ -609,18 +604,22 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 refreshLayout = true;
                                 continue;
                             elseif strcmp(mode, 'staircase')
-                                for i=1:L, Screen('Close', iconsTex(i)); end
+                                for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
+                                tkP.stair = resultsStair; clear resultsStair;
+                                prm.aSigma = mean(tkP.resultsStair.aSigma);
                             elseif strcmp(mode, 'experiment')
                                 taskState(2,1) = 1;
-                                for i=1:L, Screen('Close', iconsTex(i)); end
+                                for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             end
                         else
-                            % Lógica da Tela de Sub-Treinos
+                            % Lógica da tela de subtreinos
                             taskState(1,1) = 1;
-                            for i=1:L, Screen('Close', iconsTex(i)); end
-                            [~, taskState, ~] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
+                            [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            resultsTrain.tkP = tkP;
+                            tkP.(mode) = resultsTrain;
                         end
                         
                         % Rotina pós-retorno de qualquer tarefa
@@ -675,7 +674,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
 
-        modeMap = containers.Map({'cursor', 'training', 'experiment'}, 1:3);
+        modeMap = containers.Map({'cursor', 't1', 't2', 'experiment'}, 1:4);
         mode = modeMap(mode);
 
         suffix = prm.msg.suffix{mode};
@@ -693,7 +692,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         end
     
     %% 1) Se não estiver no modo experimental, ajusta o número de trials e blocos
-        if mode < 3
+        if mode <= 3
             nBlocks = tkP.nBlocks;
             nTrials = tkP.nTrials;
             if mode == 1
@@ -705,7 +704,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 tkP.nBlocks = 1;
                 tkP.nTrials = prm.nTrialsTrain;
             % No treino, todas as orientações são alvo uma vez
-            elseif mode == 2
+            elseif mode == 2 || mode == 3
                 L = numel(prm.allOri);
                 tkP.nBlocks = L;
                 tkP.nTrials = max(prm.nTrialsTrain, ceil(1*prm.fixTimeQueueSize/L));
@@ -716,7 +715,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
         [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
-        if mode == 2,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
+        if mode == 2 || mode == 3,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
         drP.allColors = drP.white*ones(3, nStims);
         drP.allPW     = prm.pW1*ones(1,nStims);
@@ -776,7 +775,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
          minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
         auxFixQueue = zeros(1, nStims);
-        if strcmp(mode, 'experiment')
+        if mode == 4
             endFake(fakeAux, dpP, drP, prm);
         end
         fprintf('Tempo preencher locais estímulos e orientações de alvos: %.5f\n', toc);
@@ -1005,7 +1004,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % v. Não avança de tela até que o olho (ou o cursor) esteja na
         %    cruz de fixação
                         fixCenter = fixCenters(:,idx, b);
-                         if debug > 0 && mode > 1
+                         if debug > 0 && mode >= 2
                             while true
                                 [keyIsDown, ~, keyCode] = KbCheck;
                                 KbReleaseWait;
@@ -1028,7 +1027,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 if (GetSecs - FSonset) > prm.maxCrossDur
                                     break;
                                 end
-                                if mode > 1
+                                if mode >= 2
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
             
@@ -1176,7 +1175,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     fixStartTime = NaN;
                     if keepGoingTrials && ~restartTrial
 %                         checkFixOnset = trialOnset;
-                        if debug > 0 && mode > 1
+                        if debug > 0 && mode >= 2
                             seenIdx = sort(randsample(nStims,modTimes(b, idx)))';
                             flag(seenIdx) = 1;
                             currIdx = randsample(seenIdx, 1);
@@ -1201,7 +1200,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 end
                             
                                 check = false;
-                                if mode > 1
+                                if mode >= 2
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
                             
@@ -1468,7 +1467,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 break;
                             end
                             check = false;
-                            if mode > 1
+                            if mode >= 2
                                 damn = Eyelink('CheckRecording');
                                 if(damn ~= 0), break; end
                 
@@ -1530,7 +1529,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             tNow = GetSecs;
                             while tNow - updateStimOffset < prm.postModDur
                                 check = false;
-                                if mode > 1
+                                if mode >= 2
 %                                     if tNow - updateStimOffset > prm.blobPMDur
 %                                         Screen('Flip', dpP.window);
 %                                     end
@@ -1752,7 +1751,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
                         trialFeedback{b, i} = [orderToReportStims; orderRemapped; feedback(orderToReportStims)];
                         
-                        if mode < 3
+                        if mode <= 3
                             Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                             foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         else
@@ -1831,7 +1830,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 if mode >= 2, Eyelink('Message',sprintf(prm.msg.off.ses{2}, suffix)); end
             end
 
-            if mode > 1
+            if mode >= 2
                 tkS(mode - 1, 2) = blocksCompleted;
             end
             if debug == 0 && mode >= 2
@@ -1887,14 +1886,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             psychrethrow(psychlasterror);
         end
 
-    if mode < 3
+    if mode <= 3
         tkP.nBlocks = nBlocks;
         tkP.nTrials = nTrials;
         if debug == 0, HideCursor(dpP.window); end
 
         % Se estiver no modo treino, ajusta a duração do ruído rosa
         % conforme as fixações salvas na fila
-        if mode == 2
+        if mode == 2 || mode == 3
             disp('Ajuste de pinkNoiseDur')
             shortFixLimit = prctile(tkP.fixQueue, prm.shortFixPerc);
             tkP.pinkNoiseDur = min(prm.pinkNoiseDur, shortFixLimit);
