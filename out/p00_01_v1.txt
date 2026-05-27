@@ -1,0 +1,36 @@
+{Unrecognized function or variable 'alphaRead'.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('pauseScreen>@(x)alphaRead(x)', '/home/kaneda/Documents/GitHub/visual-foraging/dep/pauseScreen.m', 27)" style="font-weight:bold">pauseScreen>@(x)alphaRead(x)</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/dep/pauseScreen.m',27,0)">line 27</a>)
+    iconsImg = cellfun(@(x) alphaRead(x), icons, 'UniformOutput', false);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('pauseScreen', '/home/kaneda/Documents/GitHub/visual-foraging/dep/pauseScreen.m', 27)" style="font-weight:bold">pauseScreen</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/dep/pauseScreen.m',27,0)">line 27</a>)
+    iconsImg = cellfun(@(x) alphaRead(x), icons, 'UniformOutput', false);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 636)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',636,0)">line 636</a>)
+                    decision = pauseScreen(tkP, dpP, drP, prm, 'menu');
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 309)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',309,0)">line 309</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+sca
+matlab.lang.internal.introspective.errorDocCallback('pauseScreen', '/home/kaneda/Documents/GitHub/visual-foraging/dep/pauseScreen.m', 27)
+foragingGabors(8, 20, 2)
+{foragingGabors is not found in the current folder or on the MATLAB path, but exists in:
+    /home/kaneda/Documents/GitHub/visual-foraging
+
+<a href = "matlab:internal.matlab.desktop.commandwindow.executeCommandForUser('cd ''/home/kaneda/Documents/GitHub/visual-foraging''')">Change the MATLAB current folder</a> or <a href = "matlab:internal.matlab.desktop.commandwindow.executeCommandForUser('addpath ''/home/kaneda/Documents/GitHub/visual-foraging''')">add its folder to the MATLAB path</a>.
+} 
+foragingGabors(8, 20, 2)
+Sessão cancelada pelo usuário
+cleanup
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

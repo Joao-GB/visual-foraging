@@ -1,0 +1,67 @@
+
+ans =
+
+   1.7799e+09
+
+
+ans =
+
+   1.7799e+09
+
+
+ans =
+
+   1.7799e+09
+
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 11
+
+ans =
+
+   1.7799e+09
+
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 9
+Elapsed time is 0.150050 seconds.
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 13
+
+ans =
+
+   1.7799e+09
+
+{Error using <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('xlim', '/usr/local/MATLAB/R2024b/toolbox/matlab/graphics/graphics/graph3d/xlim.m', 37)" style="font-weight:bold">xlim</a> (<a href="matlab: opentoline('/usr/local/MATLAB/R2024b/toolbox/matlab/graphics/graphics/graph3d/xlim.m',37,0)">line 37</a>)
+Limits must be a 2-element vector of increasing numeric values.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('plotStaircase', '/home/kaneda/Documents/GitHub/visual-foraging/plotStaircase.m', 40)" style="font-weight:bold">plotStaircase</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/plotStaircase.m',40,0)">line 40</a>)
+    xlim([1 length(trialNum)]);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('runStaircase', '/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m', 520)" style="font-weight:bold">runStaircase</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',520,0)">line 520</a>)
+    plotStaircase(RF)
+    ^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 613)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',613,0)">line 613</a>)
+                                [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 309)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',309,0)">line 309</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+sca
+cleanup
+foragingGabors(8, 20, 2)
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...
+Compiling all shaders matching BasicGaussBlobShader * into a GLSL program.
+Building a fragment shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.frag.txt ...
+Building a vertex shader:Reading shader from file /usr/share/psychtoolbox-3/PsychOpenGL/PsychGLSLShaders/BasicGaussBlobShader.vert.txt ...

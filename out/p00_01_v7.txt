@@ -1,0 +1,337 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 3
+Elapsed time is 0.149914 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:    -40   -40   -40
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -47.4163
+
+
+Por isso o novo aSigma é 47.4163
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 2
+Elapsed time is 0.149826 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630
+
+
+Por isso o novo aSigma é 37.0630
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 7
+Elapsed time is 0.149795 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651
+
+
+Por isso o novo aSigma é 42.2651
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 4
+Elapsed time is 0.000092 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 0, keptFixPM = 0
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 10
+Elapsed time is 0.149398 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380
+
+
+Por isso o novo aSigma é 40.2380
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 5
+Elapsed time is 0.149838 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651  -40.2380  -40.2380  -40.2380
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380  -41.1810  -41.8087  -42.2111
+
+
+Por isso o novo aSigma é 42.2111
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 9
+Elapsed time is 0.150044 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651  -40.2380  -40.2380  -40.2380  -42.2111  -42.2111  -42.2111
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380  -41.1810  -41.8087  -42.2111  -42.6425  -41.2372
+
+  Column 19
+
+  -40.5777
+
+
+Por isso o novo aSigma é 40.5777
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 8
+Elapsed time is 0.149842 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651  -40.2380  -40.2380  -40.2380  -42.2111  -42.2111  -42.2111
+
+  Columns 19 through 21
+
+  -40.5777  -40.5777  -40.5777
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380  -41.1810  -41.8087  -42.2111  -42.6425  -41.2372
+
+  Columns 19 through 22
+
+  -40.5777  -40.9977  -41.2880  -41.4877
+
+
+Por isso o novo aSigma é 41.4877
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 12
+Elapsed time is 0.149990 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651  -40.2380  -40.2380  -40.2380  -42.2111  -42.2111  -42.2111
+
+  Columns 19 through 24
+
+  -40.5777  -40.5777  -40.5777  -41.4877  -41.4877  -41.4877
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380  -41.1810  -41.8087  -42.2111  -42.6425  -41.2372
+
+  Columns 19 through 25
+
+  -40.5777  -40.9977  -41.2880  -41.4877  -41.6528  -41.7920  -41.3294
+
+
+Por isso o novo aSigma é 41.3294
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 1
+Elapsed time is 0.150102 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -47.4163  -47.4163  -47.4163  -37.0630  -37.0630  -37.0630  -42.2651  -42.2651  -42.2651  -40.2380  -40.2380  -40.2380  -42.2111  -42.2111  -42.2111
+
+  Columns 19 through 27
+
+  -40.5777  -40.5777  -40.5777  -41.4877  -41.4877  -41.4877  -41.3294  -41.3294  -41.3294
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -47.4163  -38.0354  -36.7750  -37.0630  -39.5614  -41.2461  -42.2651  -43.1958  -39.3785  -40.2380  -41.1810  -41.8087  -42.2111  -42.6425  -41.2372
+
+  Columns 19 through 28
+
+  -40.5777  -40.9977  -41.2880  -41.4877  -41.6528  -41.7920  -41.3294  -41.4773  -41.5996  -41.7017
+
+
+Por isso o novo aSigma é 41.7017
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 8
+Elapsed time is 0.149920 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:    -40   -40   -40
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -28.3083
+
+
+Por isso o novo aSigma é 28.3083
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 3
+Elapsed time is 0.150016 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962
+
+
+Por isso o novo aSigma é 35.6962
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 5
+Elapsed time is 0.150114 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678
+
+
+Por isso o novo aSigma é 41.2678
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 11
+Elapsed time is 0.150019 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875
+
+
+Por isso o novo aSigma é 37.8875
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 2
+Elapsed time is 0.149890 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678  -37.8875  -37.8875  -37.8875
+
+
+A média evoluiu como:   -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875  -38.9260  -39.7500  -35.8870
+
+
+Por isso o novo aSigma é 35.8870
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 6
+Elapsed time is 0.149909 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678  -37.8875  -37.8875  -37.8875  -35.8870  -35.8870  -35.8870
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875  -38.9260  -39.7500  -35.8870  -36.8138  -32.6139
+
+  Column 19
+
+  -33.7029
+
+
+Por isso o novo aSigma é 33.7029
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 4
+Elapsed time is 0.149655 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678  -37.8875  -37.8875  -37.8875  -35.8870  -35.8870  -35.8870
+
+  Columns 19 through 21
+
+  -33.7029  -33.7029  -33.7029
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875  -38.9260  -39.7500  -35.8870  -36.8138  -32.6139
+
+  Columns 19 through 22
+
+  -33.7029  -34.8378  -29.3907  -30.5516
+
+
+Por isso o novo aSigma é 30.5516
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 7
+Elapsed time is 0.149791 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 1, keptFixPM = 0
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 12
+Elapsed time is 0.150088 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678  -37.8875  -37.8875  -37.8875  -35.8870  -35.8870  -35.8870
+
+  Columns 19 through 24
+
+  -33.7029  -33.7029  -33.7029  -30.5516  -30.5516  -30.5516
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875  -38.9260  -39.7500  -35.8870  -36.8138  -32.6139
+
+  Columns 19 through 25
+
+  -33.7029  -34.8378  -29.3907  -30.5516  -31.9133  -32.8846  -33.5233
+
+
+Por isso o novo aSigma é 33.5233
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 1
+Elapsed time is 0.149731 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   Columns 1 through 18
+
+  -40.0000  -40.0000  -40.0000  -28.3083  -28.3083  -28.3083  -35.6962  -35.6962  -35.6962  -41.2678  -41.2678  -41.2678  -37.8875  -37.8875  -37.8875  -35.8870  -35.8870  -35.8870
+
+  Columns 19 through 27
+
+  -33.7029  -33.7029  -33.7029  -30.5516  -30.5516  -30.5516  -33.5233  -33.5233  -33.5233
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -40.0000  -40.3424  -44.3561  -28.3083  -31.4021  -33.9276  -35.6962  -37.9381  -39.8520  -41.2678  -36.8926  -37.2919  -37.8875  -38.9260  -39.7500  -35.8870  -36.8138  -32.6139
+
+  Columns 19 through 28
+
+  -33.7029  -34.8378  -29.3907  -30.5516  -31.9133  -32.8846  -33.5233  -34.2273  -31.7078  -32.2374
+
+
+Por isso o novo aSigma é 32.2374
+<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/runStaircase.m',530,1)">530 </a>        end
+sca
+plotStaircase(RF)
+if system_dependent('IsDebugMode')==1, dbquit; end

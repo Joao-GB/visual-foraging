@@ -96,7 +96,7 @@ function params = foragingParams
     params.priorStdStair  = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
-    params.postModDurStair = .3;
+    params.postModDurStair = .2;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
@@ -241,7 +241,8 @@ function params = foragingParams
     params.iconScaleFactor = 0.6;       % Proporção da porção reservada realmente 
                                             % ocupada
     params.currFolder      = fileparts(mfilename('fullpath'));
-    params.outFolder       = 'out';     % Nome da pasta com imagens dos ícones
+    params.depFolder       = 'dep';     % Nome da pasta de dependências
+    params.outFolder       = 'out';     % Nome da pasta de saída
     params.imgFolder       = 'img';     % Nome da pasta com imagens dos ícones
     params.imgExtension    = '.png';    % Extensão das imagens
 

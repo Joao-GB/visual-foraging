@@ -375,6 +375,8 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                             tNow = GetSecs;
                         end
 
+                        WaitSecs(prm.fadeInDelay1);
+
                         Eyelink('Message',prm.msg.off.PM);
                         
 %% Fase 4: tela de reporte
@@ -435,15 +437,16 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                         i = i + 1;
                         trialIdxUp = true;
 
-                        restartTrial = keptFixP3 && keptFixPM;
+                        restartTrial = ~(keptFixP3 && keptFixPM);
                     end
 
                     if ~keepGoingTrials || restartTrial
+                        fprintf('Trial ruim, pois ~keepGoingTrials = %d e restartTrial = %d\n keptFixP3 = %d, keptFixPM = %d\n', ~keepGoingTrials, restartTrial, keptFixP3, keptFixPM)
                         Eyelink('Message',prm.msg.err.trl{1});
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;
                         if keepGoingTrials
                             if retryCount(trialQueue(i)) > prm.maxRetries
-                                Eyelink('Message',prm.msg.err.tsrl{2});
+                                Eyelink('Message',prm.msg.err.trl{2});
                                 warning('Trial %d excede o máximo de repetições. Prosseguindo', trialQueue(i));
                                 i = i + 1;
                                 trialIdxUp = true;
@@ -452,11 +455,16 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                             end
                         end
                     else
+                        disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
                         for j=1:length(orderToReportStims)
                             RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
                         end
                         aSigma(b) = -RF(b).mean;
+                        fprintf('Atualizo o RF do bloco %d, apresentamos: ', b); disp(RF(b).x)
+                        fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
+                        fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
+
                         [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;
                         OFsize(:,:,b)    = auxOFsize;
@@ -517,5 +525,7 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
             diary off;
             psychrethrow(psychlasterror);
         end
-    plotStaircase(RF)
+        if b == nBlocks && keepGoingBlocks
+            plotStaircase(RF)
+        end
 end
