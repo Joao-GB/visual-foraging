@@ -1,4 +1,5 @@
-function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
+function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
+% Acrescenta o burn-in
 %% Pré
 % A tela de estímulos deve ser similar à do experimento, quanto à
 % quantidade de estímulos e ao início aleatório. 
@@ -56,6 +57,10 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
         minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
 %% Cria o objeto que registra todo o staircase
+        burninTrials = prm.burninTrials;
+        % burnInASigma = linspace(-prm.priorMeanStair - 2*prm.priorStdStair, -prm.priorMeanStair + 2*prm.priorStdStair, burninTrials);
+        burnInASigma = linspace(prm.sigmaMin, prm.sigmaMax, burninTrials);
+        burnInASigma = burnInASigma(randperm(burninTrials));
         alphaRange = (-prm.sigmaMax:.1:-prm.sigmaMin);
         PF = @PAL_CumulativeNormal;
         prior = PAL_pdfNormal(alphaRange, -prm.priorMeanStair, prm.priorStdStair);
@@ -70,10 +75,12 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
             'stopCriterion', 'trials', ...
             'stopRule', 3*nTrials);
         RF(1:nBlocks) = RF(1);
-        aSigma = ones(1, nBlocks)*prm.aSigma;
+        aSigma = ones(1, nBlocks)*burnInASigma(1);
 
-        oriFilter = repmat(txP.oriFilter, [1, 1, nBlocks]);
-        OFsize = repmat(txP.OFsize, [1, 1, nBlocks]);
+        [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, burnInASigma(1), prm.rSigma2);
+
+        oriFilter = repmat(oriFilter, [1, 1, nBlocks]);
+        OFsize    = repmat(OFsize, [1, 1, nBlocks]);
         jitterTimes = rand(nBlocks, nTrialsBuffered)*(prm.maxJitterStair-prm.minJitterStair)+prm.minJitterStair;
 
 %% Tarefa
@@ -386,7 +393,7 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         % Os demais pontos que não o fixado antes da atual
-                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), fixIdx(b, idx));
+                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), fixIdx(b, idx), []);
 
                         stimsToReport = nbhd(1:3);
                         orderToReportStims = stimsToReport(randperm(3));
@@ -430,8 +437,8 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                         trialFeedback{b, i} = [orderToReportStims; zeros(1, 3); feedback(orderToReportStims)];
                         
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
-                        foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                        foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
+                        % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         WaitSecs(.5);
 
                         restartTrial = ~(keptFixP3 && keptFixPM);
@@ -466,10 +473,19 @@ function [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm)
                         for j=1:length(orderToReportStims)
                             RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
                         end
-                        aSigma(b) = -RF(b).mean;
+
                         fprintf('Atualizo o RF do bloco %d, apresentamos: ', b); disp(RF(b).x)
                         fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
-                        fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
+
+                        % Quando chega nessa parte, o i já foi incrementado 
+                        % na parte com trialIdxUp. Por iso i em vez de i+1
+                        if i <= burninTrials
+                            aSigma(b) = burnInASigma(i);
+                            fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(b));
+                        else
+                            aSigma(b) = -RF(b).mean;
+                            fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
+                        end
 
                         [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;

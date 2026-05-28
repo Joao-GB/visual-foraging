@@ -28,7 +28,7 @@ function params = foragingParams
 
     % (f) Parâmetros do ruído rosa com orientação
     %% Arrumar parâmetros conforme o sujeito
-    params.aSigma = 10;
+    params.aSigma = 35;
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -91,12 +91,13 @@ function params = foragingParams
     params.sigmaMin = 5;
     params.sigmaMax = 70;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 40;
+    params.nTrialsStair = 5;
     params.priorMeanStair  = 20;
     params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .2;
+    params.burninTrials    = 3;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...

@@ -605,7 +605,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 continue;
                             elseif strcmp(mode, 'staircase')
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
-                                [resultsStair] = runStaircase(tkP, dpP, drP, txP, prm);
+                                [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm);
                                 tkP.stair = resultsStair; clear resultsStair;
                                 prm.aSigma = mean(tkP.stair.aSigma);
                             elseif strcmp(mode, 'experiment')
@@ -1391,8 +1391,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %     não vistos. Atrasa a apresentação para o estímulo durar
         %     medFixTime segundo antes de o ruído rosa substituí-lo
                     if mode == 1
-                        bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
-                        auxWin  = bg1;
+                        % bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
+                        auxWin  = bg;
                     else
                         auxWin = dpP.window;
                     end
@@ -1401,12 +1401,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
             % (i) Desenha os ruídos orientados e o mesmo grating se a
             %     fixação tiver sido mantida
-                        if  mode <= 2
-                            foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), txP, [repmat(alphas(blinkIdx)', [3,1]); ones(1, numel(blinkIdx))], 1);
-                        else
-                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                            Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
-                        end
+                    if mode >= 3
+                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                        Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
+
                         if ~isempty(currIdx)
                             Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
                             Screen('DrawTextures', auxWin, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
@@ -1422,6 +1420,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
                         Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+                    end
                         
                         %% A tela não modificada deve ser exibida ao todo por 
                         % medFixTime - prm.pinkNoiseDur, mas devo descontar
@@ -1436,7 +1436,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                 if any([x_gaze, y_gaze] ~= lastPos)
                                     Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
-                                    Screen('DrawTexture', dpP.window, bg1);
+                                    Screen('DrawTexture', dpP.window, bg);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('Flip', dpP.window);
@@ -1446,16 +1446,20 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             end
                             updateStimOnset = GetSecs;
                         else
-                            updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
+                            if mode >= 3
+                                updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
+                            else
+                                updateStimOnset = WaitSecs(P3On);
+                            end
                         end
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
 
 
-                        if mode == 1
-                            Screen('Close', bg);
-                            clear auxWin bg;
-                        end
+                        % if mode == 1
+                        %     Screen('Close', bg);
+                        %     clear auxWin bg;
+                        % end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
                         % demais na tela ou quando o olho sai do último
@@ -1486,7 +1490,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 check = true;
                                 if any([x_gaze, y_gaze] ~= lastPos)
                                     Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
-                                    Screen('DrawTexture', dpP.window, bg1);
+                                    Screen('DrawTexture', dpP.window, bg);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('Flip', dpP.window);
@@ -1636,7 +1640,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             % x. Desenha placeholders para os estímulos aleatoriamente, obedecendo
             %    a identificação deles como visitados, atual e não visitados
                         if mode == 1
-                            Screen('Close', bg1); clear auxWin bg1;
+                            Screen('Close', bg); clear auxWin bg;
                         end
 
                         % % Se houver fixado em algum estímulo em PM...
@@ -1674,11 +1678,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             disp('ERRO')
                         end
 
-                        allTargets = nan(1,nStims); allColors2 = drP.allColors;
+                        isTargetAnswer = nan(1,nStims); allColors2 = drP.allColors;
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         % Os demais pontos que não o fixado antes da atual
-                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim);
+                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim, currIdx);
 
                         % O do passado não importa de onde eu pergunto,
                         % desde que não seja a última fixação nem o pós
@@ -1740,16 +1744,16 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     end
                                 end
                         
-                                allTargets(orderToReportStims(j)) = currTarget;
+                                isTargetAnswer(orderToReportStims(j)) = currTarget;
                                 Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, rectColors, allTargets, targetOri(b), rectPW);
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, rectColors, isTargetAnswer, targetOri(b), rectPW);
                         
                             end
                         end
                         
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.P4); end
 
-                        feedback = (orientation(:,idx,b) == targetOri(b))' + allTargets;
+                        feedback = (orientation(:,idx,b) == targetOri(b))' + isTargetAnswer;
                         feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
                         feedback = feedback/2;
 
@@ -1757,10 +1761,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         
                         if mode <= 3
                             Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         else
                             Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
+                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
                          end
                         WaitSecs(.5);
                         
