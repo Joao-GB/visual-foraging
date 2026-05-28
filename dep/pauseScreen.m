@@ -2,7 +2,7 @@ function decision = pauseScreen(tkP, dpP, drP, prm, pauseMode)
     decision = '';
 
     leaveOptions = {'quit', 'gotoMenu'};
-    parentDir = prm.filePath;
+    parentDir = prm.currFolder;
     leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3};
     cX = dpP.winCenter(1); cY = dpP.winCenter(2);
 

@@ -1,0 +1,209 @@
+Tempo inicial: 1.40723
+Tempo getDistr: 0.00256
+Tempo orientações distratoras: 0.00026
+Tempo matrizes nulas: 0.00015
+Tempo rects a centers: 0.00042
+Tempo preencher locais estímulos e orientações de alvos: 0.46238
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 7
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 5
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1135
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.1138
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 7: Visitou o alvo 1 pós-modificação
+seenStimsQueue final:      5     6     1     1
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+Vistos: 5  6
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 2
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1098
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.1102
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0008
+Tempo total de ruído rosa: 0.0108
+Trial 2: Visitou o alvo 6 pós-modificação
+seenStimsQueue final:      3     1     2     6     6
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 4  8
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 8
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 2
+currStim = 7
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1004
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.1006
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.1341
+Tempo total de ruído rosa: 0.1416
+Trial 8: Visitou o alvo 6 pós-modificação (fim forçado)
+seenStimsQueue final:      1     4     5     7     3     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 6
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 5
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+currStim = 5
+Terminou a visita ao 5-ésimo estímulo
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.0990
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.1007
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.1501
+Tempo total de ruído rosa: 0.1582
+Trial 5: Visitou o alvo 2 pós-modificação (fim forçado)
+seenStimsQueue final:      6     3     4     8     5     1     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 2
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 6
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 8
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+currStim = 4
+currStim = 4
+currStim = 4
+currStim = 4
+currStim = 1
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1127
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.1130
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1500
+Tempo total de ruído rosa: 0.1584
+Trial 6: Visitou o alvo 6 pós-modificação (fim forçado)
+seenStimsQueue final:      8     7     1     2     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 6
+Não vistos: 4
+
+ans =
+
+   1.7800e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão experimental não concluída, mas salva.
+{Index in position 1 exceeds array bounds. Index must not exceed 2.
+
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>foragingSave', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 1957)" style="font-weight:bold">foragingGabors>foragingSave</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',1957,0)">line 1957</a>)
+            myWarning = [warningStart warnings{i, colIdx}];
+                                      ^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 636)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',636,0)">line 636</a>)
+    tkP = foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error in <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 303)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',303,0)">line 303</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+sca
+opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',1957,0)
+opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',1957,0)

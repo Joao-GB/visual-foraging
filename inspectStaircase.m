@@ -1,4 +1,4 @@
-function inspectStaircase(dpP, drP, prm, RF, thrs)
+function inspectStaircase(tkP, dpP, drP, prm, RF, thrs)
 
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;     targetH = screenH / 2;
@@ -37,6 +37,11 @@ function inspectStaircase(dpP, drP, prm, RF, thrs)
 
         figFrame = getframe(hFig);
         texArray(b) = Screen('MakeTexture', dpP.window, figFrame.cdata);
+
+        baseNameIndiv = sprintf('sc_%s_cond%d', tkP.sesSub, b);
+        filenameIndiv = fileVersion(baseNameIndiv, '.png');
+        saveas(hFig, filenameIndiv);
+        
         close(hFig);
     end
 

@@ -91,13 +91,13 @@ function params = foragingParams
     params.sigmaMin = 5;
     params.sigmaMax = 70;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 5;
+    params.nTrialsStair = 40;
     params.priorMeanStair  = 20;
     params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .2;
-    params.burninTrials    = 3;
+    params.burninTrials    = 15;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
@@ -241,11 +241,21 @@ function params = foragingParams
     params.upFrac = 2/3;                % Proporção do botão reservada para ícones
     params.iconScaleFactor = 0.6;       % Proporção da porção reservada realmente 
                                             % ocupada
+    
+    % (n) Pastas e extensões
     params.currFolder      = fileparts(mfilename('fullpath'));
     params.depFolder       = 'dep';     % Nome da pasta de dependências
     params.outFolder       = 'out';     % Nome da pasta de saída
     params.imgFolder       = 'img';     % Nome da pasta com imagens dos ícones
+    params.edfExtension    = '.edf';
+    params.figExtension    = '.fig';
     params.imgExtension    = '.png';    % Extensão das imagens
+    params.matExtension    = '.mat';
+    params.textExtension   = '.txt';
+    params.edfPreffix      = 'e';
+    params.matPreffix      = 's';
+    params.textPreffix     = 'p';
+    params.tempDiary       = fullfile(params.currFolder, params.outFolder, 'temp.txt');
 
 %% Durações e delays de detalhes
     params.repeatDelay = 0.5;   % Tempo que demora para considerar um segundo

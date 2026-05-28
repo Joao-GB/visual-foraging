@@ -547,6 +547,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             psychrethrow(psychlasterror);
         end
         if b == nBlocks + 1 && keepGoingBlocks
-            inspectStaircase(dpP, drP, prm, RF, aSigma);
+            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma);
         end
 end

@@ -38,13 +38,12 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 
 %% 1) Importa os parâmetros para o experimento
     params = foragingParams;
-    params.filePath = fileparts(mfilename('fullpath'));
     addpath(genpath((fullfile(params.currFolder, params.depFolder))));
-    params.edfExtension = '.edf';
+    if isfile(params.tempDiary), delete(params.tempDiary); end
     
 %% 2) Inicializa PTB e EyelinkToolBox
     % i. Caixa de diálogo
-    edfFile = ''; targetKey = 'left';
+    sesSub = ''; targetKey = 'left';
     if debug == 0
         repeat = true;
         while repeat
@@ -60,8 +59,8 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     
 
             % Recomeça se nome muito longo
-            edfFile = [answer{1} '_' answer{2}];
-            if length(edfFile) > 8, fprintf('ERRO: O nome do arquivo excede 8 caracteres!\nTente novamente\n'); cleanup; repeat = true; end
+            sesSub = [answer{1} '_' answer{2}];
+            if length(sesSub) > 8, fprintf('ERRO: O nome do arquivo excede 8 caracteres!\nTente novamente\n'); cleanup; repeat = true; end
     
             % Recomeça se campo de olho dominante mal preenchido
             domEye = upper(answer{3});
@@ -154,9 +153,9 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     % ii. Abre o arquivo .edf
     el = [];
     if debug == 0
-        failOpen = Eyelink('OpenFile', edfFile);
+        failOpen = Eyelink('OpenFile', sesSub);
         % Interrompe se arquivo não abrir
-        if failOpen ~= 0, fprintf('ERRO: Não foi possível criar o arquivo %s\n', edfFile); cleanup; return; end
+        if failOpen ~= 0, fprintf('ERRO: Não foi possível criar o arquivo %s\n', sesSub); cleanup; return; end
     
        % iv. Ajusta o que é comunicado entre os PCs
         Eyelink('Command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
@@ -170,7 +169,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
         if ismember(domEye, {'L','E'}), Eye=1; Eyelink('Command', 'active_eye = LEFT'); elseif ismember(domEye, {'R', 'D'}), Eye=2; Eyelink('Command', 'active_eye = RIGHT'); end
     
     % vii. Adiciona um texto inicial ao arquivo .edf
-        preambleText = sprintf('RECORDED BY %s session name: %s', mfilename, edfFile);
+        preambleText = sprintf('RECORDED BY %s session name: %s', mfilename, sesSub);
         Eyelink('Command', 'add_file_preamble_text "%s"', preambleText);
     
     % viii. Ajusta as configurações-padrão do Eyelink de calibração
@@ -283,7 +282,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     taskProps.Eye       = Eye;
     taskProps.targetKey = targetKey;
     taskProps.el        = el;
-    taskProps.edfFile   = edfFile;
+    taskProps.sesSub   = sesSub;
     taskProps.fixQueue  = fixQueue;
     taskProps.nStims    = nStims;
     taskProps.nMaxFix   = nMaxFix;
@@ -293,36 +292,22 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     taskProps.keys      = keys;
     taskProps.fixProps.preP3  = [];
     taskProps.fixProps.med    = [];
-    clear ans Eye targetKey el edfFile fixQueue nStims nTrials nBlocks keys
+    clear ans Eye targetKey el sesSub fixQueue nStims nTrials nBlocks keys
 
 %% 5) Chama as funções para executar a tarefa
-    outPath = fullfile(params.filePath, params.outFolder);
-    winOutFile = fullfile(outPath, ['p' taskProps.edfFile ]);
-    winOutFile = fileVersion(winOutFile, '.txt');
-    taskProps.winOutFile = winOutFile;
-    
-    if debug == 0, diary(winOutFile); end
+    if debug == 0, diary(params.tempDiary); end
 
-    taskStart = tic;
+    taskProps.start = tic;
 
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
     [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
-
-    taskEnd = toc(taskStart);
-    fprintf('Tempo total da sessão: %.3f s\n', taskEnd);
 
     if taskState(2,2) == 1
         endScreen(displayProps, drawProps, params);
     end
 
     cleanup(displayProps.window);
-    if debug == 0, diary off; end
     fprintf('Soma dos estados: %d\n', sum(taskState(:)));
-
-    if sum(taskState(:)) == 0 && exist(winOutFile, 'file')
-        disp('Deletando registros em texto...')
-        delete(winOutFile);
-    end
 end
 
 
@@ -377,7 +362,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     scale = 3.5;
     arrowCoords = arrow * scale + [backRect(1) + 30, backRect(2) + 20];
 
-    parentDir = prm.filePath;
+    parentDir = prm.currFolder;
     options = mainOptions;
     iconsDir = cellfun(@(x) fullfile(parentDir, prm.imgFolder, [x prm.imgExtension]), options, 'UniformOutput', false);
     clear parentDir
@@ -465,7 +450,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             end
             
             % Carrega novos ícones baseados na pasta de imagens
-            iconsDir = cellfun(@(x) fullfile(prm.filePath, prm.imgFolder, [x prm.imgExtension]), options, 'UniformOutput', false);
+            iconsDir = cellfun(@(x) fullfile(prm.currFolder, prm.imgFolder, [x prm.imgExtension]), options, 'UniformOutput', false);
             iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
             
             % Reseta seleções
@@ -615,7 +600,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             end
                         else
                             % Lógica da tela de subtreinos
-                            taskState(1,1) = 1;
+                            if ~strcmp(mode, 'cursor'), taskState(1,1) = 1; end
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             resultsTrain.tkP = tkP;
@@ -648,7 +633,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 
     if debug ~= 0, taskState(:) = 0; end
     if ~exist('results', 'var'), results = []; end
-    foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
+    tkP = foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
 end
 
 function [iconsTex] = getMenuTex(win, iconsDir, col)
@@ -1884,13 +1869,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             results.seenStimsQueue = seenStimsQueue;
             
             if debug ~= 0, tkS(:) = 0; end
-            foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
-            cleanup(dpP.window);
-            if debug == 0, diary off; end
-            if sum(tkS(:)) == 0 && exist(tkP.winOutFile, 'file')
-                disp('Deletando registros em texto...')
-                delete(tkP.winOutFile);
-            end
+            tkP = foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results,0);
             psychrethrow(psychlasterror);
         end
 
@@ -1909,7 +1888,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
     end
 end
 
-function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
+function tkP = foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results, cleanAll)
+if nargin < 9, cleanAll = true; end
     warningStart = 'AVISO: Sessão ';
     warnings = {'de treino não concluída, mas salva.', 'de treino concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
                 'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.', ''};
@@ -1917,6 +1897,7 @@ function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
     if sum(tkS(:)) == 0
         myWarning = [warningStart warnings{1, 3}];
         disp(myWarning);
+        if isfile(prm.tempDiary), delete(prm.tempDiary); end
         return;
     end
 
@@ -1925,14 +1906,20 @@ function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
     if     qSes == 1, aux = '_i';
     elseif qSes == 2, aux = '_r';
     end
+    tkP.fileState = aux;
 
     % Não sobrescreve arquivos já existentes
-    outPath = fullfile(prm.filePath, prm.outFolder);
-    dstEdfFile = fullfile(outPath, ['e' tkP.edfFile aux]);
-    dstEdfFile = fileVersion(dstEdfFile, prm.edfExtension);
+    outPath = fullfile(prm.currFolder, prm.outFolder);
 
-    matFile = fullfile(outPath, ['s' tkP.edfFile aux]);
-    matFile = fileVersion(matFile, '.mat');
+    edfFile  = fullfile(outPath, [prm.edfPreffix tkP.sesSub tkP.fileState]);
+    matFile  = fullfile(outPath, [prm.matPreffix tkP.sesSub tkP.fileState]);
+    textFile = fullfile(outPath, [prm.textPreffix tkP.sesSub tkP.fileState]);
+    tkP.version  = fileVersionCommon({edfFile, matFile, textFile}, {prm.edfExtension, prm.matExtension, prm.textExtension});
+
+    tkP.edfFile  = [edfFile  tkP.version prm.edfExtension];
+    tkP.matFile  = [matFile  tkP.version prm.matExtension];
+    tkP.textFile = [textFile tkP.version prm.textExtension];
+
 
     if Eyelink('IsConnected') 
         if Eyelink('CheckRecording')
@@ -1953,16 +1940,16 @@ function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
         if status <= 0
             warning('Arquivo do Eyelink não recebido!')
         end
-        srcEdfFile = [tkP.edfFile prm.edfExtension]; 
-        if exist(srcEdfFile,'file')
-            movefile(srcEdfFile, dstEdfFile);
+        srcEdfFile = [tkP.sesSub prm.edfExtension]; 
+        if isfile(srcEdfFile)
+            movefile(srcEdfFile, tkP.edfFile);
             disp('Arquivo movido para o diretório fornecido.')
         else
             warning('Arquivo do EyeLink não encontrado!')
         end
     end
 
-    save(matFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
+    save(tkP.matFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
     
     for i=1:size(tkS,1)
         if sum(tkS(i,:)) ~= 0
@@ -1970,6 +1957,18 @@ function foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results)
             myWarning = [warningStart warnings{i, colIdx}];
             disp(myWarning);
         end
+    end
+    tkP.end = toc(tkP.start);
+    fprintf('Tempo total da sessão: %.3f s\n', tkP.end);
+
+    if cleanAll, cleanup(dpP.window); end
+    if isfile(prm.tempDiary)
+        diary off
+        if sum(tkS(:)) ~= 0
+            movefile(prm.tempDiary, tkP.textFile);
+        end
+        disp('Deletando registros temporários de texto...')
+        % delete(prm.tempDiary);
     end
 end
 
