@@ -89,7 +89,8 @@ function params = foragingParams
     params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
     addpath(genpath(params.palPath));
     params.sigmaMin = 5;
-    params.sigmaMax = 70;
+    params.sigmaMax = 80;
+    params.nStimsStair   = 3;
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 40;
     params.priorMeanStair  = 20;

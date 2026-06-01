@@ -313,9 +313,10 @@ end
 
 function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 %% Interpretação da variável taskState:
-    % Linhas: treino e experimento; 
+    % Linhas: treino 1, treino 2 e experimento; 
     % Colunas: começou e concluiu
     taskState = [0 0;
+                 0 0;
                  0 0];
 
     Screen('TextFont', dpP.window, prm.textFont);
@@ -594,13 +595,14 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 tkP.stair = resultsStair; clear resultsStair;
                                 prm.aSigma = mean(tkP.stair.aSigma);
                             elseif strcmp(mode, 'experiment')
-                                taskState(2,1) = 1;
+                                taskState(3,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             end
                         else
                             % Lógica da tela de subtreinos
-                            if ~strcmp(mode, 'cursor'), taskState(1,1) = 1; end
+                            if     strcmp(mode, 't1'), taskState(1,1) = 1; 
+                            elseif strcmp(mode, 't2'), taskState(2,1) = 1; end
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             resultsTrain.tkP = tkP;
@@ -608,7 +610,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                         end
                         
                         % Rotina pós-retorno de qualquer tarefa
-                        if taskState(2,2) == 1
+                        if taskState(3,2) == 1
                             break; % Encerra se o experimento acabou
                         else
                             refreshLayout = true; % Força recarregamento da tela atual
@@ -1891,7 +1893,8 @@ end
 function tkP = foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results, cleanAll)
 if nargin < 9, cleanAll = true; end
     warningStart = 'AVISO: Sessão ';
-    warnings = {'de treino não concluída, mas salva.', 'de treino concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
+    warnings = {'de treino 1 não concluída, mas salva.', 'de treino 1 concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
+                'de treino 2 não concluída, mas salva.', 'de treino 2 concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
                 'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.', ''};
 
     if sum(tkS(:)) == 0

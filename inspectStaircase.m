@@ -1,4 +1,4 @@
-function inspectStaircase(tkP, dpP, drP, prm, RF, thrs)
+function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
 
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;     targetH = screenH / 2;
@@ -32,7 +32,7 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs)
         yline(thrs(b), '--k', 'LineWidth', 2);
         
         xlabel('Trial'); ylabel('Sigma');
-        title(sprintf('Staircase: %s', prm.allOriName{b}))
+        title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
 
         figFrame = getframe(hFig);
@@ -56,7 +56,7 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs)
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
         yline(thrs(b), '--k', 'LineWidth', 2);
         
-        xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{b}))
+        xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         if b == 1, ylabel('Sigma'); end
         grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
     end

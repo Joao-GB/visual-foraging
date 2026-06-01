@@ -15,9 +15,9 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
         % Não me interessam os outputs de distribuições temporais, pois no
         % staircase o tempo não será por quantidade de fixações
         nTrialsBuffered = nTrials + prm.nBufferTrials;
-        [nTs, nStims, targetOri, ~, nStimsToReport, ~] = getForagingDistributions1(tkP.nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, nBlocks, prm);
-
-        nStimsToReport(:) = 3;
+        nStims = prm.nStimsStair;
+        [nTs,  ~, targetOri, ~, ~, ~] = getForagingDistributions1(nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, nBlocks, prm);
+        
         drP.allColors = drP.white*ones(3, nStims);
         drP.allPW     = prm.pW1*ones(1,nStims);
         
@@ -46,10 +46,11 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
         fixIdx      = zeros(nBlocks, nTrialsBuffered); 
         for b=1:nBlocks
             for i=1:nTrialsBuffered
-                [currFixCenter, currStimCenter, ~, fI] = getStimLocations2_1(dpP.winRect(3:4), [dpP.winCenter 1], nStims, minDist_px, txP.gabor.size_px);
+                [currFixCenter, currStimCenter, ~, fI] = getStimLocations2_1(dpP.winRect(3:4), [dpP.winCenter 1], tkP.nStims, minDist_px, txP.gabor.size_px);
                 fixCenters(:, i, b)     = currFixCenter;
-                stimCenters(:, :, i, b) = currStimCenter;
-                fixIdx(b, i) = fI;
+                aux = NeighborsOrder(currStimCenter, fI, []);
+                stimCenters(:, :, i, b) = currStimCenter(:, [aux(1:nStims-1), fI]);
+                fixIdx(b, i) = nStims;
                 orientation(randperm(nStims, nTs(b, i)), i, b) = targetOri(b);
             end
         end
@@ -73,7 +74,7 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             'xMax', -prm.sigmaMin, ...
             'meanmode', 'mean', ...
             'stopCriterion', 'trials', ...
-            'stopRule', 3*nTrials);
+            'stopRule', (nStims-1)*nTrials);
         RF(1:nBlocks) = RF(1);
         aSigma = ones(1, nBlocks)*burnInASigma(1);
 
@@ -395,8 +396,8 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
                         % Os demais pontos que não o fixado antes da atual
                         nbhd = NeighborsOrder(stimCenters(:, :, idx, b), fixIdx(b, idx), []);
 
-                        stimsToReport = nbhd(1:3);
-                        orderToReportStims = stimsToReport(randperm(3));
+                        stimsToReport = nbhd(1:nStims-1);
+                        orderToReportStims = stimsToReport(randperm(nStims-1));
                         Eyelink('Message',prm.msg.on.P4);
                         
                         for j=1:length(orderToReportStims)
@@ -434,7 +435,7 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
                         feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
                         feedback = feedback/2;
 
-                        trialFeedback{b, i} = [orderToReportStims; zeros(1, 3); feedback(orderToReportStims)];
+                        trialFeedback{b, i} = [orderToReportStims; zeros(1, nStims-1); feedback(orderToReportStims)];
                         
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                         foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
@@ -514,7 +515,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             resultsStair.orientation = orientation;
             resultsStair.nTs = nTs;
             resultsStair.targetOri = targetOri;
-            resultsStair.nStimsToReport = nStimsToReport;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
             resultsStair.aSigma    = aSigma;
@@ -527,7 +527,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             if ~exist('orientation', 'var'),  orientation = []; end
             if ~exist('nTs', 'var'),       nTs = []; end
             if ~exist('targetOri', 'var'), targetOri = []; end
-            if ~exist('nStimsToReport', 'var'),     nStimsToReport = []; end
             if ~exist('orderToReportSets', 'var'),  orderToReportSets = []; end
             if ~exist('trialOrder', 'var'),      trialOrder = []; end
             if ~exist('trialFeedback', 'var'),   trialFeedback = []; end
@@ -537,7 +536,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             resultsStair.orientation = orientation;
             resultsStair.nTs = nTs;
             resultsStair.targetOri = targetOri;
-            resultsStair.nStimsToReport = nStimsToReport;
             resultsStair.orderToReportSets = orderToReportSets;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
@@ -547,6 +545,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
             psychrethrow(psychlasterror);
         end
         if b == nBlocks + 1 && keepGoingBlocks
-            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma);
+            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma, targetOri);
         end
 end
