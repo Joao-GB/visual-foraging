@@ -40,6 +40,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     params = foragingParams;
     addpath(genpath((fullfile(params.currFolder, params.depFolder))));
     if isfile(params.tempDiary), delete(params.tempDiary); end
+    if isfile(params.tempFig), delete(params.tempFig); end
     
 %% 2) Inicializa PTB e EyelinkToolBox
     % i. Caixa de diálogo
@@ -302,7 +303,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     fakeLoadingScreen(taskProps, displayProps, drawProps, params);
     [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
 
-    if taskState(2,2) == 1
+    if taskState(4,2) == 1
         endScreen(displayProps, drawProps, params);
     end
 
@@ -313,9 +314,10 @@ end
 
 function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 %% Interpretação da variável taskState:
-    % Linhas: treino 1, treino 2 e experimento; 
+    % Linhas: staircase, treino 1, treino 2 e experimento; 
     % Colunas: começou e concluiu
     taskState = [0 0;
+                 0 0;
                  0 0;
                  0 0];
 
@@ -590,19 +592,23 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 refreshLayout = true;
                                 continue;
                             elseif strcmp(mode, 'staircase')
+                                taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
-                                [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm);
+                                [resultsStair, taskState] = runStaircase1(tkP, dpP, drP, txP, prm, taskState);
                                 tkP.stair = resultsStair; clear resultsStair;
-                                prm.aSigma = mean(tkP.stair.aSigma);
+                                aSigma = aSigmaFromStair(tkP.stair, prm);
+                                fprintf('Valor de aSigma escolhido via staircase: %.2f', aSigma);
+                                tkP.aSigma = aSigma;
+                                prm.aSigma = aSigma;
                             elseif strcmp(mode, 'experiment')
-                                taskState(3,1) = 1;
+                                taskState(4,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             end
                         else
                             % Lógica da tela de subtreinos
-                            if     strcmp(mode, 't1'), taskState(1,1) = 1; 
-                            elseif strcmp(mode, 't2'), taskState(2,1) = 1; end
+                            if     strcmp(mode, 't1'), taskState(2,1) = 1; 
+                            elseif strcmp(mode, 't2'), taskState(3,1) = 1; end
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             resultsTrain.tkP = tkP;
@@ -610,7 +616,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                         end
                         
                         % Rotina pós-retorno de qualquer tarefa
-                        if taskState(3,2) == 1
+                        if taskState(4,2) == 1
                             break; % Encerra se o experimento acabou
                         else
                             refreshLayout = true; % Força recarregamento da tela atual
@@ -651,7 +657,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % O modo default é experiment
         if nargin < 7, mode = 'experiment'; end
         tic;
-
 
         Screen('Flip', dpP.window);
 
@@ -1826,7 +1831,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             end
 
             if mode >= 2
-                tkS(mode - 1, 2) = blocksCompleted;
+                tkS(mode, 2) = blocksCompleted;
             end
             if debug == 0 && mode >= 2
 
@@ -1893,8 +1898,9 @@ end
 function tkP = foragingSave(tkS, qSes, prm, dpP, drP, tkP, txP, results, cleanAll)
 if nargin < 9, cleanAll = true; end
     warningStart = 'AVISO: Sessão ';
-    warnings = {'de treino 1 não concluída, mas salva.', 'de treino 1 concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
-                'de treino 2 não concluída, mas salva.', 'de treino 2 concluída e salva com êxito.', 'em debug OU encerrada sem treino ou experimento.'; ...
+    warnings = {'de staircase não concluída, mas salva.', 'de staircase concluída e salva com êxito.', 'em debug OU encerrada sem staircase, treino ou experimento.'; ...
+                'de treino 1 não concluída, mas salva.', 'de treino 1 concluída e salva com êxito.', 'em debug OU encerrada sem staircase, treino ou experimento.'; ...
+                'de treino 2 não concluída, mas salva.', 'de treino 2 concluída e salva com êxito.', 'em debug OU encerrada sem staircase, treino ou experimento.'; ...
                 'experimental não concluída, mas salva.', 'experimental concluída e salva com êxito.', ''};
 
     if sum(tkS(:)) == 0
@@ -1915,11 +1921,13 @@ if nargin < 9, cleanAll = true; end
     outPath = fullfile(prm.currFolder, prm.outFolder);
 
     edfFile  = fullfile(outPath, [prm.edfPreffix tkP.sesSub tkP.fileState]);
+    figFile  = fullfile(outPath, [prm.stairPreffix tkP.sesSub tkP.fileState]);
     matFile  = fullfile(outPath, [prm.matPreffix tkP.sesSub tkP.fileState]);
     textFile = fullfile(outPath, [prm.textPreffix tkP.sesSub tkP.fileState]);
-    tkP.version  = fileVersionCommon({edfFile, matFile, textFile}, {prm.edfExtension, prm.matExtension, prm.textExtension});
+    tkP.version  = fileVersionCommon({edfFile, figFile, matFile, textFile}, {prm.edfExtension, prm.figExtension, prm.matExtension, prm.textExtension});
 
     tkP.edfFile  = [edfFile  tkP.version prm.edfExtension];
+    tkP.figFile  = [figFile  tkP.version prm.figExtension];
     tkP.matFile  = [matFile  tkP.version prm.matExtension];
     tkP.textFile = [textFile tkP.version prm.textExtension];
 
@@ -1965,6 +1973,7 @@ if nargin < 9, cleanAll = true; end
     fprintf('Tempo total da sessão: %.3f s\n', tkP.end);
 
     if cleanAll, cleanup(dpP.window); end
+    if isfile(prm.tempFig), movefile(prm.tempFig, tkP.figFile); end
     if isfile(prm.tempDiary)
         diary off
         if sum(tkS(:)) ~= 0
@@ -2047,640 +2056,4 @@ function noise = foragingNoise(noiseSize, nStims, prm, loCut, hiCut) %#ok<INUSD>
     noiseMatrix = (auxNoiseMatrix - mean(auxNoiseMatrix(:))) / std(auxNoiseMatrix(:));
     noise.matrix  = noiseMatrix;
     noise.size_px = [noiseSize nStims*noiseSize];
-end
-
-
-function fakeLoadingScreen(tkP, dpP, drP, prm, loadingMode, txP, ori)
-    if nargin < 5, loadingMode = 'opening'; txP = []; ori = []; end
-    % Tela de 'Carregando' falsa com barra e dicas
-    aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori);
-    endFake(aux, dpP, drP, prm)
-end
-
-
-function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
-
-    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; escapeKey = tkP.keys{4};
-
-    parentDir = fileparts(mfilename('fullpath'));
-    fileLogo1 = 'logo_bBg_wSb.png'; fileLogo2 = 'logo_gBg_wSb.png'; fileRoundRect = '1by2_rect.png';
-
-    pathLogo1 = fullfile(parentDir, prm.imgFolder, fileLogo1);
-    pathLogo2 = fullfile(parentDir, prm.imgFolder, fileLogo2);
-
-    pathRectRound = fullfile(parentDir, prm.imgFolder, fileRoundRect);
-    clear parentDir fileRoundRect
-
-    if strcmp(loadingMode, 'opening')
-        pathLogo = pathLogo1; f = 0;
-        bgColor   = drP.black;
-        totalTime = 15;
-        hints     = {
-                     'Ganhe brinde extra ao indicar outras pessoas\n para participarem de nossos experimentos!'
-                     'Faça parte da lista de sujeitos experimentais\n do laboratório!'
-                     'Evite distrações enquanto realiza a tarefa.'
-                     'Se o experimento tiver mais de uma sessão, \nnão esqueça de comparecer em todas elas!'
-                    };
-
-        hintChangeInterval = 6; % Tempo durante o qual uma dica é exibida
-        showBar     = true;
-        barYOffset  = 135;
-        hintYOffset = 75;       % Quantos pixels abaixo da barra aparecem as dicas
-    elseif ismember(loadingMode, {'start', 'trial'})
-        pathLogo = pathLogo2; f = 1;
-        bgColor   = drP.grey;
-        totalTime = 8;
-        hints     = {
-                     'Memorize apenas onde estão os alvos!'
-                     'Faça pausas apenas quando o tipo de alvo mudar.'
-                     'Evite se mexer durante o experimento.'
-                     'Tente se manter concentrado e relaxado.'
-                     'Priorize o desempenho, e não a velocidade.'
-                     'Não esqueça de olhar para a cruz no início\nde cada tentativa!'
-                    };
-        hintChangeInterval = 4.5;
-        showBar     = false;
-        barYOffset  = 105;
-        hintYOffset = 105;
-    end
-    
-    %% Parâmetros
-    nBlocks          = 20;      % Número de blocos na barra de progresso
-    nSteps           = 20;      % São dados tantos passos quanto os blocos
-    barHeight        = 20;      % Altura da barra de progresso em pixels
-    blockGap         = 6;       % Espaço entre blocos em pixels
-    imageYOffsetFrac = 0.15;    % Quão para cima ficará a imagem em relação ao centro
-    creditXOffset    = 50;
-    creditYOffset    = 25;
-    arrowsXOffset    = 10;
-
-    blockImg = imread(pathRectRound);
-    
-    white = repmat(drP.white, 1, 3);
-    
-    Screen('TextFont', dpP.window, prm.textFont);
-    Screen('TextColor', dpP.window, drP.white);
-    Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    cX = dpP.winCenter(1); cY = dpP.winCenter(2);
-    
-    %% Carrega a imagem do logo e ajusta seu tamanho (no máximo 2/3 da tela)
-    
-    logoImg = imread(pathLogo);
-    % Cria canal alfa para remover o fundo (f é parâmetro ajustado conforme 
-    % a cor do fundo)
-    if size(logoImg,3) == 3
-        meanLogo = mean(logoImg, 3);
-        alpha = uint8( 255*(meanLogo-f*min(meanLogo(:)))/( max(meanLogo(:)) - min(meanLogo(:)) ) );
-        logoImg(:,:,4) = alpha;
-    end
-    logoTex = Screen('MakeTexture', dpP.window, logoImg);
-    clear pathLogo1 pathLogo2 pathLogo pathRectRound
-    
-    [imgH, imgW, ~] = size(logoImg);
-    maxImgW = dpP.winRect(3) * 1/3; maxImgH = dpP.winRect(4) * 1/3;
-    
-    scaleFactor = min([1, maxImgW/imgW, maxImgH/imgH]);
-    scaledW = imgW * scaleFactor; scaledH = imgH * scaleFactor;
-    
-    imgRect = CenterRectOnPointd([0 0 scaledW scaledH], cX, cY - dpP.winRect(4) * imageYOffsetFrac);
-    clear logoImg imgH imgW maxImgW maxImgH scaleFactor scaledW scaledH
-
-    
-    if strcmp(loadingMode, 'trial')
-        totalTime = totalTime*(3/8);
-        Screen('Close', logoTex);
-        logoTex = -1;
-    end
-
-    %% Retângulo dos créditos
-    creditX = imgRect(1) - creditXOffset; creditY = imgRect(2) - creditYOffset;
-    if logoTex == -1
-        creditText = 'ORIENTAÇÃO DO ALVO:';
-    else
-        creditText = 'UM EXPERIMENTO DE';
-    end
-    
-    %% Carrega a imagem do retângulo arredondado como textura
-        % Se não tiver canal alfa, cria de modo que o preto seja
-        % transparente (para usar a cor do fundo)
-    if size(blockImg,3) == 3
-        alpha = uint8(mean(blockImg, 3));
-        blockImg(:,:,4) = alpha;
-    end
-    
-    blockTex = Screen('MakeTexture', dpP.window, blockImg);
-    
-    %% Barra de progresso
-    % Tamanho original da imagem do bloco
-    [bH, bW, ~] = size(blockImg);
-    blockAspect = bW / bH;
-    
-    % A altura da imagem é dada com base na altura da barra
-    blockHeight = barHeight;
-    blockWidth  = blockHeight * blockAspect;
-    
-    % A largura da barra é dada com base no tamanho dos blocos e no espaço
-    % entre eles
-    totalBlocksWidth = nBlocks * blockWidth + (nBlocks-1) * blockGap;
-    barX = cX - totalBlocksWidth / 2;
-    barY = cY + barYOffset;
-    
-    % Contorno da barra
-    barOutline = [barX - blockGap, barY - blockGap, barX + totalBlocksWidth + blockGap, barY + barHeight + blockGap];
-    [barCX, barCY] = RectCenter(barOutline);
-    
-    % Retângulos em que são apresentadas as imagens dos blocos
-    blockRects = zeros(4, nBlocks);
-    for i = 1:nBlocks
-        x1 = barX + (i-1) * (blockWidth + blockGap);
-        blockRects(:,i) = [x1 barY x1+blockWidth barY+blockHeight];
-    end
-    clear blockImg bH bW blockAspect blockHeight blockWidth totalBlocksWidth
-    clear barHeight barX blockGap imageYOffsetFrac creditXOffset creditYOffset 
-    
-    % As durações de cada passo são sorteadas uniformemente entre 0 e 1, de
-    % modo que a soma coincida com a duração total
-    stepDurations = rand(1, nSteps);
-    stepDurations = stepDurations / sum(stepDurations) * totalTime;
-    stepTimes = cumsum(stepDurations);
-    
-    % Aumenta um pouquinho o tempo total para ter algum instante com o 10/10
-    totalTime = totalTime + prm.repeatDelay;
-    blocksPerStep = nBlocks / nSteps;
-    
-    %% Dicas
-    Screen('TextSize', dpP.window, prm.textSizeNormal);
-    hintY = barY + hintYOffset;
-    maxW = 0; maxH = 0;
-    for i = 1:numel(hints)
-        [~, ~, hintsRect] = DrawFormattedText(dpP.window, hints{i});
-        currW = RectWidth(hintsRect); currH = RectHeight(hintsRect);
-        if currW > maxW, maxW = currW; end
-        if currH > maxH, maxH = currH; end
-    end
-    hintsRect = CenterRectOnPointd([0, 0, maxW, maxH], cX, hintY);
-    clear stepDurations maxW maxH currW currH
-
-    %% Carregando alternativo
-    nDots = 4; amp = 8; freq = 2; k = 3;
-    phaseStep = 2*pi/nDots; phase = (0:(nDots-1))*phaseStep;
-    adjSin = @(x) amp .* sin(2*pi*freq*x + phase) .* (mod(floor(freq*x), k) == 0) .*(0.5 - 0.5*cos(2*pi*mod(freq*x,1)));
-    radius = 3; distance = 3;
-    loadingText = 'CARREGANDO';
-    Screen('TextSize', dpP.window, prm.textSizeBig);
-    boundsLoading = Screen('TextBounds', dpP.window, loadingText);
-    loadingRect = CenterRectOnPointd(boundsLoading, barCX, barCY);
-    loadingWidth  = RectWidth(boundsLoading);
-    boundsAux = Screen('TextBounds', dpP.window, 'A');
-    Screen('TextSize', dpP.window, prm.textSizeNormal);
-
-    dotsX = cX + loadingWidth/2 + cumsum(repmat(distance+radius, 1, nDots));
-    dotsY = repmat(loadingRect(2) + RectHeight(boundsAux), 1, nDots);
-
-    %% Setas
-    lArrowText = '<'; rArrowText = '>';
-    arrowsRect = Screen('TextBounds', dpP.window, lArrowText);
-    arrowsWidth = RectWidth(arrowsRect);
-    larrowRect = CenterRectOnPointd(arrowsRect, hintsRect(1)-arrowsWidth-arrowsXOffset, hintY);
-    rarrowRect = CenterRectOnPointd(arrowsRect, hintsRect(3)+arrowsWidth+arrowsXOffset, hintY);
-    clear boundsLoading loadingWidth boundsAux nDots arrowsXOffset arrowsRect
-    
-    %% Loop principal
-    hintIdx = 1;
-    hints = hints(randperm(numel(hints)));
-    currentHint = hints{mod(hintIdx, numel(hints))+1};
-    hintPhase = 'steady';   % 'fadein', 'steady', 'fadeout'
-    steadyStart = 0;
-    hintAlpha = 1;
-    
-    if showBar, filledBlocks = 0; else, filledBlocks = nBlocks; end
-    startTime = GetSecs;
-    stepIndex = 0;
-    
-    doAction = false; selected = 0; keyWasDown = 0;
-    Screen('TextSize', dpP.window, prm.textSizeSmall);
-    lastActionTime = GetSecs;
-    lastRepeatTime = GetSecs;
-    while true
-        tNow = GetSecs;
-        elapsedTime = tNow - startTime;
-    
-        % A tela é interrompida apenas se excedeu o limite de tempo e se
-        % todos os blocos foram preenchidos
-        if elapsedTime >= totalTime && filledBlocks == nBlocks
-            break;
-        end
-    
-        if showBar
-            % Atualiza a quantidade de blocos preenchidos
-            if stepIndex < nSteps && elapsedTime >= stepTimes(stepIndex + 1)
-                stepIndex = stepIndex + 1;
-            end
-            filledBlocks = round(stepIndex * blocksPerStep);
-        end
-
-        %% Setas de seleção das dicas
-        [keyIsDown, ~, keyCode] = KbCheck;
-        if keyIsDown
-            if ~keyWasDown
-                lastActionTime = GetSecs;
-                doAction = true;
-            elseif GetSecs - lastActionTime > prm.repeatDelay
-                if GetSecs - lastRepeatTime > prm.repeatRate
-                    doAction = true;
-                    lastRepeatTime = GetSecs;
-                end
-            end
-            if doAction && strcmp(hintPhase, 'steady')
-                doAction = false;
-                if keyCode(leftKey)
-                    selected = -1;
-                    hintPhase = 'fadeout'; fadeStart = elapsedTime;
-                elseif keyCode(rightKey)
-                    selected = 1;
-                    hintPhase = 'fadeout'; fadeStart = elapsedTime;
-                elseif keyCode(escapeKey)
-                    break;
-                end
-            end
-        end
-        keyWasDown = keyIsDown;
-    
-        %% Atualiza a dica exibida
-        % Se a dica ficou por tempo suficiente, ela deve sair e vir outra
-        switch hintPhase
-            case 'fadein'
-                t = (elapsedTime - fadeStart) / prm.fadeInDur1;
-                hintAlpha = min(1, t);
-                % Se acabou a fase de transição (normalizada), muda
-                % para estado steady
-                if t >= 1
-                    hintPhase = 'steady';
-                    steadyStart = elapsedTime;
-                end
-        
-            case 'steady'
-                hintAlpha = 1;
-        
-                if elapsedTime - steadyStart >= hintChangeInterval - 2*prm.fadeInDur1
-                    hintPhase = 'fadeout';
-                    fadeStart = elapsedTime;
-                end
-        
-            case 'fadeout'
-                t = (elapsedTime - fadeStart) / prm.fadeInDur1;
-                hintAlpha = max(0, (1 - t));
-        
-                if t >= 1
-                    hintPhase = 'fadein';
-                    fadeStart = elapsedTime;
-                    if selected ~= 0
-                        hintIdx = hintIdx + selected;
-                        selected = 0;
-                    else
-                        hintIdx = hintIdx + 1;
-                    end
-                    currentHint = hints{mod(hintIdx, numel(hints))+1};
-                end
-        end
-
-        Screen('FillRect', dpP.window, bgColor);
-    
-        %% Desenha o logo e o texto logo acima
-        
-        if logoTex == -1
-            Screen('TextSize', dpP.window, prm.textSizeNormal);
-            Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
-            Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], ori, [], [], [], [], []);
-            Screen('DrawTexture', dpP.window, txP.exampleNoise.tex, [], [], [], [], [], [], [], []);
-            Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            Screen('DrawTextures', dpP.window, txP.exampleBlob.tex, [], [], ori, [], [], [0 0 0 1]', [], [], txP.exampleBlob.props); 
-            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        else
-            Screen('DrawTexture', dpP.window, logoTex, [], imgRect);
-        end
-        DrawFormattedText(dpP.window, creditText, creditX, creditY, drP.white);
-    
-        %% Desenha a barra de progresso
-        Screen('TextSize', dpP.window, prm.textSizeNormal);
-        if showBar
-            Screen('FrameRect', dpP.window, drP.white, barOutline, 2);
-            if filledBlocks > 0
-                Screen('DrawTextures', dpP.window, blockTex, [], blockRects(:,1:filledBlocks));
-            end
-        
-            % Texto das etapas concluídas
-            progressText = sprintf('%d/10%', floor(10 * filledBlocks / nBlocks));
-            DrawFormattedText(dpP.window, progressText, 'center', barY - 25, drP.white);
-        else
-            Screen('TextSize', dpP.window, prm.textSizeBig);
-            DrawFormattedText(dpP.window, loadingText, 'center', 'center', drP.white, [], [], [], [], [], loadingRect);
-            Screen('DrawDots', dpP.window, [dotsX; dotsY+adjSin(GetSecs - startTime)], radius, drP.white, []);
-            Screen('TextSize', dpP.window, prm.textSizeNormal);
-        end
-
-        %% Desenha/escreve a dica
-        DrawFormattedText(dpP.window, currentHint, 'center', 'center', [white hintAlpha], [], [], [], [], [], hintsRect);
-%         Screen('FrameRect', dpP.window, [], hintsRect);
-
-        %% Desenha as setas
-        Screen('TextSize', dpP.window, prm.textSizeSmall);
-        Screen('TextStyle', dpP.window, max(-1*selected, 0));
-        DrawFormattedText(dpP.window, lArrowText, 'center', 'center', drP.white, [], [], [], [], [], larrowRect);
-        Screen('TextStyle', dpP.window, max(selected, 0));
-        DrawFormattedText(dpP.window, rArrowText, 'center', 'center', drP.white, [], [], [], [], [], rarrowRect);
-        Screen('TextStyle', dpP.window, 0);
-%         Screen('TextSize', dpP.window, prm.textSizeNormal);
-    
-        Screen('Flip', dpP.window);
-    end
-    aux.logoTex  = logoTex;
-    aux.blockTex = blockTex;
-end
-
-
-function endFake(aux, dpP, drP, prm)
-%% Faz uma transição lenta à cor original
-    if aux.logoTex ~= -1, Screen('Close', aux.logoTex); end
-    Screen('Close', aux.blockTex);
-
-    img = Screen('GetImage', dpP.window);
-    frozenTex = Screen('MakeTexture', dpP.window, img);
-
-    fadeStart = GetSecs;
-    while true
-        elapsed = GetSecs - fadeStart;
-        t = min(elapsed / prm.fadeInDur1, 1);
-        texAlpha = 1-t;
-    
-        Screen('FillRect', dpP.window, drP.grey);
-        Screen('DrawTexture', dpP.window, frozenTex, [], [], [], [], texAlpha);
-    
-        Screen('Flip', dpP.window);
-    
-        if t >= 1
-            break;
-        end
-    end
-    
-    Screen('Close', frozenTex);
-    WaitSecs(prm.fadeInDelay1);
-end
-
-
-function endScreen(dpP, drP, prm)
-    % Funções e parâmetros particulares à forma do olho que escolhi
-    % Variáveis x de posição, s era de escala, agora inútil
-    uMaxLid = @(x,s) -(0.203267 + 0.0712797*x - 0.888037*x.^2);
-    lMaxLid = @(x,s) -(-0.181055 - 0.0429848*x + 0.753893*x.^2 + 1.02328*x.^3);
-    lLim = -.545; rLim = .455; dx = .01;
-    X = lLim:dx:rLim;
-    
-    dt = .005;
-    blkDur = .07; totalDur = 100; blkFreq = 1/4;
-    [blkTimes, blkShape] = blkProps(dt, blkDur, totalDur, blkFreq);
-    blkShape = [0 blkShape];
-    lBlk = numel(blkShape);
-    
-    % Para piscar, t \in [0.2, 1]. Para arregalar, [0, 0.2]
-    tRelMin = .2; tRelMax = 1; aRel = .85;
-    alpha1Rel = @(t) aRel*(tRelMin*(1-t)+t*tRelMax);
-    alpha2Rel = @(t) (1-aRel)*(tRelMin*(1-t)+t*tRelMax);
-    uRelLid = @(x,t) alpha1Rel(t)*lMaxLid(x,t) + (1-alpha1Rel(t))*uMaxLid(x,t);
-    lRelLid = @(x,t) alpha2Rel(t)*uMaxLid(x,t) + (1-alpha2Rel(t))*lMaxLid(x,t);
-    
-    % Olhos abertos espremidos usam .5; para piscar, o inferior vai no máximo
-    % até .5 e o superior a 1.75
-    tuSqnMin = .5; tuSqnMax = 1.75; tlSqn = .5;
-    aSqn = .4;
-    alpha1uSqn = @(t) aSqn*(tuSqnMin*(1-t)+t*tuSqnMax);
-    alpha2lSqn = @(t) (1-aSqn)*tlSqn;
-    uSqnLid = @(x,t) alpha1uSqn(t)*lMaxLid(x,t) + (1-alpha1uSqn(t))*uMaxLid(x,t);
-    lSqnLid = @(x,t) alpha2lSqn(t)*uMaxLid(x,t) + (1-alpha2lSqn(t))*lMaxLid(x,t);
-    
-    uLid = @(x,a,t) a*uRelLid(x,t) + (1-a)*uSqnLid(x,t);
-    lLid = @(x,a,t) a*lRelLid(x,t) + (1-a)*lSqnLid(x,t);
-    
-    
-    eyeCols = [drP.blue; drP.darkGreen; drP.brown; drP.darkBrown; drP.greyBrown; drP.paleBrown]; aux = randsample(1:size(eyeCols, 1), 1);
-    eyeColor = eyeCols(aux, :);
-    maskTex = Screen('OpenOffscreenWindow', dpP.window, [0 0 0 0], [], 32);
-    xc = dpP.winCenter(1); yc = dpP.winCenter(2);
-    
-    % Parâmetros importantes
-    scale = dpP.winRect(3)/10; 
-    eyeWindowCenter  = [3*dpP.winRect(3)/8 dpP.winRect(4)/3;
-               5*dpP.winRect(3)/8 dpP.winRect(4)/3]';
-    eyeBallOffset = dpP.winRect(3)/2 - 1.01*eyeWindowCenter(1,1);
-    
-    maxRadius = scale; minRadius = scale/3;
-    eyeD = scale*.85; eyeR = eyeD/2;
-    baseRect = [0 0 eyeD eyeD];
-    
-    eyeBallRect = zeros(2,4);
-    eyeCenter = [dpP.winRect(3)/2-eyeBallOffset, eyeWindowCenter(2,1), 0;
-                 dpP.winRect(3)/2+eyeBallOffset, eyeWindowCenter(2,2), 0];
-    eyeBallRect(1,:) = CenterRectOnPointd(baseRect, dpP.winRect(3)/2-eyeBallOffset, eyeWindowCenter(2,1));
-    eyeBallRect(2,:) = CenterRectOnPointd(baseRect, dpP.winRect(3)/2+eyeBallOffset, eyeWindowCenter(2,2));
-    
-    irisD = scale*.4; irisR = irisD/2;
-    
-    pupilD = scale*.2; pupilR = pupilD/2;
-    
-    Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    tStart = GetSecs;
-    
-    nBlkT = numel(blkTimes); blkPlayed = zeros(1, nBlkT);
-    yawMax   = deg2rad(30); pitchMax = deg2rad(10); zDist = 500;
-    
-    eyeState = 0; % 0 para blink, 1 para pursuit, 2 para sacada
-    waitTime = 2.5; startWait = -1; minDist1 = 100; T = linspace(0, 2*pi, 100);
-    yaw = [0 0]; pitch = [0 0]; wAngles = .9; wT0 = 0; wT1 = .50001; wT2 = .5;
-    wT = wT1;
-    vLim1 = 200; vLim2 = 1000; vLim3 = 4000; eyeVLim = 5;
-    w = .9;
-    
-    alpha = 0; start = true;
-    yRange = dpP.winRect(4)*([-.103 .08] + 1/3); 
-    yRange1 = dpP.winRect(4)*([-.0145 .0145] + 1/3);
-    i = 1;
-
-    grey = repmat(drP.grey, [1, 3]); white = repmat(drP.white, [1, 3]); black = repmat(drP.black, [1, 3]);
-    SetMouse(xc, yc/2, dpP.window); HideCursor(dpP.window);
-    while ~KbCheck
-        [xMouse, yMouse] = GetMouse(dpP.window);
-    %     disp(yMouse > yRange(1) && yMouse < yRange(2))
-        tu = blkShape(i);
-    
-        tNow = mod(GetSecs - tStart, totalDur);
-        target = [xMouse yMouse zDist];
-    
-        if start, lastYaw = yaw; lastPitch = pitch; lastPos = [xMouse; yMouse]; lastTu = tu; start = false; lastVel = 0; nextFix = lastPos; end
-    
-        vel = vecnorm([xMouse; yMouse] - lastPos)/dt;
-    
-        lastPos = [xMouse; yMouse];
-        vel = w*lastVel+(1-w)*vel;
-        lastVel = vel;
-    
-    
-        % Sacada: se alvo estiver se mexendo ou olhos se mexendo durante sacada
-        if vel > vLim1 && vel < vLim2 || (eyeState == 2 && any(vecnorm([yaw; pitch] - [lastYaw; lastPitch])/dt > eyeVLim))
-            % vecnorm(nextFix - [xMouse; yMouse]) > minDist1; vecnorm(nextFix - currFix) < minDist2
-            if vecnorm(nextFix - [xMouse; yMouse]) > minDist1
-                nextFix = [xMouse; yMouse];
-            end
-            eyeState = 2;
-            wT = wT2;
-            startWait = -1;
-        elseif vel > vLim2 && vel < vLim3
-            eyeState = 1;
-            wT = wT1;
-            startWait = -1;
-        else
-            if startWait == -1
-                startWait = tNow;
-            end
-            if tNow - startWait > waitTime
-                eyeState = 0;
-                wT = wT0;
-                yaw = [0 0]; pitch = [0 0];
-                nextFix = [xMouse; yMouse];
-            end
-        end
-    %     disp(vel)
-    %     disp(eyeState)
-    
-        mBlkT = find(blkTimes < tNow, 1, 'last');
-        if eyeState == 0 || (eyeState == 1 && i ~= 1)
-            if ~isempty(mBlkT)
-                if blkPlayed(mBlkT) == 0
-                    i = i + 1;
-                    if i == lBlk+1
-                        i = 1;
-                        blkPlayed(:) = 0;
-                        blkPlayed(mBlkT) = 1;
-                    end
-                end
-            end
-        elseif eyeState >= 1
-            
-            if eyeState == 2
-                target = [nextFix' zDist];
-            end
-    
-            v = target - eyeCenter;
-                
-            yaw = atan2(v(:,1), v(:,3));
-            pitch = atan2(v(:,2), v(:,3));
-    
-            yaw   = max(min(yaw,   yawMax),   -yawMax);
-            pitch = max(min(pitch, pitchMax), -pitchMax);
-            if exist('C', "var")
-%                 disp(C(2))
-                tu = -1+2.3*(min(yRange1(2), max(C(2), yRange1(1)))-yRange1(1))/(yRange1(2)-yRange1(1));
-            else
-%                 disp(-1)
-                tu = -1+2.3*(min(yRange(2), max(yMouse, yRange(1)))-yRange(1))/(yRange(2)-yRange(1));
-            end
-    
-%             disp(min(yRange(2), max(yMouse, yRange(1))))
-    
-        end
-        yaw = wAngles*lastYaw + (1-wAngles)*yaw;
-        pitch = wAngles*lastPitch + (1-wAngles)*pitch;
-        lastYaw = yaw; lastPitch = pitch;
-    
-        tl = blkShape(i);
-        tu = wT*lastTu +(1-wT)*tu;
-    
-        dist = hypot(xMouse - eyeWindowCenter(1,:), yMouse - eyeWindowCenter(2,:));
-        dist = (min(maxRadius, max(dist, minRadius))-minRadius)./(maxRadius-minRadius);
-    
-        [rWindow, lWindow] = drawEye(X, dist, tu, tl, uLid, lLid, scale, eyeWindowCenter');
-        
-        % A máscara não deixa passar nada, a não ser que esteja nos buracos
-        Screen('FillRect', maskTex, [grey 0]);
-        Screen('FillPoly', maskTex, [grey 1], rWindow);
-        Screen('FillPoly', maskTex, [grey 1], lWindow);
-    
-        Screen('FillOval', dpP.window, drP.white, eyeBallRect(1,:));
-        Screen('FillOval', dpP.window, drP.white, eyeBallRect(2,:));
-    
-                
-        [rIrisEl, C] = ellipsePoly(irisR, eyeR, yaw(1), pitch(1), alpha, eyeCenter(1,1:2)', T);
-%         disp(C(2))
-        rPupilEl= ellipsePoly(pupilR, eyeR, yaw(1), pitch(1), alpha, eyeCenter(1,1:2)', T, 1);
-    
-        lIrisEl = ellipsePoly(irisR, eyeR, yaw(2), pitch(2), alpha, eyeCenter(2,1:2)', T);
-        lPupilEl= ellipsePoly(pupilR, eyeR, yaw(2), pitch(2), alpha, eyeCenter(2,1:2)', T, 1);
-        
-                
-        Screen('FillPoly', dpP.window, eyeColor, rIrisEl'); Screen('FillPoly', dpP.window, eyeColor, lIrisEl');
-        Screen('FillPoly', dpP.window, drP.black, rPupilEl'); Screen('FillPoly', dpP.window, drP.black, lPupilEl');
-    
-        Screen('BlendFunction', dpP.window, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-        Screen('DrawTexture', dpP.window, maskTex);
-    
-        Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        Screen('FramePoly', dpP.window, drP.black, rWindow, 4);
-        Screen('FramePoly', dpP.window, drP.black, lWindow, 4);
-
-        Screen('TextSize', dpP.window, prm.textSizeEnormous); Screen('TextStyle', dpP.window, 1);
-        DrawFormattedText(dpP.window, 'Sessão concluída!', 'center', 2*dpP.winRect(4)/3, drP.black);
-    
-        msg = [
-            'Aperte qualquer tecla para sair, ou\n'...
-            'mova o cursor para ver o que acontece.\n'
-        ];
-        Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
-        DrawFormattedText(dpP.window, msg, 'center', 2*dpP.winRect(4)/3 + 55, drP.black);
-
-        Screen('FillOval',  dpP.window, [white .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px]);
-        Screen('FrameOval', dpP.window, [black .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px], prm.pW1);
-        
-        Screen('Flip', dpP.window);
-        WaitSecs(dt);
-    end
-end
-
-
-function [rEye, lEye] = drawEye(X, d, tu, tl, uFunc, lFunc, s, c)
-    fX = fliplr(X);
-    nX = -X; fnX = fliplr(-X);
-    rEye = [nX fnX;uFunc(X, d(1), tu) lFunc(fX, d(1), tl)]'.*s+c(1,:);
-    lEye = [X fX;uFunc(X, d(2), tu) lFunc(fX, d(2), tl)]'.*s  +c(2,:);
-end
-
-
-function [bT, bS] = blkProps(tRes, bDur, totDur, bFreq)
-    frac    = .2;  % Fração da piscada que é fechada, frac \in [0,1)
-    bRefrac = 1;  % Período refratário da piscada
-    bDelay  = 1/bFreq;
-    nB      = totDur/bDelay;
-    alpha = 2; theta = (bDelay-bRefrac)/alpha;
-
-    bT = cumsum(gamrnd(alpha, theta, [1, nB]));
-    bT(bT >= totDur) = [];
-    bS = min(1, 1/(1-frac)*(1-abs(1-(2/bDur)*(0:tRes:bDur))));
-end
-
-
-function [e, C] = ellipsePoly(r, R, y, p, al, C, T, mode)
-            if nargin < 8, mode = 0; end
-            if mode == 1
-                a = r* cos(1.3*y) ; b = r * cos(1.3*p);
-            else
-                a = r* cos(1.1*y) ; b = r * cos(1.1*p);
-            end
-            e = [a * cos(T); b * sin(T)];
-            Rot = [cos(al) -sin(al);
-                sin(al)  cos(al)];
-            if mode == 1
-                C = [C(1,:) + R * sin(1.3*y); C(2,:) + R * sin(1.3*p)];
-            else
-                C = [C(1,:) + R * sin(1.1*y); C(2,:) + R * sin(1.1*p)];
-            end
-            e = Rot * e + C;
 end

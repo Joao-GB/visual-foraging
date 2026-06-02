@@ -90,9 +90,9 @@ function params = foragingParams
     addpath(genpath(params.palPath));
     params.sigmaMin = 5;
     params.sigmaMax = 80;
-    params.nStimsStair   = 3;
+    params.nStimsStair   = 40;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 40;
+    params.nTrialsStair = 10;
     params.priorMeanStair  = 20;
     params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
@@ -254,9 +254,12 @@ function params = foragingParams
     params.matExtension    = '.mat';
     params.textExtension   = '.txt';
     params.edfPreffix      = 'e';
+    params.figPreffix      = 'f';
     params.matPreffix      = 's';
+    params.stairPreffix    = 'sc';
     params.textPreffix     = 'p';
     params.tempDiary       = fullfile(params.currFolder, params.outFolder, 'temp.txt');
+    params.tempFig         = fullfile(params.currFolder, params.outFolder, 'temp.fig');
 
 %% Durações e delays de detalhes
     params.repeatDelay = 0.5;   % Tempo que demora para considerar um segundo

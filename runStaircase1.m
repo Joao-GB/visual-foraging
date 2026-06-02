@@ -1,4 +1,4 @@
-function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
+function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
 % Acrescenta o burn-in
 %% Pré
 % A tela de estímulos deve ser similar à do experimento, quanto à
@@ -546,5 +546,6 @@ function [resultsStair] = runStaircase1(tkP, dpP, drP, txP, prm)
         end
         if b == nBlocks + 1 && keepGoingBlocks
             inspectStaircase(tkP, dpP, drP, prm, RF, aSigma, targetOri);
+            tkS(1,2) = 1;
         end
 end

@@ -1,4 +1,4 @@
-function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
+function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
 
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;     targetH = screenH / 2;
@@ -12,9 +12,12 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
     B = numel(RF);
     texArray = zeros(1, B+1); % Array para armazenar todas as texturas
 
+    hFigs = gobjects(B,1);
     for b = 1:B
         % Cria uma figura invisível
         hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+        hFigs(b) = hFig;
+
         trialNum = 1:length(RF(b).x);
         presentedSigma = -RF(b).x;
         hold on;
@@ -29,7 +32,7 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
         
         % Estimativa final do limiar
-        yline(thrs(b), '--k', 'LineWidth', 2);
+        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
         
         xlabel('Trial'); ylabel('Sigma');
         title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
@@ -37,13 +40,14 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
 
         figFrame = getframe(hFig);
         texArray(b) = Screen('MakeTexture', dpP.window, figFrame.cdata);
-
-        baseNameIndiv = sprintf('sc_%s_cond%d', tkP.sesSub, b);
-        filenameIndiv = fileVersion(baseNameIndiv, '.png');
-        saveas(hFig, filenameIndiv);
-        
-        close(hFig);
     end
+
+    savefig(hFigs, prm.tempFig); close(hFigs); clear hFigs;
+    h = openfig(prm.tempFig, 'invisible');
+    set(h, 'Visible', 'on');
+    savefig(h, prm.tempFig); close(h); clear h;
+
+    
 
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
     for b = 1:B
@@ -54,7 +58,7 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
         plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
         plot(trialNum(RF(b).response == 1), presentedSigma(RF(b).response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-        yline(thrs(b), '--k', 'LineWidth', 2);
+        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
         
         xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         if b == 1, ylabel('Sigma'); end
@@ -105,7 +109,7 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, ori)
         WaitSecs(0.01);
     end
     
-    % --- 4. LIMPEZA DA MEMÓRIA DE VÍDEO ---
+    % Limpeza de memória: exclui texturas
     for i = 1:numel(texArray)
         Screen('Close', texArray(i));
     end
