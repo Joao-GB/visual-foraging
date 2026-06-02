@@ -131,6 +131,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     blue      = white*params.blue;
     darkBlue  = white*params.darkBlue;
     red       = white*params.red;
+    darkRed   = white*params.darkRed;
     green     = white*params.green;
     darkGreen = white*params.darkGreen;
     brown     = white*params.brown;
@@ -142,7 +143,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     params.gaborSTDmult = grey*params.gaborRMScontrast;
     params.noiseSTDmult = grey*params.noiseRMScontrast;
 
-    params    = rmfield(params, {'blue', 'darkBlue', 'green', 'darkGreen', 'brown', 'darkBrown', 'greyBrown', 'paleBrown', 'orange', 'red'});
+    params    = rmfield(params, {'blue', 'darkBlue', 'green', 'darkGreen', 'brown', 'darkBrown', 'greyBrown', 'paleBrown', 'orange', 'red', 'darkRed'});
     
     allColors = white*ones(3, nStims);
     allPW     = params.pW1*ones(1,nStims);
@@ -258,6 +259,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     drawProps.blue      = blue;
     drawProps.darkBlue  = darkBlue;
     drawProps.red       = red;
+    drawProps.darkRed   = darkRed;
     drawProps.green     = green;
     drawProps.darkGreen = darkGreen;
     drawProps.brown     = brown;
@@ -1369,89 +1371,93 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             end
                         end
                     end
-                    % Foram mais para baixo
-%                     seenIdx = find(flag ~= 0);
-%                     notSeenIdx = find(flag == 0);
                     fprintf('currStim final = %d\n', currStim);
         
     
     %% 7) Início Fase 3: tela com ruído rosa
-        % Apenas se a tela
-        
         % (l) Desenha ruído orientado em todos os estímulos menos o 
         %     atual -- as linhas comentadas servem para mudar apenas os 
         %     não vistos. Atrasa a apresentação para o estímulo durar
         %     medFixTime segundo antes de o ruído rosa substituí-lo
                     if mode == 1
-                        % bg1 = Screen('OpenOffscreenWindow', dpP.window, drP.grey, [], 64);
                         auxWin  = bg;
                     else
                         auxWin = dpP.window;
                     end
                     if ~restartTrial && keepGoingTrials
                         blinkIdx = setdiff(1:(nStims), currIdx);
-
-            % (i) Desenha os ruídos orientados e o mesmo grating se a
-            %     fixação tiver sido mantida
-                    if mode >= 3
-                        Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                        Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
-
-                        if ~isempty(currIdx)
-                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
-                            Screen('DrawTextures', auxWin, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
-                            Screen('DrawTextures', auxWin, noiseTex, srcRects(:,currIdx), dstRects(:,currIdx), orientation(currIdx, idx, b));
-                            
-                            Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-                            Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        else
-                            Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-                        end
-                    
-            % (j) Desenha a abertura gaussiana
-                        Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
-                        Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-                    end
-                        
-                        %% A tela não modificada deve ser exibida ao todo por 
-                        % medFixTime - prm.pinkNoiseDur, mas devo descontar
-                        % o tempo passado desde o início da fixação
                         fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
-                
-            % viii. Registra os tempos de início e fim da Fase 3
+
+                        
                         preUpdateDeadline = fixStartTime + P3On;
-                        if mode == 1
-                            lastPos = [-1 -1];
-                            while GetSecs < preUpdateDeadline
+                        tNow = GetSecs;
+                        while tNow < preUpdateDeadline
+                            WaitSecs(0.001);
+                            tNow = GetSecs;
+                            alphasPrev = alphas;
+                            alphas = getGaborAlpha(tNow, stimTimes, prm);
+                            alphaChanged = ~isequal(alphasPrev, alphas);
+                            if alphaChanged || check
+                                if mode == 1
+                                    Screen('FillRect', auxWin, drP.grey);
+                                end
+                                foragingDrawMain(auxWin, gaborTex, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP, [repmat(alphas', [3,1]); ones(1, nStims)])
+                            end
+
+                            check = false;
+                            if mode >= 2
+                                damn = Eyelink('CheckRecording');
+                                if(damn ~= 0), break; end
+                        
+                                if Eyelink('NewFloatSampleAvailable') > 0
+                                    evt = Eyelink('NewestFloatSample');
+                                    x_gaze = evt.gx(tkP.Eye);
+                                    y_gaze = evt.gy(tkP.Eye);
+                                    check = true;
+                                end
+                                if alphaChanged
+                                    Screen('Flip', dpP.window);
+                                end
+                            elseif mode == 1
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
-                                if any([x_gaze, y_gaze] ~= lastPos)
+                                check = true;
+                                if any([x_gaze, y_gaze] ~= lastPos) || alphaChanged
                                     Screen('BlendFunction', dpP.window, GL_ONE, GL_ZERO);
-                                    Screen('DrawTexture', dpP.window, bg);
-                                    Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
+                                    Screen('DrawTexture',   dpP.window, bg); 
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                                    Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                     Screen('Flip', dpP.window);
                                     lastPos = [x_gaze, y_gaze];
                                 end
-                                WaitSecs(0.001);
                             end
-                            updateStimOnset = GetSecs;
-                        else
-                            if mode >= 3
-                                updateStimOnset = Screen('Flip', dpP.window, preUpdateDeadline);
+                        end
+                        if mode >= 3
+                            Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                            Screen('DrawTextures', auxWin, oriPinkTex, srcRects(:,blinkIdx), dstRects(:,blinkIdx), orientation(blinkIdx, idx, b), [], [], [], []);
+    
+                            if ~isempty(currIdx)
+                                Screen('BlendFunction', auxWin, GL_ONE, GL_ONE);
+                                Screen('DrawTextures', auxWin, gaborTex, [], dstRects(:,currIdx), orientation(currIdx, idx, b));
+                                Screen('DrawTextures', auxWin, noiseTex, srcRects(:,currIdx), dstRects(:,currIdx), orientation(currIdx, idx, b));
+                                
+                                Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+                                Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, currIdx), orientation(currIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                             else
-                                updateStimOnset = WaitSecs(P3On);
+                                Screen('BlendFunction', auxWin, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                             end
+                        
+                % (j) Desenha a abertura gaussiana
+                            Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
+                            Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
+                            Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                        end
+                        if mode >= 3
+                                updateStimOnset = Screen('Flip', dpP.window);
+                            else
+                                updateStimOnset = GetSecs;
                         end
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
-
-
-                        % if mode == 1
-                        %     Screen('Close', bg);
-                        %     clear auxWin bg;
-                        % end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
                         % demais na tela ou quando o olho sai do último

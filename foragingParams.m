@@ -97,7 +97,7 @@ function params = foragingParams
     params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
-    params.postModDurStair = .2;
+    params.postModDurStair = .25;
     params.burninTrials    = 15;
 
 %% -----
@@ -222,6 +222,7 @@ function params = foragingParams
     % (l) Cores escolhidas a dedo
     params.orange    = [.98 .55 .06];
     params.red       = [.86 .20 .20];
+    params.darkRed   = [.55 .11 .10];
     params.blue      = [.57 .64 .72];
     params.darkBlue  = [.40 .50 .60];
     params.green     = [.06 .87 .33];

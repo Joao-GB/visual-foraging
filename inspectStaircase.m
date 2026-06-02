@@ -10,8 +10,9 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
                   dpP.winCenter(2) + targetH/2];
     
     B = numel(RF);
-    texArray = zeros(1, B+1); % Array para armazenar todas as texturas
+    texArray = zeros(1, B+2); % Array para armazenar todas as texturas
 
+    %% Texturas individuais para cada staircase
     hFigs = gobjects(B,1);
     for b = 1:B
         % Cria uma figura invisível
@@ -48,7 +49,7 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
     savefig(h, prm.tempFig); close(h); clear h;
 
     
-
+    %% Textura com staircases como subplots
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
     for b = 1:B
         trialNum = 1:length(RF(b).x);
@@ -66,6 +67,30 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
     end
     figFrame = getframe(hFig);
     texArray(B+1) = Screen('MakeTexture', dpP.window, figFrame.cdata);
+    close(hFig);
+
+
+    %% Textura com staircases como subplots, sem burn-in
+    
+    hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+    for b = 1:B
+        usefulTrials = (prm.nStimsStair-1)*prm.burninTrials:length(RF(b).x);
+        trialNum = 1:length(RF(b).x(usefulTrials));
+        presentedSigma = -RF(b).x(usefulTrials);
+        response = RF(b).response(usefulTrials);
+        subplot(1, B, b); hold on;
+        
+        plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
+        plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
+        plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
+        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
+        
+        xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
+        if b == 1, ylabel('Sigma'); end
+        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
+    end
+    figFrame = getframe(hFig);
+    texArray(B+2) = Screen('MakeTexture', dpP.window, figFrame.cdata);
     close(hFig);
 
     % --- 3. LOOP INTERATIVO DE NAVEGAÇÃO ---
@@ -99,7 +124,7 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
                 currentView = max(1, currentView - 1); % Recua sem wrap-around
                 KbReleaseWait;
             elseif keyCode(rightKey)
-                currentView = min(B+1, currentView + 1); % Avança até a última tela (combinada)
+                currentView = min(B+2, currentView + 1); % Avança até a última tela (combinada)
                 KbReleaseWait;
             elseif keyCode(escapeKey)
                 KbReleaseWait;

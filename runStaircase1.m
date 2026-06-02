@@ -398,6 +398,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
 
                         stimsToReport = nbhd(1:nStims-1);
                         orderToReportStims = stimsToReport(randperm(nStims-1));
+                        WaitSecs(.1);
                         Eyelink('Message',prm.msg.on.P4);
                         
                         for j=1:length(orderToReportStims)
@@ -436,21 +437,25 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                         feedback = feedback/2;
 
                         trialFeedback{b, i} = [orderToReportStims; zeros(1, nStims-1); feedback(orderToReportStims)];
-                        
-                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
-                        % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
-                        WaitSecs(.5);
 
                         restartTrial = ~(keptFixP3 && keptFixPM);
+                        
+                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                        
 
-                        if ~restartTrial
+
+                        if restartTrial
+                            warningFlip(dpP.window, stimCenters(:, :, idx, b), resizeRect(dstRects), fixIdx(b, idx), txP.gabor.size_px, drP.allPW, drP.darkRed);
+                        else
                             trialOrder(2, i, b) = 1;
-    
                             i = i + 1;
                             trialIdxUp = true;
+
+                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
+                            % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                         end
 
+                        WaitSecs(.5);
                         
                     end
 
