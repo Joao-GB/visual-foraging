@@ -74,8 +74,8 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
     
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
     for b = 1:B
-        usefulTrials = (prm.nStimsStair-1)*prm.burninTrials:length(RF(b).x);
-        trialNum = 1:length(RF(b).x(usefulTrials));
+        usefulTrials = ((prm.nStimsStair-1)*prm.burninTrials+1):length(RF(b).x);
+        trialNum = usefulTrials;
         presentedSigma = -RF(b).x(usefulTrials);
         response = RF(b).response(usefulTrials);
         subplot(1, B, b); hold on;
@@ -87,7 +87,7 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
         
         xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         if b == 1, ylabel('Sigma'); end
-        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
+        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
     end
     figFrame = getframe(hFig);
     texArray(B+2) = Screen('MakeTexture', dpP.window, figFrame.cdata);

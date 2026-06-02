@@ -445,7 +445,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
 
 
                         if restartTrial
-                            warningFlip(dpP.window, stimCenters(:, :, idx, b), resizeRect(dstRects), fixIdx(b, idx), txP.gabor.size_px, drP.allPW, drP.darkRed);
+                            warningFlip(dpP.window, stimCenters(:, :, idx, b), resizeRect(dstRects, .25), fixIdx(b, idx), txP.gabor.size_px, drP.allPW, drP.darkRed);
                         else
                             trialOrder(2, i, b) = 1;
                             i = i + 1;

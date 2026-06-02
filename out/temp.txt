@@ -1,0 +1,464 @@
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 2
+Elapsed time is 0.149248 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:    -80   -80
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634
+
+
+Mas como é burn-in, o novo aSigma é 42.5000
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 10
+Elapsed time is 0.149349 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 1, keptFixPM = 0
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 5
+Elapsed time is 0.149750 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085
+
+
+Mas como é burn-in, o novo aSigma é 5.0000
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 11
+Elapsed time is 0.149749 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633
+
+
+Por isso o novo aSigma é 35.3633
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 4
+Elapsed time is 0.149759 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409
+
+
+Por isso o novo aSigma é 43.8409
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 13
+Elapsed time is 0.149780 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 1, keptFixPM = 0
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 7
+Elapsed time is 0.149811 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922
+
+
+Por isso o novo aSigma é 49.6922
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 8
+Elapsed time is 0.150165 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409  -49.6922  -49.6922
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922  -52.2866  -43.8410
+
+
+Por isso o novo aSigma é 43.8410
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 6
+Elapsed time is 0.150028 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409  -49.6922  -49.6922  -43.8410  -43.8410
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922  -52.2866  -43.8410  -45.8779  -47.2677
+
+
+Por isso o novo aSigma é 47.2677
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 9
+Elapsed time is 0.149776 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409  -49.6922  -49.6922  -43.8410  -43.8410  -47.2677  -47.2677
+
+
+A média evoluiu como:   -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922  -52.2866  -43.8410  -45.8779  -47.2677  -48.6623  -49.8707
+
+
+Por isso o novo aSigma é 49.8707
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 12
+Elapsed time is 0.149647 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409  -49.6922  -49.6922  -43.8410  -43.8410  -47.2677  -47.2677  -49.8707  -49.8707
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922  -52.2866  -43.8410  -45.8779  -47.2677  -48.6623  -49.8707  -51.3630
+
+  Column 19
+
+  -52.8971
+
+
+Por isso o novo aSigma é 52.8971
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 1
+Elapsed time is 0.149854 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos:   Columns 1 through 18
+
+  -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -35.3633  -35.3633  -43.8409  -43.8409  -49.6922  -49.6922  -43.8410  -43.8410  -47.2677  -47.2677  -49.8707  -49.8707
+
+  Columns 19 through 20
+
+  -52.8971  -52.8971
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -80.0000  -27.6588  -27.6634  -30.9229  -35.2085  -35.2918  -35.3633  -40.0268  -43.8409  -47.1794  -49.6922  -52.2866  -43.8410  -45.8779  -47.2677  -48.6623  -49.8707  -51.3630
+
+  Columns 19 through 21
+
+  -52.8971  -54.8261  -56.7147
+
+
+Por isso o novo aSigma é 56.7147
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 1
+Elapsed time is 0.149520 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:    -80   -80
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795
+
+
+Mas como é burn-in, o novo aSigma é 42.5000
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 6
+Elapsed time is 0.149982 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783
+
+
+Mas como é burn-in, o novo aSigma é 5.0000
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 10
+Elapsed time is 0.000159 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 0, keptFixPM = 0
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 9
+Elapsed time is 0.149769 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899
+
+
+Por isso o novo aSigma é 16.7899
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 5
+Elapsed time is 0.000051 seconds.
+Trial ruim, pois ~keepGoingTrials = 0 e restartTrial = 1
+ keptFixP3 = 0, keptFixPM = 0
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 13
+Elapsed time is 0.149976 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210
+
+
+Por isso o novo aSigma é 23.6210
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 2
+Elapsed time is 0.150036 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423
+
+
+Por isso o novo aSigma é 16.1423
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 8
+Elapsed time is 0.149896 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210  -16.1423  -16.1423
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423  -18.6742  -20.6968
+
+
+Por isso o novo aSigma é 20.6968
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 4
+Elapsed time is 0.149851 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210  -16.1423  -16.1423  -20.6968  -20.6968
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423  -18.6742  -20.6968  -22.6923  -24.4024
+
+
+Por isso o novo aSigma é 24.4024
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 12
+Elapsed time is 0.149903 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210  -16.1423  -16.1423  -20.6968  -20.6968  -24.4024  -24.4024
+
+
+A média evoluiu como:   -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423  -18.6742  -20.6968  -22.6923  -24.4024  -26.5097  -28.6188
+
+
+Por isso o novo aSigma é 28.6188
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 3
+Elapsed time is 0.149880 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210  -16.1423  -16.1423  -20.6968  -20.6968  -24.4024  -24.4024  -28.6188  -28.6188
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423  -18.6742  -20.6968  -22.6923  -24.4024  -26.5097  -28.6188  -30.9487
+
+  Column 19
+
+  -33.0098
+
+
+Por isso o novo aSigma é 33.0098
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 7
+Elapsed time is 0.149798 seconds.
+Trial bom
+Atualizo o RF do bloco 2, apresentamos:   Columns 1 through 18
+
+  -80.0000  -80.0000  -42.5000  -42.5000   -5.0000   -5.0000  -16.7899  -16.7899  -23.6210  -23.6210  -16.1423  -16.1423  -20.6968  -20.6968  -24.4024  -24.4024  -28.6188  -28.6188
+
+  Columns 19 through 20
+
+  -33.0098  -33.0098
+
+
+A média evoluiu como:   Columns 1 through 18
+
+  -80.0000  -27.6714  -27.6795  -30.9480  -23.7783  -21.9430  -16.7899  -20.3752  -23.6210  -26.8031  -16.1423  -18.6742  -20.6968  -22.6923  -24.4024  -26.5097  -28.6188  -30.9487
+
+  Columns 19 through 21
+
+  -33.0098  -35.0644  -36.7782
+
+
+Por isso o novo aSigma é 36.7782
+Valor de aSigma escolhido via staircase: 35.00Tempo inicial: 0.64588
+Tempo getDistr: 0.00196
+Tempo orientações distratoras: 0.00055
+Tempo matrizes nulas: 0.00017
+Tempo rects a centers: 0.00054
+Tempo preencher locais estímulos e orientações de alvos: 0.46028
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 2
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1330
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.1339
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1503
+Tempo total de ruído rosa: 0.1583
+Trial 2: Visitou o alvo 7 pós-modificação
+seenStimsQueue final:      6     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 6
+Pré-s: 
+Não vistos: 8  1
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 4
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+currStim = 1
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Terminou a visita ao 5-ésimo estímulo
+currStim = 7
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1101
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.1103
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.1505
+Tempo total de ruído rosa: 0.1584
+Trial 4: Visitou o alvo 7 pós-modificação (fim forçado)
+seenStimsQueue final:      1     5     3     2     4     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 4
+Pré-s: 
+Não vistos: 6  8
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 5
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 3
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1410
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.1413
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.1504
+Tempo total de ruído rosa: 0.1583
+Trial 5: Visitou o alvo 2 pós-modificação (fim forçado)
+seenStimsQueue final:      3     1     5     4     2     2
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira não visto
+     1
+     0
+     2
+
+Vistos: 3
+Pré-s: 
+Não vistos: 8  6
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 8
+ATENÇÃO: 3/8 visitas até modificar
+
+ans =
+
+   1.7804e+09
+
+currStim final = 0
+
+ans =
+
+   1.7804e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de staircase concluída e salva com êxito.
+AVISO: Sessão experimental não concluída, mas salva.
+Tempo total da sessão: 233.873 s
+{Operation terminated by user during <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('cleanup', '/home/kaneda/Documents/GitHub/visual-foraging/cleanup.m', 11)" style="font-weight:bold">cleanup</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/cleanup.m',11,0)">line 11</a>)
+
+
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>foragingSave', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 1981)" style="font-weight:bold">foragingGabors>foragingSave</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',1981,0)">line 1981</a>)
+    if cleanAll, cleanup(dpP.window); end
+                 ^^^^^^^^^^^^^^^^^^^
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors>menuScreen1', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 646)" style="font-weight:bold">foragingGabors>menuScreen1</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',646,0)">line 646</a>)
+    tkP = foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In <a href="matlab:matlab.lang.internal.introspective.errorDocCallback('foragingGabors', '/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m', 306)" style="font-weight:bold">foragingGabors</a> (<a href="matlab: opentoline('/home/kaneda/Documents/GitHub/visual-foraging/foragingGabors.m',306,0)">line 306</a>)
+    [~, taskState] = menuScreen1(taskProps, displayProps, drawProps, texProps, debug, params);
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
