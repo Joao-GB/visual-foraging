@@ -92,13 +92,13 @@ function params = foragingParams
     params.sigmaMax = 80;
     params.nStimsStair   = 3;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 10;
+    params.nTrialsStair = 40;     % <-
     params.priorMeanStair  = 20;
     params.priorStdStair   = 20; 
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
-    params.burninTrials    = 3;
+    params.burninTrials    = 15;  % <-
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...

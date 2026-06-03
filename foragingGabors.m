@@ -219,6 +219,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     noiseHiCutFreq = params.noiseHiCutFreq_cpd/gabor.ppd; % Parâmetros do filtro para ruído
     noiseLoCutFreq = params.noiseLoCutFreq_cpd/gabor.ppd;
 
+    fprintf('Vai usar %.2f como aSigma', params.aSigma)
     [oriFilter, OFsize] = MakeOriFilter1(gabor.size_px, params.aSigma, params.rSigma2); % Filtro de orientação
 
     % (b) Estímulos para a tela entre blocos
@@ -596,15 +597,22 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             elseif strcmp(mode, 'staircase')
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
+                                fprintf('Selecionado: staircase\n')
                                 [resultsStair, taskState] = runStaircase1(tkP, dpP, drP, txP, prm, taskState);
                                 tkP.stair = resultsStair; clear resultsStair;
                                 aSigma = aSigmaFromStair(tkP.stair, prm);
-                                fprintf('Valor de aSigma escolhido via staircase: %.2f', aSigma);
+                                fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
                                 tkP.aSigma = aSigma;
                                 prm.aSigma = aSigma;
+                                [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma, prm.rSigma2);
+                                txP.oriFilter       = oriFilter;
+                                txP.OFsize          = OFsize;
+                                fprintf('oriFilter e OFsize devidamente atualizados\n');
+
                             elseif strcmp(mode, 'experiment')
                                 taskState(4,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
+                                fprintf('Selecionado: experimento\n')
                                 [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             end
                         else
@@ -612,7 +620,9 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             if     strcmp(mode, 't1'), taskState(2,1) = 1; 
                             elseif strcmp(mode, 't2'), taskState(3,1) = 1; end
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
+                            fprintf('Selecionado: um dos treinos\n')
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
+                            fprintf('Valor de duraçao do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur)
                             resultsTrain.tkP = tkP;
                             tkP.(mode) = resultsTrain;
                         end
@@ -643,7 +653,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 
     if debug ~= 0, taskState(:) = 0; end
     if ~exist('results', 'var'), results = []; end
-    tkP = foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results);
+    tkP = foragingSave(taskState, quitSes, prm, dpP, drP, tkP, txP, results, 0);
 end
 
 function [iconsTex] = getMenuTex(win, iconsDir, col)
@@ -772,7 +782,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         if mode == 4
             endFake(fakeAux, dpP, drP, prm);
         end
-        fprintf('Tempo preencher locais estímulos e orientações de alvos: %.5f\n', toc);
+        fprintf('Tempo preencher locais de sestímulos e orientações de alvos: %.5f\n', toc);
     %% 4) Início dos blocos e trials
         fprintf('----Início da sessão----\n')
         try
@@ -1241,7 +1251,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                     counter = counter + 1;
                                                     fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
-                                                    P3On = P3Onset2(tkP, prm, fixDur);
+                                                    [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
                                                 end
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]]; % Se quisesse registrar o comprimento de todas as fixações
                                                 flag(currStim) = flag(currStim) + 1;
@@ -1397,7 +1407,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             alphasPrev = alphas;
                             alphas = getGaborAlpha(tNow, stimTimes, prm);
                             alphaChanged = ~isequal(alphasPrev, alphas);
-                            if alphaChanged || check
+                            if alphaChanged && check
                                 if mode == 1
                                     Screen('FillRect', auxWin, drP.grey);
                                 end
@@ -1415,7 +1425,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     y_gaze = evt.gy(tkP.Eye);
                                     check = true;
                                 end
-                                if alphaChanged
+                                if alphaChanged && check
                                     Screen('Flip', dpP.window);
                                 end
                             elseif mode == 1
@@ -1882,7 +1892,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             results.seenStimsQueue = seenStimsQueue;
             
             if debug ~= 0, tkS(:) = 0; end
-            tkP = foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results,0);
+            tkP = foragingSave(tkS, 2, prm, dpP, drP, tkP, txP, results);
             psychrethrow(psychlasterror);
         end
 
@@ -1965,8 +1975,6 @@ if nargin < 9, cleanAll = true; end
             warning('Arquivo do EyeLink não encontrado!')
         end
     end
-
-    save(tkP.matFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
     
     for i=1:size(tkS,1)
         if sum(tkS(i,:)) ~= 0
@@ -1976,6 +1984,7 @@ if nargin < 9, cleanAll = true; end
         end
     end
     tkP.end = toc(tkP.start);
+    save(tkP.matFile,'tkP', 'dpP', 'drP', 'txP', 'prm', 'results');
     fprintf('Tempo total da sessão: %.3f s\n', tkP.end);
 
     if cleanAll, cleanup(dpP.window); end
@@ -1990,7 +1999,8 @@ if nargin < 9, cleanAll = true; end
     end
 end
 
-function T = P3Onset2(tkP, prm, newFix)
+
+function [T, tkP] = P3Onset2(tkP, prm, newFix)
 % Versão para usar online, durante o trial
     beta  = prm.betaP3;
 
