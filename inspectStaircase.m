@@ -1,4 +1,4 @@
-function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
+function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, newThrs, ori)
 
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;     targetH = screenH / 2;
@@ -10,7 +10,8 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
                   dpP.winCenter(2) + targetH/2];
     
     B = numel(RF);
-    texArray = zeros(1, B+2); % Array para armazenar todas as texturas
+    texArray = zeros(1, B + 1 + tkP.stairBurnIn); % Array para armazenar todas as texturas.
+                                                  % Incrementa em 1 apenas se houver burn-in
 
     %% Texturas individuais para cada staircase
     hFigs = gobjects(B,1);
@@ -33,7 +34,8 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
         
         % Estimativa final do limiar
-        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
+        yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+        yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
         
         xlabel('Trial'); ylabel('Sigma');
         title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
@@ -59,7 +61,8 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
         plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
         plot(trialNum(RF(b).response == 1), presentedSigma(RF(b).response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
+        yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+        yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
         
         xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         if b == 1, ylabel('Sigma'); end
@@ -69,29 +72,30 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
     texArray(B+1) = Screen('MakeTexture', dpP.window, figFrame.cdata);
     close(hFig);
 
-
     %% Textura com staircases como subplots, sem burn-in
-    
-    hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
-    for b = 1:B
-        usefulTrials = ((prm.nStimsStair-1)*prm.burninTrials+1):length(RF(b).x);
-        trialNum = usefulTrials;
-        presentedSigma = -RF(b).x(usefulTrials);
-        response = RF(b).response(usefulTrials);
-        subplot(1, B, b); hold on;
-        
-        plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
-        plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
-        plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-        yline(thrs(b), '--k', sprintf('%.2f', thrs(b)), 'LineWidth', 2);
-        
-        xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
-        if b == 1, ylabel('Sigma'); end
-        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
+    if tkP.stairBurnIn
+        hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+        for b = 1:B
+            usefulTrials = ((prm.nStimsStair-1)*prm.burninTrials+1):length(RF(b).x);
+            trialNum = usefulTrials;
+            presentedSigma = -RF(b).x(usefulTrials);
+            response = RF(b).response(usefulTrials);
+            subplot(1, B, b); hold on;
+            
+            plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
+            plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
+            plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+            
+            xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
+            if b == 1, ylabel('Sigma'); end
+            grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
+        end
+        figFrame = getframe(hFig);
+        texArray(B+2) = Screen('MakeTexture', dpP.window, figFrame.cdata);
+        close(hFig);
     end
-    figFrame = getframe(hFig);
-    texArray(B+2) = Screen('MakeTexture', dpP.window, figFrame.cdata);
-    close(hFig);
 
     % --- 3. LOOP INTERATIVO DE NAVEGAÇÃO ---
     leftKey   = KbName('LeftArrow'); 
@@ -124,7 +128,7 @@ function inspectStaircase(~, dpP, drP, prm, RF, thrs, ori)
                 currentView = max(1, currentView - 1); % Recua sem wrap-around
                 KbReleaseWait;
             elseif keyCode(rightKey)
-                currentView = min(B+2, currentView + 1); % Avança até a última tela (combinada)
+                currentView = min(length(texArray), currentView + 1); % Avança até a última tela (combinada)
                 KbReleaseWait;
             elseif keyCode(escapeKey)
                 KbReleaseWait;

@@ -1,6 +1,4 @@
 function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
-% Acrescenta o burn-in
-%% Pré
 % A tela de estímulos deve ser similar à do experimento, quanto à
 % quantidade de estímulos e ao início aleatório. 
         Screen('Flip', dpP.window);
@@ -58,25 +56,48 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
         minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
 %% Cria o objeto que registra todo o staircase
-        burninTrials = prm.burninTrials;
-        % burnInASigma = linspace(-prm.priorMeanStair - 2*prm.priorStdStair, -prm.priorMeanStair + 2*prm.priorStdStair, burninTrials);
-        burnInASigma = linspace(prm.sigmaMin, prm.sigmaMax, burninTrials);
-        burnInASigma = burnInASigma(randperm(burninTrials));
+        if tkP.stairBurnIn
+            burninTrials = prm.burninTrials;
+            burnInASigma = linspace(prm.sigmaMin, prm.sigmaMax, burninTrials);
+            burnInASigma = burnInASigma(randperm(burninTrials));
+            aSigma = ones(1, nBlocks)*burnInASigma(1);
+        else
+            burninTrials = 0;          % Neutraliza o loop posterior
+            burnInASigma = prm.aSigma; aSigma = ones(1, nBlocks)*prm.aSigma;
+        end
         alphaRange = (-prm.sigmaMax:.1:-prm.sigmaMin);
         PF = @PAL_CumulativeNormal;
-        prior = PAL_pdfNormal(alphaRange, -prm.priorMeanStair, prm.priorStdStair);
-        RF = PAL_AMRF_setupRF( ...
-            'priorAlphaRange', alphaRange, ...
-            'prior', prior, ...
-            'PF', PF, ...
-            'beta', 1, 'gamma', 0.5, 'lambda', 0.04, ...
-            'xMin', -prm.sigmaMax, ...
-            'xMax', -prm.sigmaMin, ...
-            'meanmode', 'mean', ...
-            'stopCriterion', 'trials', ...
-            'stopRule', (nStims-1)*nTrials);
-        RF(1:nBlocks) = RF(1);
-        aSigma = ones(1, nBlocks)*burnInASigma(1);
+        beta = 1; gamma = .5; lambda = .04;
+        if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
+            for b = 1:nBlocks
+                prevMean = tkP.stairPrev(b).mean; 
+                prior = PAL_pdfNormal(alphaRange, prevMean, prm.priorStdStair2);
+                
+                RF(b) = PAL_AMRF_setupRF( ...
+                    'priorAlphaRange', alphaRange, ...
+                    'prior', prior, ...
+                    'PF', PF, ...
+                    'beta', beta, 'gamma', gamma, 'lambda', lambda, ...
+                    'xMin', -prm.sigmaMax, ...
+                    'xMax', -prm.sigmaMin, ...
+                    'meanmode', 'mean', ...
+                    'stopCriterion', 'trials', ...
+                    'stopRule', (nStims-1)*nTrials); %#ok<AGROW> 
+            end
+        else
+            prior = PAL_pdfNormal(alphaRange, -prm.priorMeanStair, prm.priorStdStair);
+            RF = PAL_AMRF_setupRF( ...
+                'priorAlphaRange', alphaRange, ...
+                'prior', prior, ...
+                'PF', PF, ...
+                'beta', beta, 'gamma', gamma, 'lambda', lambda, ...
+                'xMin', -prm.sigmaMax, ...
+                'xMax', -prm.sigmaMin, ...
+                'meanmode', 'mean', ...
+                'stopCriterion', 'trials', ...
+                'stopRule', (nStims-1)*nTrials);
+            RF(1:nBlocks) = RF(1);
+        end
 
         [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, burnInASigma(1), prm.rSigma2);
 
@@ -522,7 +543,13 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             resultsStair.targetOri = targetOri;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
-            resultsStair.aSigma    = aSigma;
+
+            resultsStair.aSigma75  = aSigma;
+            newLevelASigma = ones(1, nBlocks);
+            for i = 1:nBlocks
+                newLevelASigma(i) = -PAL_CumulativeNormal_inverse([-aSigma(i), beta, gamma, lambda], prm.stairLevel);
+            end
+            resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize   = OFsize;
             resultsStair.staircase   = RF;
@@ -532,25 +559,33 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             if ~exist('orientation', 'var'),  orientation = []; end
             if ~exist('nTs', 'var'),       nTs = []; end
             if ~exist('targetOri', 'var'), targetOri = []; end
-            if ~exist('orderToReportSets', 'var'),  orderToReportSets = []; end
             if ~exist('trialOrder', 'var'),      trialOrder = []; end
             if ~exist('trialFeedback', 'var'),   trialFeedback = []; end
+            if ~exist('aSigma75', 'var'), aSigma75 = []; end
+            if ~exist('aSigma', 'var'),      aSigma = []; end
+            if ~exist('oriFilter', 'var'),   oriFilter = []; end
+            if ~exist('OFsize', 'var'),      OFsize = []; end
+            if ~exist('staircase', 'var'),   staircase = []; end
 
             resultsStair.fixCenters = fixCenters;
             resultsStair.stimCenters = stimCenters;
             resultsStair.orientation = orientation;
             resultsStair.nTs = nTs;
             resultsStair.targetOri = targetOri;
-            resultsStair.orderToReportSets = orderToReportSets;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
+            resultsStair.aSigma75 = aSigma75;
+            resultsStair.aSigma = aSigma;
+            resultsStair.oriFilter = oriFilter;
+            resultsStair.OFsize = OFsize;
+            resultsStair.staircase = staircase;
             
             cleanup(dpP.window);
             diary off;
             psychrethrow(psychlasterror);
         end
         if b == nBlocks + 1 && keepGoingBlocks
-            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma, targetOri);
+            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma, newLevelASigma, targetOri);
             tkS(1,2) = 1;
         end
 end

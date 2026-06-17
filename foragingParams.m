@@ -2,6 +2,7 @@ function params = foragingParams
 %% Propriedades do setup experimental
     % (a) Distância entre sujeito e tela, em cm
     params.screenDist    = 57;
+    params.fs            = 1000;
 
 %% Propriedades de aparência dos estímulos
     % (b) Parâmetros das cruzes de fixação
@@ -38,7 +39,7 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(3, params.gaborSize_dva); 
+    params.minDist_dva = max(3, params.gaborSize_dva);
     params.ellipseToScreenRatio = [1/2 1/2];
     params.gridShape   = [2 4];
     params.randomize = false;
@@ -58,18 +59,24 @@ function params = foragingParams
     params.seenNotSeenRatio = 1;                 % O quanto se deve priorizar os estímulos vistos em relação aos não vistos
 
     % (k) Duração do estímulo (ruído rosa), em s
-    params.pinkNoiseDur = .15;
+    params.pinkNoiseDur = .08;
     params.minP3Dur     = .025;
+    params.maxDelayFixOffP3 = .2;
     params.betaP3       = 1/20;                   % Taxa da EMA para a função P3Onset2
 
     % (l) Parâmetros temporais de fixação
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
-    params.minFixTime2 = .1;                          % Tempo mínimo de fixação nos estímulos, em s
-    params.medFixTime2 = .25;                           % Tempo médio de fixação nos estímulos, em s, a ser usado apenas para a fila inicial de fixações
-    params.minFixTime3 = .08;                           % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .5;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
+    params.medFixTime2 = .25;                          % Tempo médio de fixação nos estímulos, em s, a ser usado apenas 
+                                                        % para a fila inicial de fixações
+
+        % Preciso que minFixTime3 (filtro de ruído) < maxTolPM (tempo de reação) < postModDur (duração máxima de PM) 
+    params.maxTolPM    = params.maxDelayFixOffP3 + 100;% Tolerância de tempo de reação sacádico
+    params.minFixTime3 = .1;                          % Tempo mínimo de fixação na região do alvo pós-modificação, em s
+    params.postModDur  = .7;                           % Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
-    params.blobPMDur   = min(.2, params.postModDur);   % Duração do pedestal (blob) pós-modificação
+    params.blobPMDur   = min(.3, params.postModDur);   % Duração do pedestal (blob) pós-modificação
+    
     % (m) Tamanho da fila de tempos de fixação
     params.fixTimeQueueSize = 30;
     % (n) Percentis úteis
@@ -94,11 +101,13 @@ function params = foragingParams
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 40;     % <-
     params.priorMeanStair  = 20;
-    params.priorStdStair   = 20; 
+    params.priorStdStair   = 20;
+    params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
     params.burninTrials    = 15;  % <-
+    params.stairLevel      = .85;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
@@ -157,6 +166,7 @@ function params = foragingParams
     params.msg.on.trl{2}  = 'TRIAL ONSET';
     params.msg.on.stm{1}  = 'STIM ONSET NEW';
     params.msg.on.stm{2}  = 'STIM ONSET OLD';
+    params.msg.on.stm{3}  = 'STIM ONSET';
     params.msg.on.P1      = 'PHASE 1 ONSET';
     params.msg.on.P2      = 'PHASE 2 ONSET';
     params.msg.on.P3      = 'PHASE 3 ONSET';
@@ -249,6 +259,8 @@ function params = foragingParams
     params.depFolder       = 'dep';     % Nome da pasta de dependências
     params.outFolder       = 'out';     % Nome da pasta de saída
     params.imgFolder       = 'img';     % Nome da pasta com imagens dos ícones
+    params.anaFolder       = 'ana';     % Nome da pasta com imagens dos ícones
+    params.dataFolder      = fullfile(params.currFolder, params.outFolder);
     params.edfExtension    = '.edf';
     params.figExtension    = '.fig';
     params.imgExtension    = '.png';    % Extensão das imagens

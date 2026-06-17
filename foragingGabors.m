@@ -39,12 +39,20 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 %% 1) Importa os parâmetros para o experimento
     params = foragingParams;
     addpath(genpath((fullfile(params.currFolder, params.depFolder))));
+    addpath((fullfile(params.currFolder, params.anaFolder, params.depFolder)));
     if isfile(params.tempDiary), delete(params.tempDiary); end
     if isfile(params.tempFig), delete(params.tempFig); end
     
 %% 2) Inicializa PTB e EyelinkToolBox
     % i. Caixa de diálogo
     sesSub = ''; targetKey = 'left';
+
+    % Inicializa os valores a serem importados como NaN
+    loaded_aSigma = NaN;
+    loaded_emaFix   = NaN;
+    loaded_fixQueue = NaN;
+    loaded_pinkNoiseDur = NaN;
+
     if debug == 0
         repeat = true;
         while repeat
@@ -79,9 +87,77 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
                 end
             end
         end
+
+        % Novo bloco de interação se for a segunda sessão de um sujeito
+        
+        subjNum = str2double(answer{1});
+        sesNum  = str2double(answer{2});
+        
+        if sesNum > 1
+            prevSes = sesNum - 1;
+            auxPrev = sprintf('%02d_%02d', subjNum, prevSes);
+            
+            % Procura pelo arquivo .mat
+            st  = {[params.matPreffix auxPrev]};
+            ext = {params.matExtension};
+            
+            try
+                prevFile = foragingFindFiles(params.dataFolder, st, ext); 
+                prevData = load(prevFile{1});
+                
+                % Extrai as variáveis
+                val_emaFix       = prevData.tkP.fixProps.emaFix; 
+                val_fixQueue     = prevData.tkP.fixQueue; 
+                val_aSigma       = prevData.tkP.aSigma;
+                val_pinkNoiseDur = prevData.tkP.pinkNoiseDur; 
+                
+                prompt2 = {'\fontsize{14} Fixação média (s)', '\fontsize{14} aSigma', '\fontsize{14} Duração ruído (s)'};
+                dlg_title2 = sprintf('Parâmetros da Sessão %02d', prevSes);
+                
+                def2 = {num2str(val_emaFix), mat2str(val_aSigma), num2str(val_pinkNoiseDur)}; 
+                
+                answer2 = inputdlg(prompt2, dlg_title2, [1 40; 1 40; 1 40], def2, options);
+                
+                if isempty(answer2)
+                    fprintf('Sessão cancelada na revisão de parâmetros\n'); 
+                    cleanup; 
+                    return; 
+                end
+                
+                % Parse the confirmed values
+                loaded_emaFix       = str2double(answer2{1});
+                if (loaded_emaFix - val_emaFix) < 10^-3
+                    loaded_fixQueue = val_fixQueue;
+                end
+                loaded_aSigma       = str2num(answer2{2}); %#ok<ST2NM> % str2num allows reading arrays like [1.5, 2.0]
+                loaded_pinkNoiseDur = str2double(answer2{3});
+                
+            catch ME
+                warning('Não foi possível carregar a sessão %02d. Iniciando com NaNs. Erro: %s', prevSes, ME.message);
+            end
+        end
     end
-    clear repeat prompt dlg_title def options answer
-    
+
+
+    if ~isnan(loaded_aSigma)
+        params.aSigma = loaded_aSigma;
+        stairBurnIn = 0;
+        stairPrev   = prevData.tkP.stair.staircase;
+    else
+        stairBurnIn = 1;
+        stairPrev   = [];
+    end
+    if ~isnan(loaded_emaFix)
+        taskProps.fixProps.emaFix = loaded_emaFix;
+    end
+    if ~isnan(loaded_pinkNoiseDur)
+        params.pinkNoiseDur = loaded_pinkNoiseDur;
+    end
+
+    clear repeat prompt dlg_title def options answer subjNum sesNum prevSes auxPrev st ext ...
+      prompt2 dlg_title2 def2 answer2 prevFile prevData val_emaFix val_aSigma val_pinkNoiseDur val_fixQueue ...
+      ME loaded_aSigma loaded_emaFix loaded_pinkNoiseDur
+
     % (a) Configurações antes de abrir a tela
         
     FlushEvents;
@@ -119,6 +195,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     screenRes = Screen('Resolution', screenNumber);         % Resolução da tela em px
     ifi = Screen('GetFlipInterval', window);
 
+
     % (d) Obtém o centro e os semieixos da elipse
     ellipseProps = [screenRes.width/2, screenRes.height/2];
     ellipseProps = [ellipseProps ellipseProps(1)*params.ellipseToScreenRatio(1) ellipseProps(2)*params.ellipseToScreenRatio(2)];
@@ -147,6 +224,11 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     
     allColors = white*ones(3, nStims);
     allPW     = params.pW1*ones(1,nStims);
+
+    % Faz com que o ruído rosa dure um 'múltiplo' do ifi
+    pinkNoiseNFrames = ceil(params.pinkNoiseDur/ifi);
+    params.pinkNoiseDur = pinkNoiseNFrames*ifi;
+    params.pinkNoiseNFrames = pinkNoiseNFrames;
 
     % i. Inicializa Eyelink
     dummymode = 0; if debug > 0, dummymode = 1; disp('Debug: O EyeLink não será inicializado'); end
@@ -239,7 +321,11 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     PMBlob = foragingBlob(window, gabor.size_px, grey, params, 0);
 
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
-    fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nMaxFix)));
+    if isnan(loaded_fixQueue)
+        fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nMaxFix)));
+    else 
+        fixQueue = loaded_fixQueue;
+    end
 
     displayProps.window       = window;
     displayProps.winCol       = grey;
@@ -249,7 +335,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     displayProps.screenRes    = screenRes;
     displayProps.ifi          = ifi;
     displayProps.ellipseProps = ellipseProps;
-    clear exampleParams exampleGaborFactor bgColor window winRect monitorW_mm screenRes ifi ellipseProps
+    clear exampleParams exampleGaborFactor bgColor window winRect monitorW_mm screenRes ifi ellipseProps loaded_fixQueue
 
     drawProps.white     = white;
     drawProps.grey      = grey;
@@ -296,7 +382,9 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     taskProps.keys      = keys;
     taskProps.fixProps.preP3  = [];
     taskProps.fixProps.med    = [];
-    clear ans Eye targetKey el sesSub fixQueue nStims nTrials nBlocks keys
+    taskProps.stairBurnIn     = stairBurnIn;
+    taskProps.stairPrev       = stairPrev;
+    clear ans Eye targetKey el sesSub fixQueue nStims nTrials nBlocks keys stairPrev
 
 %% 5) Chama as funções para executar a tarefa
     if debug == 0, diary(params.tempDiary); end
@@ -622,7 +710,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             fprintf('Selecionado: um dos treinos\n')
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
-                            fprintf('Valor de duraçao do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur)
+                            fprintf('Valor de duração do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur)
                             resultsTrain.tkP = tkP;
                             tkP.(mode) = resultsTrain;
                         end
@@ -806,6 +894,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             seenStimsQueue = cell(tkP.nBlocks, tkP.nTrials);
 
             nSnbhd = zeros(tkP.nBlocks, tkP.nTrials);
+
+            isSaccSeen    = nan(tkP.nBlocks, tkP.nTrials);
+            isP3earlyStop = nan(tkP.nBlocks, tkP.nTrials);
 
             if mode >= 2
                 Eyelink('Message',sprintf(prm.msg.on.ses{1}, suffix));
@@ -994,7 +1085,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             lastPos = [-1 -1];
                         end
                         % disp('Vai calcular FSOnset')
-                        FSonset = Screen('Flip', dpP.window);
+                        FSonset = Screen('Flip', dpP.window, GetSecs() + .5*dpP.ifi);
                         FPonset = FSonset;
                     
         % iv. Inicia o registro da sessão
@@ -1047,7 +1138,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     if any([x_gaze, y_gaze] ~= lastPos)
                                         Screen('DrawTexture', dpP.window, bg);
                                         Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                        Screen('Flip', dpP.window);
+                                        Screen('Flip', dpP.window, GetSecs() + .5*dpP.ifi);
                                         lastPos = [x_gaze, y_gaze];
                                     end
                                 end
@@ -1138,7 +1229,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     end
                     
     %% 6) Início Fase 2: tela de estímulos
-                    vbl = Screen('Flip', dpP.window);
+                    Screen('Flip', dpP.window, GetSecs() + .5*dpP.ifi);
                     if keepGoingTrials && ~restartTrial
                         % Novamente, no modo cursor é usada textura de tela cheia
                         if mode == 1
@@ -1160,11 +1251,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                             lastPos = [-1 -1];
                         end
-                        trialOnset = Screen('Flip', dpP.window, vbl + 0.5 * dpP.ifi);
+                        trialOnset = Screen('Flip', dpP.window, GetSecs() + 0.5 * dpP.ifi);
             
             % vi. Registra o momento de início do trial
                         if debug == 0  && mode >= 2 && keepGoingTrials
-                            Eyelink('Message',prm.msg.on.P2);
+                            Eyelink('Message',[sprintf('I %d ', uint64(trialOnset * 1000)) prm.msg.on.P2]);
                         end
                     else
                         trialOnset = GetSecs;
@@ -1189,6 +1280,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             % excesso de tempo) ou se o período pré-ruído rosa tiver sido completado
                             % sem movimento ocular
                             runTrial = true;
+                            needOffset = false;
                             while runTrial
 
                                 WaitSecs(0.001);
@@ -1215,7 +1307,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                         check = true;
                                     end
                                     if alphaChanged
-                                        Screen('Flip', dpP.window);
+                                        Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                     end
                                 elseif mode == 1
                                     [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
@@ -1225,7 +1317,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                         Screen('DrawTexture',   dpP.window, bg); 
                                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                         Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                        Screen('Flip', dpP.window);
+                                        Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                         lastPos = [x_gaze, y_gaze];
                                     end
                                 end
@@ -1244,20 +1336,27 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             fixDur = tNow - fixStartTime;
                                 
                                             if fixDur >= prm.minFixTime2
-                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{1}); end
+                                                if debug == 0 && mode >= 2
+                                                    Eyelink('Message',prm.msg.off.stm{1});
+                                                    disp('Fim de fixação boa em stim');
+                                                end
                                                 % Apenas salva na fila a primeira
                                                 % fixação em um estímulo
                                                 if flag(currStim) == 0
                                                     counter = counter + 1;
                                                     fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
-                                                    [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
+                                                    [P3On, tkP] = P3Onset3(tkP, prm, fixDur);
                                                 end
-                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]]; % Se quisesse registrar o comprimento de todas as fixações
+                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
                                                 flag(currStim) = flag(currStim) + 1;
                                                 % Registra como ruim a fixação se tiver sido muito curta
                                             else
-                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{2}); end
+                                                if debug == 0 && mode >= 2
+                                                    Eyelink('Message',prm.msg.off.stm{2}); 
+                                                    disp('Fim de fixação ruim em stim')
+                                                    WaitSecs(0.002);
+                                                end
                                             end
                                         end
                                         % Como deixou de fixar, reseta as variáveis
@@ -1275,6 +1374,26 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                         % próximos E amostragem baixa), temos
                                         % o início da fixação
                                         if currStim == 0 || currStim ~= currIdx
+
+                                            % Adiciona mensagem de fim de fixação
+                                            % para esse caso improvável
+                                            if currStim ~= 0
+                                                disp('Atenção: pulou de um estímulo a outro')
+                                                fixDur = tNow - fixStartTime;
+                                                if fixDur >= prm.minFixTime2
+                                                    if debug == 0 && mode >= 2
+                                                        Eyelink('Message',prm.msg.off.stm{1}); 
+                                                        disp('Fim de fixação boa em stim')
+                                                    end
+                                                else
+                                                    if debug == 0 && mode >= 2
+                                                        Eyelink('Message',prm.msg.off.stm{2});                                                     
+                                                        disp('Fim de fixação ruim em stim')
+                                                    end
+                                                end
+                                                WaitSecs(0.002);
+                                            end
+
                                             currStim = currIdx;
                                             fprintf('currStim = %d\n', currStim);
                             
@@ -1320,7 +1439,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('FrameOval', dpP.window, drP.red, dstRects, prm.pW2);
                                     
-                                    Screen('Flip', dpP.window);
+                                    Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                     WaitSecs(prm.fadeInDelay1);
                                     
                                     tStart = GetSecs;
@@ -1399,7 +1518,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         fprintf('Tempo permitido de fixação antes do rosa: %.4f\n', P3On)
 
                         
-                        preUpdateDeadline = fixStartTime + P3On;
+                        P3Frames = round(P3On / dpP.ifi);
+                        TargetP3Onset = fixStartTime + (P3Frames - 0.5) * dpP.ifi;
+                        
+                        % O update ocorre 1 frame antes do início de da fase 3
+                        preUpdateDeadline = TargetP3Onset - dpP.ifi; 
                         tNow = GetSecs;
                         while tNow < preUpdateDeadline
                             WaitSecs(0.001);
@@ -1426,7 +1549,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     check = true;
                                 end
                                 if alphaChanged && check
-                                    Screen('Flip', dpP.window);
+                                    Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                 end
                             elseif mode == 1
                                 [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
@@ -1436,7 +1559,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     Screen('DrawTexture',   dpP.window, bg); 
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                    Screen('Flip', dpP.window);
+                                    Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                     lastPos = [x_gaze, y_gaze];
                                 end
                             end
@@ -1462,24 +1585,30 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         end
                         if mode >= 3
-                                updateStimOnset = Screen('Flip', dpP.window);
+                                updateStimOnset = Screen('Flip', dpP.window, TargetP3Onset);
                             else
                                 updateStimOnset = GetSecs;
                         end
 
-                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.P3); end
+                        if debug == 0 && mode >= 2, Eyelink('Message',[sprintf('I %d ', uint64(updateStimOnset * 1000)) prm.msg.on.P3]); end
                         
                         % A fase 3 é encerrada se o estímulo fica tempo
                         % demais na tela ou quando o olho sai do último
                         % estímulo
                         fprintf('currStim último fixado (agora em P3) = %d\n', currStim);
-                        while true 
+
+                        P3Deadline = updateStimOnset + (prm.pinkNoiseNFrames - 1)*dpP.ifi;
+                        earlyStop = false;
+                        while true
                             tNow = GetSecs;
-                            if tNow - updateStimOnset > prm.pinkNoiseDur
+                            if tNow > P3Deadline
                                 P3Dur = tNow - updateStimOnset;
                                 fixDur = tNow - fixStartTime;
                                 fprintf('Fim ruído rosa por duração: %.4f\n', P3Dur)
-                                if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{3}); end
+                                if debug == 0 && mode >= 2
+                                    Eyelink('Message',prm.msg.off.stm{3});
+                                    disp('Fim de fixação P3 em stim')
+                                end
                                 break;
                             end
                             check = false;
@@ -1501,7 +1630,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     Screen('DrawTexture', dpP.window, bg);
                                     Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                                    Screen('Flip', dpP.window);
+                                    Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                     lastPos = [x_gaze, y_gaze];
                                 end
                             end
@@ -1511,21 +1640,32 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     P3Dur = tNow - updateStimOnset;
                                     fixDur = tNow - fixStartTime;
                                     fprintf('Fim ruído rosa por dispersão: %.4f\n', P3Dur)
-                                    if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.stm{1}); end
+                                    earlyStop = true;
+                                    if debug == 0 && mode >= 2
+                                        Eyelink('Message',prm.msg.off.stm{1});
+                                        disp('Fim de fixação P3 em stim')
+                                    end
                                     break;
                                 end
                             end
                             WaitSecs(.0005);
                         end
+                        isP3earlyStop(b, idx) = earlyStop;
                         % Como saio do loop da fase 2 assim que inicio a
                         % última fixação, tenho que adicionar neste momento
                         % a fixação iniciada lá
-                        seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur]];
+                        seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 3]];
                         flag(currStim) = flag(currStim) + 1;
 
                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                        updateStimOffset = Screen('Flip', dpP.window);
-                        if debug == 0 && mode >= 2,  Eyelink('Message',prm.msg.off.P3); end
+                        if earlyStop || mode == 1
+                            P3Flip = GetSecs + 0.5 * dpP.ifi;
+                        else
+                            P3Flip = updateStimOnset + (prm.pinkNoiseNFrames - 0.5) * dpP.ifi;
+                        end
+                        updateStimOffset = Screen('Flip', dpP.window, P3Flip);
+
+                        if debug == 0 && mode >= 2,  Eyelink('Message',[sprintf('I %d ', uint64(updateStimOffset * 1000)) prm.msg.off.P3]); end
 
                         P3Dur = updateStimOffset - updateStimOnset;
                         fprintf('Tempo total de ruído rosa: %.4f\n', P3Dur)
@@ -1537,6 +1677,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             %% ix. Verifica se há alguma fixação de duração mínima em estímulo 
             %     numa janela pós-modificação
                         fixOnset = updateStimOffset; currIdx = [];
+                        initialIdx = 0; % Para rastrear o primeiro ROI fixado
 
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.on.PM); end
             
@@ -1572,6 +1713,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     if isempty(currIdx)
                                         if any(isCurrStim)
                                             currIdx = find(isCurrStim, 1);
+                                            % Guarda a primeira fixação
+                                            if initialIdx == 0
+                                                initialIdx = currIdx; 
+                                            end
+
                                             fixOnset = tNow;
                                             if debug == 0 && mode >= 2
                                                 if flag(currIdx) == 0
@@ -1589,9 +1735,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                         if ~isCurrStim(currIdx)
                                             fixDur = tNow - fixOnset;
                                             if fixDur >= prm.minFixTime3
-                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur]];
+                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur; 4]];
                                                 disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
-                                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{1}); end
+                                                if debug == 0 && mode >= 2
+                                                    Eyelink('Message',prm.msg.off.stm{1}); 
+                                                    disp('Fim de fixação PM em stim')
+                                                end
                                                 maxDurReached = false;
                                                 break
                                             end
@@ -1599,7 +1748,23 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             % que estava apenas passando pelo estímulo para 
                                             % fovear outro, então recomeça a busca
                                             currIdx = [];
-                                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{2}); end
+                                            if debug == 0 && mode >= 2
+                                                Eyelink('Message',prm.msg.off.stm{2});
+                                                disp('Fim de fixação ruim PM em stim')
+                                            end
+                                        else
+                                            fixDur = tNow - fixOnset;
+                                            % Se ainda está na fixação inicial e excedeu temp de tolerância, esquece 
+                                            if (currIdx == initialIdx) && (fixDur >= prm.maxTolPM)
+                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur; 4]];
+                                                disp([' Sem movimento ocular em PM. Permaneceu no alvo ' num2str(currIdx)]);
+                                                if debug == 0 && mode >= 2
+                                                    Eyelink('Message', prm.msg.off.stm{1}); 
+                                                    disp('Fim de fixação PM por inércia (maxTolPM)')
+                                                end
+                                                maxDurReached = false;
+                                                break;
+                                            end
                                         end
                                     end
 
@@ -1611,7 +1776,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
 %                                             end
                                             Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
-                                            Screen('Flip', dpP.window);
+                                            Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                             lastPos = [x_gaze, y_gaze];
                                         end
                                     end
@@ -1620,9 +1785,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 tNow = GetSecs;
                             end
                             if maxDurReached && ~isempty(currIdx)
-                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur]];
+                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; prm.postModDur; 4]];
                                 disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação (fim forçado)']);
-                                if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.stm{4}); end
+                                if debug == 0 && mode >= 2
+                                    Eyelink('Message',prm.msg.off.stm{4}); 
+                                    disp('Fim de fixação PM em stim')
+                                end
                             elseif ~isempty(currIdx)
                                  WaitSecs(prm.postModDur - (tNow - updateStimOffset));
                             end
@@ -1695,6 +1863,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         % O do passado não importa de onde eu pergunto,
                         % desde que não seja a última fixação nem o pós
                         % sacádico
+                        isSaccSeen(idx, b) = any(ismember(currIdx, seenIdx));
                         auxIdx = setdiff(seenIdx, [currStim currIdx]);
                         seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
                         currAux = []; 
@@ -1810,14 +1979,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             % xi. Interrompe o registro, pois ou a tela será atualizada ou
             %     acabaram os trials
                     if debug == 0 && mode >= 2% && keepGoingTrials
-                        trialOffset = GetSecs; %#ok<NASGU>
+                        trialOffset = GetSecs;
                         Eyelink('Message', sprintf(prm.msg.off.trl{1}, i - trialIdxUp, tkP.nTrials));
-                        Screen('Flip', dpP.window);
+                        Screen('Flip', dpP.window, trialOffset + .5*dpP.ifi);
                         WaitSecs(0.1);
                         Eyelink('SetOfflineMode');
                         Eyelink('StopRecording');
                     else 
-                        Screen('Flip', dpP.window);
+                        Screen('Flip', dpP.window, GetSecs + .5*dpP.ifi);
                         WaitSecs(0.5);
                     end
                 end
@@ -1860,6 +2029,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 results.nStimsToReport = nStimsToReport;
                 results.orderToReportSets = orderToReportSets;
                 results.trialOrder = trialOrder;
+                results.isP3earlyStop = isP3earlyStop;
+                results.isSaccSeen    = isSaccSeen;
                 results.trialFeedback = trialFeedback;
                 results.seenStimsQueue = seenStimsQueue;
                 results.nSnbhd = nSnbhd;
@@ -1876,6 +2047,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             if ~exist('nStimsToReport', 'var'),     nStimsToReport = []; end
             if ~exist('orderToReportSets', 'var'),  orderToReportSets = []; end
             if ~exist('trialOrder', 'var'),      trialOrder = []; end
+            if ~exist('isP3earlyStop', 'var'),   isP3earlyStop = []; end
+            if ~exist('isSaccSeen', 'var'),      isSaccSeen = []; end
             if ~exist('trialFeedback', 'var'),   trialFeedback = []; end
             if ~exist('seenStimsQueue', 'var'),  seenStimsQueue = []; end
 
@@ -1888,6 +2061,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
             results.nStimsToReport = nStimsToReport;
             results.orderToReportSets = orderToReportSets;
             results.trialOrder = trialOrder;
+            results.isP3earlyStop = isP3earlyStop;
+            results.isSaccSeen = isSaccSeen;
             results.trialFeedback = trialFeedback;
             results.seenStimsQueue = seenStimsQueue;
             
@@ -1999,22 +2174,19 @@ if nargin < 9, cleanAll = true; end
     end
 end
 
-
-function [T, tkP] = P3Onset2(tkP, prm, newFix)
-% Versão para usar online, durante o trial
+function [T, tkP] = P3Onset3(tkP, prm, newFix)
+    % Versão para usar online também, mas 
     beta  = prm.betaP3;
 
-    tf = prm.pinkNoiseDur; 
+    tf = prm.pinkNoiseDur; d1 = prm.minP3Dur; d2 = prm.maxDelayFixOffP3;
     emaFix = tkP.fixProps.emaFix;
-
     emaFix = (1 - beta) * emaFix + beta * newFix;
-    
     tkP.fixProps.emaFix = emaFix;
-
-    % estimativa do onset
-    T = emaFix - tf; % (D + tf);
+    
+    % Tenho janela de (T+d_2) a (T+t_f+d_1), largura tf+d_1-d_2 e meio em 
+    % T + (d_1 + d_2 +t_f)/2; imponho igual a F, sai T = F - (d_1 + d_2 +t_f)/2
+    T = emaFix - (tf+d1+d2)/2; 
 end
-
 
 function [gabor, matrices] = foragingGabor(screenRes, nStims, params, monitorW_mm, gaborAngle)
     if nargin < 5
