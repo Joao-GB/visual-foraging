@@ -190,7 +190,8 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
 
             trl(i).probeHit = feedback(3, feedback(2,:) == 0);
             trl(i).nSaccProbeHit = feedback(3, feedback(2,:) == 1);
-            trl(i).forProbeHit = feedback(3, feedback(2,:) == -1);
+            trl(i).forProbeHit   = feedback(3, feedback(2,:) == -1);
+            trl(i).allHit        = feedback(3,:);
             
             trl(i).allProbesOrder = feedback(2,:);
             

@@ -7,7 +7,7 @@ function [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] =
 %     olhado é alvo ou não acima da chance -- i.e., a predição ótima com base
 %     no passado é sempre 1/2
         p = .5;
-        nTs = binornd(nStims-1, p, nBlocks, nTrials);
+        nTs = binornd(nStims, p, nBlocks, nTrials);
 
     % (b) Distribuição da orientação-alvo: pseudo-uniforme nas orientações 
     %     de allOri, de modo que dois blocos consecutivos têm orientações
