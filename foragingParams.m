@@ -86,7 +86,7 @@ function params = foragingParams
     % (o) Raio da área ao redor dos estímulos em que se considera uma
     % fixação
     params.fixROIradius1_dva = 1.5;          % Para fixações pré-modificação
-    params.fixROIradius3_dva = 3;            % Para fixações pós-modificação
+    params.fixROIradius3_dva = 2.5;            % Para fixações pós-modificação
 %     % Fatores multiplicativos para se considerar ou não fixação
 %     params.fixDistFactor1 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pré-modificação
 %     params.fixDistFactor3 = 1.8;    % Fator de tolerância para distância entre fixação e alvos pós-modificação

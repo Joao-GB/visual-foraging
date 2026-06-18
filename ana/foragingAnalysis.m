@@ -33,6 +33,15 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
 
     fprintf('Número final de trials selecionados: %d\n', sum(goodTrl))
 
+    %% Análise exploratória do comportamento ocular
+    fixPos        = pixel_to_dva([trlProps.preProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    fixPosFix     = pixel_to_dva([trlProps.preProbePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    probePos      = pixel_to_dva([trlProps.probePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    probePosFix   = pixel_to_dva([trlProps.probePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    nSaccProbePos = pixel_to_dva([trlProps.nSaccProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    foragingEyePlots(fixPos, fixPosFix, probePos, probePosFix, nSaccProbePos)
+
+
 
 
     %% Gráfico principal: Efeito pré-sacádico E tabela de contingência
