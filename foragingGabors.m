@@ -710,7 +710,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             fprintf('Selecionado: um dos treinos\n')
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
-                            fprintf('Valor de duração do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur)
+                            if isfield(tkP, 'pinkNoiseDur'), fprintf('Valor de duração do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur); end
                             resultsTrain.tkP = tkP;
                             tkP.(mode) = resultsTrain;
                         end

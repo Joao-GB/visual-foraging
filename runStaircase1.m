@@ -547,7 +547,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             resultsStair.aSigma75  = aSigma;
             newLevelASigma = ones(1, nBlocks);
             for i = 1:nBlocks
-                newLevelASigma(i) = -PAL_CumulativeNormal_inverse([-aSigma(i), beta, gamma, lambda], prm.stairLevel);
+                newLevelASigma(i) = -PAL_CumulativeNormal([-aSigma(i), beta, gamma, lambda], prm.stairLevel, 'inverse');
             end
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;

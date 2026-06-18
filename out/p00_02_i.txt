@@ -1,0 +1,17 @@
+Selecionado: staircase
+----Início do staircase----
+
+ans =
+
+   1.7818e+09
+
+Valor de aSigma escolhido via staircase: 30.00
+oriFilter e OFsize devidamente atualizados
+
+ans =
+
+   1.7818e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de staircase não concluída, mas salva.
+Tempo total da sessão: 31.124 s

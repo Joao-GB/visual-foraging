@@ -34,9 +34,13 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, newThrs, ori)
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
         
         % Estimativa final do limiar
-        yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
-        yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
-        
+        if thrs(b) >= newThrs(b)
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
+        else
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+        end
         xlabel('Trial'); ylabel('Sigma');
         title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
@@ -61,8 +65,14 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, newThrs, ori)
         plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
         plot(trialNum(RF(b).response == 1), presentedSigma(RF(b).response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
         plot(trialNum(RF(b).response == 0), presentedSigma(RF(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-        yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
-        yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+
+        if thrs(b) >= newThrs(b)
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
+        else
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+        end
         
         xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
         if b == 1, ylabel('Sigma'); end
@@ -85,9 +95,13 @@ function inspectStaircase(tkP, dpP, drP, prm, RF, thrs, newThrs, ori)
             plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
             plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
             plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
-            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
-            
+            if thrs(b) >= newThrs(b)
+                yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+                yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
+            else
+                yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
+                yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+            end
             xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
             if b == 1, ylabel('Sigma'); end
             grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
