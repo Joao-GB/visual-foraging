@@ -71,14 +71,14 @@ function params = foragingParams
                                                         % para a fila inicial de fixações
 
         % Preciso que minFixTime3 (filtro de ruído) < maxTolPM (tempo de reação) < postModDur (duração máxima de PM) 
-    params.maxTolPM    = params.maxDelayFixOffP3 + 100;% Tolerância de tempo de reação sacádico
+    params.maxTolPM    = params.maxDelayFixOffP3 + .1;% Tolerância de tempo de reação sacádico
     params.minFixTime3 = .1;                          % Tempo mínimo de fixação na região do alvo pós-modificação, em s
     params.postModDur  = max(.7, params.maxTolPM+params.minFixTime3);% Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.3, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     
     % (m) Tamanho da fila de tempos de fixação
-    params.fixTimeQueueSize = 30;
+    params.fixTimeQueueSize = 20;
     % (n) Percentis úteis
     params.shortFixPerc = 20;
     params.nbhd1Perc    = .80;
@@ -99,14 +99,14 @@ function params = foragingParams
     params.sigmaMax = 80;
     params.nStimsStair   = 3;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 10;     % <-
+    params.nTrialsStair = 40;     % <-
     params.priorMeanStair  = 20;
     params.priorStdStair   = 20;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
-    params.burninTrials    = 5;  % <-
+    params.burninTrials    = 15;  % <-
     params.stairLevel      = .85;
 
 %% -----
@@ -142,8 +142,8 @@ function params = foragingParams
                                     % repetir cada trial
 
     % (e) Parâmetros para remoção de estímulos já fixados
-    params.minDurStim     = .40;
-    params.fadeOutStimDur = .05;
+    params.minDurStim     = .45;
+    params.fadeOutStimDur = .1;
     params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
 
     % (f) Tamanho e cor do cursor

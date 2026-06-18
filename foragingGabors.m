@@ -1887,10 +1887,15 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
 
                         % O não visto eu pergunto o mais próximo de
-                        % currStim que não seja currIdx e nem já visto
+                        % currStim que não seja currIdx e nem já visto. Mas
+                        % se a pessoa nao mover o olho, como puniçao,
+                        % perguntamos sobre os mais distantes
+                        if isempty(currIdx)
+                            nbhd = flip(nbhd);
+                        end
+
                         notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
                         notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
-
                         notSeenAux = notSeenNbhd(1:nStimsToReport(3, idx, b));
 
                         % notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);

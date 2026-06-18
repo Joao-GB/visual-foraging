@@ -98,6 +98,8 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                 'stopRule', (nStims-1)*nTrials);
             RF(1:nBlocks) = RF(1);
         end
+        startRF = RF;
+        startASigma = aSigma;
 
         [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, burnInASigma(1), prm.rSigma2);
 
@@ -122,6 +124,13 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             EyelinkDoTrackerSetup(tkP.el);
 
             while b <= nBlocks && keepGoingBlocks
+                RF(b) = startRF(b);
+                aSigma(b) = startASigma(b);
+
+                [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
+                oriFilter(:,:,b) = auxOriFilter;
+                OFsize(:,:,b)    = auxOFsize;
+
                 trialOrder(:,:,b) = 0;
 
                 overlayRect = CenterRectOnPointd([dpP.winRect(1:3) dpP.winRect(4)/2.5], dpP.winRect(3)/2, dpP.winRect(4)/2);
