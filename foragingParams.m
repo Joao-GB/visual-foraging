@@ -73,7 +73,7 @@ function params = foragingParams
         % Preciso que minFixTime3 (filtro de ruído) < maxTolPM (tempo de reação) < postModDur (duração máxima de PM) 
     params.maxTolPM    = params.maxDelayFixOffP3 + 100;% Tolerância de tempo de reação sacádico
     params.minFixTime3 = .1;                          % Tempo mínimo de fixação na região do alvo pós-modificação, em s
-    params.postModDur  = .7;                           % Janela temporal (após offset dos estímulos) durante a qual se 
+    params.postModDur  = max(.7, params.maxTolPM+params.minFixTime3);% Janela temporal (após offset dos estímulos) durante a qual se 
                                                          % espera a fixação com duração mínima minFixTime3, em s
     params.blobPMDur   = min(.3, params.postModDur);   % Duração do pedestal (blob) pós-modificação
     
@@ -85,7 +85,7 @@ function params = foragingParams
 
     % (o) Raio da área ao redor dos estímulos em que se considera uma
     % fixação
-    params.fixROIradius1_dva = 1.5;          % Para fixações pré-modificação
+    params.fixROIradius1_dva = 1.75;          % Para fixações pré-modificação
     params.fixROIradius3_dva = 2.5;            % Para fixações pós-modificação
 %     % Fatores multiplicativos para se considerar ou não fixação
 %     params.fixDistFactor1 = 1.2;    % Fator de tolerância para distância entre fixação e alvos pré-modificação

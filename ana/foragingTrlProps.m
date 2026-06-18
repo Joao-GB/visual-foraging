@@ -95,7 +95,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).tgtPosPix = mat.results.stimCenters(:,trl(i).tgtIdx,trl(i).trlIdx,b) - screenCenter;
             trl(i).tgtPosDva = pixel_to_dva(trl(i).tgtPosPix, 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
             trl(i).stmOri = mat.results.orientation(:,trl(i).trlIdx, b); trl(i).nStm = mat.tkP.nStims;
-            trl(i).stmPosPix = mat.results.stimCenters(:,:,trl(i).trlIdx,b);
+            trl(i).stmPosPix = mat.results.stimCenters(:,:,trl(i).trlIdx,b) - screenCenter;
             trl(i).stmPosDva = pixel_to_dva(trl(i).stmPosPix, 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
 
             %% Obtém os limites de todos os intervalos de fixação em estímulos

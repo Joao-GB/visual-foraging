@@ -1385,6 +1385,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                         Eyelink('Message',prm.msg.off.stm{1}); 
                                                         disp('Fim de fixação boa em stim')
                                                     end
+                                                    if flag(currStim) == 0
+                                                        counter = counter + 1;
+                                                        fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
+                                                        auxFixQueue(counter) = fixDur;
+                                                        [P3On, tkP] = P3Onset3(tkP, prm, fixDur);
+                                                    end
+                                                    seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
+                                                    flag(currStim) = flag(currStim) + 1;
                                                 else
                                                     if debug == 0 && mode >= 2
                                                         Eyelink('Message',prm.msg.off.stm{2});                                                     
@@ -1687,13 +1695,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             while tNow - updateStimOffset < prm.postModDur
                                 check = false;
                                 if mode >= 2
-%                                     if tNow - updateStimOffset > prm.blobPMDur
-%                                         Screen('Flip', dpP.window);
-%                                     end
                                         
                                     damn = Eyelink('CheckRecording');
                                     if(damn ~= 0), break; end
-                    
+                        
                                     if Eyelink('NewFloatSampleAvailable') > 0
                                         evt = Eyelink('NewestFloatSample');
                                         x_gaze = evt.gx(tkP.Eye);
@@ -1704,10 +1709,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                     check = true;
                                 end
-            
+                        
                                 if check
                                     isCurrStim = vecnorm([x_gaze; y_gaze] - stimCenters(:, :, idx, b)) <= minFixDist3;
-
+                        
                                     % Se currIdx estava com valor inicial e isCurrStim não é  
                                     % totalmente nulo, começou uma fixação 
                                     if isempty(currIdx)
@@ -1717,7 +1722,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             if initialIdx == 0
                                                 initialIdx = currIdx; 
                                             end
-
+                        
                                             fixOnset = tNow;
                                             if debug == 0 && mode >= 2
                                                 if flag(currIdx) == 0
@@ -1734,24 +1739,35 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                     else
                                         if ~isCurrStim(currIdx)
                                             fixDur = tNow - fixOnset;
-                                            if fixDur >= prm.minFixTime3
-                                                seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur; 4]];
-                                                disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
+                                            % Se a fixação não havia escapado do alvo ainda, é só
+                                            % uma questão de latência e não há porque encerrar a PM
+                                            if currIdx == initialIdx
+                                                disp(['Saiu do currIdx ' num2str(currIdx) ', temos tempo sobrando em PM']);
                                                 if debug == 0 && mode >= 2
                                                     Eyelink('Message',prm.msg.off.stm{1}); 
                                                     disp('Fim de fixação PM em stim')
                                                 end
-                                                maxDurReached = false;
-                                                break
+                                            else
+                                                if fixDur >= prm.minFixTime3
+                                                    seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currIdx; fixDur; 4]];
+                                                    disp(['Trial ' num2str(idx) ': Visitou o alvo ' num2str(currIdx) ' pós-modificação']);
+                                                    if debug == 0 && mode >= 2
+                                                        Eyelink('Message',prm.msg.off.stm{1}); 
+                                                        disp('Fim de fixação PM em stim')
+                                                    end
+                                                    maxDurReached = false;
+                                                    break
+                                                else
+                                                    if debug == 0 && mode >= 2
+                                                        Eyelink('Message',prm.msg.off.stm{2});
+                                                        disp('Fim de fixação ruim PM em stim')
+                                                    end
+                                                end
                                             end
                                             % Se a fixação não foi longa o suficiente, pode ser
                                             % que estava apenas passando pelo estímulo para 
                                             % fovear outro, então recomeça a busca
                                             currIdx = [];
-                                            if debug == 0 && mode >= 2
-                                                Eyelink('Message',prm.msg.off.stm{2});
-                                                disp('Fim de fixação ruim PM em stim')
-                                            end
                                         else
                                             fixDur = tNow - fixOnset;
                                             % Se ainda está na fixação inicial e excedeu temp de tolerância, esquece 
@@ -1767,14 +1783,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             end
                                         end
                                     end
-
-
+                        
+                        
                                     if mode == 1
                                         [x_gaze, y_gaze, ~] = GetMouse(dpP.window);
                                         if any([x_gaze, y_gaze] ~= lastPos)
-%                                             if tNow - updateStimOffset <= prm.blobPMDur
+                        %                                             if tNow - updateStimOffset <= prm.blobPMDur
                                             Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-%                                             end
+                        %                                             end
                                             Screen('FillOval', dpP.window, drP.white, [x_gaze-prm.cursorRadius_px y_gaze-prm.cursorRadius_px x_gaze+prm.cursorRadius_px y_gaze+prm.cursorRadius_px]);
                                             Screen('Flip', dpP.window, tNow + .5*dpP.ifi);
                                             lastPos = [x_gaze, y_gaze];
