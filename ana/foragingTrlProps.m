@@ -4,6 +4,11 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
     N      = mat.tkP.nBlocks*mat.tkP.nTrials;
     trl    = getTrlStruct(N);
 
+    % Para uma versão errada da tarefa, em que isSaccSeen estava transposta
+    if size(mat.results.isSaccSeen,1) == size(mat.results.isP3earlyStop,2)
+        mat.results.isSaccSeen = mat.results.isSaccSeen(:, 1:mat.tkP.nBlocks)';
+    end
+
     %% Importa mensagens e eventos do arquivo edf
     messages = {edf.FEVENT(:).message}; messages(cellfun(@isempty, messages)) = {''};
 %     events = {edf.FEVENT(:).codestring};
@@ -32,7 +37,10 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
     nTrl = size(trlLimIdx, 2);
 
     %% Exclui os trials ruins
-    [trlLimIdx, nTrl, ~] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx, nTrl);
+    [badTrl, nTrl, ~] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx, nTrl);
+    trlLimIdx(:,badTrl) = [];
+    trlLimAbs(:,badTrl) = [];
+    trlDur(badTrl) = [];
 
     if nTrl ~=mat.tkP.nTrials*mat.tkP.nBlocks
         warning('O número de trials não é compatível com o número esperado')
@@ -61,22 +69,27 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
 
     b = 1;
 
-    newCond = zeros(1, nTrl);
+    hasProbeResp = zeros(1, nTrl);
     for i=1:nTrl
         t = mod(i-1, mat.tkP.nTrials)+1;
 
         % Extrai a
         trlEyeData = eyeData;
         trlEyeData.coord = eyeData.coord(:, find(eyeData.time ==trlLimAbs(1,i), 1):find(eyeData.time ==trlLimAbs(2,i), 1)) - screenCenter;
-        eyeMovs = microsacc_emd(trlEyeData, "fieldData", 'coord', "fieldPupil", 'pupil', "fieldFreq", 'fs', "dataUnits", 'pixel', ...
-            "findEvents", {'sac', 'fix', 'blk'}, "screenRes", screenRes, "screenDist", screenDist, "screenWidth", screenWidth, ...
-            "saveRawData", true, "saveFiltData", true);
-
-        % Um trial não é mantido apenas se anteriormente não era bom (o
-        % que acontece quando aborta o índice por excesso de repetições),
-        % ou porque alguma das fases (p1 a pM) não apresenta a quantidade
-        % necessária de estímulos
-        trlKeep = mat.results.trialOrder(2,t,b);
+        if isempty(trlEyeData.coord) || sum(isnan(trlEyeData.coord(:)))/numel(trlEyeData.coord(:)) > 1/3
+            warning('Trial sem dados suficientes! (cf. foragingTrlProps)')
+            trlKeep = 0;
+        else
+            eyeMovs = microsacc_emd(trlEyeData, "fieldData", 'coord', "fieldPupil", 'pupil', "fieldFreq", 'fs', "dataUnits", 'pixel', ...
+                "findEvents", {'sac', 'fix', 'blk'}, "screenRes", screenRes, "screenDist", screenDist, "screenWidth", screenWidth, ...
+                "saveRawData", true, "saveFiltData", true);
+    
+            % Um trial não é mantido apenas se anteriormente não era bom (o
+            % que acontece quando aborta o índice por excesso de repetições),
+            % ou porque alguma das fases (p1 a pM) não apresenta a quantidade
+            % necessária de estímulos
+            trlKeep = mat.results.trialOrder(2,t,b);
+        end
         trl(i).trlKeep = trlKeep;
         if trl(i).trlKeep
 
@@ -101,27 +114,34 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             %% Obtém os limites de todos os intervalos de fixação em estímulos
             % bem como das fixações individuais que os constituem
             modTimes = mat.results.modTimes(b, trl(i).trlIdx);
-            [trlKeep, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, saccLimsTime, hasRep, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trl(i).trlLimEvt, trl(i).trlLimClk, mat.prm, modTimes);
+            [trlKeep, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trl(i).trlLimEvt, trl(i).trlLimClk, mat.prm, modTimes);
             trl(i).phaseLimsIdx = phaseLimsTime;
             trl(i).stmLimsIdx   = stmLimsTime;
             trl(i).fixLimsIdx   = fixLimsTime;
             trl(i).phaseLimsTime = phaseLimsTime/mat.prm.fs;
             trl(i).stmLimsTime = stmLimsTime    /mat.prm.fs;
             trl(i).fixLimsTime = fixLimsTime    /mat.prm.fs;
+
+            trl(i).probeSeen = mat.results.isSaccSeen(b,trl(i).trlIdx);
+            trl(i).p3EarlyStop = mat.results.isP3earlyStop(b,trl(i).trlIdx);
         end
 
         feedback = mat.results.trialFeedback{b,t};
 
         %% APÓS NOVA COLETA (modificar foragingGabors), REMOVER CONDIÇÃO EXTRA
-        newCond(i) = ismember(0, feedback(2,:));
-        trl(i).trlKeep = trlKeep && newCond(i);
+        hasProbeResp(i) = ismember(0, feedback(2,:));
+        trl(i).trlKeep = trlKeep && ~trl(i).probeSeen && hasProbeResp(i);
         if trl(i).trlKeep
-             % Será a primeira sacada após o início da fase 3, podendo
-             % ocorrer antes ou depois do início do alvo
-            P3SaccIdx    = find(saccLimsTime(1,:) >= phaseLimsTime(3,1), 1, 'first');
+             % Será a primeira sacada após o fim da última fixação que 
+             % ocorre na fase 3, podendo ocorrer antes ou depois do 
+             % início do alvo
+            P3SaccIdx    = find(saccLimsTime(1,:) >= fixLimsTime(2, find(fixPerPhase(3,:), 1, 'last')), 1, 'first');
+%             find(saccLimsTime(1,:) >= phaseLimsTime(3,1), 1, 'first')
 
+            noRepQueue = unique(stimsQueue{i}(1,:), 'stable');
 
-            P3StmIdx = stimsQueue{i}(1,(stmPerPhase == 3));
+            P3aux = find(stmPerPhase == 3);
+            P3StmIdx = noRepQueue(P3aux);
             P3SaccLims   = eyeMovs.saccades.lims(:, P3SaccIdx);
             P3SaccAmp    = eyeMovs.saccades.amplitude(P3SaccIdx);
             P3SaccVPeak  = eyeMovs.saccades.v_peaks(P3SaccIdx);
@@ -131,8 +151,8 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).saccAmpDva  = P3SaccAmp;
             trl(i).saccVelDvas = P3SaccVPeak;
 
-            PMStmIdx = stimsQueue{i}(1,(stmPerPhase == 4));
-            PMFixIdx = find(fixLimsTime(1,:) > P3SaccLims(2), 1, 'first');
+            PMStmIdx = noRepQueue(stmPerPhase == 4);
+            PMFixIdx = find(fixLimsTime(1,:) >= P3SaccLims(2), 1, 'first');
             PMFixPosPix = dva_to_pixel(eyeMovs.fixations.pos(:, PMFixIdx), 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
             PMTgtPosPix = mat.results.stimCenters(:, PMStmIdx, trl(i).trlIdx, b) - screenCenter;
             trl(i).saccAccPix  = PMFixPosPix - PMTgtPosPix;
@@ -143,14 +163,18 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).probeOri = trl(i).stmOri(PMStmIdx);
             trl(i).probeForHistIdx = modTimes;
 
-
-            P3aux = find(stmPerPhase == 3);
+            
             P3FixPosPix = dva_to_pixel(mean(eyeMovs.data.filt_lin(:, stmLimsTime(1,P3aux):stmLimsTime(2,P3aux)),2), 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
             P3TgtPosPix = mat.results.stimCenters(:, P3StmIdx, trl(i).trlIdx, b) - screenCenter;
             trl(i).preProbeCat = any(trl(i).tgtIdx == P3StmIdx);
             trl(i).preProbeOri = trl(i).stmOri(P3StmIdx);
+
+            % Atenção: a fixação no pré-probe tem duas fases: uma com
+            % estímulos em tela, outra sem estímulos, isso se 
             trl(i).preProbeFixDur = diff(double(stmLimsTime(:, P3aux)))/mat.prm.fs;
-            trl(i).pinkNoiseDur   = (stmLimsTime(2, P3aux) - phaseLimsTime(3,1))/mat.prm.fs;
+            P3FixLimsTime = fixLimsTime(:, find(fixPerPhase(3,:), 1));
+            trl(i).P3FixDurPerPhase   = [0; phaseLimsTime(2,2)-P3FixLimsTime(1); min(phaseLimsTime(3,2), P3FixLimsTime(2)) - phaseLimsTime(3,1); max(0, P3FixLimsTime(2)-phaseLimsTime(4,1))]/mat.prm.fs;
+            trl(i).pinkNoiseDur = trl(i).P3FixDurPerPhase(3);
             trl(i).preProbePosPix = P3TgtPosPix;
             trl(i).preProbePosFixPix = P3FixPosPix;
             trl(i).preProbeProbeDistDva = pixel_to_dva(vecnorm(trl(i).preProbePosPix - trl(i).probePosPix), 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
@@ -175,7 +199,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).forProbePosPix = forStmPosPix;
 
             trl(i).forHistLen = modTimes - 1;
-            trl(i).forHistHasRep = hasRep;
+            trl(i).forHistHasRep = hasRepP2 || hasRepP4;
             trl(i).forHistIdx = stimsQueue{i}(1,1:end-1);
             trl(i).forHistIdxNoRep = unique(trl(i).forHistIdx, 'stable');
             trl(i).forHistFixDur = diff(double(stmLimsTimeRep(:, 1:end-1)))/mat.prm.fs;

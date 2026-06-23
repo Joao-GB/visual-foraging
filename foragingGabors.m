@@ -1879,7 +1879,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         % O do passado não importa de onde eu pergunto,
                         % desde que não seja a última fixação nem o pós
                         % sacádico
-                        isSaccSeen(idx, b) = any(ismember(currIdx, seenIdx));
+                        isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
                         auxIdx = setdiff(seenIdx, [currStim currIdx]);
                         seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
                         currAux = []; 

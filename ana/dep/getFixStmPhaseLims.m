@@ -1,4 +1,4 @@
-function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, saccLimsTime, hasRepetition, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trlLimEvt, trlLimClk, prm, modTimes)
+function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trlLimEvt, trlLimClk, prm, modTimes)
 %     figure; plot(eyeMovs.data.filt_lin'); hold on; xline([phaseLimsTime(1,2); phaseLimsTime(2,2); phaseLimsTime(3,2); phaseLimsTime(4,2)], '-k', 'Linewidth', 1.5);
     keepTrl = 1; saccLimsTime = [];
     % Dados os eventos de um trial e a posição ocular durante esse período,
@@ -16,8 +16,9 @@ function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, saccLim
     % mensagens sobre a utilidade de visita
     trlStmMsgs = trlMsgs(trlStmMsgsLimsEvt - (trlLimEvt(1) - 1));
     stmLimsTime = eventStartClk(trlStmMsgsLimsEvt) - trlLimClk(1);
-    badStmOnlyIdx = strcmp(trlStmMsgs(2,:), prm.msg.off.stm{2});
-    badStmIdx = strcmp(trlStmMsgs(2,:), prm.msg.off.stm{2}) | strcmp(trlStmMsgs(1,:), prm.msg.on.stm{2});
+    badStmOnlyIdx = strcmp(trlStmMsgs(2,:), prm.msg.off.stm{2});                                            % Salva os ruins de fato
+    oldStmIdx = strcmp(trlStmMsgs(1,:), prm.msg.on.stm{2});
+    badStmIdx = badStmOnlyIdx | oldStmIdx;   % Salva os ruins ou repetidos
     
     %% Encontra os limites das fases
     p1MsgsLimsEvt = [find(contains(trlMsgs, prm.msg.on.P1)) find(contains(trlMsgs, prm.msg.on.P2))] + trlLimEvt(1) - 1;  p1MsgsLimsTime= double(eventStartClk(p1MsgsLimsEvt) - trlLimClk(1)); p2MsgsLimsEvt = [find(contains(trlMsgs, prm.msg.on.P2)) find(contains(trlMsgs, prm.msg.on.P3))] + trlLimEvt(1) - 1;  p2MsgsLimsTime= double(eventStartClk(p2MsgsLimsEvt) - trlLimClk(1));
@@ -37,10 +38,12 @@ function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, saccLim
     if sum(stmPerPhase(3,:)) > 1
         stmPerPhase(3,:) = stmPerPhase(3,:) & stmPerPhase(2,:);
     end
-    hasRepetition = sum(~badStmOnlyIdx & stmPerPhase(2,:)) ~= modTimes;
+    hasRepP2 = sum(~badStmOnlyIdx & stmPerPhase(2,:)) ~= modTimes;
+    hasRepP4 = any(stmPerPhase(4,:) & oldStmIdx);
+    hasRepetition = hasRepP2 || hasRepP4;
     badP2 = sum(~badStmIdx & stmPerPhase(2,:)) ~= modTimes;
     badP3 = sum(~badStmIdx & stmPerPhase(3,:)) ~= 1;
-    badPM_1 = sum(~badStmIdx & stmPerPhase(4,:)) == 0;
+    badPM_1 = sum(~badStmOnlyIdx & stmPerPhase(4,:)) == 0;
     badPM_2 = sum(fixPerPhase(4,:)) == 0;
     if badP2 || badP3 || badPM_1 || badPM_2
         keepTrl = 0;
@@ -66,7 +69,7 @@ function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, saccLim
     stmPerPhase = stmPerPhaseAux;
 
     if ~keepTrl
-        warning('Trial ruim: P3 curtíssima (cf. refineLims)')
+        warning('Trial ruim: P3 curta ou sem fixação nova em PM (cf. refineLims)')
         return; 
     end
 
@@ -142,10 +145,23 @@ function [keepTrl, stmLimsTime, stmPerPhase] = refineLims(eyeMovs, fixLimsTime, 
     trlStmLimsTime = [trlStmLimsTime [P3auxOn; P3auxOff]];
     newStmPerPhase = [newStmPerPhase 3];
 
-    %% P4
-    aux = min(find(stmPerPhase(4, :), 1, 'first')+1, size(stmPerPhase, 2)); aux = find(fixPerStm(aux,:), 1, 'first'); if isempty(aux), aux = -Inf; else, aux = fixLimsTime(1, aux); end
-    stmLimsTime = [trlStmLimsTime [max(phaseLimsTime(4,1), aux); max(fixLimsTime(2,find(fixPerPhase(4, :), 1,'last')), phaseLimsTime(4,2))]];
-    stmPerPhase = [newStmPerPhase 4];
+    %% P4: procuro pelo primeiro estímulo que não seja ruim, que ex
+    SeenStimsP4Idx = find(stmPerPhase(4,:));
+
+    count = 0;
+    for i = SeenStimsP4Idx
+        if badStmIdx(i) == 1, continue; end
+        count = count+1;
+        trlStmLimsTime = [trlStmLimsTime [max(fixLimsTime(1,find(fixPerStm(i, :), 1,'first')),phaseLimsTime(4,1)); min(fixLimsTime(2,find(fixPerStm(i, :), 1,'first')),phaseLimsTime(4,2))]];
+        stmPerPhase = [newStmPerPhase 4];
+    end
+    if count == 0
+        keepTrl = 0; return;
+    end
+    stmLimsTime = trlStmLimsTime;
+
+%     aux = min(find(stmPerPhase(4, :), 1, 'first')+1, size(stmPerPhase, 2)); aux = find(fixPerStm(aux,:), 1, 'first'); if isempty(aux), aux = -Inf; else, aux = fixLimsTime(1, aux); end
+%     stmLimsTime = [trlStmLimsTime [max(phaseLimsTime(4,1), aux); max(fixLimsTime(2,find(fixPerPhase(4, :), 1,'last')), phaseLimsTime(4,2))]];
 
 %     nSeenStms = size(stmLimsTime,2);
 %     nFix       = size(fixLimsTime, 2);

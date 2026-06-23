@@ -1,4 +1,4 @@
-function [trlLimIdx, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx, nTrl)
+function [badTrl, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx, nTrl)
 
     % Encontra os trials descartados por pausa, timeout etc.
     badTrl = zeros(1, nTrl);
@@ -13,7 +13,7 @@ function [trlLimIdx, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimI
         if any(badCond), badTrl(i) = true; end
     end
 
-    % Encontra os blocos ruins, a saber
+    % Encontra os blocos ruins, adelBadTrl saber
     % (i)  os que têm mensagem de erro dentro deles (sempre acompanhadas por 
     %     fim de bloco)
     % (ii) os que não têm mensagem de fim de bloco, e sempre estão
@@ -38,7 +38,6 @@ function [trlLimIdx, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimI
     end
     blkIdx(:, badblkIdx) = [];
 
-    % Deleta os trials descartados
-    trlLimIdx(:, logical(badTrl)) = [];
-    nTrl = size(trlLimIdx, 2);
+    nTrl = sum(~badTrl);
+    badTrl = logical(badTrl);
 end
