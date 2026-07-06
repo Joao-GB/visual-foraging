@@ -1,10 +1,9 @@
-function [H, C] = getPSAOrder(trl)
+function [H, C, D] = getPSAorder(trl)
     orders = reshape([trl.allProbesOrder]', 3, [])';
-    hits   = reshape([trl.allHit]', 3, [])';
 
     % Reference permutations mapping to your target grid layout
     % Row 1 targets: [-1 0 1], [0 -1 1], [0 1 -1]
-    % Row 2 targets: [-1 1 0], [1 -1  0], [1 0 -1]
+    % Row 2 targets: [-1 1 0], [1 -1 0], [1 0 -1]
     allPerms = [ ...
         -1  0  1;   % Perm 1
          0 -1  1;   % Perm 2
@@ -13,67 +12,72 @@ function [H, C] = getPSAOrder(trl)
          1 -1  0;   % Perm 5
          1  0 -1;   % Perm 6
     ];
+    permutations = [ ...
+         1 2 3;
+         2 1 3;
+         2 3 1;
+         1 3 2;
+         3 1 2;
+         3 2 1;
+    ];
+
+    permsAux = [ ...
+        1 2;
+        2 1;
+    ];
 
     % Initialize output cells as 2x4 grids
     H = cell(2,4);
     C = cell(2,4);
-    
-    % Base-3 key trick to group the 6 main permutations
-    keyWeight = [9, 3, 1]; 
-    rowKeys   = (orders + 2) * keyWeight';
-    permKeys  = (allPerms + 2) * keyWeight';
-    
-    % --- POPULATE COLUMNS 1, 2, AND 3 ---
-    % Loop through our 6 explicitly ordered permutations
-    for i = 1:6
-        % Determine grid coordinate based on permutation index
+    D = cell(2,4);
+
+    for i=1:6
+
         if i <= 3
-            r = 1; c_idx = i;     % Permutations 1, 2, 3 -> Grid Row 1
+            r = 1; c = i;     % Permutations 1, 2, 3 -> Grid Row 1
         else
-            r = 2; c_idx = i - 3; % Permutations 4, 5, 6 -> Grid Row 2
+            r = 2; c = i - 3; % Permutations 4, 5, 6 -> Grid Row 2
         end
-        
-        idx = find(rowKeys == permKeys(i));
-        N = numel(idx);
-        
-        if N > 0
-            % sum(..., 1) ensures it stays a 1x3 vector even if only 1 trial matches
-            C{r, c_idx} = sum(hits(idx, :), 1);
-            H{r, c_idx} = (C{r, c_idx} / N) * 100; % Percentage
+        currOrderIdx = ismember(orders, allPerms(i,:), 'rows');
+        if isempty(currOrderIdx)
+            C{r,c} = [0 0 0];
+            H{r,c} = [0 0 0];
+            D{r,c} = [0 0 0];
         else
-            C{r, c_idx} = [0, 0, 0];
-            H{r, c_idx} = [0, 0, 0];
+            [currResult, currCounts] = getPSAeffect(trl(currOrderIdx));
+            aux = currCounts(1,:);
+            C{r,c} = aux(permutations(i,:));
+            aux = [currResult.for.correct currResult.sacc.correct currResult.nSacc.correct] ./ [currResult.for.total currResult.sacc.total currResult.nSacc.total]*100;
+            H{r,c} = aux(permutations(i,:));
+            aux = [currResult.for.d currResult.sacc.d currResult.nSacc.d];
+            D{r,c} = aux(permutations(i,:));
         end
-    end
-    
-    % --- POPULATE COLUMN 4 (Category Relationships) ---
-    % Grid Row 1, Col 4: Category 0 comes before 1 (ignoring -1)
-    % This matches Permutations 1, 2, and 3 completely!
-    idx_0_before_1 = find(rowKeys == permKeys(1) | rowKeys == permKeys(2) | rowKeys == permKeys(3));
-    [H{1,4}, C{1,4}] = getCatPairHits(orders(idx_0_before_1,:), hits(idx_0_before_1,:), 0, 1);
 
-    % Grid Row 2, Col 4: Category 1 comes before 0 (ignoring -1)
-    % This matches Permutations 4, 5, and 6 completely!
-    idx_1_before_0 = find(rowKeys == permKeys(4) | rowKeys == permKeys(5) | rowKeys == permKeys(6));
-    [H{2,4}, C{2,4}] = getCatPairHits(orders(idx_1_before_0,:), hits(idx_1_before_0,:), 1, 0);
-end
-
-% --- Helper Function to compute hits for a specific category pair sequence ---
-function [pct, cnt] = getCatPairHits(subOrders, subHits, firstCat, secondCat)
-    if isempty(subOrders)
-        cnt = [0, 0]; pct = [0, 0]; return;
     end
-    
-    % Find column positions (1, 2, or 3) for both categories across all rows
-    [~, posFirst]  = max(subOrders == firstCat, [], 2);
-    [~, posSecond] = max(subOrders == secondCat, [], 2);
-    
-    % Linear indexing to extract the exact hit state for those positions
-    rowIdx = (1:size(subHits, 1))';
-    hitsFirst  = subHits(sub2ind(size(subHits), rowIdx, posFirst));
-    hitsSecond = subHits(sub2ind(size(subHits), rowIdx, posSecond));
-    
-    % Total hits and percentage array: [FirstCategory, SecondCategory]
-    cnt = [sum(hitsFirst), sum(hitsSecond)];
-    pct = (cnt / size(subHits, 1))*100;
+
+    SNorderIdx = ismember(orders, allPerms(1,:), 'rows') | ismember(orders, allPerms(2,:), 'rows') | ismember(orders, allPerms(3,:), 'rows');
+    if isempty(SNorderIdx)
+        C{1,4} = [0 0]; H{1,4} = [0 0]; D{1,4} = [0 0];
+    else
+        [currResult, currCounts] = getPSAeffect(trl(SNorderIdx));
+        aux = currCounts(1,2:3);
+        C{1,4} = aux(permsAux(1,:));
+        aux = [currResult.sacc.correct currResult.nSacc.correct] ./ [currResult.sacc.total currResult.nSacc.total]*100; 
+        H{1,4} = aux(permsAux(1,:));
+        aux = [currResult.sacc.d currResult.nSacc.d];
+        D{1,4} = aux(permsAux(1,:));
+    end
+
+    NSorderIdx = ismember(orders, allPerms(4,:), 'rows') | ismember(orders, allPerms(5,:), 'rows') | ismember(orders, allPerms(6,:), 'rows');
+    if isempty(NSorderIdx)
+        C{2,4} = [0 0]; H{2,4} = [0 0]; D{2,4} = [0 0];
+    else
+        [currResult, currCounts] = getPSAeffect(trl(NSorderIdx));
+        aux = currCounts(1,2:3);
+        C{2,4} = aux(permsAux(2,:));
+        aux = [currResult.sacc.correct currResult.nSacc.correct] ./ [currResult.sacc.total currResult.nSacc.total]*100; 
+        H{2,4} = aux(permsAux(2,:));
+        aux = [currResult.sacc.d currResult.nSacc.d];
+        D{2,4} = aux(permsAux(2,:));
+    end
 end

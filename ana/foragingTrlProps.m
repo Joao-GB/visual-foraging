@@ -128,7 +128,6 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
 
         feedback = mat.results.trialFeedback{b,t};
 
-        %% APÓS NOVA COLETA (modificar foragingGabors), REMOVER CONDIÇÃO EXTRA
         hasProbeResp(i) = ismember(0, feedback(2,:));
         trl(i).trlKeep = trlKeep && ~trl(i).probeSeen && hasProbeResp(i);
         if trl(i).trlKeep

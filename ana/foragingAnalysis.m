@@ -4,109 +4,93 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     % não-sacádico (nSacc) e identificá-los como -1, 0 e 1 com respeito ao 
     % tempo em que são vistos quanto ao início da sacada
 
+    % Adiciona os caminhos necessários
     currFolder = fileparts(mfilename('fullpath')); parentFolder = fileparts(currFolder);
-    addpath(genpath(fullfile(currFolder, 'dep'))); addpath(parentFolder);
+    addpath(genpath(fullfile(currFolder, 'dep')));
+    addpath(genpath(fullfile(currFolder, 'plt')));
+    addpath(parentFolder);
+    params = foragingParams; outFolder = fullfile(params.currFolder, params.outFolder);
 
-    params = foragingParams;
-    outFolder = fullfile(params.currFolder, params.outFolder);
-
+    % Carrega os arquivos da sessão
     [mat, edf, sesStr] = foragingLoad(subj, ses, outFolder, params);
-
     mat.results.trialOrder(2,:,:) = mat.results.trialOrder(2,:,:) .* reshape(1:mat.tkP.nBlocks, 1, 1, []);
 
-    %% Extrai as informações de cada trial, que já passaram por uma pré-seleção
+    % Extrai as informações de cada trial, que já passaram por uma pré-seleção
     [trlProps, eyeData, evTimes] = foragingTrlProps(mat, edf, sesStr, subj);
+    
+    [allGoodTrl, ~] = getGoodTrl(trlProps, mat);
+    trlProps = trlProps(allGoodTrl);
+
     clear currFolder edf outFolder params parentFolder sesStr ses subj;
 
-    trlProps = trlProps([trlProps.trlKeep]);
-
-    fprintf('\n----------------------------------\nNúmero de trials pré-selecionados: %d\n', sum(logical([trlProps.trlKeep])))
-
-
-
-    %% Rejeita trials com base no período de ruído rosa visto
-    P3SaccLatencyLims = -1*[mat.prm.pinkNoiseDur+.2 .020];
-    P3SaccLatency = [trlProps.saccInt1]/1000;
-    goodTrl = P3SaccLatency >= P3SaccLatencyLims(1) & P3SaccLatency <= P3SaccLatencyLims(2);
-
-    trlProps = trlProps(goodTrl);
-
-    fprintf('Número final de trials selecionados: %d\n', sum(goodTrl))
-
-    %% Análise exploratória do comportamento ocular
-    fixPos        = pixel_to_dva([trlProps.preProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
-    fixPosFix     = pixel_to_dva([trlProps.preProbePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    %% -- TAREFA PRÉ-SACÁDICA --
+    % 1. Análise exploratória de estímulos e comportamento ocular na tarefa pré-sacádica
+    preProbePos        = pixel_to_dva([trlProps.preProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    preProbePosFix     = pixel_to_dva([trlProps.preProbePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     probePos      = pixel_to_dva([trlProps.probePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     probePosFix   = pixel_to_dva([trlProps.probePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     nSaccProbePos = pixel_to_dva([trlProps.nSaccProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
-    foragingEyePlots(fixPos, fixPosFix, probePos, probePosFix, nSaccProbePos)
 
+      % (a) Posição relativa entre pré-probe, probe e nSacc probe
+    plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, mat.drP);
 
+      % (b) Caracterização do triângulo definido por esses três pontos
+    plotPSAStimTriangleProps(preProbePos, probePos, nSaccProbePos, mat.drP);
 
+      % (c) Direção e amplitude das sacadas
+    plotPSASaccProps(preProbePos, probePos, preProbePosFix, probePosFix, mat.drP);
 
-    %% Gráfico principal: Efeito pré-sacádico E tabela de contingência
-    titlePSA  = 'Efeito pré-sacádico em tarefa de forrageamento';
-    xlabelPSA = ["Forrageamento", "Sacádico", "Não-sacádico"];
-    ylabelPSA = 'Acertos (%)';
-    [main, counts] = getPSAeffect(trlProps);
-    PSA.main = main; PSA.main.counts = counts;
+    % 2. Gráfico principal: Efeito pré-sacádico E tabela de contingência
+    PSA = plotPSAmain(trlProps, mat.drP);
+
+    % 3. Efeito da ordem das perguntas
+    order = plotPSAorder(trlProps, mat.drP);
+    PSA.order = order;
+
+    % Efeito de categorias do pré-probe e do probe
+    %% Adicionar d-prime
+    plotPSAcat([trlProps.preProbeCat], [trlProps.probeCat], [trlProps.probeHit], [trlProps.nSaccProbeHit], mat.drP);
+
+    % Efeito do desempenho no forrageamento
+    %% Adicionar d-prime
+    plotPSAforagingPerformance(trlProps, PSA, mat.drP);
     
-    figure;
-    b = bar(counts(1,:)./counts(2,:)*100, 'FaceColor', 'flat');
-    b(1).CData(1,:) = [1 1 1];
-    set(gca, 'TickDir', 'out', 'Box', 'off')
-    xticklabels(xlabelPSA);
-    ylabel(ylabelPSA); ylim([0 100]);
-    title(titlePSA);
+    % Efeito do número de vistos (no pré-s e na duração da fixação)
+    %% Adicionar d-prime
+    plotPSAforagingNumSeen(trlProps, mat.drP)
+
+    % Durações relevantes: ruído rosa, tempo de fixação e latência da sacada pós ruído rosa
+    plotPSAdurations(trlProps, mat.drP)
+
+    % Efeito da duração do ruído rosa (split)
+    %% Adicionar d-prime
+    plotPSApinkDur(trlProps, mat)
+
+    % Efeito da duração da fixação no desempenho
+    %% Adicionar d-prime
+    plotPSAfixDur(trlProps, mat)
+
+    %% Efeito da ditância na performance (idealmente, invariante para pré-s mas variável para n-sac)
+    %% Adicionar d-prime
+    % Talvez ordenar e usar quantis de modo que todos bins tenham mesma quantidade de pontos, e a distância média representada por eles?
+
+    %% Mapa de d primes em função da distância e orientação, em relação a nSacc e probe
+    % Alinhar tanto com posição destino como posição final da fixação
+    plotPSAdprimeMap
 
 
-    %% Efeito da ordem das perguntas
+    %% -- TAREFA DE FORRAGEAMENTO --
+    %% Efeito do número de fixações anteriores na duração da atual
 
-    titleOrder  = 'Efeito de ordem das respostas';
-    xlabelOrder = {["F", "S", "N"], ["S", "F", "N"], ["S", "N", "F"], ["S", "N"];
-                   ["F", "N", "S"], ["N", "F", "S"], ["N", "S", "F"], ["N", "S"]};
-    whiteIdx = [1 2 3; 1 2 3];
-    ylabelOrder = {'Acertos (%)'; 'Acertos (%)'};
-    [hits, counts] = getPSAOrder(trlProps);
-    PSA.order.hits = hits; PSA.order.counts = counts;
+    %% Efeito do número de vistos no desempenho do forragemaento
 
-    figure;
-    for r = 1:2, for c = 1:4 %#ok<ALIGN> 
-        subplotIdx = (r - 1) * 4 + c;
-        subplot(2, 4, subplotIdx);
-        
-        b = bar(PSA.order.hits{r, c}, 'FaceColor', 'flat');
-        
-        set(gca, 'TickDir', 'out', 'Box', 'off');
-        xticklabels(xlabelOrder{r, c});
-        ylim([0 100]);
-        
-        if c == 1
-            ylabel(ylabelOrder{r});
-        end
-        if c < 4
-%             b.CData = repmat([0.4 0.4 0.4], 3, 1);
-            b.CData(whiteIdx(r,c), :) = [1 1 1]; 
-            b.EdgeColor = [0 0 0];
-        end
-    end; end
-    sgtitle(titleOrder)
+    %% Efeito da distribuição espacial ou temporal (i.e., quão longe ou há quanto tempo faz que foi visto) no desempenho do forrageamento
+    % Ou quão isolado
 
+    %% Duração da fixação em função de ser alvo ou não
 
-    %% Efeito de categorias
-    getPSAcat([trlProps.preProbeCat], [trlProps.probeCat], [trlProps.probeHit], [trlProps.nSaccProbeHit]);
-
-    %% Efeito do desempenho no forrageamento
-
-    %% Efeito do número de vistos (no pré-s e na duração da fixação)
-
-    %% Efeito da duração do ruído rosa (split)
-
-    %% Efeito da duração da fixação no desempenho
-
-    % E talvez gráficos mais descritivos:
-
-    %% Amplitudes de sacada, 
+    %% -- PROPRIEDADES DA TAREFA --
+    %% Distância mínima entre estímulos
 
 
 end
