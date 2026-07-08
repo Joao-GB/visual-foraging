@@ -14,7 +14,7 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
                                                   % Incrementa em 1 apenas se houver burn-in
 
     %% Texturas individuais para cada staircase
-    hFigs = gobjects(B,1);
+    hFigs = gobjects(B+2,1);
     for b = 1:B
         % Cria uma figura invisível
         hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
@@ -54,14 +54,9 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         texArray(b) = Screen('MakeTexture', dpP.window, figFrame.cdata);
     end
 
-    savefig(hFigs, prm.tempFig); close(hFigs); clear hFigs;
-    h = openfig(prm.tempFig, 'invisible');
-    set(h, 'Visible', 'on');
-    savefig(h, prm.tempFig); close(h); clear h;
-
-    
     %% Textura com staircases como subplots
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+    hFigs(B+1) = hFig;
     for b = 1:B
         trialNum = 1:length(PM(b).x);
         presentedSigma = -PM(b).x;
@@ -89,7 +84,6 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     end
     figFrame = getframe(hFig);
     texArray(B+1) = Screen('MakeTexture', dpP.window, figFrame.cdata);
-    close(hFig);
 
     %% Textura com staircases como subplots, sem burn-in
     if tkP.stairBurnIn
@@ -120,25 +114,54 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         close(hFig);
     end
 
-    %% Textura com Curvas Psicométricas como subplots
+    %% Textura com curvas psicométricas como subplots
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+    hFigs(B+2) = hFig;
     for b = 1:B
         subplot(1, B, b); hold on;
         
-        % Extrai dados do staircase
-        presentedSigma = -PM(b).x; 
-        
+        % Versão com bins uniformes
         % Agrupa trials por intensidade para plotar os círculos proporcionais
-        [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(presentedSigma, PM(b).response, ones(size(PM(b).response)));
+%         nBins = 15;
+%         binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
+%         binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
+%         
+%             % Arredonda os estímulos apresentados para o centro do bin mais próximo
+%         rawSigma = -PM(b).x; % Extrai dados do staircase
+%         binIdx = discretize(rawSigma, binEdges);
+%         binIdx(isnan(binIdx)) = 1; % Garante que valores extremos não atrapalhem
+%         binnedSigma = binCenters(binIdx);
+
+        alphaEst = PM(b).threshold(end);
+        betaEst  = PM(b).slope(end);
+        sigmaEst = 1 / betaEst; % In Cumulative Normal, slope = 1/sigma
+        
+        % Versão com bins em stds
+        sdSteps = -3 : 0.5 : 3; 
+        binEdges = alphaEst + sdSteps * sigmaEst;
+      
+        binEdges = max(prm.sigmaMin, min(prm.sigmaMax, binEdges));
+        binEdges = unique(binEdges);
+        
+        binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
+        
+        rawSigma = -PM(b).x;
+        binIdx = discretize(rawSigma, binEdges);
+        binIdx(isnan(binIdx)) = 1; 
+        binnedSigma = binCenters(binIdx);
+        
+        %
+        [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(binnedSigma, PM(b).response, ones(size(PM(b).response)));
         for SR = 1:length(SL(OON~=0))
             plot(SL(SR), NP(SR)/OON(SR), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 20*sqrt(OON(SR)/sum(OON)));
         end
         
         % Plota a curva ajustada
-        stimRange = linspace(prm.sigmaMin, prm.sigmaMax, 100);
+        stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, 100);
         alphaEst = PM(b).threshold(end);
         betaEst  = PM(b).slope(end);
-        plot(stimRange, PAL_CumulativeNormal([alphaEst, betaEst, PM(b).gamma(end), PM(b).lapse(end)], stimRange), 'k-', 'LineWidth', 2);
+        plot(-stimRange, PAL_CumulativeNormal([alphaEst, betaEst, PM(b).guess(end), PM(b).lapse(end)], stimRange), 'k-', 'LineWidth', 2);
+        set(gca, 'XDir', 'reverse');
         
         % Insere o texto com os parâmetros
         txt = sprintf('Curr:\nThrs: %.2f\nSlope: %.2f', alphaEst, betaEst);
@@ -155,7 +178,11 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     end
     figFrame = getframe(hFig);
     texArray(B + 2 + tkP.stairBurnIn) = Screen('MakeTexture', dpP.window, figFrame.cdata);
-    close(hFig);
+
+    savefig(hFigs, prm.tempFig); close(hFigs); clear hFigs;
+    h = openfig(prm.tempFig, 'invisible');
+    set(h, 'Visible', 'on');
+    savefig(h, prm.tempFig); close(h); clear h;
 
     leftKey   = KbName('LeftArrow'); 
     rightKey  = KbName('RightArrow'); 

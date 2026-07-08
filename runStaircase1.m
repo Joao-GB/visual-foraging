@@ -65,7 +65,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             burninTrials = 0;          % Neutraliza o loop posterior
             burnInASigma = prm.aSigma; aSigma = ones(1, nBlocks)*prm.aSigma;
         end
-        stimRange = (-prm.sigmaMax:.1:-prm.sigmaMin);
+        stimRange = (-prm.sigmaMax:.5:-prm.sigmaMin);
         PF = @PAL_CumulativeNormal;
 
         % Como apenas gama é determinado, definimos os demais parâmetros
@@ -76,7 +76,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
         computeGrain = 35;
         priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, computeGrain);
         priorBetaRange  = linspace(prm.betaMin, prm.betaMax, computeGrain);
-        priorLambdaRange = 0:0.01:0.1;
+        priorLambdaRange = (0:0.01:0.1) + .001;
             
         % Veja que removi a condicional que usa 
         for b = 1:nBlocks
@@ -99,7 +99,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                 prior = PAL_pdfNormal(PM(b).priorAlphas, prevSessionAlpha, prm.priorStdStair2);
                 prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
             else
-                prior = PAL_pdfNormal(PM(b).priorAlphas, prm.priorMeanStair, prm.priorStdStair);
+                prior = PAL_pdfNormal(PM(b).priorAlphas, -prm.priorMeanStair, prm.priorStdStair);
                 prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prm.priorBetaMeanStair, prm.priorBetaStdStair);
             end
 
@@ -137,7 +137,8 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
 
             while b <= nBlocks && keepGoingBlocks
                 PM(b) = startPM(b);
-                aSigma(b) = startASigma(b);
+                [~, auxidx] = min(abs(stimRange - (-startASigma(b))));
+                aSigma(b) = stimRange(auxidx);
 
                 [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                 oriFilter(:,:,b) = auxOriFilter;
@@ -519,19 +520,21 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                         disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
                         for j=1:length(orderToReportStims)
-                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)));
+                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)), 'xIndex', auxidx);
                         end
 
                         fprintf('Atualizo o PM do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(b), PM(b).xCurrent);
-                        fprintf('\nA média evoluiu como: '); disp(PM(b).xStaircase)
+                        % fprintf('\nA média evoluiu como: '); disp(PM(b).xStaircase)
 
                         % Quando chega nessa parte, o i já foi incrementado 
                         % na parte com trialIdxUp. Por iso i em vez de i+1
                         if i <= burninTrials
-                            aSigma(b) = burnInASigma(i);
+                            [~, auxidx] = min(abs(stimRange - (-burnInASigma(i))));
+                            aSigma(b) = stimRange(auxidx);
                             fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(b));
-                            PM(b).xCurrent = -aSigma(b);
+                            % PM(b).xCurrent = -aSigma(b);
                         else
+                            [~, auxidx] = min(abs(stimRange - (PM(b).xCurrent)));
                             aSigma(b) = -PM(b).xCurrent;
                             fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
                         end
@@ -574,14 +577,14 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             resultsStair.aSigma75  = aSigma;
             newLevelASigma = ones(1, nBlocks);
             for i = 1:nBlocks
-                [~, maxIndex] = PAL_findMax(PM(b).pdf);
+                [~, maxIndex] = PAL_findMax(PM(i).pdf);
                 currentLambda = priorLambdaRange(maxIndex(4));
-                newLevelASigma(i) = -PAL_CumulativeNormal([-PM(b).threshold(end), PM(b).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+                newLevelASigma(i) = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
             end
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
-            resultsStair.OFsize   = OFsize;
-            resultsStair.staircase   = PM;
+            resultsStair.OFsize    = OFsize;
+            resultsStair.staircase = rmfield(PM, {'priorAlphas', 'priorBetas', 'priorGammas', 'priorLambdas', 'priorModels', 'LUT', 'posteriorTplus1givenSuccess', 'posteriorTplus1givenFailure'});
         catch
             if ~exist('fixCenters', 'var'),   fixCenters = []; end
             if ~exist('stimCenters', 'var'),  stimCenters = []; end
@@ -590,11 +593,14 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             if ~exist('targetOri', 'var'), targetOri = []; end
             if ~exist('trialOrder', 'var'),      trialOrder = []; end
             if ~exist('trialFeedback', 'var'),   trialFeedback = []; end
-            if ~exist('aSigma75', 'var'), aSigma75 = []; end
-            if ~exist('aSigma', 'var'),      aSigma = []; end
+            if ~exist('aSigma', 'var'), aSigma = []; end
+            if ~exist('newLevelASigma', 'var'),      newLevelASigma = []; end
             if ~exist('oriFilter', 'var'),   oriFilter = []; end
             if ~exist('OFsize', 'var'),      OFsize = []; end
-            if ~exist('staircase', 'var'),   staircase = []; end
+            if ~exist('PM', 'var'),   PM = []; 
+            else
+                PM = rmfield(PM, {'priorAlphas', 'priorBetas', 'priorGammas', 'priorLambdas', 'priorModels', 'LUT', 'posteriorTplus1givenSuccess', 'posteriorTplus1givenFailure'});
+            end
 
             resultsStair.fixCenters = fixCenters;
             resultsStair.stimCenters = stimCenters;
@@ -603,11 +609,11 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             resultsStair.targetOri = targetOri;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
-            resultsStair.aSigma75 = aSigma75;
-            resultsStair.aSigma = aSigma;
+            resultsStair.aSigma75 = aSigma;
+            resultsStair.aSigma = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize = OFsize;
-            resultsStair.staircase = staircase;
+            resultsStair.staircase = PM;
             
             cleanup(dpP.window);
             diary off;
