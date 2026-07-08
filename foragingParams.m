@@ -95,20 +95,22 @@ function params = foragingParams
 %% Porpriedades do staircase
     params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
     addpath(genpath(params.palPath));
-    params.sigmaMin = 5;
-    params.sigmaMax = 80;
+    params.sigmaMin = 5;   params.sigmaMax = 90;
+    params.betaMin  = .01; params.betaMax  = 15;
     params.nStimsStair   = 3;
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 40;     % <-
-    params.priorMeanStair  = 30;
-    params.priorStdStair   = 20;
-    params.priorStdStairLog = 0.12;
+    params.priorMeanStair  = 30; params.priorStdStair   = 20; params.priorStdStairLog = 0.12;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
+    params.priorBetaMeanStair = 0; params.priorBetaStdStair = 2;
+    params.priorBetaStdStair2 = .7*params.priorBetaStdStair;
+    params.priorLambdaMeanStair = 0.03; params.priorLambdaStdStair = 20;
     params.minJitterStair  = .5; 
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
     params.burninTrials    = 15;  % <-
     params.stairLevel      = .85;
+    params.stairWaitTime   = 3;
 
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...

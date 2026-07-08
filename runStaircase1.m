@@ -65,40 +65,52 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             burninTrials = 0;          % Neutraliza o loop posterior
             burnInASigma = prm.aSigma; aSigma = ones(1, nBlocks)*prm.aSigma;
         end
-        alphaRange = (-prm.sigmaMax:.1:-prm.sigmaMin);
+        stimRange = (-prm.sigmaMax:.1:-prm.sigmaMin);
         PF = @PAL_CumulativeNormal;
-        beta = 1; gamma = .5; lambda = .04;
-        if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-            for b = 1:nBlocks
-                prevMean = tkP.stairPrev(b).mean; 
-                prior = PAL_pdfNormal(alphaRange, prevMean, prm.priorStdStair2);
-                
-                RF(b) = PAL_AMRF_setupRF( ...
-                    'priorAlphaRange', alphaRange, ...
-                    'prior', prior, ...
-                    'PF', PF, ...
-                    'beta', beta, 'gamma', gamma, 'lambda', lambda, ...
-                    'xMin', -prm.sigmaMax, ...
-                    'xMax', -prm.sigmaMin, ...
-                    'meanmode', 'mean', ...
-                    'stopCriterion', 'trials', ...
-                    'stopRule', (nStims-1)*nTrials); %#ok<AGROW> 
+
+        % Como apenas gama é determinado, definimos os demais parâmetros
+        % através de intervalos
+        gamma = 0.5;
+        marginalize = 4;
+        
+        computeGrain = 35;
+        priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, computeGrain);
+        priorBetaRange  = linspace(prm.betaMin, prm.betaMax, computeGrain);
+        priorLambdaRange = 0:0.01:0.1;
+            
+        % Veja que removi a condicional que usa 
+        for b = 1:nBlocks
+            PM(b) = PAL_AMPM_setupPM(...
+            'priorAlphaRange', single(priorAlphaRange), ...
+            'priorBetaRange', single(priorBetaRange), ...
+            'priorGammaRange', single(gamma), ...
+            'priorLambdaRange', single(priorLambdaRange), ...
+            'numtrials', nTrials * (nStims-1), ...
+            'PF', PF, ...
+            'stimRange', single(stimRange), ...
+            'marginalize', marginalize);
+
+            % Construção do prior customizado usando matrizes multidimensionais do PM
+            if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
+                % Se houve sessão anterior, usa priors que começam 
+                prevSessionAlpha = tkP.stairPrev(b).threshold(end);
+                prevSessionBeta  = tkP.stairPrev(b).slope(end);
+
+                prior = PAL_pdfNormal(PM(b).priorAlphas, prevSessionAlpha, prm.priorStdStair2);
+                prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
+            else
+                prior = PAL_pdfNormal(PM(b).priorAlphas, prm.priorMeanStair, prm.priorStdStair);
+                prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prm.priorBetaMeanStair, prm.priorBetaStdStair);
             end
-        else
-            prior = PAL_pdfNormal(alphaRange, -prm.priorMeanStair, prm.priorStdStair);
-            RF = PAL_AMRF_setupRF( ...
-                'priorAlphaRange', alphaRange, ...
-                'prior', prior, ...
-                'PF', PF, ...
-                'beta', beta, 'gamma', gamma, 'lambda', lambda, ...
-                'xMin', -prm.sigmaMax, ...
-                'xMax', -prm.sigmaMin, ...
-                'meanmode', 'mean', ...
-                'stopCriterion', 'trials', ...
-                'stopRule', (nStims-1)*nTrials);
-            RF(1:nBlocks) = RF(1);
+
+            prior = prior .* PAL_pdfBeta(PM(b).priorLambdas, prm.priorLambdaMeanStair, prm.priorLambdaStdStair, 'meanandconcentration');
+
+            % Normaliza a grade de probabilidade
+            prior = prior ./ sum(prior(:));
+            PM(b) = PAL_AMPM_setupPM(PM(b), 'prior', prior); %#ok<*AGROW> 
+
         end
-        startRF = RF;
+        startPM = PM;
         startASigma = aSigma;
 
         [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, burnInASigma(1), prm.rSigma2);
@@ -124,7 +136,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             EyelinkDoTrackerSetup(tkP.el);
 
             while b <= nBlocks && keepGoingBlocks
-                RF(b) = startRF(b);
+                PM(b) = startPM(b);
                 aSigma(b) = startASigma(b);
 
                 [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
@@ -507,21 +519,27 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                         disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
                         for j=1:length(orderToReportStims)
-                            RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(b), feedback(orderToReportStims(j)));
+                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)));
                         end
 
-                        fprintf('Atualizo o RF do bloco %d, apresentamos: ', b); disp(RF(b).x)
-                        fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
+                        fprintf('Atualizo o PM do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(b), PM(b).xCurrent);
+                        fprintf('\nA média evoluiu como: '); disp(PM(b).xStaircase)
 
                         % Quando chega nessa parte, o i já foi incrementado 
                         % na parte com trialIdxUp. Por iso i em vez de i+1
                         if i <= burninTrials
                             aSigma(b) = burnInASigma(i);
                             fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(b));
+                            PM(b).xCurrent = -aSigma(b);
                         else
-                            aSigma(b) = -RF(b).mean;
+                            aSigma(b) = -PM(b).xCurrent;
                             fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
                         end
+
+                        currentAlphaEst = PM(b).threshold(end);
+                        currentBetaEst  = PM(b).slope(end);
+                        fprintf('Limiar Atual Estimado (Alpha): %.2f\n', currentAlphaEst);
+                        fprintf('Inclinação Atual Estimada (Beta): %.2f\n\n', currentBetaEst);
 
                         [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;
@@ -556,12 +574,14 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             resultsStair.aSigma75  = aSigma;
             newLevelASigma = ones(1, nBlocks);
             for i = 1:nBlocks
-                newLevelASigma(i) = -PAL_CumulativeNormal([-aSigma(i), beta, gamma, lambda], prm.stairLevel, 'inverse');
+                [~, maxIndex] = PAL_findMax(PM(b).pdf);
+                currentLambda = priorLambdaRange(maxIndex(4));
+                newLevelASigma(i) = -PAL_CumulativeNormal([-PM(b).threshold(end), PM(b).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
             end
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize   = OFsize;
-            resultsStair.staircase   = RF;
+            resultsStair.staircase   = PM;
         catch
             if ~exist('fixCenters', 'var'),   fixCenters = []; end
             if ~exist('stimCenters', 'var'),  stimCenters = []; end
@@ -593,8 +613,9 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
             diary off;
             psychrethrow(psychlasterror);
         end
+        clearvars -except b resultsStair nBlocks keepGoingBlocks tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks
-            inspectStaircase(tkP, dpP, drP, prm, RF, aSigma, newLevelASigma, targetOri);
+            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, newLevelASigma, targetOri);
             tkS(1,2) = 1;
         end
 end

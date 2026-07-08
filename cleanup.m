@@ -12,7 +12,7 @@ function cleanup(win)
     clear mex;
     
     ShowCursor();
-    ListenChar(0);
+    ListenChar();
     Priority(0);
     close all;
 end

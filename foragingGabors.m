@@ -124,12 +124,12 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
                     return; 
                 end
                 
-                % Parse the confirmed values
+                % Repassa as variáveis carregadas
                 loaded_emaFix       = str2double(answer2{1});
                 if (loaded_emaFix - val_emaFix) < 10^-3
                     loaded_fixQueue = val_fixQueue;
                 end
-                loaded_aSigma       = str2num(answer2{2}); %#ok<ST2NM> % str2num allows reading arrays like [1.5, 2.0]
+                loaded_aSigma       = str2num(answer2{2}); %#ok<ST2NM>
                 loaded_pinkNoiseDur = str2double(answer2{3});
                 
             catch ME
@@ -139,12 +139,15 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     end
 
 
+    stairBurnIn = 0;
     if ~isnan(loaded_aSigma)
         params.aSigma = loaded_aSigma;
-        stairBurnIn = 0;
+%         stairBurnIn = 0;
         stairPrev   = prevData.tkP.stair.staircase;
+        auxASigma = num2cell(prevData.tkP.stair.aSigma);
+        [stairPrev.aSigma] = auxASigma{:};
     else
-        stairBurnIn = 1;
+%         stairBurnIn = 1;
         stairPrev   = [];
     end
     if ~isnan(loaded_emaFix)
