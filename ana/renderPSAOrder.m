@@ -3,6 +3,10 @@ function renderPSAOrder(plotDataCell, xlabelOrder, ylabelOrder, figName, plotTit
     
     % Gera um plot com 13 de largura, pois a 10a será para um risquinho
     t = tiledlayout(2, 13, 'TileSpacing', 'compact', 'Padding', 'normal');
+
+    allVals = cellfun(@(x) max(x(:)), plotDataCell);
+    globalMax = max(allVals(:));
+    if isnan(globalMax) || globalMax == 0, globalMax = 1; end
     
     colStarts = [1, 4, 7, 11]; 
     
@@ -42,12 +46,10 @@ function renderPSAOrder(plotDataCell, xlabelOrder, ylabelOrder, figName, plotTit
             xticklabels(currentLabels);
 
             if isSens
-                % Find the maximum value present ONLY inside this specific plot's bars
-                localMax = max(plotDataCell{r, c});
-                if localMax > 0
-                    ylim([0 localMax * 1.2]);
+                if isSens
+                    ylim([0 globalMax * 1.2]);
                 else
-                    ylim([0 1]); % Fallback if all data values are 0
+                    ylim([0 115]);
                 end
             else
                 ylim([0 100]); % Keeps accuracy locked between 0% and 100%

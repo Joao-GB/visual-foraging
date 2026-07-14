@@ -18,7 +18,7 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     % Extrai as informações de cada trial, que já passaram por uma pré-seleção
     [trlProps, eyeData, evTimes] = foragingTrlProps(mat, edf, sesStr, subj);
     
-    [allGoodTrl, ~] = getGoodTrl(trlProps, mat);
+    allGoodTrl = getGoodTrl(trlProps, mat);
     trlProps = trlProps(allGoodTrl);
 
     clear currFolder edf outFolder params parentFolder sesStr ses subj;
@@ -32,7 +32,7 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     nSaccProbePos = pixel_to_dva([trlProps.nSaccProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
 
       % (a) Posição relativa entre pré-probe, probe e nSacc probe
-    plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, mat.drP);
+    [rotProbePos, rotProbeFix, rotNSaccProbePos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, mat.drP);
 
       % (b) Caracterização do triângulo definido por esses três pontos
     plotPSAStimTriangleProps(preProbePos, probePos, nSaccProbePos, mat.drP);
@@ -48,46 +48,45 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     PSA.order = order;
 
     % Efeito de categorias do pré-probe e do probe
-    %% Adicionar d-prime
     plotPSAcat([trlProps.preProbeCat], [trlProps.probeCat], [trlProps.probeHit], [trlProps.nSaccProbeHit], mat.drP);
 
     % Efeito do desempenho no forrageamento
-    %% Adicionar d-prime
     plotPSAforagingPerformance(trlProps, PSA, mat.drP);
     
     % Efeito do número de vistos (no pré-s e na duração da fixação)
-    %% Adicionar d-prime
     plotPSAforagingNumSeen(trlProps, mat.drP)
 
     % Durações relevantes: ruído rosa, tempo de fixação e latência da sacada pós ruído rosa
     plotPSAdurations(trlProps, mat.drP)
 
     % Efeito da duração do ruído rosa (split)
-    %% Adicionar d-prime
     plotPSApinkDur(trlProps, mat)
 
     % Efeito da duração da fixação no desempenho
-    %% Adicionar d-prime
     plotPSAfixDur(trlProps, mat)
 
-    %% Efeito da ditância na performance (idealmente, invariante para pré-s mas variável para n-sac)
-    %% Adicionar d-prime
+    % Efeito da distância na performance (idealmente, invariante para pré-s mas variável para n-sac)
     % Talvez ordenar e usar quantis de modo que todos bins tenham mesma quantidade de pontos, e a distância média representada por eles?
+    plotPSAprobesFixDist(trlProps, mat)
 
-    %% Mapa de d primes em função da distância e orientação, em relação a nSacc e probe
-    % Alinhar tanto com posição destino como posição final da fixação
-    plotPSAdprimeMap
+    % Mapa de d-primes em função da distância e orientação, em relação a nSacc e probe
+    plotPSAdprimeMap(probePos, probePosFix, nSaccProbePos, trlProps, mat)
+
+    % Mapa de d-prime para verificar efeito da direção da sacada
+    plotPSAdprimeMap(rotProbePos, rotProbeFix, rotNSaccProbePos, trlProps, mat, true);
 
 
     %% -- TAREFA DE FORRAGEAMENTO --
-    %% Efeito do número de fixações anteriores na duração da atual
-
-    %% Efeito do número de vistos no desempenho do forragemaento
+    % Efeito do número de fixações anteriores na duração da atual e no
+    % desempenho do forrageamento
+    plotForCountEffect(trlProps, mat)
 
     %% Efeito da distribuição espacial ou temporal (i.e., quão longe ou há quanto tempo faz que foi visto) no desempenho do forrageamento
     % Ou quão isolado
 
     %% Duração da fixação em função de ser alvo ou não
+
+    %% Efeito da duração da fixação em estímulo e a probabilidade de acerto
 
     %% -- PROPRIEDADES DA TAREFA --
     %% Distância mínima entre estímulos

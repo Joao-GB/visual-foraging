@@ -1,7 +1,4 @@
 function plotPSAforagingPerformance(trl, PSA, drP)
-% esperado que, se errou forrageamento, talvez não estivesse prestando
-% atenção então também erre os demais?
-
     correctFor = logical(PSA.main.for.idx{1,1} + PSA.main.for.idx{2,2});
     incorrectFor = ~correctFor;
     cFtrl = trl(correctFor);
@@ -9,44 +6,31 @@ function plotPSAforagingPerformance(trl, PSA, drP)
     [~, cFcounts] = getPSAeffect(cFtrl);
     [~, iFcounts] = getPSAeffect(iFtrl);
     
-    titlePSA  = 'Efeito pré-sacádico e desempenho no forrageamento';
-    xlabelPSA = ["Sacádico", "Não-sacádico"];
-    ylabelPSA = 'Acertos (%)';
+    % d-prime robusto
+    calcDPrime = @(hit, total) norminv(min(max(hit./total, 0.001), 0.999)) * sqrt(2);
     
-    figure('Name', 'PSA foraging effect', 'Color', 'w', 'Position', [100 200 900 450]);
+    % Acurácia (%)
+    plotDataAcc = cell(1, 2);
+    plotDataAcc{1} = (cFcounts(1,2:3) ./ cFcounts(2,2:3)) * 100;
+    plotDataAcc{2} = (iFcounts(1,2:3) ./ iFcounts(2,2:3)) * 100;
     
-    t = tiledlayout(1, 2, 'TileSpacing', 'loose', 'Padding', 'normal');
+    % Sensibilidade (d')
+    plotDataSens = cell(1, 2);
+    plotDataSens{1} = calcDPrime(cFcounts(1,2:3), cFcounts(2,2:3));
+    plotDataSens{2} = calcDPrime(iFcounts(1,2:3), iFcounts(2,2:3));
     
-    % Subplot 1: forrageamento completo
-    ax1 = nexttile;
-    % Apenas as colunas correspondentes de cFcounts
-    barValues_cF = (cFcounts(1,2:3)./cFcounts(2,2:3)) * 100;
+    % Contagem total de trialspara exibir no gráfico
+    trialCounts = cell(1, 2);
+    trialCounts{1} = cFcounts(2,2:3);
+    trialCounts{2} = iFcounts(2,2:3);
     
-    b1 = bar(barValues_cF, 'FaceColor', 'flat');
-    b1.CData(1,:) = drP.darkBlue;
-    b1.CData(2,:) = drP.paleBrown;
+    titleBase = 'Efeito pré-sacádico e desempenho no forrageamento';
     
-    set(ax1, 'TickDir', 'out', 'Box', 'off')
-    xticklabels(xlabelPSA);
-    ylabel(ylabelPSA); ylim([0 100]);
-    title('Forrageamento Correto');
-    grid on;
-
-    % Subplot 2: forrageamento incompleto
-    ax2 = nexttile;
-    barValues_iF = (iFcounts(1,2:3)./iFcounts(2,2:3)) * 100;
-    
-    b2 = bar(barValues_iF, 'FaceColor', 'flat');
-    b2.CData(1,:) = drP.darkBlue;
-    b2.CData(2,:) = drP.paleBrown;
-    
-    set(ax2, 'TickDir', 'out', 'Box', 'off')
-    xticklabels(xlabelPSA);
-    ylim([0 100]);
-    title('Forrageamento Incorreto');
-    grid on;
-    
-    % Título global
-    title(t, titlePSA, 'FontSize', 13, 'FontWeight', 'bold');
-    
+    % 1. Gera figura de Acurácia
+    renderPSAforagingPerformance(plotDataAcc, trialCounts, 'Acertos (%)', ...
+        'PSA foraging effect - Accuracy', [titleBase, ' (Acurácia)'], drP, false);
+        
+    % 2. Gera figura de Sensibilidade
+    renderPSAforagingPerformance(plotDataSens, trialCounts, 'Sensibilidade (d'')', ...
+        'PSA foraging effect - Sensitivity', [titleBase, ' (Sensibilidade)'], drP, true);
 end

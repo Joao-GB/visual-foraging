@@ -1,4 +1,4 @@
-function plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, drP)
+function [rotProbePos, rotProbeFix, rotNSaccPos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, drP)
     % plotPSAStimPos para vizualizar a geometria dos estímulos relevantes
     % para PSA
     % Inputs devem ser matrizes Nx2 em dva
@@ -51,9 +51,16 @@ function plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSac
     h5 = scatter(vProbeFix(:,1), vProbeFix(:,2), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
 
     % Origem
+    plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
     h1 = plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
+    theLim = ceil(max(abs(single([vProbeFix(:); vPreProbeFix(:); vNSaccPos(:); vProbePos(:)]))))+.5;
+    axis equal;
+    xlim([-theLim theLim]); ylim([-theLim theLim]);
+    drawnow;
+    xticks(yticks())
     
-    axis equal; grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
+    grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
+
     xlabel('Horizontal (dva)'); ylabel('Vertical (dva)');
     title({'Posição de estímulos e fixações', 'em relação à pré-probe'});
     
@@ -65,13 +72,19 @@ function plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSac
     y_lines3 = [imag(rotNSacc)'; imag(rotLanding)'; NaN(1, length(rotNSacc))];
     plot(x_lines3(:), y_lines3(:), 'Color', [0.8 0.8 0.8], 'LineWidth', 0.5, 'HandleVisibility', 'off');
 
+
+    plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
     plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
     scatter(real(rotProbe), imag(rotProbe), 35, colorProbe, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
     scatter(real(rotNSacc), imag(rotNSacc), 35, colorNSacc, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
     scatter(real(rotLanding), imag(rotLanding), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
     
+    axis equal;
+    xlim([-theLim theLim]); ylim([-theLim theLim]);
+    drawnow;
+    xticks(yticks())
     
-    axis equal; grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
+    grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
     xlabel('Horizontal transformado (dva)'); 
     ylabel('Horizontal transformado (dva)');
     title({'Posição de probes não-sacádicos', 'em relação à direção das sacadas'});
@@ -79,4 +92,8 @@ function plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSac
     lgd = legend([h1 h2 h3 h4 h5], {'pré-probe pos', 'probe pos', 'nSacc probe pos', 'pré-probe fix', 'probe fix'});
     lgd.Layout.Tile = 'south'; 
     lgd.Orientation = 'horizontal';
+
+    rotProbePos = [real(rotProbe), imag(rotProbe)];
+    rotProbeFix = [real(rotLanding), imag(rotLanding)];
+    rotNSaccPos = [real(rotNSacc), imag(rotNSacc)];
 end

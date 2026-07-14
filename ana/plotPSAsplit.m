@@ -1,13 +1,16 @@
-function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle)
-
+function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, printCount)
+    if nargin < 7, printCount = true; end
     edges = sort(splitValues(:)'); %#ok<TRSRT> 
     numSplits = length(edges);
     numBins = numSplits + 1;
-
-    % Linhas:  cada um dos grupos (e.g. longo e curto)
-    % Colunas: 1 = Sacádico, 2 = Não-sacádico
-    barMatrix = zeros(numBins, 2);
-    xlabelPSA = cell(1, numBins);
+    
+    % Aloca matrizes separadas para Acurácia, Sensibilidade e Contagens
+    barMatrixAcc  = zeros(numBins, 2);
+    barMatrixSens = zeros(numBins, 2);
+    countMatrix   = zeros(numBins, 2);
+    xlabelPSA     = cell(1, numBins);
+    
+    calcDPrime = @(hit, total) norminv(min(max(hit./total, 0.001), 0.999)) * sqrt(2);
     
     for bIdx = 1:numBins
         if bIdx == 1
@@ -26,38 +29,32 @@ function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle)
             xlabelPSA{bIdx} = sprintf('[%.3f, %.3f)', edges(bIdx-1), edges(bIdx));
         end
         
-        % se houver dados, calcula counts e porcentagens
+        % Se houver dados, calcula counts, porcentagens e d-primes
         if any(mask)
             [~, countsSub] = getPSAeffect(trl(mask));
             
-            % 2 para sacádico, 3 para não sacádico
+            % Salva os denominadores reais [Sacádico, Não-sacádico]
+            countMatrix(bIdx, :) = [countsSub(2,2), countsSub(2,3)];
+            
+            % Acurácia (%)
             pct_s = (countsSub(1,2) / countsSub(2,2)) * 100;
             pct_n = (countsSub(1,3) / countsSub(2,3)) * 100;
+            barMatrixAcc(bIdx, :) = [pct_s, pct_n];
             
-            barMatrix(bIdx, :) = [pct_s, pct_n];
+            % Sensibilidade (d')
+            d_s = calcDPrime(countsSub(1,2), countsSub(2,2));
+            d_n = calcDPrime(countsSub(1,3), countsSub(2,3));
+            barMatrixSens(bIdx, :) = [d_s, d_n];
         else
-            barMatrix(bIdx, :) = [0, 0];
+            barMatrixAcc(bIdx, :)  = [0, 0];
+            barMatrixSens(bIdx, :) = [0, 0];
+            countMatrix(bIdx, :)   = [0, 0];
         end
     end
     
-    % Plota todos os pares de barras numa mesma figura
-    figWidth = max(500, 250 + (numBins * 130)); 
-    figure('Name', figTitle, 'Color', 'w', 'Position', [100 200 figWidth 500]);
-    
-    b = bar(barMatrix, 'grouped', 'EdgeColor', [0 0 0]);
-    
-    b(1).FaceColor = mat.drP.darkBlue;
-    b(2).FaceColor = mat.drP.paleBrown;
-    
-    set(gca, 'TickDir', 'out', 'Box', 'off')
-    grid on;
-    
-    set(gca, 'XTick', 1:numBins);
-    xticklabels(xlabelPSA);
-    
-    ylabel('Acertos (%)'); 
-    ylim([0 100]);
-    title(plotTitle);
-    
-    legend({'Sacádico', 'Não-sacádico'}, 'Location', 'northeast', 'Box', 'off');
+    if ~printCount, countMatrix = []; end
+    renderPSAsplit(barMatrixAcc, countMatrix, numBins, xlabelPSA, 'Acertos (%)', ...
+        [figTitle, ' - Accuracy'], [plotTitle, ' (Acurácia)'], mat, false);
+    renderPSAsplit(barMatrixSens, countMatrix, numBins, xlabelPSA, 'Sensibilidade (d'')', ...
+        [figTitle, ' - Sensitivity'], [plotTitle, ' (Sensibilidade)'], mat, true);
 end
