@@ -73,7 +73,7 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
         gamma = 0.5;
         marginalize = 4;
         
-        computeGrain = 35;
+        computeGrain = 30;
         priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, computeGrain);
         priorBetaRange  = linspace(prm.betaMin, prm.betaMax, computeGrain);
         priorLambdaRange = (0:0.01:0.1) + .001;
@@ -118,6 +118,8 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
         oriFilter = repmat(oriFilter, [1, 1, nBlocks]);
         OFsize    = repmat(OFsize, [1, 1, nBlocks]);
         jitterTimes = rand(nBlocks, nTrialsBuffered)*(prm.maxJitterStair-prm.minJitterStair)+prm.minJitterStair;
+
+        suspend = 0;
 
 %% Tarefa
         fprintf('----Início do staircase----\n')
@@ -519,8 +521,13 @@ function [resultsStair, tkS] = runStaircase1(tkP, dpP, drP, txP, prm, tkS)
                     else
                         disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
+                        if aSigma(b) <= (prm.sigmaMin + prm.sigmaRem) && prm.avoidConsecutive, suspend = 1;
+                        end
+                        if suspend == 1, suspend = rand(1) > 1./prm.stairWaitTime;
+                        end
+                        
                         for j=1:length(orderToReportStims)
-                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)), 'xIndex', auxidx);
+                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)), 'xIndex', auxidx, 'fixLapse', suspend);
                         end
 
                         fprintf('Atualizo o PM do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(b), PM(b).xCurrent);

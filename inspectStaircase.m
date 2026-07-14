@@ -122,33 +122,33 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         
         % Versão com bins uniformes
         % Agrupa trials por intensidade para plotar os círculos proporcionais
-%         nBins = 15;
-%         binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
-%         binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
-%         
-%             % Arredonda os estímulos apresentados para o centro do bin mais próximo
-%         rawSigma = -PM(b).x; % Extrai dados do staircase
-%         binIdx = discretize(rawSigma, binEdges);
-%         binIdx(isnan(binIdx)) = 1; % Garante que valores extremos não atrapalhem
-%         binnedSigma = binCenters(binIdx);
-
-        alphaEst = PM(b).threshold(end);
-        betaEst  = PM(b).slope(end);
-        sigmaEst = 1 / betaEst; % In Cumulative Normal, slope = 1/sigma
-        
-        % Versão com bins em stds
-        sdSteps = -3 : 0.5 : 3; 
-        binEdges = alphaEst + sdSteps * sigmaEst;
-      
-        binEdges = max(prm.sigmaMin, min(prm.sigmaMax, binEdges));
-        binEdges = unique(binEdges);
-        
+        nBins = 15;
+        binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
         binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
-        
-        rawSigma = -PM(b).x;
+
+            % Arredonda os estímulos apresentados para o centro do bin mais próximo
+        rawSigma = -PM(b).x(1:end-1); % Extrai dados do staircase
         binIdx = discretize(rawSigma, binEdges);
-        binIdx(isnan(binIdx)) = 1; 
+        binIdx(isnan(binIdx)) = 1; % Garante que valores extremos não atrapalhem
         binnedSigma = binCenters(binIdx);
+
+        % alphaEst = PM(b).threshold(end);
+        % betaEst  = PM(b).slope(end);
+        % sigmaEst = 1 / betaEst; % In Cumulative Normal, slope = 1/sigma
+        % 
+        % % Versão com bins em stds
+        % sdSteps = -3 : 0.5 : 3; 
+        % binEdges = alphaEst + sdSteps * sigmaEst;
+        % 
+        % binEdges = max(prm.sigmaMin, min(prm.sigmaMax, binEdges));
+        % binEdges = unique(binEdges);
+        % 
+        % binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
+        % 
+        % rawSigma = -PM(b).x;
+        % binIdx = discretize(rawSigma, binEdges);
+        % binIdx(isnan(binIdx)) = 1; 
+        % binnedSigma = binCenters(binIdx);
         
         %
         [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(binnedSigma, PM(b).response, ones(size(PM(b).response)));
