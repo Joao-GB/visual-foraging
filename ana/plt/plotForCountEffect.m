@@ -2,6 +2,7 @@ function plotForCountEffect(trl, ~)
     histLen     = {trl.forHistLen};
     stmLimsTime = {trl.stmLimsTime};
     
+    % m.q. forHistFixDur, só que restrito aos índices de HistLen
     counts = cellfun(@(x,y)[diff(x(:,1:y)); 1:y],stmLimsTime,histLen,'UniformOutput',false);
     counts = [counts{:}];
 

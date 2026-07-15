@@ -192,8 +192,6 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             forStmIdx = feedback(1, feedback(2,:) == -1);
             forStmPosPix = mat.results.stimCenters(:, forStmIdx, trl(i).trlIdx, b) - screenCenter;
             trl(i).forProbeOri = trl(i).stmOri(forStmIdx);
-            % Preciso calcular ainda
-            trl(i).forProbeFixDur = [];
             trl(i).forProbeCat = any(trl(i).tgtIdx == forStmIdx);
             trl(i).forProbePosPix = forStmPosPix;
 
@@ -204,6 +202,8 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).forHistFixDur = diff(double(stmLimsTimeRep(:, 1:end-1)))/mat.prm.fs;
             trl(i).forHistCat = ismember(trl(i).forHistIdx, trl(i).tgtIdx);
             trl(i).forHistOri = trl(i).stmOri(trl(i).forHistIdx);
+
+            trl(i).forProbeFixDur = trl(i).forHistFixDur(find(trl(i).forHistIdx == forStmIdx,1));
 
             ansObs = xor(ismember(mat.results.trialFeedback{b,t}(1,:), trl(i).tgtIdx), ~mat.results.trialFeedback{b,t}(3,:));
             trl(i).probeResp      = ansObs(feedback(2,:) == 0);

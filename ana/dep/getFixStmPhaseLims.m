@@ -39,7 +39,11 @@ function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerP
         stmPerPhase(3,:) = stmPerPhase(3,:) & stmPerPhase(2,:);
     end
     hasRepP2 = sum(~badStmOnlyIdx & stmPerPhase(2,:)) ~= modTimes;
-    hasRepP4 = any(stmPerPhase(4,:) & oldStmIdx);
+    % Esse sum adicional é para garantir que o estímulo tem uma fixação
+    % exclusiva dele, e não que se trata de um estímulo revisto por
+    % movimento lento (por exemplo, mantém olho em P2, P3 e P4 no mesmo
+    % estímulo, não conta como revisita)
+    hasRepP4 = any(stmPerPhase(4,:) & oldStmIdx & sum(fixPerStm,2)');
     hasRepetition = hasRepP2 || hasRepP4;
     badP2 = sum(~badStmIdx & stmPerPhase(2,:)) ~= modTimes;
     badP3 = sum(~badStmIdx & stmPerPhase(3,:)) ~= 1;
