@@ -203,7 +203,8 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj)
             trl(i).forHistCat = ismember(trl(i).forHistIdx, trl(i).tgtIdx);
             trl(i).forHistOri = trl(i).stmOri(trl(i).forHistIdx);
 
-            trl(i).forProbeFixDur = trl(i).forHistFixDur(find(trl(i).forHistIdx == forStmIdx,1));
+            trl(i).forProbeFixDur  = trl(i).forHistFixDur(find(trl(i).forHistIdx == forStmIdx,1));
+            trl(i).forProbeRecency = find(trl(i).forHistIdx == forStmIdx, 1, "last") - modTimes; % trl(i).forHistLen;
 
             ansObs = xor(ismember(mat.results.trialFeedback{b,t}(1,:), trl(i).tgtIdx), ~mat.results.trialFeedback{b,t}(3,:));
             trl(i).probeResp      = ansObs(feedback(2,:) == 0);

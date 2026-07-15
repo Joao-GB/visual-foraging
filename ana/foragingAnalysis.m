@@ -81,18 +81,16 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     % desempenho do forrageamento
     plotForCountEffect(trlProps, mat)
 
-    %% Efeito da distribuição espacial ou temporal (i.e., quão longe ou há quanto tempo faz que foi visto) no desempenho do forrageamento
-    % Ou quão isolado
-    plotForDistrEffect(trlProps, mat)
+    % Efeito de recência no desempenho do forrageamento
+    % Ou quão isolado, faltaria fazer...
+    plotForRecencyEffect(trlProps, mat)
 
-    % Duração da fixação em função de ser alvo ou não
-    plotForTargetFixDur(trlProps, mat)
-
-    %% Efeito da duração da fixação em estímulo e a probabilidade de acerto
-    plotForFixDurAns(trlProps, mat)
+    % Duração da fixação em função de ser alvo ou não e de ter acerto ou não
+    plotForFixDur(trlProps, mat)
 
     %% -- PROPRIEDADES DA TAREFA --
     %% Distância mínima entre estímulos
+    taskStimDistr(trl, 3)
 
 
 
