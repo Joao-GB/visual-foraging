@@ -689,7 +689,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: staircase\n')
-                                [resultsStair, taskState] = runStaircase1(tkP, dpP, drP, txP, prm, taskState);
+                                [resultsStair, taskState] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
                                 tkP.stair = resultsStair; clear resultsStair;
                                 aSigma = aSigmaFromStair(tkP.stair, prm);
                                 fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
@@ -1839,7 +1839,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         end
 
                         % % Se houver fixado em algum estímulo em PM...
+                        skipP4 = true;
                         if ~isempty(currIdx)
+                            skipP4 = false;
                             fprintf('Há currIdx... ')
                             fprintf('então será perguntado sobre\n');
                         else
@@ -1872,114 +1874,121 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         if sum(nStimsToReport(:, idx, b)) ~= 3
                             disp('ERRO')
                         end
-
-                        isTargetAnswer = nan(1,nStims); allColors2 = drP.allColors;
-                        Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-                        % Os demais pontos que não o fixado antes da atual
-                        nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim, currIdx);
-
-                        % O do passado não importa de onde eu pergunto,
-                        % desde que não seja a última fixação nem o pós
-                        % sacádico
-                        isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
-                        auxIdx = setdiff(seenIdx, [currStim currIdx]);
-                        seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
-                        currAux = []; 
-                        
-                        if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
-
-                        % O não visto eu pergunto o mais próximo de
-                        % currStim que não seja currIdx e nem já visto. Mas
-                        % se a pessoa nao mover o olho, como puniçao,
-                        % perguntamos sobre os mais distantes
-                        if isempty(currIdx)
-                            nbhd = flip(nbhd);
-                        end
-
-                        notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
-                        notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
-                        notSeenAux = notSeenNbhd(1:nStimsToReport(3, idx, b));
-
-                        % notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
-                        % Tanto seenAux como notSeenAux devem ser linhas
-                        % para concatenar 
-                        fprintf('Vistos: '); fprintf(num2str(seenAux));
-                        fprintf('\nPré-s: '); fprintf(num2str(currAux));
-                        fprintf('\nNão vistos: '); fprintf(num2str(notSeenAux));
-                        fprintf('\n');
-                        orderToReportStimsCell = {seenAux, currAux, notSeenAux};
-                        orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
-                        if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
-                            fprintf('Algo de errado: tem que reportar: %d', numel(orderToReportStims));
-                        end
-                        orderRemapped = [];
-                        for auxIdx = 1:3
-                            orderRemapped = [orderRemapped orderToReportMap(orderToReportSets(auxIdx, idx, b))*ones(1, length(orderToReportStimsCell{orderToReportSets(auxIdx, idx, b)}))]; %#ok<AGROW> 
-                        end
-
-                         if debug == 0  && mode >= 2
-                            Eyelink('Message',prm.msg.on.P4);
-                         end
-                        for j=1:length(orderToReportStims)
-                            KbReleaseWait;
-                            rectColors = allColors2; rectColors(:, orderToReportStims(j)) = drP.orange;
-                        
-                            rectPW = drP.allPW; rectPW(:, orderToReportStims(j)) = prm.pW2;
-                            currTarget = -1;
-                            abort  = false;
-                        
-                            while ~abort
-                                [keyIsDown, ~, keyCode] = KbCheck;
-                                if keyIsDown
-                                    if keyCode(nonTargetKey)
-                                        currTarget = 0;
-                                    elseif keyCode(targetKey)
-                                        currTarget = +1;
-                                    elseif keyCode(spaceKey)
-                                        KbReleaseWait;
-                                        if currTarget ~= -1
-                                            abort = true;
-                                            allColors2(:, orderToReportStims(j)) = drP.whiteGrey;
+                        if skipP4
+                            warningFlip(dpP.window, stimCenters(:, :, idx, b), resizeRect(dstRects, .25), currStim, txP.gabor.size_px, drP.allPW, drP.darkRed);
+                        else
+                            isTargetAnswer = nan(1,nStims); allColors2 = drP.allColors;
+                            Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+                            % Os demais pontos que não o fixado antes da atual
+                            nbhd = NeighborsOrder(stimCenters(:, :, idx, b), currStim, currIdx);
+    
+                            % O do passado não importa de onde eu pergunto,
+                            % desde que não seja a última fixação nem o pós
+                            % sacádico
+                            isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
+                            auxIdx = setdiff(seenIdx, [currStim currIdx]);
+                            seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
+                            currAux = []; 
+                            
+                            if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
+    
+                            % O não visto eu pergunto o mais próximo de
+                            % currStim que não seja currIdx e nem já visto. Mas
+                            % se a pessoa nao mover o olho, como puniçao,
+                            % perguntamos sobre os mais distantes
+                            if isempty(currIdx)
+                                nbhd = flip(nbhd);
+                            end
+    
+                            notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
+                            notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
+                            notSeenAux = notSeenNbhd(1:nStimsToReport(3, idx, b));
+    
+                            % notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
+                            % Tanto seenAux como notSeenAux devem ser linhas
+                            % para concatenar 
+                            fprintf('Vistos: '); fprintf(num2str(seenAux));
+                            fprintf('\nPré-s: '); fprintf(num2str(currAux));
+                            fprintf('\nNão vistos: '); fprintf(num2str(notSeenAux));
+                            fprintf('\n');
+                            orderToReportStimsCell = {seenAux, currAux, notSeenAux};
+                            orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
+                            if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
+                                fprintf('Algo de errado: tem que reportar: %d', numel(orderToReportStims));
+                            end
+                            orderRemapped = [];
+                            for auxIdx = 1:3
+                                orderRemapped = [orderRemapped orderToReportMap(orderToReportSets(auxIdx, idx, b))*ones(1, length(orderToReportStimsCell{orderToReportSets(auxIdx, idx, b)}))]; %#ok<AGROW> 
+                            end
+    
+                             if debug == 0  && mode >= 2
+                                Eyelink('Message',prm.msg.on.P4);
+                             end
+                            for j=1:length(orderToReportStims)
+                                KbReleaseWait;
+                                rectColors = allColors2; rectColors(:, orderToReportStims(j)) = drP.orange;
+                            
+                                rectPW = drP.allPW; rectPW(:, orderToReportStims(j)) = prm.pW2;
+                                currTarget = -1;
+                                abort  = false;
+                            
+                                while ~abort
+                                    [keyIsDown, ~, keyCode] = KbCheck;
+                                    if keyIsDown
+                                        if keyCode(nonTargetKey)
+                                            currTarget = 0;
+                                        elseif keyCode(targetKey)
+                                            currTarget = +1;
+                                        elseif keyCode(spaceKey)
+                                            KbReleaseWait;
+                                            if currTarget ~= -1
+                                                abort = true;
+                                                allColors2(:, orderToReportStims(j)) = drP.whiteGrey;
+                                            end
                                         end
                                     end
+                            
+                                    isTargetAnswer(orderToReportStims(j)) = currTarget;
+                                    Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                    foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, rectColors, isTargetAnswer, targetOri(b), rectPW);
+                            
                                 end
-                        
-                                isTargetAnswer(orderToReportStims(j)) = currTarget;
-                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, rectColors, isTargetAnswer, targetOri(b), rectPW);
-                        
                             end
+                            
+                            if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.P4); end
+    
+                            feedback = (orientation(:,idx,b) == targetOri(b))' + isTargetAnswer;
+                            feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
+                            feedback = feedback/2;
+    
+                            trialFeedback{b, i} = [orderToReportStims; orderRemapped; feedback(orderToReportStims)];
+                            
+                            if mode <= 3
+                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                            else
+                                Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
+                            end
+                            
+                            tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
+    
+                            tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
+                            tkP.fixProps.med   = [tkP.fixProps.med    med];
+                            trialOrder(2, i, b) = 1;
+    
+                            i = i + 1;
+                            trialIdxUp = true;
                         end
-                        
-                        if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.off.P4); end
 
-                        feedback = (orientation(:,idx,b) == targetOri(b))' + isTargetAnswer;
-                        feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
-                        feedback = feedback/2;
-
-                        trialFeedback{b, i} = [orderToReportStims; orderRemapped; feedback(orderToReportStims)];
-                        
-                        if mode <= 3
-                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
-                        else
-                            Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
-                         end
                         WaitSecs(.5);
-                        
-                        tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
 
-                        tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
-                        tkP.fixProps.med   = [tkP.fixProps.med    med];
-                        trialOrder(2, i, b) = 1;
-
-                        i = i + 1;
-                        trialIdxUp = true;
-
+                        restartTrials = restartTrials & skipP4;
                     % A condição é keepGoingTrials = false ou restartTrials = true
-                    else
+                    end
+
+                    if keepGoingTrials == false || restartTrials == true
                         
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.trl{1}); end
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;

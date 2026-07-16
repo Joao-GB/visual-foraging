@@ -100,6 +100,7 @@ function params = foragingParams
     params.nStimsStair   = 3;
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 12;     % <-
+    params.nTrialsStairTrain = 12;
     params.priorMeanStair  = 30; params.priorStdStair   = 25; params.priorStdStairLog = 0.12;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
     params.priorBetaMeanStair = 0; params.priorBetaStdStair = 4;
@@ -136,7 +137,7 @@ function params = foragingParams
                                             % mas para demonstração com cursor
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
-    params.cursorPinkNoiseDur   = .25;
+    params.cursorPinkNoiseDur   = .12;
     params.cursorPostModDur     = 1;
 
     % (d) Parâmetros de retentativas

@@ -51,8 +51,8 @@ function taskStimDistr(trl, mat, distOrder)
         r = sqrt(x.^2 + y.^2);
         theta = atan2(y, x);
         
-        figName = sprintf('Distribuição Espacial - %dº Vizinho', k);
-        figure('Name', figName, 'Color', 'w', 'Position', [100 + k*30, 100 + k*30, 800, 750]);
+        figName = sprintf('Stim distribution %d-th NN', k);
+        figure('Name', figName, 'Color', 'w', 'Position', [70 + k*10, 70 + k*10, 750, 700]);
         
         t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'normal');
         
@@ -67,24 +67,24 @@ function taskStimDistr(trl, mat, distOrder)
         
         axis(ax1, 'equal');
         set(ax1, 'TickDir', 'out', 'Box', 'off');
-        xlabel(ax1, '\Delta X (pixels)');
-        ylabel(ax1, '\Delta Y (pixels)');
-        title(ax1, sprintf('Densidade Relativa: %dº Vizinho Mais Próximo', k), 'FontSize', 14, 'FontWeight', 'bold');
+        xlabel(ax1, '\Delta x (pixels)');
+        ylabel(ax1, '\Delta y (pixels)');
+        title(ax1, sprintf('Distribuição %dº estímulo mais próximo', k), 'FontSize', 14, 'FontWeight', 'bold');
         grid(ax1, 'on');
         
         % Distribuição radial na esquerda embaixo
         ax2 = nexttile;
-        histogram(ax2, r, 40, 'FaceColor', baseColor, 'EdgeColor', 'k', 'LineWidth', 1.2);
+        histogram(ax2, r, 40, 'FaceColor', baseColor, 'EdgeColor', 'w', 'LineWidth', 1.2);
         set(ax2, 'TickDir', 'out', 'Box', 'off');
-        xlabel(ax2, 'Distância Radial (pixels)');
+        xlabel(ax2, 'Distância radial (pixels)');
         ylabel(ax2, 'Frequência');
-        title(ax2, 'Marginal Radial', 'FontSize', 12, 'FontWeight', 'bold');
+        title(ax2, 'Marginal radial', 'FontSize', 12, 'FontWeight', 'bold');
         
         % Distribuição angular
         ax3 = polaraxes(t); 
         ax3.Layout.Tile = 4;
         
-        polarhistogram(ax3, theta, 36, 'FaceColor', baseColor, 'EdgeColor', 'k', 'LineWidth', 1.2);
-        title(ax3, 'Marginal Angular', 'FontSize', 12, 'FontWeight', 'bold');
+        polarhistogram(ax3, theta, 36, 'FaceColor', baseColor, 'EdgeColor', 'w', 'LineWidth', 1.2);
+        title(ax3, 'Marginal angular', 'FontSize', 12, 'FontWeight', 'bold');
     end
 end

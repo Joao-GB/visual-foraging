@@ -2,17 +2,14 @@ function plotForRecencyEffect(trl, ~)
     forHit     = [trl.forProbeHit];
     forRecency = [trl.forProbeRecency];
 
-    fHit = forHit(validIdx);
-    fRec = forRecency(validIdx);
-
-    uRec = unique(fRec);
+    uRec = unique(forRecency);
 
     acc   = zeros(size(uRec));
     nVals = zeros(size(uRec));
 
     for i = 1:length(uRec)
-        idx = (fRec == uRec(i));
-        acc(i) = mean(fHit(idx)) * 100;
+        idx = (forRecency == uRec(i));
+        acc(i) = mean(forHit(idx)) * 100;
         nVals(i) = sum(idx);
     end
 

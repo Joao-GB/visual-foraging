@@ -1,10 +1,16 @@
-function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, tkS)
+function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 % Nessa versão, usa um único staircase para todos os tipos de estímulo, 
 % alimentando o ajuste da curva
         Screen('Flip', dpP.window);
         nBlocks = prm.nBlocksStair; nTrials = prm.nTrialsStair;
 
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
+
+        if mode <= 3
+            prm.pinkNoiseDur = prm.cursorPinkNoiseDur;
+            nTrials = prm.nTrialsStairTrain;
+        
+        end
         
         leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; rKey = tkP.keys{5};
         if strcmp(tkP.targetKey, 'right'), targetKey = rightKey; nonTargetKey = leftKey;
@@ -504,8 +510,11 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, tkS)
                             i = i + 1;
                             trialIdxUp = true;
 
-                            foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
-                            % foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                            if mode <= 3
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                            else
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
+                            end
                         end
 
                         WaitSecs(.5);
@@ -634,7 +643,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, tkS)
             psychrethrow(psychlasterror);
         end
         clearvars -except b resultsStair nBlocks keepGoingBlocks tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
-        if b == nBlocks + 1 && keepGoingBlocks
+        if b == nBlocks + 1 && keepGoingBlocks && mode > 3
             inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, newLevelASigma, targetOri);
             tkS(1,2) = 1;
         end

@@ -90,7 +90,7 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
 
     %% -- PROPRIEDADES DA TAREFA --
     %% Distância mínima entre estímulos
-    taskStimDistr(trl, 3)
+    taskStimDistr(trlProps, mat, 2)
 
 
 
