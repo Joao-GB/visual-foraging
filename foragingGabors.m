@@ -425,25 +425,35 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     if debug == 0,  HideCursor(dpP.window); end
 
     titleText = 'MENU'; titleMargin = cX*prm.titleMarginFactor;
-    currentScreen = 'main'; % Pode ser 'main' ou 'training'
+    currentScreen = 'main'; % Pode ser 'main', 'sc', 'exp', 'exp_training'
     refreshLayout = true;
 
-    % Cria texturas de cursor e treino
-    mainOptions     = {'staircase', 'training', 'experiment'};
-    mainOptionsName = {'Staircase', 'Treino', 'Experimento'};
-    mainOptionsMsg  = {['Ajusta os parâmetros do ruído conforme o\n'...
-                        'participante usando o método de staircase.'],...
+    mainOptions     = {'staircase', 'experiment'};
+    mainOptionsName = {'Staircase', 'Experimento'};
+    mainOptionsMsg  = {['Acesso ao menu do método de staircase, para o\n'...
+                        'ajuste de parâmetros conforme o participante.'],...
+                       'Acesso ao menu do experimento principal'};
+
+    scOptions     = {'instructions', 'training', 'staircase'};
+    scOptionsName = {'Instruções', 'Treino', 'Iniciar'};
+    scOptionsMsg  = {'Telas explicativas sobre as etapas do staircase.',...
+                    ['Treino para o staircase, mais lento e com\n'...
+                     'feedback ao fim de cada tentativa.'],...
+                    ['Prosseguir ao staircase quando as etapas anteriores\n',...
+                     'tiverem sido cumpridas.']};
+
+    expOptions = {'instructions', 'training', 'experiment'};
+    expOptionsName = {'Instruções', 'Treino', 'Iniciar'};
+    expOptionsMsg  = {'Telas explicativas sobre as etapas do experimento.',...
                        ['Diferentes tipos de treino para o experimento,\n'...
                         'com e sem movimentos oculares, e feedback ao \n'...
                         'fim de cada tentativa.\n\n'...
                         'Recomendado antes de toda sessão experimental.'],...
-                        'Inicia a sessão experimental propriamente.'};
+                        'Prosseguir à sessão experimental propriamente.'};
 
-    trainOptions     = {'cursor', 't1', 't2'};
-    trainOptionsName = {'Demo Mouse', 'Treino 1', 'Treino 2'};
-    trainOptionsMsg  = {['Demonstração com o cursor (mouse), para\n'...
-                         'familiarização com a estrutura da tarefa.'],...
-                        'Treino dos aspectos de busca visual da tarefa.',...
+    trainOptions     = {'t1', 't2'};
+    trainOptionsName = {'Treino 1', 'Treino 2'};
+    trainOptionsMsg  = {'Treino dos aspectos de busca visual da tarefa.',...
                         ['Treino dos aspectos de acuidade visual da \n'...
                          'tarefa.']};
     
@@ -454,7 +464,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     backRect(3) = backRect(1) + 140;                      % Largura do bounding box do botão
     backRect(4) = backRect(2) + 40;                       % Altura do bounding box do botão
     
-    % Seta invertida no eixo X para apontar para a ESQUERDA (Voltar)
+    % Seta invertida no eixo X para apontar para a esquerda
     arrow = [25 -8; -20 -8; -25 0; -20 8; 25 8; 20 0];
     scale = 3.5;
     arrowCoords = arrow * scale + [backRect(1) + 30, backRect(2) + 20];
@@ -493,7 +503,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     clear cXaux cYaux
 
     %% Retângulo de info adicional
-    detailRect = CenterRectOnPoint([0 0 2*prm.btnW (1.2/3)*prm.btnH], cX, 1.75*cY);
+    detailRect = CenterRectOnPoint([0 0 2*prm.btnW (1.3/3)*prm.btnH], cX, 1.75*cY);
     drawBox = false;
     
     %% Estados
@@ -519,9 +529,16 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             if strcmp(currentScreen, 'main')
                 options = mainOptions; optionsName = mainOptionsName; optionsMsg = mainOptionsMsg;
                 titleText = 'MENU';
-            else
+            elseif strcmp(currentScreen, 'sc')
+                options = scOptions; optionsName = scOptionsName; optionsMsg = scOptionsMsg;
+                titleText = 'MENU: STAIRCASE';
+            elseif strcmp(currentScreen, 'exp')
+                options = expOptions; optionsName = expOptionsName; optionsMsg = expOptionsMsg;
+                titleText = 'MENU: EXPERIMENTO';
+            elseif strcmp(currentScreen, 'exp_training')
                 options = trainOptions; optionsName = trainOptionsName; optionsMsg = trainOptionsMsg;
-                titleText = 'TREINO';
+                titleText = 'EXPERIMENTO: TREINO';
+                WaitSecs(.15);
             end
             
             % Fecha texturas anteriores para evitar estouro de memória de vídeo
@@ -571,7 +588,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                 end
             end
             % Verifica botão Voltar (Apenas na tela de treino)
-            if strcmp(currentScreen, 'training') && IsInRect(mx, my, backRect)
+            if ~strcmp(currentScreen, 'main') && IsInRect(mx, my, backRect)
                 selected = 0;
             end
         end
@@ -614,8 +631,8 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                 [mx-prm.cursorRadius_px my-prm.cursorRadius_px mx+prm.cursorRadius_px my+prm.cursorRadius_px]);
         end
 
-        % --- DESENHA O BOTÃO VOLTAR SE ESTIVER NO SUBMENU ---
-        if strcmp(currentScreen, 'training')
+        % Desenha o botão de voltar se não estiver no menu
+        if ~strcmp(currentScreen, 'main')
             Screen('FillPoly', dpP.window, drP.blue, arrowCoords);
 
             Screen('TextSize', dpP.window, prm.textSizeNormalish);
@@ -651,7 +668,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                     if selected == -1
                         selected = firstSelectL;
                     else
-                        if strcmp(currentScreen, 'training')
+                        if ~strcmp(currentScreen, 'main')
                             selected = max(0, selected - 1);
                         else
                             selected = max(1, selected - 1);
@@ -669,22 +686,39 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                     KbReleaseWait;
                     while any(buttons); [~, ~, buttons] = GetMouse(dpP.window); WaitSecs(0.001); end
                     
-                    % Ação 1: Clicou no botão Voltar
-                    if strcmp(currentScreen, 'training') && selected == 0
-                        currentScreen = 'main';
+                    % Ação 1: clicou no botão Voltar
+                    if selected == 0
+                        if strcmp(currentScreen, 'sc') || strcmp(currentScreen, 'exp')
+                            currentScreen = 'main';
+                        elseif strcmp(currentScreen, 'exp_training')
+                            currentScreen = 'exp';
+                        end
                         refreshLayout = true;
                         continue;
                     end
                     
-                    % Ação 2: Selecionou um botão padrão do menu
+                    % Ação 2: selecionou um botão de uma das telas
                     if selected > 0
                         mode = options{selected};
                         if strcmp(currentScreen, 'main')
-                            % Lógica da Tela Principal
-                            if strcmp(mode, 'training')
-                                currentScreen = 'training';
+                            % Lógica do menu
+                            if strcmp(mode, 'staircase')
+                                currentScreen = 'sc';
                                 refreshLayout = true;
                                 continue;
+                            elseif strcmp(mode, 'experiment')
+                                currentScreen = 'exp';
+                                refreshLayout = true;
+                                continue;
+                            end
+                        elseif strcmp(currentScreen, 'sc')
+                            if strcmp(mode, 'instructions')
+                                fprintf('Selecionado: instruções do staircase\n')
+                                instructStaircase(tkP, dpP, drP, txP, prm);
+                            elseif strcmp(mode, 'training')
+                                for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
+                                fprintf('Selecionado: treino staircase\n')
+%                                 [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
                             elseif strcmp(mode, 'staircase')
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
@@ -699,19 +733,27 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 txP.oriFilter       = oriFilter;
                                 txP.OFsize          = OFsize;
                                 fprintf('oriFilter e OFsize devidamente atualizados\n');
-
+                            end
+                        elseif strcmp(currentScreen, 'exp')
+                            if strcmp(mode, 'instructions')
+                                fprintf('Selecionado: instruções do experimento\n')
+                                instructForaging(tkP, dpP, drP, txP, prm);
+                            elseif strcmp(mode, 'training')
+                                currentScreen = 'exp_training';
+                                refreshLayout = true;
+                                continue;
                             elseif strcmp(mode, 'experiment')
                                 taskState(4,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: experimento\n')
                                 [tkP, taskState, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             end
-                        else
+                        elseif strcmp(currentScreen, 'exp_training')
                             % Lógica da tela de subtreinos
                             if     strcmp(mode, 't1'), taskState(2,1) = 1; 
                             elseif strcmp(mode, 't2'), taskState(3,1) = 1; end
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
-                            fprintf('Selecionado: um dos treinos\n')
+                            fprintf('Selecionado: treino %s\n', mode)
                             [tkP, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
                             if isfield(tkP, 'pinkNoiseDur'), fprintf('Valor de duração do ruido rosa ajustado: %.2f\n', tkP.pinkNoiseDur); end
                             resultsTrain.tkP = tkP;

@@ -29,6 +29,7 @@ function params = foragingParams
 
     % (f) Parâmetros do ruído rosa com orientação
     params.aSigma = 40;
+    params.aSigmaTrain = 20;
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -151,9 +152,11 @@ function params = foragingParams
     params.fadeOutStimDur = .1;
     params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
 
-    % (f) Tamanho e cor do cursor
+    % (f) Tamanho e cor do cursor e do olho
     params.cursorRadius_px   = 4;
     params.cursorColor       = [1 1 1];
+    params.eyeSize           = 15;
+    
 
     % (g) Parâmetros de fixação com cursor
     params.cursorMinFixTime2 = .2;

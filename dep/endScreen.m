@@ -32,7 +32,7 @@ function endScreen(dpP, drP, prm)
     lLid = @(x,a,t) a*lRelLid(x,t) + (1-a)*lSqnLid(x,t);
     
     
-    eyeCols = [drP.blue; drP.darkGreen; drP.brown; drP.darkBrown; drP.greyBrown; drP.paleBrown]; aux = randsample(1:size(eyeCols, 1), 1);
+    eyeCols = [drP.blue; drP.darkBlue; drP.darkGreen; drP.brown; drP.darkBrown; drP.greyBrown; drP.paleBrown]; aux = randsample(1:size(eyeCols, 1), 1);
     eyeColor = eyeCols(aux, :);
     maskTex = Screen('OpenOffscreenWindow', dpP.window, [0 0 0 0], [], 32);
     xc = dpP.winCenter(1); yc = dpP.winCenter(2);

@@ -7,9 +7,10 @@ screenNumber = max(Screen('Screens'));
 bg = [1 1 1]/2;
 
 [win, rect] = PsychImaging('OpenWindow', screenNumber, bg);
-
+[xcenter, ycenter] = RectCenter(rect);
 HideCursor;
 
+Screen('BlendFunction', win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 try
 
     while ~KbCheck
@@ -17,6 +18,7 @@ try
         [mx, my, ~] = GetMouse(win);
 
         Screen('FillRect', win, bg);
+        DrawCalibrationTarget(win, xcenter, ycenter);
 
         DrawEye(win, [mx my], 15, [50 140 255]/255);
 

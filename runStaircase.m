@@ -9,6 +9,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         if mode <= 3
             prm.pinkNoiseDur = prm.cursorPinkNoiseDur;
             nTrials = prm.nTrialsStairTrain;
+            prm.aSigma = prm.aSigmaTrain;
+            tkP.stairPrev = [];
         
         end
         
@@ -122,6 +124,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
         end
         startPM = PM;
+        startASigma = aSigma;
 
         [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, burnInASigma(1), prm.rSigma2);
 
@@ -511,9 +514,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                             trialIdxUp = true;
 
                             if mode <= 3
-                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW, feedback, drP.red, drP.green);
                             else
-                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
+                                foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri(b), drP.allPW);
                             end
                         end
 
@@ -599,7 +602,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.trialFeedback = trialFeedback;
 
             resultsStair.aSigma75  = aSigma;
-            i = nBlocks
+            i = nBlocks;
             [~, maxIndex]  = PAL_findMax(PM(i).pdf);
             currentLambda  = priorLambdaRange(maxIndex(4));
             newLevelASigma = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
