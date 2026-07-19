@@ -118,7 +118,7 @@ function params = foragingParams
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
     % (a) Número de trials no treino
-    params.nTrialsTrain  = 5;
+    params.nTrialsTrain  = 30;
 
     % (b) Tempo máximo durante o qual é exibida a cruz antes de mensagem de
     % 'Tempo Esgotado' na fase 1

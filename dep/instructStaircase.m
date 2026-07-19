@@ -174,6 +174,8 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
         WaitSecs('YieldSecs', 0.005);
     end
     KbWait([], 1);
+    Screen('Close', noiseTex);    Screen('Close', gaborTex); Screen('Close', oriPinkTex)
+    Screen('Close', easyPinkTex); Screen('Close', hardPinkTex);
 end
 
 function drawBlocks(tkP, dpP, drP, txP, prm, tgtOri, b)

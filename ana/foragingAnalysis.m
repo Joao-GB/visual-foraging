@@ -21,6 +21,10 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     allGoodTrl = getGoodTrl(trlProps, mat);
     trlProps = trlProps(allGoodTrl);
 
+    [trainTrlProps, ~, ~] = foragingTrlProps(mat, edf, sesStr, subj, 2);
+    trainAllGoodTrl = getGoodTrl(trainTrlProps, mat);
+    trainTrlProps = trainTrlProps(trainAllGoodTrl);
+
     clear currFolder edf outFolder params parentFolder sesStr ses subj;
 
     %% -- TAREFA PRÉ-SACÁDICA --
@@ -42,6 +46,11 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
 
     % 2. Gráfico principal: Efeito pré-sacádico E tabela de contingência
     PSA = plotPSAmain(trlProps, mat.drP);
+    sHit = PSA.main.sacc.idx{1,1}+PSA.main.sacc.idx{2,2};
+    nHit = PSA.main.nSacc.idx{1,1}+PSA.main.nSacc.idx{2,2};
+
+    %% Para o treino:
+    trainPSA = plotPSAmain(trainTrlProps, mat.drP);
 
     % 3. Efeito da ordem das perguntas
     order = plotPSAorder(trlProps, mat.drP);
@@ -49,6 +58,11 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
 
     % Efeito de categorias do pré-probe e do probe
     plotPSAcat([trlProps.preProbeCat], [trlProps.probeCat], [trlProps.probeHit], [trlProps.nSaccProbeHit], mat.drP);
+
+    % Efeito da direção da sacada (tanto em ângulo como em 'faixa' de
+    % amplitude ao redor da direção)
+    plotSacDirEffect(rotProbeFix, rotProbePos, rotNSaccProbePos, sHit, nHit, mat.drP)
+    plotSacRangeEffect(rotProbeFix, rotProbePos, rotNSaccProbePos, sHit, nHit, mat.drP)
 
     % Efeito do desempenho no forrageamento
     plotPSAforagingPerformance(trlProps, PSA, mat.drP);
@@ -77,6 +91,9 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
 
 
     %% -- TAREFA DE FORRAGEAMENTO --
+    % Frequência com que as sacadas são feitas para os estímulos mais
+    % próximos ao pré-probe
+
     % Efeito do número de fixações anteriores na duração da atual e no
     % desempenho do forrageamento
     plotForCountEffect(trlProps, mat)

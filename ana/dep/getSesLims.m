@@ -16,7 +16,8 @@ function sesLims = getSesLims(mat, messages, expIdx)
         % uma mensagem de fim de sessão
         offAuxIdx = [find(contains(messages(auxIdx(i):auxIdx(i+1)), mat.prm.msg.off.ses{3}))] + expSesOnIdx(i) - 1;
         if length(offAuxIdx) ~= 1
-            warning(sprinftf('Mais de um fim associado ao início da sessão  %d do arquivo!', i))
+            warning('Mais de um fim associado ao início da sessão  %d do arquivo! Tomando o primeiro', i)
+            expSesOffIdx(i) = offAuxIdx(1);
         else
             expSesOffIdx(i) = offAuxIdx;
         end

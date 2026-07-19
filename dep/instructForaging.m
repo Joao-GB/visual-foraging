@@ -184,6 +184,9 @@ function instructForaging(tkP, dpP, drP, txP, prm)
         WaitSecs('YieldSecs', 0.005);
     end
     KbWait([], 1);
+
+    Screen('Close', noiseTex);    Screen('Close', gaborTex); Screen('Close', oriPinkTex)
+    Screen('Close', easyPinkTex); Screen('Close', hardPinkTex);
 end
 
 function [fixIdx, blinkIdx, orderToReportStims] = updateFixIdx(mCoord, minDist, nStims, stimCenters, oldFixIdx, blinkIdx, orderToReportStims)

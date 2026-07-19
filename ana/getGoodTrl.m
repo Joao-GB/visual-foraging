@@ -1,5 +1,5 @@
 function allGoodTrl =  getGoodTrl(trl, mat)
-    keepIdx = [trl.trlKeep];
+    keepIdx = logical([trl.trlKeep]);
 
     allGoodTrl = false(size(trl));
     
