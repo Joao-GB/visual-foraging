@@ -149,6 +149,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
             auxASigma = repmat(auxASigma, 1, numel(stairPrev));
         end
         [stairPrev.aSigma] = auxASigma{:};
+        [stairPrev.tgtOri] = [prevData.tkP.stair.targetOri];
     else
 %         stairBurnIn = 1;
         stairPrev   = [];
@@ -732,7 +733,14 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
                                 tkP.aSigma = aSigma;
                                 prm.aSigma = aSigma;
-                                [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma, prm.rSigma2);
+                                tkP.sMap = containers.Map([tkP.stair.staircase.tgtOri], 1:prm.nBlocksStair);
+                                oriFilter = {}; OFsize = {};
+                                for k = 1:prm.nBlocksStair
+                                    [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma(k), prm.rSigma2);
+                                    oriFilter = {oriFilter auxOriFilter}; %#ok<*AGROW> 
+                                    OFsize = {OFsize auxOFsize};
+                                end
+                                oriFilter{1} = []; OFsize{1} = [];
                                 txP.oriFilter       = oriFilter;
                                 txP.OFsize          = OFsize;
                                 fprintf('oriFilter e OFsize devidamente atualizados\n');
@@ -1100,7 +1108,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         aux = auxNoiseMatrix(:,colRange);
                         noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
-                        oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter', txP.OFsize, aux);
+                        oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter{tkP.sMap(targetOri(b))}', txP.OFsize{tkP.sMap(targetOri(b))}, aux);
                     end
                     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);
                     gaborTex   = Screen('MakeTexture', dpP.window,  prm.gaborSTDmult*txP.gabor.matrix, [], [], 1);

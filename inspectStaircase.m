@@ -1,6 +1,6 @@
 function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
-    targetW = screenW / 2;     targetH = screenH / 2;
+    targetW = screenW / 2;    targetH = screenH / 2;
     
     targetRect = [dpP.winCenter(1) - targetW/2, ...
                   dpP.winCenter(2) - targetH/2, ...
@@ -9,135 +9,124 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     
     B = numel(PM); % Número de blocos
     
-    % Encontra os trials onde houve mudança de bloco (tiro 1 pois será
-    % produzida uma sugestão que não usarei)
-    blockTransitions = zeros(1, B-1);
-    for b = 1:(B-1)
-        blockTransitions(b) = length(PM(b).x) - 1;
-    end
-    
-    % Array para armazenar as texturas: 1 para staircase inteira, 1 para curva psicométrica, +1 se houver burn-in
-    nTextures = 2 + tkP.stairBurnIn; 
+    % Total de texturas que serão geradas (B blocos + 1 curva + 1 opcional burn-in)
+    nTextures = B + 1 + tkP.stairBurnIn;
     texArray = zeros(1, nTextures); 
-    hFigs = gobjects(nTextures, 1);
     
-    %% Textura 1: Staircase com histórico completo
-    hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
-    hFigs(1) = hFig;
+    % Apenas B+1 figuras serão salvas no .fig (B blocos + 1 curva conjunta)
+    hFigs = gobjects(B+1, 1);
     
-    trialNum = 1:length(PM(B).x);
-    presentedSigma = -PM(B).x;
-    hold on;
-    
-    % Trajetória
-    plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
-    
-    % Trials corretos e incorretos
-    plot(trialNum(PM(B).response == 1), presentedSigma(PM(B).response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
-    plot(trialNum(PM(B).response == 0), presentedSigma(PM(B).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-    
-    % Linhas verticais para indicar as trocas de bloco
-    if ~isempty(blockTransitions)
-        xline(blockTransitions + 0.5, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
-    end
-    
-    % Estimativa final do limiar
-    if thrs(B) >= newThrs(B)
-        yline(thrs(B), '--k', sprintf('75%%: %.2f', thrs(B)), 'LineWidth', 1.5);
-        yline(newThrs(B), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(B)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
-    else
-        yline(thrs(B), '--k', sprintf('75%%: %.2f', thrs(B)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
-        yline(newThrs(B), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(B)), 'LineWidth', 3);
-    end
-    if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-        yline(tkP.stairPrev(B).aSigma, '-', 'Prev aSigma', 'Color', [0.7 0.7 0.7], 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left');
-    end
-    xlabel('Trial'); ylabel('Sigma');
-    auxS = prm.allOriName{prm.allOriMap(ori(1))};
-    for i = 2:B
-        auxS = [auxS ', ' prm.allOriName{prm.allOriMap(ori(i))}]; %#ok<AGROW>
-    end
-    title(sprintf('Staircase: %s (todos blocos)', auxS))
-    grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
-    
-    figFrame = getframe(hFig);
-    texArray(1) = Screen('MakeTexture', dpP.window, figFrame.cdata);
-    
-    %% Textura 2: Staircase sem burn-in (se houver)
-    texIdx = 2;
-    if tkP.stairBurnIn
+    %% Texturas 1 a B: Staircases individuais com histórico completo
+    for b = 1:B
         hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
-        hFigs(texIdx) = hFig;
+        hFigs(b) = hFig;
         
-        usefulTrials = ((prm.nStimsStair-1)*prm.burninTrials+1):length(PM(B).x);
-        trialNum = usefulTrials;
-        presentedSigma = -PM(B).x(usefulTrials);
-        response = PM(B).response(usefulTrials);
+        trialNum = 1:length(PM(b).x);
+        presentedSigma = -PM(b).x;
         hold on;
         
+        % Trajetória
         plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
-        plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
-        plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
-
-        validTransitions = blockTransitions(blockTransitions >= usefulTrials(1));
-        if ~isempty(validTransitions)
-            xline(validTransitions + 0.5, '--', 'Color', [0.5 0.5 0.5], 'LineWidth', 1.5);
-        end
         
-        if thrs(B) >= newThrs(B)
-            yline(thrs(B), '--k', sprintf('75%%: %.2f', thrs(B)), 'LineWidth', 1.5);
-            yline(newThrs(B), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(B)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
+        % Trials corretos e incorretos
+        plot(trialNum(PM(b).response == 1), presentedSigma(PM(b).response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
+        plot(trialNum(PM(b).response == 0), presentedSigma(PM(b).response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
+        
+        % Estimativa final do limiar
+        if thrs(b) >= newThrs(b)
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
         else
-            yline(thrs(B), '--k', sprintf('75%%: %.2f', thrs(B)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
-            yline(newThrs(B), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(B)), 'LineWidth', 3);
+            yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
+            yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+        end
+        if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
+            yline(tkP.stairPrev(b).aSigma, '-', 'Prev aSigma', 'Color', [0.7 0.7 0.7], 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left');
         end
         xlabel('Trial'); ylabel('Sigma');
-        title(sprintf('Staircase: %s (sem burn-in)', auxS))
-        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
+        title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
+        grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
         
+        figFrame = getframe(hFig);
+        texArray(b) = Screen('MakeTexture', dpP.window, figFrame.cdata);
+    end
+    
+    % Variável para garantir que as texturas seguintes fiquem nas posições certas
+    texIdx = B + 1;
+    
+    %% Textura: Staircase sem burn-in (se houver)
+    if tkP.stairBurnIn
+        hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
+        
+        for b = 1:B
+            usefulTrials = ((prm.nStimsStair-1)*prm.burninTrials+1):length(PM(b).x);
+            trialNum = usefulTrials;
+            presentedSigma = -PM(b).x(usefulTrials);
+            response = PM(b).response(usefulTrials);
+            subplot(1, B, b); hold on;
+            
+            plot(trialNum, presentedSigma, 'k-', 'LineWidth', 1.5);
+            plot(trialNum(response == 1), presentedSigma(response == 1), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
+            plot(trialNum(response == 0), presentedSigma(response == 0), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 7);
+    
+            if thrs(b) >= newThrs(b)
+                yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LineWidth', 1.5);
+                yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 3);
+            else
+                yline(thrs(b), '--k', sprintf('75%%: %.2f', thrs(b)), 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
+                yline(newThrs(b), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(b)), 'LineWidth', 3);
+            end
+            xlabel('Trial'); title(sprintf('Staircase: %s', prm.allOriName{prm.allOriMap(ori(b))}))
+            if b == 1, ylabel('Sigma'); end
+            grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
+        end
         figFrame = getframe(hFig);
         texArray(texIdx) = Screen('MakeTexture', dpP.window, figFrame.cdata);
         texIdx = texIdx + 1;
+        close(hFig); % Fecha sem salvar no array hFigs
     end
     
-    %% Textura 3: Curvas psicométricas para o histórico completo do staircase
+    %% Textura: Curvas psicométricas para o histórico completo do staircase
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
-    hFigs(texIdx) = hFig;
-    hold on;
+    hFigs(B+1) = hFig; % Guarda na última posição válida para salvar
     
-    nBins = 15;
-    binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
-    binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
-    rawSigma = -PM(B).x(1:end-1); 
-    binIdx = discretize(rawSigma, binEdges);
-    binIdx(isnan(binIdx)) = 1; 
-    binnedSigma = binCenters(binIdx);
+    for b = 1:B
+        subplot(1, B, b); hold on;
     
-    [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(binnedSigma, PM(B).response, ones(size(PM(B).response)));
-    for SR = 1:length(SL(OON~=0))
-        plot(SL(SR), NP(SR)/OON(SR), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 20*sqrt(OON(SR)/sum(OON)));
+        nBins = 15;
+        binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
+        binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
+        rawSigma = -PM(b).x(1:end-1); 
+        binIdx = discretize(rawSigma, binEdges);
+        binIdx(isnan(binIdx)) = 1; 
+        binnedSigma = binCenters(binIdx);
+        
+        [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(binnedSigma, PM(b).response, ones(size(PM(b).response)));
+        for SR = 1:length(SL(OON~=0))
+            plot(SL(SR), NP(SR)/OON(SR), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 20*sqrt(OON(SR)/sum(OON)));
+        end
+        
+        stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, 100);
+        alphaEst = PM(b).threshold(end);
+        betaEst  = PM(b).slope(end);
+        plot(-stimRange, PAL_CumulativeNormal([alphaEst, betaEst, PM(b).guess(end), PM(b).lapse(end)], stimRange), 'k-', 'LineWidth', 2);
+        set(gca, 'XDir', 'reverse');
+        
+        txt = sprintf('Atual:\nLimiar: %.2f\nIncl.: %.2f', -alphaEst, betaEst);
+        if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
+            txt = sprintf('%s\n\nPrev.:\nLimiar: %.2f\nIncl.: %.2f', txt, ...
+                          -tkP.stairPrev(b).threshold(end), tkP.stairPrev(b).slope(end));
+        end
+        text(prm.sigmaMin + (prm.sigmaMax-prm.sigmaMin)*0.05, 0.95, txt, 'FontSize', 9, 'VerticalAlignment', 'top');
+        
+        xlabel('Sigma'); title(sprintf('Curve: %s', prm.allOriName{prm.allOriMap(ori(b))}));
+        if b == 1, ylabel('Proporção corretos'); end
+        grid on; ylim([0 1.05]); xlim([prm.sigmaMin prm.sigmaMax]);
     end
-    
-    stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, 100);
-    alphaEst = PM(B).threshold(end);
-    betaEst  = PM(B).slope(end);
-    plot(-stimRange, PAL_CumulativeNormal([alphaEst, betaEst, PM(B).guess(end), PM(B).lapse(end)], stimRange), 'k-', 'LineWidth', 2);
-    set(gca, 'XDir', 'reverse');
-    
-    txt = sprintf('Atual:\nLimiar: %.2f\nIncl.: %.2f', -alphaEst, betaEst);
-    if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-        txt = sprintf('%s\n\nPrev.:\nLimiar: %.2f\nIncl.: %.2f', txt, ...
-                      -tkP.stairPrev(B).threshold(end), tkP.stairPrev(B).slope(end));
-    end
-    text(prm.sigmaMin + (prm.sigmaMax-prm.sigmaMin)*0.05, 0.95, txt, 'FontSize', 9, 'VerticalAlignment', 'top');
-    
-    xlabel('Sigma'); ylabel('Proporção corretos');
-    title(sprintf('Curva: %s', auxS));
-    grid on; ylim([0 1.05]); xlim([prm.sigmaMin prm.sigmaMax]);
-
     figFrame = getframe(hFig);
     texArray(texIdx) = Screen('MakeTexture', dpP.window, figFrame.cdata);
     
+    %% Save & Display Workflow
     savefig(hFigs, prm.tempFig); close(hFigs); clear hFigs;
     h = openfig(prm.tempFig, 'invisible');
     set(h, 'Visible', 'on');

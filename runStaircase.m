@@ -104,11 +104,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             % Construção do prior customizado usando matrizes multidimensionais do PM
             if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-                % Se houve sessão anterior, usa como prior o último da
-                % sessão anterior, já que agora um PM é construído em cima
-                % do outro
-                prevSessionAlpha = tkP.stairPrev(end).threshold(end);
-                prevSessionBeta  = tkP.stairPrev(end).slope(end);
+                k = find([tkP.stairPrev.tgtOri] == targetOri(b));
+                prevSessionAlpha = tkP.stairPrev(k).threshold(end);
+                prevSessionBeta  = tkP.stairPrev(k).slope(end);
 
                 prior = PAL_pdfNormal(PM(b).priorAlphas, prevSessionAlpha, prm.priorStdStair2);
                 prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
@@ -121,7 +119,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             % Normaliza a grade de probabilidade
             prior = prior ./ sum(prior(:));
-            PM(b) = PAL_AMPM_setupPM(PM(b), 'prior', prior); %#ok<*AGROW> 
+            PM(b) = PAL_AMPM_setupPM(PM(b), 'prior', prior); %#ok<*AGROW>
+            PM(b).tgtOri = targetOri(b);
 
         end
         startPM = PM;
@@ -152,10 +151,10 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             EyelinkDoTrackerSetup(tkP.el);
 
             while b <= nBlocks && keepGoingBlocks
-                if b > 1
-                    startPM(b) = PM(b-1);
-                    startASigma(b) = aSigma(b-1);
-                end
+%                 if b > 1
+%                     startPM(b) = PM(b-1);
+%                     startASigma(b) = aSigma(b-1);
+%                 end
                 PM(b) = startPM(b);
                 aSigma(b) = startASigma(b);
                 [~, auxidx] = min(abs(stimRange - (-startASigma(b))));
@@ -569,8 +568,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
                         currentAlphaEst = PM(b).threshold(end);
                         currentBetaEst  = PM(b).slope(end);
-                        fprintf('Limiar Atual Estimado (Alpha): %.2f\n', currentAlphaEst);
-                        fprintf('Inclinação Atual Estimada (Beta): %.2f\n\n', currentBetaEst);
+                        fprintf('Limiar atual estimado (Alpha): %.2f\n', currentAlphaEst);
+                        fprintf('Inclinação atual estimada (Beta): %.2f\n\n', currentBetaEst);
 
                         [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;
@@ -603,13 +602,16 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.trialFeedback = trialFeedback;
 
             resultsStair.aSigma75  = aSigma;
-            i = nBlocks;
-            [~, maxIndex]  = PAL_findMax(PM(i).pdf);
-            currentLambda  = priorLambdaRange(maxIndex(4));
-            if mode <= 3 || isempty(PM(i).threshold)
-                newLevelASigma = aSigma;
-            else
-                newLevelASigma = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+
+            newLevelASigma = ones(1, nBlocks);
+            for i = 1:nBlocks
+                [~, maxIndex] = PAL_findMax(PM(i).pdf);
+                currentLambda = priorLambdaRange(maxIndex(4));
+                if mode <= 3 || isempty(PM(i).threshold)
+                    newLevelASigma(i) = aSigma(i);
+                else
+                    newLevelASigma(i) = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+                end
             end
 
             resultsStair.aSigma    = newLevelASigma;
@@ -652,7 +654,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         end
         clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
-            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, repmat(newLevelASigma, [1 nBlocks]), targetOri);
+            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, newLevelASigma, targetOri);
             tkS(1,2) = 1;
         end
 end
