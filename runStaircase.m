@@ -65,7 +65,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
 %% Cria o objeto que registra todo o staircase
 
-        stimRange = (-prm.sigmaMax:.5:-prm.sigmaMin);
+        stimRange = (-prm.sigmaMax:prm.sigmaStep:-prm.sigmaMin);
         [~, auxidx] = min(abs(stimRange - (-prm.aSigma)));
         prm.aSigma = stimRange(auxidx);
         if tkP.stairBurnIn
@@ -86,9 +86,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         gamma = 0.5;
         marginalize = 4;
         
-        computeGrain = 30;
-        priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, computeGrain);
-        priorBetaRange  = linspace(prm.betaMin, prm.betaMax, computeGrain);
+        priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, prm.grainAlpha);
+        priorBetaRange  = 10.^(linspace(log10(prm.betaMin), log10(prm.betaMax), prm.grainBeta));
         priorLambdaRange = (0:0.01:0.1) + .001;
             
         % Veja que removi a condicional que usa burn-in
