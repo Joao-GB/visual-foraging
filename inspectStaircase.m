@@ -9,10 +9,11 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     
     B = numel(PM); % Número de blocos
     
-    % Encontra os trials onde houve mudança de bloco
+    % Encontra os trials onde houve mudança de bloco (tiro 1 pois será
+    % produzida uma sugestão que não usarei)
     blockTransitions = zeros(1, B-1);
     for b = 1:(B-1)
-        blockTransitions(b) = length(PM(b).x);
+        blockTransitions(b) = length(PM(b).x) - 1;
     end
     
     % Array para armazenar as texturas: 1 para staircase inteira, 1 para curva psicométrica, +1 se houver burn-in
@@ -52,7 +53,11 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         yline(tkP.stairPrev(B).aSigma, '-', 'Prev aSigma', 'Color', [0.7 0.7 0.7], 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left');
     end
     xlabel('Trial'); ylabel('Sigma');
-    title(sprintf('Staircase: %s (Todos os Blocos)', prm.allOriName{prm.allOriMap(ori(B))}))
+    auxS = prm.allOriName{prm.allOriMap(ori(1))};
+    for i = 2:B
+        auxS = [auxS ', ' prm.allOriName{prm.allOriMap(ori(i))}]; %#ok<AGROW>
+    end
+    title(sprintf('Staircase: %s (todos blocos)', auxS))
     grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([1 length(trialNum)]);
     
     figFrame = getframe(hFig);
@@ -87,7 +92,7 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
             yline(newThrs(B), '-k', sprintf('%d%%: %.2f', round(prm.stairLevel*100), newThrs(B)), 'LineWidth', 3);
         end
         xlabel('Trial'); ylabel('Sigma');
-        title(sprintf('Staircase: %s (Sem Burn-in)', prm.allOriName{prm.allOriMap(ori(B))}))
+        title(sprintf('Staircase: %s (sem burn-in)', auxS))
         grid on; ylim([prm.sigmaMin prm.sigmaMax]); xlim([trialNum(1) trialNum(end)]);
         
         figFrame = getframe(hFig);
@@ -95,7 +100,7 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         texIdx = texIdx + 1;
     end
     
-    %% Textura 3: Curvas psicométricas do para o histórico completo
+    %% Textura 3: Curvas psicométricas para o histórico completo do staircase
     hFig = figure('Visible', 'off', 'Units', 'pixels', 'Position', [0 0 targetW targetH]);
     hFigs(texIdx) = hFig;
     hold on;
@@ -119,15 +124,15 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     plot(-stimRange, PAL_CumulativeNormal([alphaEst, betaEst, PM(B).guess(end), PM(B).lapse(end)], stimRange), 'k-', 'LineWidth', 2);
     set(gca, 'XDir', 'reverse');
     
-    txt = sprintf('Curr:\nThrs: %.2f\nSlope: %.2f', alphaEst, betaEst);
+    txt = sprintf('Atual:\nLimiar: %.2f\nIncl.: %.2f', -alphaEst, betaEst);
     if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-        txt = sprintf('%s\n\nPrev:\nThrs: %.2f\nSlope: %.2f', txt, ...
-                      tkP.stairPrev(B).threshold(end), tkP.stairPrev(B).slope(end));
+        txt = sprintf('%s\n\nPrev.:\nLimiar: %.2f\nIncl.: %.2f', txt, ...
+                      -tkP.stairPrev(B).threshold(end), tkP.stairPrev(B).slope(end));
     end
     text(prm.sigmaMin + (prm.sigmaMax-prm.sigmaMin)*0.05, 0.95, txt, 'FontSize', 9, 'VerticalAlignment', 'top');
     
-    xlabel('Sigma'); ylabel('Proportion Correct');
-    title(sprintf('Curve: %s', prm.allOriName{prm.allOriMap(ori(B))}));
+    xlabel('Sigma'); ylabel('Proporção corretos');
+    title(sprintf('Curva: %s', auxS));
     grid on; ylim([0 1.05]); xlim([prm.sigmaMin prm.sigmaMax]);
 
     figFrame = getframe(hFig);

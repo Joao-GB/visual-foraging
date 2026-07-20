@@ -77,7 +77,10 @@ function endScreen(dpP, drP, prm)
 
     grey = repmat(drP.grey, [1, 3]); white = repmat(drP.white, [1, 3]); black = repmat(drP.black, [1, 3]);
     SetMouse(xc, yc/2, dpP.window); HideCursor(dpP.window);
-    while ~KbCheck
+    lastKey = [];
+    wasKeyDown = false;
+    
+    while true
         [xMouse, yMouse] = GetMouse(dpP.window);
     %     disp(yMouse > yRange(1) && yMouse < yRange(2))
         tu = blkShape(i);
@@ -200,8 +203,8 @@ function endScreen(dpP, drP, prm)
         DrawFormattedText(dpP.window, 'Sessão concluída!', 'center', 2*dpP.winRect(4)/3, drP.black);
     
         msg = [
-            'Aperte qualquer tecla para sair, ou\n'...
-            'mova o cursor para ver o que acontece.\n'
+            'Aperte qualquer tecla duas vezes para sair,\n'...
+            'ou mova o cursor para ver o que acontece.\n'
         ];
         Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
         DrawFormattedText(dpP.window, msg, 'center', 2*dpP.winRect(4)/3 + 55, drP.black);
@@ -210,6 +213,20 @@ function endScreen(dpP, drP, prm)
         Screen('FrameOval', dpP.window, [black .5], [xMouse-3*prm.cursorRadius_px yMouse-3*prm.cursorRadius_px xMouse+3*prm.cursorRadius_px yMouse+3*prm.cursorRadius_px], prm.pW1);
         
         Screen('Flip', dpP.window);
+
+        [isKeyDown, ~, keyCode] = KbCheck;
+
+        if isKeyDown && ~wasKeyDown
+            key = find(keyCode, 1);
+    
+            if ~isempty(lastKey) && key == lastKey
+                break;
+            end
+    
+            lastKey = key;
+        end
+    
+        wasKeyDown = isKeyDown;
         WaitSecs(dt);
     end
 end

@@ -130,6 +130,12 @@ function instructForaging(tkP, dpP, drP, txP, prm)
         };
 
     nScreens = numel(screens);
+
+    % Posiciona o cursor no centro mas ligeiramente deslocado
+    r = 5*prm.eyeSize;
+    theta = 2*pi*rand; dx = r*cos(theta); dy = r*sin(theta);
+    SetMouse(dpP.winCenter(1) + dx, dpP.winCenter(2) + dy, dpP.window);
+    
     [mx,my] = GetMouse(dpP.window);
 
     oldState = false;

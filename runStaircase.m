@@ -105,9 +105,11 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             % Construção do prior customizado usando matrizes multidimensionais do PM
             if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-                % Se houve sessão anterior, usa priors que começam 
-                prevSessionAlpha = tkP.stairPrev(b).threshold(end);
-                prevSessionBeta  = tkP.stairPrev(b).slope(end);
+                % Se houve sessão anterior, usa como prior o último da
+                % sessão anterior, já que agora um PM é construído em cima
+                % do outro
+                prevSessionAlpha = tkP.stairPrev(end).threshold(end);
+                prevSessionBeta  = tkP.stairPrev(end).slope(end);
 
                 prior = PAL_pdfNormal(PM(b).priorAlphas, prevSessionAlpha, prm.priorStdStair2);
                 prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
@@ -605,7 +607,11 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             i = nBlocks;
             [~, maxIndex]  = PAL_findMax(PM(i).pdf);
             currentLambda  = priorLambdaRange(maxIndex(4));
-            newLevelASigma = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+            if mode <= 3 || isempty(PM(i).threshold)
+                newLevelASigma = aSigma;
+            else
+                newLevelASigma = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+            end
 
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
@@ -645,9 +651,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             diary off;
             psychrethrow(psychlasterror);
         end
-        clearvars -except b resultsStair nBlocks keepGoingBlocks tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
+        clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
-            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, newLevelASigma, targetOri);
+            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, repmat(newLevelASigma, [1 nBlocks]), targetOri);
             tkS(1,2) = 1;
         end
 end

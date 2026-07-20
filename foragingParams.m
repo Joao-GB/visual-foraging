@@ -118,7 +118,7 @@ function params = foragingParams
 %% -----
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
     % (a) Número de trials no treino
-    params.nTrialsTrain  = 30;
+    params.nTrialsTrain  = 12;
 
     % (b) Tempo máximo durante o qual é exibida a cruz antes de mensagem de
     % 'Tempo Esgotado' na fase 1
@@ -148,14 +148,14 @@ function params = foragingParams
                                     % repetir cada trial
 
     % (e) Parâmetros para remoção de estímulos já fixados
-    params.minDurStim     = .45;
+    params.minDurStim     = .5;
     params.fadeOutStimDur = .1;
     params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
 
     % (f) Tamanho e cor do cursor e do olho
     params.cursorRadius_px   = 4;
     params.cursorColor       = [1 1 1];
-    params.eyeSize           = 15;
+    params.eyeSize           = 12;
     
 
     % (g) Parâmetros de fixação com cursor

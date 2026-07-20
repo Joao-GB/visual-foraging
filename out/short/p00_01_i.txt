@@ -1,0 +1,4004 @@
+Selecionado: staircase
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 10
+Elapsed time is 0.082580 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: -40.0000 (no xCurrent: -30.5000)
+
+Por isso o novo aSigma é 30.5000
+Limiar Atual Estimado (Alpha): -37.77
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 11
+Elapsed time is 0.082852 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 30.5000 (no xCurrent: -40.0000)
+
+Por isso o novo aSigma é 40.0000
+Limiar Atual Estimado (Alpha): -44.65
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 9
+Elapsed time is 0.083174 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 40.0000 (no xCurrent: -47.5000)
+
+Por isso o novo aSigma é 47.5000
+Limiar Atual Estimado (Alpha): -50.99
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 8
+Elapsed time is 0.083487 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 47.5000 (no xCurrent: -54.5000)
+
+Por isso o novo aSigma é 54.5000
+Limiar Atual Estimado (Alpha): -56.43
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 1
+Elapsed time is 0.083140 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 54.5000 (no xCurrent: -59.5000)
+
+Por isso o novo aSigma é 59.5000
+Limiar Atual Estimado (Alpha): -61.44
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 13
+Elapsed time is 0.083275 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 59.5000 (no xCurrent: -54.0000)
+
+Por isso o novo aSigma é 54.0000
+Limiar Atual Estimado (Alpha): -53.70
+Inclinação Atual Estimada (Beta): 3.02
+
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 2
+Elapsed time is 0.083196 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 54.0000 (no xCurrent: -49.5000)
+
+Por isso o novo aSigma é 49.5000
+Limiar Atual Estimado (Alpha): -48.01
+Inclinação Atual Estimada (Beta): 3.02
+
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 12
+Elapsed time is 0.083076 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 49.5000 (no xCurrent: -51.5000)
+
+Por isso o novo aSigma é 51.5000
+Limiar Atual Estimado (Alpha): -51.16
+Inclinação Atual Estimada (Beta): 3.00
+
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 5
+Elapsed time is 0.083264 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 51.5000 (no xCurrent: -49.5000)
+
+Por isso o novo aSigma é 49.5000
+Limiar Atual Estimado (Alpha): -48.40
+Inclinação Atual Estimada (Beta): 3.04
+
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 3
+Elapsed time is 0.083190 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 49.5000 (no xCurrent: -45.0000)
+
+Por isso o novo aSigma é 45.0000
+Limiar Atual Estimado (Alpha): -44.01
+Inclinação Atual Estimada (Beta): 2.97
+
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 7
+Elapsed time is 0.082991 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 45.0000 (no xCurrent: -47.0000)
+
+Por isso o novo aSigma é 47.0000
+Limiar Atual Estimado (Alpha): -47.08
+Inclinação Atual Estimada (Beta): 2.95
+
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 15
+Elapsed time is 0.083439 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 47.0000 (no xCurrent: -48.5000)
+
+Por isso o novo aSigma é 48.5000
+Limiar Atual Estimado (Alpha): -48.65
+Inclinação Atual Estimada (Beta): 2.93
+
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 8
+Elapsed time is 0.083181 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 48.5000 (no xCurrent: -49.0000)
+
+Por isso o novo aSigma é 49.0000
+Limiar Atual Estimado (Alpha): -49.22
+Inclinação Atual Estimada (Beta): 3.11
+
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 10
+Elapsed time is 0.083044 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 49.0000 (no xCurrent: -48.5000)
+
+Por isso o novo aSigma é 48.5000
+Limiar Atual Estimado (Alpha): -48.55
+Inclinação Atual Estimada (Beta): 3.24
+
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 11
+Elapsed time is 0.083528 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 48.5000 (no xCurrent: -48.5000)
+
+Por isso o novo aSigma é 48.5000
+Limiar Atual Estimado (Alpha): -48.73
+Inclinação Atual Estimada (Beta): 3.41
+
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 6
+Elapsed time is 0.083094 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 48.5000 (no xCurrent: -48.5000)
+
+Por isso o novo aSigma é 48.5000
+Limiar Atual Estimado (Alpha): -48.78
+Inclinação Atual Estimada (Beta): 3.54
+
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 13
+Elapsed time is 0.083379 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 48.5000 (no xCurrent: -48.5000)
+
+Por isso o novo aSigma é 48.5000
+Limiar Atual Estimado (Alpha): -48.84
+Inclinação Atual Estimada (Beta): 1.94
+
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 1
+Elapsed time is 0.083008 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 48.5000 (no xCurrent: -49.0000)
+
+Por isso o novo aSigma é 49.0000
+Limiar Atual Estimado (Alpha): -49.02
+Inclinação Atual Estimada (Beta): 2.16
+
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 4
+Elapsed time is 0.083456 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 49.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar Atual Estimado (Alpha): -49.75
+Inclinação Atual Estimada (Beta): 2.06
+
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 14
+Elapsed time is 0.083471 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar Atual Estimado (Alpha): -51.20
+Inclinação Atual Estimada (Beta): 2.32
+
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 5
+Elapsed time is 0.083151 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -50.5000)
+
+Por isso o novo aSigma é 50.5000
+Limiar Atual Estimado (Alpha): -52.72
+Inclinação Atual Estimada (Beta): 2.65
+
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 12
+Elapsed time is 0.083297 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.5000 (no xCurrent: -52.5000)
+
+Por isso o novo aSigma é 52.5000
+Limiar Atual Estimado (Alpha): -53.60
+Inclinação Atual Estimada (Beta): 2.90
+
+
+Idx Bloco: 2
+# Trial: 11
+ Idx Trial: 7
+Elapsed time is 0.083291 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 52.5000 (no xCurrent: -51.0000)
+
+Por isso o novo aSigma é 51.0000
+Limiar Atual Estimado (Alpha): -51.77
+Inclinação Atual Estimada (Beta): 2.86
+
+
+Idx Bloco: 2
+# Trial: 12
+ Idx Trial: 3
+Elapsed time is 0.083001 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 51.0000 (no xCurrent: -49.5000)
+
+Por isso o novo aSigma é 49.5000
+Limiar Atual Estimado (Alpha): -49.57
+Inclinação Atual Estimada (Beta): 1.46
+
+Valor de aSigma escolhido via staircase: 45.00
+oriFilter e OFsize devidamente atualizados
+Selecionado: treino t1
+Tempo inicial: 0.00836
+Tempo getDistr: 0.00058
+Tempo orientações distratoras: 0.00036
+Tempo matrizes nulas: 0.00014
+Tempo rects a centers: 0.00047
+Tempo preencher locais de sestímulos e orientações de alvos: 0.17168
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 28
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 6
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1397
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.1402
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0829
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 28: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     1     4     3     5     6     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 2
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 32
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Fim de fixação ruim em stim
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 4
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1709
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.1711
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0826
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 32: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     3     2     7     1     4     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 6
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 10
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1794
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.1869
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0869
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 10: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     5     1     6     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 7
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 2
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1882
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.1884
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0820
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 2: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     4     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 5
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 13
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 3
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.1842
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.1945
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0852
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 13: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     4     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 2
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 31
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2061
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2065
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0859
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 31: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     1     6     5     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 7
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 16
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 7
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2057
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2125
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0849
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 16: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     6     3     2     1     7     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 5
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 4
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 3
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2147
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2151
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0828
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 4: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     8     1     4     2     3     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 6
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 5
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 5
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2175
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2250
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0866
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 5: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     2     4     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 3
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 17
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2232
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2235
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0810
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 17: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     8     2     1     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 6
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 26
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2284
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2288
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0811
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 26: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     7     4     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 3
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 24
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2336
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2338
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0853
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 24: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     1     6     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 7
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2331
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2336
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0841
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 7: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     2     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 8
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 9
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 3
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2420
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2423
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0858
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 9: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     4     1     8     5     3     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 2
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 12
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 6
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2419
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2420
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0838
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 12: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     5     3     2     1     6     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 7
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 16
+ Idx Trial: 14
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2421
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2424
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0876
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 14: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     2     8     5     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 17
+ Idx Trial: 3
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2409
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2411
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0802
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 3: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     3     7     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 2
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 18
+ Idx Trial: 21
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2374
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2449
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0856
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 21: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     8     7     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 5
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 19
+ Idx Trial: 19
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2431
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2503
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0857
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 19: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     6     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 3
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 20
+ Idx Trial: 15
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2534
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2538
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0877
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 15: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     1     4     3     2     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 7
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 21
+ Idx Trial: 22
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2535
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2538
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0879
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 22: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     7     4     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 5
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 22
+ Idx Trial: 25
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2611
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2613
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0851
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Fim de fixação ruim PM em stim
+Trial 25: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     3     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 7
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 23
+ Idx Trial: 27
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2553
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2630
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0866
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 27: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     7     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 8
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 24
+ Idx Trial: 1
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2705
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2707
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0603
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0703
+ Sem movimento ocular em PM. Permaneceu no alvo 4
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      8     2     6     1     5     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 4
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 25
+ Idx Trial: 33
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação ruim em stim
+currStim = 1
+Fim de fixação ruim em stim
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2672
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2773
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0873
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 33: Visitou o alvo 4 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     2     3     1     8     5     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 4
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 26
+ Idx Trial: 8
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2722
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2834
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0855
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 8: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     5     6     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 7
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 27
+ Idx Trial: 18
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 2
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2852
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2855
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por dispersão: 0.0364
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0436
+ Sem movimento ocular em PM. Permaneceu no alvo 5
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      2     4     1     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 5
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 28
+ Idx Trial: 30
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 4
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2785
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2878
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0455
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0526
+ Sem movimento ocular em PM. Permaneceu no alvo 8
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      7     1     6     3     2     4     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 29
+ Idx Trial: 11
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2762
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2764
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0828
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 11: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     1     5     6     7     2     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 30
+ Idx Trial: 23
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 4
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2694
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2697
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0899
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 23: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     1     6     2     8     4     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 5
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 26
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2700
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2702
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0878
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 26: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     5     1     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 6
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 27
+ATENÇÃO: 4/8 visitas até modificar
+
+ans =
+
+   1.7846e+09
+
+currStim final = 0
+Ajuste de pinkNoiseDur
+Valor de duração do ruido rosa ajustado: 0.08
+Selecionado: treino t2
+Tempo inicial: 0.00659
+Tempo getDistr: 0.00040
+Tempo orientações distratoras: 0.00025
+Tempo matrizes nulas: 0.00011
+Tempo rects a centers: 0.00023
+Tempo preencher locais de sestímulos e orientações de alvos: 0.16866
+----Início da sessão----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 2
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2530
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2695
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+ Sem movimento ocular em PM. Permaneceu no alvo 7
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      5     4     3     1     7     7
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 2
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2562
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2686
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 2: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     4     3     1     7     6
+
+
+Há currIdx... então será perguntado sobre
+     2
+     0
+     1
+
+Vistos: 3  4
+Pré-s: 
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 14
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2594
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2668
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 14: Visitou o alvo 4 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     1     6     7     3     5     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 4
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 5
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Fim de fixação ruim em stim
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 6
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2778
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2781
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 5: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     2     5     4     1     6     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 7
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 15
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3090
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.3092
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+ Sem movimento ocular em PM. Permaneceu no alvo 8
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      2     8     8
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     1
+     0
+     2
+
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 15
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3068
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.3135
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 8, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Fim de fixação ruim PM em stim
+Trial 15: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     8     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     0
+     2
+
+Vistos: 2
+Pré-s: 
+Não vistos: 3  1
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 11
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2989
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3125
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 11: Visitou o alvo 4 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     2     6     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 4
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 31
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3005
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.3009
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 31: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     8     2     3     1     5     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 6
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 13
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Fim de fixação ruim em stim
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2812
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.2814
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 13: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     5     2     3     7     6     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 26
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 7
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2768
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2867
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 26: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     5     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 7
+Pré-s: 3
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 30
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2556
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2654
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0866
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 30: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     4     3     2     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 8
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 10
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2728
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2731
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0855
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 10: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     4     1     5     7     2     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 3
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 33
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2903
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2934
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 33: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     7     4     6     1     5     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 3
+Não vistos: 8
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 4
+ATENÇÃO: 3/8 visitas até modificar
+
+ans =
+
+   1.7846e+09
+
+
+ans =
+
+   1.7846e+09
+
+
+ans =
+
+   1.7846e+09
+
+currStim final = 0
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 12
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3056
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.3060
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 12: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     1     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 6
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 9
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3144
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.3146
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 9: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     7     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 2
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 28
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3133
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.3134
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0750
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 28: Visitou o alvo 4 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     6     8     1     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 4
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 18
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação ruim em stim
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 6
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3029
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3032
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 18: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     4     7     2     6     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 16
+ Idx Trial: 7
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3049
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3050
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 7: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     4     6     3     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 8
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 17
+ Idx Trial: 8
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3014
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.3016
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por dispersão: 0.0733
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 8: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     4     7     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 2
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 18
+ Idx Trial: 1
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 7
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2928
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.3002
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 1: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     1     5     3     8     7     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 2
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 19
+ Idx Trial: 22
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 6
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2910
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3011
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 22: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     5     1     6     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 7
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 20
+ Idx Trial: 23
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2978
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3049
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0724
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+ Sem movimento ocular em PM. Permaneceu no alvo 1
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      4     2     5     3     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 6
+
+Idx Bloco: 1
+# Trial: 21
+ Idx Trial: 29
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3002
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.3003
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 29: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     2     8     4     3     1     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 6
+Não vistos: 7
+
+Idx Bloco: 1
+# Trial: 22
+ Idx Trial: 24
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 4
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2939
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.3011
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 24: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     3     6     1     5     4     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 7
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 23
+ Idx Trial: 3
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3145
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.3148
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 8, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 3: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     8     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 2
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 24
+ Idx Trial: 20
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3080
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3152
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 20: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     4     3     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 7
+Não vistos: 2
+
+Idx Bloco: 1
+# Trial: 25
+ Idx Trial: 16
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3222
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3224
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0755
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Trial 16: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     6     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 5
+Não vistos: 3
+
+Idx Bloco: 1
+# Trial: 26
+ Idx Trial: 6
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 6
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3218
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3292
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 6: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     3     5     8     7     6     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 2
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 27
+ Idx Trial: 32
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3437
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3439
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 32: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     5     8     3     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 6
+Não vistos: 1
+
+Idx Bloco: 1
+# Trial: 28
+ Idx Trial: 25
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3402
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3405
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 6, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 25: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     1     6     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 5
+Não vistos: 4
+
+Idx Bloco: 1
+# Trial: 29
+ Idx Trial: 19
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 3
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3300
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.3399
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por dispersão: 0.0276
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0334
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 19: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     1     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 8
+Não vistos: 5
+
+Idx Bloco: 1
+# Trial: 30
+ Idx Trial: 21
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 4
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3364
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3368
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0005
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0082
+ Sem movimento ocular em PM. Permaneceu no alvo 1
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      4     8     3     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 1
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 27
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação ruim em stim
+currStim = 8
+Fim de fixação ruim em stim
+currStim = 8
+Fim de fixação boa em stim
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Atenção: pulou de um estímulo a outro
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3332
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.3432
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0006
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0083
+ Sem movimento ocular em PM. Permaneceu no alvo 3
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      8     8     4     6     1     2     5     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 3
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 23
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3340
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.3344
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por dispersão: 0.0600
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0668
+ Sem movimento ocular em PM. Permaneceu no alvo 1
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      6     3     2     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 1
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 4
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3294
+currStim final = 6
+Tempo permitido de fixação antes do rosa: 0.3296
+currStim último fixado (agora em P3) = 6
+Fim ruído rosa por dispersão: 0.0052
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0189
+ Sem movimento ocular em PM. Permaneceu no alvo 5
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      8     6     5
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 5
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 26
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3385
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.3387
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0006
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0083
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 26: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     1     3     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 2
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 29
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação ruim em stim
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.3099
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.3101
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0170
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0258
+ Sem movimento ocular em PM. Permaneceu no alvo 7
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      2     8     3     1     4     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 7
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 15
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+currStim = 2
+Fim de fixação ruim em stim
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2865
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2867
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0011
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0083
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 15: Visitou o alvo 8 pós-modificação
+Fim de fixação PM em stim
+seenStimsQueue final:      7     4     6     1     4     3     5     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 8
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 7
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2785
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2788
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por dispersão: 0.0656
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0749
+ Sem movimento ocular em PM. Permaneceu no alvo 2
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      1     3     4     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 2
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 12
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2732
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2733
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por dispersão: 0.0448
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0583
+ Sem movimento ocular em PM. Permaneceu no alvo 7
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      8     2     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 7
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 14
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2547
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2551
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0628
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0750
+ Sem movimento ocular em PM. Permaneceu no alvo 6
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      5     4     2     1     3     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 6
+Não vistos: 8
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 6
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 4
+Fim de fixação ruim em stim
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2486
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2488
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0439
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0500
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Fim de fixação ruim PM em stim
+Fim de fixação ruim PM em stim
+Trial 6: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     6     5     2     3     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 8
+
+Idx Bloco: 2
+# Trial: 11
+ Idx Trial: 9
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 2
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2410
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2412
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por dispersão: 0.0032
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0175
+ Sem movimento ocular em PM. Permaneceu no alvo 3
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      5     4     3     8     7     2     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 3
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 12
+ Idx Trial: 18
+ATENÇÃO: 2/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Visita ao último 2-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2356
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2359
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0632
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0749
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 18: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     3     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 1
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 13
+ Idx Trial: 33
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 5
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2208
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2210
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 33: Visitou o alvo 3 pós-modificação
+Fim de fixação PM em stim
+seenStimsQueue final:      1     2     6     8     7     5     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 3
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 14
+ Idx Trial: 24
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2166
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2169
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0831
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 24: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     4     1     7     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 4
+Pré-s: 6
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 15
+ Idx Trial: 11
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2208
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2211
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 11: Visitou o alvo 6 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      1     3     4     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 6
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 16
+ Idx Trial: 20
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2234
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2236
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0004
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0083
+Saiu do currIdx 8, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 20: Visitou o alvo 5 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     2     3     1     5     5
+
+
+Não chegou noutro estímulo durante ruído rosa
+Não há currIdx... ... então pré-s. vira visto
+     2
+     0
+     1
+
+
+Idx Bloco: 2
+# Trial: 16
+ Idx Trial: 20
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2195
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2197
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por dispersão: 0.0429
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0509
+ Sem movimento ocular em PM. Permaneceu no alvo 1
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      7     2     3     8     5     1
+
+
+Há currIdx... então será perguntado sobre
+     2
+     0
+     1
+
+Vistos: 7  3
+Pré-s: 
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 17
+ Idx Trial: 28
+ATENÇÃO: 5/8 visitas até modificar
+
+ans =
+
+   1.7846e+09
+
+currStim final = 0
+
+Idx Bloco: 2
+# Trial: 17
+ Idx Trial: 25
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2207
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2278
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0580
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0666
+ Sem movimento ocular em PM. Permaneceu no alvo 1
+Fim de fixação PM por inércia (maxTolPM)
+seenStimsQueue final:      2     4     3     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 18
+ Idx Trial: 2
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2215
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2218
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 2: Visitou o alvo 8 pós-modificação
+Fim de fixação PM em stim
+seenStimsQueue final:      3     1     6     5     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 6
+Pré-s: 8
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 19
+ Idx Trial: 13
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2178
+currStim final = 8
+Tempo permitido de fixação antes do rosa: 0.2180
+currStim último fixado (agora em P3) = 8
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 8, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 13: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     2     4     5     8     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 20
+ Idx Trial: 17
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2157
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2166
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por dispersão: 0.0748
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0841
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Fim de fixação ruim PM em stim
+Trial 17: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     2     3     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 7
+Não vistos: 1
+
+Idx Bloco: 2
+# Trial: 21
+ Idx Trial: 10
+ATENÇÃO: 6/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 5-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+currStim = 1
+Visita ao último 6-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2440
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2442
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0853
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 10: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      5     2     4     3     8     3     1     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 2
+Não vistos: 6
+
+Idx Bloco: 2
+# Trial: 22
+ Idx Trial: 3
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2420
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2422
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0856
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 3: Visitou o alvo 2 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      4     1     6     5     3     2
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 2
+Não vistos: 8
+
+Idx Bloco: 2
+# Trial: 23
+ Idx Trial: 19
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Fim de fixação ruim em stim
+currStim = 3
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2357
+currStim final = 3
+Tempo permitido de fixação antes do rosa: 0.2360
+currStim último fixado (agora em P3) = 3
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 3, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 19: Visitou o alvo 6 pós-modificação
+Fim de fixação PM em stim
+seenStimsQueue final:      5     1     2     8     3     6
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 6
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 24
+ Idx Trial: 21
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 2
+Fim de fixação ruim em stim
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 5
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2365
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2367
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 21: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     2     3     8     5     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 8
+Pré-s: 1
+Não vistos: 7
+
+Idx Bloco: 2
+# Trial: 25
+ Idx Trial: 30
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 1
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2342
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2343
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0832
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 30: Visitou o alvo 8 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      2     5     6     7     1     8
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 8
+Não vistos: 3
+
+Idx Bloco: 2
+# Trial: 26
+ Idx Trial: 16
+ATENÇÃO: 3/8 visitas até modificar
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 4
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 7
+Visita ao último 3-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2315
+currStim final = 7
+Tempo permitido de fixação antes do rosa: 0.2386
+currStim último fixado (agora em P3) = 7
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0834
+Saiu do currIdx 7, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 16: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      3     4     7     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 3
+Pré-s: 1
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 27
+ Idx Trial: 8
+ATENÇÃO: 5/8 visitas até modificar
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 4-ésimo estímulo
+currStim = 2
+Visita ao último 5-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2389
+currStim final = 2
+Tempo permitido de fixação antes do rosa: 0.2391
+currStim último fixado (agora em P3) = 2
+Fim ruído rosa por duração: 0.0751
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 2, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 8: Visitou o alvo 3 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      7     6     5     1     2     3
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 3
+Não vistos: 4
+
+Idx Bloco: 2
+# Trial: 28
+ Idx Trial: 31
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 8
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 5
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 1
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2371
+currStim final = 1
+Tempo permitido de fixação antes do rosa: 0.2443
+currStim último fixado (agora em P3) = 1
+Fim ruído rosa por duração: 0.0752
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 1, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 31: Visitou o alvo 4 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      8     3     5     1     4
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 5
+Pré-s: 4
+Não vistos: 2
+
+Idx Bloco: 2
+# Trial: 29
+ Idx Trial: 32
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 7
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 2
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 4
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2425
+currStim final = 4
+Tempo permitido de fixação antes do rosa: 0.2427
+currStim último fixado (agora em P3) = 4
+Fim ruído rosa por duração: 0.0754
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0833
+Saiu do currIdx 4, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 32: Visitou o alvo 1 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     7     2     4     1
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 2
+Pré-s: 1
+Não vistos: 5
+
+Idx Bloco: 2
+# Trial: 30
+ Idx Trial: 5
+ATENÇÃO: 4/8 visitas até modificar
+currStim = 6
+Fim de fixação boa em stim
+Terminou a visita ao 1-ésimo estímulo
+currStim = 1
+Fim de fixação boa em stim
+Terminou a visita ao 2-ésimo estímulo
+currStim = 3
+Fim de fixação boa em stim
+Terminou a visita ao 3-ésimo estímulo
+currStim = 5
+Visita ao último 4-ésimo estímulo
+Tempo pré-ruído rosa disponível: 0.2435
+currStim final = 5
+Tempo permitido de fixação antes do rosa: 0.2436
+currStim último fixado (agora em P3) = 5
+Fim ruído rosa por duração: 0.0753
+Fim de fixação P3 em stim
+Tempo total de ruído rosa: 0.0841
+Saiu do currIdx 5, temos tempo sobrando em PM
+Fim de fixação PM em stim
+Trial 5: Visitou o alvo 7 pós-modificação (fim forçado)
+Fim de fixação PM em stim
+seenStimsQueue final:      6     1     3     5     7
+
+
+Há currIdx... então será perguntado sobre
+     1
+     1
+     1
+
+Vistos: 1
+Pré-s: 7
+Não vistos: 2
+Ajuste de pinkNoiseDur
+Valor de duração do ruido rosa ajustado: 0.08
+
+ans =
+
+   1.7846e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de staircase concluída e salva com êxito.
+AVISO: Sessão de treino 1 não concluída, mas salva.
+AVISO: Sessão de treino 2 concluída e salva com êxito.
+Tempo total da sessão: 1018.170 s

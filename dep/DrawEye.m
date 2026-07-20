@@ -1,11 +1,11 @@
 function DrawEye(win, center, radius, irisColor, alphaColor)
 % Desenha um olho na janela win, com centro, raio e cor da írisespecificados
-if nargin < 5, alphaColor = .8; end
+if nargin < 5, alphaColor = .72; end
 x = center(1);
 y = center(2);
 
 %% Esclera (com um cortorno escuro)
-rx = radius * 2.1;
+rx = radius * 2.;
 ry = radius * 1.3;
 
 irisColor = [irisColor alphaColor];

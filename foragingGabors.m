@@ -145,6 +145,9 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 %         stairBurnIn = 0;
         stairPrev   = prevData.tkP.stair.staircase;
         auxASigma = num2cell(prevData.tkP.stair.aSigma);
+        if isscalar(auxASigma)
+            auxASigma = repmat(auxASigma, 1, numel(stairPrev));
+        end
         [stairPrev.aSigma] = auxASigma{:};
     else
 %         stairBurnIn = 1;
@@ -718,7 +721,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             elseif strcmp(mode, 'training')
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: treino staircase\n')
-%                                 [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
+                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState);
                             elseif strcmp(mode, 'staircase')
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
@@ -2032,11 +2035,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
                         WaitSecs(.5);
 
-                        restartTrials = restartTrials & skipP4;
-                    % A condição é keepGoingTrials = false ou restartTrials = true
+                        restartTrial = restartTrial & skipP4;
+                    % A condição é keepGoingTrials = false ou restartTrial = true
                     end
 
-                    if keepGoingTrials == false || restartTrials == true
+                    if keepGoingTrials == false || restartTrial == true
                         
                         if debug == 0 && mode >= 2, Eyelink('Message',prm.msg.err.trl{1}); end
                         retryCount(trialQueue(i)) = retryCount(trialQueue(i)) + 1;

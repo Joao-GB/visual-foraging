@@ -26,11 +26,11 @@ function plotPSAforagingPerformance(trl, PSA, drP)
     
     titleBase = 'Efeito pré-sacádico e desempenho no forrageamento';
     
-    % 1. Gera figura de Acurácia
+    % 1. Gera figura de acurácia
     renderPSAforagingPerformance(plotDataAcc, trialCounts, 'Acertos (%)', ...
         'PSA foraging effect - Accuracy', [titleBase, ' (Acurácia)'], drP, false);
         
-    % 2. Gera figura de Sensibilidade
+    % 2. Gera figura de sensibilidade
     renderPSAforagingPerformance(plotDataSens, trialCounts, 'Sensibilidade (d'')', ...
         'PSA foraging effect - Sensitivity', [titleBase, ' (Sensibilidade)'], drP, true);
 end
