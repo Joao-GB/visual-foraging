@@ -1,11 +1,16 @@
-function PSA = plotPSAmain(trl, drP)
-    titlePSA  = 'Efeito pré-sacádico em tarefa de forrageamento';
+function PSA = plotPSAmain(trl, drP, aux)
+if nargin < 3, aux = 0; end
+    if aux, titlePSA = 'Efeito pré-sacádico em tarefa de forrageamento (treino)';
+            titleFig = 'PSA main effect (train)';
+    else,   titlePSA = 'Efeito pré-sacádico em tarefa de forrageamento';
+            titleFig = 'PSA main effect';
+    end
     xlabelPSA = ["Forrag.", "Sacádico", "Não-sacádico"];
     ylabelPSA = 'Acertos (%)';
     [main, counts] = getPSAeffect(trl);
     PSA.main = main; PSA.main.counts = counts;
     
-    figure('Name', 'PSA main effect', 'Color', 'w', 'Position', [100 200 1000 450]);
+    figure('Name', titleFig, 'Color', 'w', 'Position', [100 200 1000 450]);
     t = tiledlayout(1, 2, 'TileSpacing', 'loose', 'Padding', 'normal');
     
     % Subplot 1: acertos

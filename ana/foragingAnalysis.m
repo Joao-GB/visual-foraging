@@ -50,7 +50,7 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     nHit = PSA.main.nSacc.idx{1,1}+PSA.main.nSacc.idx{2,2};
 
     %% Para o treino:
-    trainPSA = plotPSAmain(trainTrlProps, mat.drP);
+    trainPSA = plotPSAmain(trainTrlProps, mat.drP, 1);
 
     % 3. Efeito da ordem das perguntas
     order = plotPSAorder(trlProps, mat.drP);

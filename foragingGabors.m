@@ -1916,6 +1916,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         if sum(nStimsToReport(:, idx, b)) ~= 3
                             disp('ERRO')
                         end
+
+                        % Para o treino de forrageamento, não faz sentido
+                        % punir com o vermelhinho, até porque ainda está 
+                        % sendo feito o ajuste dos parâmetros temporais
+                        if mode <= 2, skipP4 = false; end
+
                         if skipP4
                             warningFlip(dpP.window, stimCenters(:, :, idx, b), resizeRect(dstRects, .25), currStim, txP.gabor.size_px, drP.allPW, drP.darkRed);
                         else
