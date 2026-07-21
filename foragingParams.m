@@ -95,13 +95,13 @@ function params = foragingParams
 %% Porpriedades do staircase
     params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
     addpath(genpath(params.palPath));
-    params.sigmaMin = 15;   params.sigmaMax = 80; params.sigmaStep = 2; 
+    params.sigmaMin = 20;   params.sigmaMax = 75; params.sigmaStep = 2; 
     params.sigmaRem = 5;
     params.grainAlpha = 30;
-    params.betaMin  = .02; params.betaMax  = 3; params.grainBeta = 20;
-    params.nStimsStair   = 3;
+    params.betaMin  = .02; params.betaMax  = 1; params.grainBeta = 20;
+    params.nStimsStair = 3;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 40;     % <-
+    params.nTrialsStair = 50;     % <-
     params.nTrialsStairTrain = 10;
     params.priorMeanStair  = 30; params.priorStdStair   = 25; params.priorStdStairLog = 0.12;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida

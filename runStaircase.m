@@ -50,6 +50,10 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
     
         stimCenters = zeros(2, nStims, nTrialsBuffered, nBlocks);
         fixIdx      = zeros(nBlocks, nTrialsBuffered); 
+
+        auxidx = zeros(1, nBlocks);
+        stimRange = (-prm.sigmaMax:prm.sigmaStep:-prm.sigmaMin);
+        if isscalar(prm.aSigma), prm.aSigma = repmat(prm.aSigma, 1, nBlocks); end
         for b=1:nBlocks
             for i=1:nTrialsBuffered
                 [currFixCenter, currStimCenter, ~, fI] = getStimLocations2_1(dpP.winRect(3:4), [dpP.winCenter 1], tkP.nStims, minDist_px, txP.gabor.size_px);
@@ -59,15 +63,15 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                 fixIdx(b, i) = nStims;
                 orientation(randperm(nStims, nTs(b, i)), i, b) = targetOri(b);
             end
+            [~, auxidx(b)] = min(abs(stimRange - (-prm.aSigma(prm.allOriMap(targetOri(b))))));
+            prm.aSigma(b) = stimRange(auxidx(b));
         end
     
         minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
 %% Cria o objeto que registra todo o staircase
 
-        stimRange = (-prm.sigmaMax:prm.sigmaStep:-prm.sigmaMin);
-        [~, auxidx] = min(abs(stimRange - (-prm.aSigma)));
-        prm.aSigma = stimRange(auxidx);
+        
         if tkP.stairBurnIn
             burninTrials = prm.burninTrials;
             auxStimRange = -flip(stimRange);
@@ -77,7 +81,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             aSigma = ones(1, nBlocks)*burnInASigma(1);
         else
             burninTrials = 0;          % Neutraliza o loop posterior
-            burnInASigma = prm.aSigma; aSigma = ones(1, nBlocks)*prm.aSigma;
+            burnInASigma = prm.aSigma; aSigma = prm.aSigma;
         end
         PF = @PAL_CumulativeNormal;
 
@@ -104,7 +108,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             % Construção do prior customizado usando matrizes multidimensionais do PM
             if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
-                k = find([tkP.stairPrev.tgtOri] == targetOri(b));
+                k = find([tkP.stairPrev.tgtOri] == targetOri(b),1);
                 prevSessionAlpha = tkP.stairPrev(k).threshold(end);
                 prevSessionBeta  = tkP.stairPrev(k).slope(end);
 
@@ -120,8 +124,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             % Normaliza a grade de probabilidade
             prior = prior ./ sum(prior(:));
             PM(b) = PAL_AMPM_setupPM(PM(b), 'prior', prior); %#ok<*AGROW>
+        end
+        for b = 1:nBlocks
             PM(b).tgtOri = targetOri(b);
-
         end
         startPM = PM;
         startASigma = aSigma;
@@ -149,17 +154,22 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             Eyelink('Message',prm.msg.on.stc);
             EyelinkDoTrackerSetup(tkP.el);
+            
+            stimHistory = cell(1,nBlocks);
+            respHistory = cell(1,nBlocks);
 
             while b <= nBlocks && keepGoingBlocks
 %                 if b > 1
 %                     startPM(b) = PM(b-1);
 %                     startASigma(b) = aSigma(b-1);
 %                 end
+                stimHistory{b} = [];
+                respHistory{b} = [];
                 PM(b) = startPM(b);
-                aSigma(b) = startASigma(b);
-                [~, auxidx] = min(abs(stimRange - (-startASigma(b))));
+                aSigma(prm.allOriMap(targetOri(b))) = startASigma(prm.allOriMap(targetOri(b)));
+                [~, auxidx(b)] = min(abs(stimRange - (-startASigma(prm.allOriMap(targetOri(b))))));
 
-                [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
+                [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(prm.allOriMap(targetOri(b))), prm.rSigma2);
                 oriFilter(:,:,b) = auxOriFilter;
                 OFsize(:,:,b)    = auxOFsize;
 
@@ -541,29 +551,31 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                     else
                         disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
-                        if aSigma(b) <= (prm.sigmaMin + prm.sigmaRem) && prm.avoidConsecutive, suspend = 1;
+                        if aSigma(prm.allOriMap(targetOri(b))) <= (prm.sigmaMin + .5*prm.sigmaRem) && prm.avoidConsecutive, suspend = 1;
                         end
                         if suspend == 1, suspend = rand(1) > 1./prm.stairWaitTime;
                         end
                         
                         for j=1:length(orderToReportStims)
-                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)), 'xIndex', auxidx, 'fixLapse', suspend);
+                            PM(b) = PAL_AMPM_updatePM(PM(b), feedback(orderToReportStims(j)), 'xIndex', auxidx(b), 'fixLapse', suspend);
+                            stimHistory{b} = [stimHistory{b} stimRange(auxidx(b))];
+                            respHistory{b} = [respHistory{b} feedback(orderToReportStims(j))];
                         end
 
-                        fprintf('Atualizo o PM do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(b), PM(b).xCurrent);
+                        fprintf('Atualizo o PM do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(prm.allOriMap(targetOri(b))), PM(b).xCurrent);
                         % fprintf('\nA média evoluiu como: '); disp(PM(b).xStaircase)
 
                         % Quando chega nessa parte, o i já foi incrementado 
                         % na parte com trialIdxUp. Por iso i em vez de i+1
                         if i <= burninTrials && b == 1
-                            [~, auxidx] = min(abs(stimRange - (-burnInASigma(i))));
-                            aSigma(b) = stimRange(auxidx);
-                            fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(b));
-                            % PM(b).xCurrent = -aSigma(b);
+                            [~, auxidx(b)] = min(abs(stimRange - (-burnInASigma(i))));
+                            aSigma(prm.allOriMap(targetOri(b))) = stimRange(auxidx(b));
+                            fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
+                            % PM(b).xCurrent = -aSigma(prm.allOriMap(targetOri(b)));
                         else
-                            [~, auxidx] = min(abs(stimRange - (PM(b).xCurrent)));
-                            aSigma(b) = -PM(b).xCurrent;
-                            fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(b));
+                            [~, auxidx(b)] = min(abs(stimRange - (PM(b).xCurrent)));
+                            aSigma(prm.allOriMap(targetOri(b))) = -PM(b).xCurrent;
+                            fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
                         end
 
                         currentAlphaEst = PM(b).threshold(end);
@@ -571,7 +583,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                         fprintf('Limiar atual estimado (Alpha): %.2f\n', currentAlphaEst);
                         fprintf('Inclinação atual estimada (Beta): %.2f\n\n', currentBetaEst);
 
-                        [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(b), prm.rSigma2);
+                        [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(prm.allOriMap(targetOri(b))), prm.rSigma2);
                         oriFilter(:,:,b) = auxOriFilter;
                         OFsize(:,:,b)    = auxOFsize;
                     end
@@ -603,14 +615,64 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
 
             resultsStair.aSigma75  = aSigma;
 
-            newLevelASigma = ones(1, nBlocks);
-            for i = 1:nBlocks
-                [~, maxIndex] = PAL_findMax(PM(i).pdf);
-                currentLambda = priorLambdaRange(maxIndex(4));
-                if mode <= 3 || isempty(PM(i).threshold)
-                    newLevelASigma(i) = aSigma(i);
-                else
-                    newLevelASigma(i) = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, currentLambda], prm.stairLevel, 'inverse');
+            newLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
+
+            if b == nBlocks + 1 && keepGoingBlocks
+            
+                searchGrid.alpha  = priorAlphaRange;
+                searchGrid.beta   = priorBetaRange;
+                searchGrid.gamma  = gamma;
+                searchGrid.lambda = priorLambdaRange;
+                
+                paramsFree = [1 1 0 1]; 
+                for i = 1:nBlocks
+                    % % MLE restrito ao grid
+                    % [~, maxIndex] = PAL_findMax(PM(i).pdf);
+                    % MLalpha = priorAlphaRange(maxIndex(1));
+                    % MLbeta = priorBetaRange(maxIndex(2));
+                    % MLlambda = priorLambdaRange(maxIndex(4));
+    
+    
+                    % MLE preciso
+                    fprintf('Comprimentos dos históricos de estímulos e respostas para bloco %d: %d e %d\n', i, numel(stimHistory{i}), numel(respHistory{i}));
+                    StimLevels = unique(stimHistory{i});
+    
+                    NumPos   = zeros(size(StimLevels));
+                    OutOfNum = zeros(size(StimLevels));
+                    
+                    for k = 1:numel(StimLevels)
+                        idx = stimHistory{i} == StimLevels(k);
+                        OutOfNum(k) = sum(idx);
+                        NumPos(k)   = sum(respHistory{i}(idx));
+                    end
+    
+                    [paramsValues, ~] = PAL_PFML_Fit(StimLevels, NumPos, OutOfNum, searchGrid, paramsFree, PF);
+                    MLalpha  = paramsValues(1);
+                    MLbeta   = paramsValues(2);
+                    MLlambda = paramsValues(4);
+    
+    
+                    fprintf('ANTES\nAlpha: ML = %.3f e final = %.3f\n', MLalpha, PM(i).threshold(end));
+                    fprintf('Beta: ML = %.3f e final = %.3f\n', MLbeta, PM(i).slope(end));
+                    fprintf('Lambda: ML = %.3f e final = %.3f\n\n', MLlambda, PM(i).lapse(end));
+    
+                    if isnan(MLalpha) || isempty(MLalpha), MLalpha = PM(i).threshold(end); end
+                    if isnan(MLbeta) || isempty(MLbeta), MLbeta  = PM(i).slope(end); end
+                    if isnan(MLlambda) || isempty(MLlambda), MLlambda  = PM(i).lapse(end); end
+
+                    fprintf('DEPOIS\nAlpha: ML = %.3f e final = %.3f\n', MLalpha, PM(i).threshold(end));
+                    fprintf('Beta: ML = %.3f e final = %.3f\n', MLbeta, PM(i).slope(end));
+                    fprintf('Lambda: ML = %.3f e final = %.3f\n\n', MLlambda, PM(i).lapse(end));
+    
+                    PM(i).threshold(end) = MLalpha;
+                    % PM(i).slope(end)     = MLbeta;
+                    PM(i).lapse(end)     = MLlambda;
+                    
+                    if mode <= 3 || isempty(PM(i).threshold)
+                        newLevelASigma(prm.allOriMap(targetOri(i))) = aSigma(prm.allOriMap(targetOri(i)));
+                    else
+                        newLevelASigma(prm.allOriMap(targetOri(i))) = -PAL_CumulativeNormal([MLalpha, MLbeta, gamma, MLlambda], min(prm.stairLevel, 1-MLlambda-.0001), 'inverse');
+                    end
                 end
             end
 

@@ -44,10 +44,10 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     minFixDist3 = dva2pix(prm.screenDist, dpP.monitorW_mm/10, dpP.screenRes.width, prm.fixROIradius3_dva);
 
     stimRange = (-prm.sigmaMax:.5:-prm.sigmaMin);
-    [~, auxidx] = min(abs(stimRange - (-prm.aSigma)));
-    prm.aSigma = stimRange(auxidx);
+    [~, auxidx] = min(abs(stimRange - (-prm.aSigma(1))));
+    prm.aSigma(1) = stimRange(auxidx);
 
-    [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma, prm.rSigma2);
+    [oriFilter, OFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma(1), prm.rSigma2);
 
     b = 1;
     dstRects = CenterRectOnPointd(repmat(baseRect, [nStims,1])', stimCenters(1,:), stimCenters(2,:));
@@ -136,7 +136,7 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     theta = 2*pi*rand; dx = r*cos(theta); dy = r*sin(theta);
     SetMouse(dpP.winCenter(1) + dx, dpP.winCenter(2) + dy, dpP.window);
     
-    [mx,my] = GetMouse(dpP.window);
+    [mx,my, buttons] = GetMouse(dpP.window);
 
     oldState = false;
     quit = false;
@@ -158,7 +158,7 @@ function instructForaging(tkP, dpP, drP, txP, prm)
             oldState = 0;
         else
             screens{selected}(allTargets, fixIdx, blinkIdx, orderToReportStims);
-            [mx,my] = GetMouse(dpP.window);
+            [mx,my, buttons] = GetMouse(dpP.window);
             DrawEye(dpP.window, [mx my], prm.eyeSize, eyeColor);
     
             Screen('Flip', dpP.window);
@@ -166,11 +166,11 @@ function instructForaging(tkP, dpP, drP, txP, prm)
             [pressed,~,kc] = KbCheck;
         end
 
-        if pressed && ~oldState
+        if (pressed || any(buttons)) && ~oldState
             if kc(escapeKey)
                 quit = true;
 
-            elseif kc(rightKey)
+            elseif kc(rightKey) || (length(buttons) >= 3 && buttons(3))
                 if selected < nScreens
                     if selected == 8, selected = selected + 2; 
                     else, selected = selected + 1;
@@ -179,13 +179,13 @@ function instructForaging(tkP, dpP, drP, txP, prm)
                     % Encerra as instruções se for a última tela
                     quit = true;
                 end
-            elseif kc(leftKey)
+            elseif kc(leftKey) || buttons(1)
                 if ismember(selected, [10 12 14 16]), selected = selected - 2;
                 else,                                 selected = max(1, selected-1);
                 end
             end
         end
-        oldState = pressed;
+        oldState = (pressed || any(buttons));
 
         WaitSecs('YieldSecs', 0.005);
     end
@@ -298,12 +298,29 @@ function [outKey, allTargets] = drawInteractive(tkP, dpP, drP, txP, prm, nStims,
     Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation, [], [], [textColor2 1]', [], [], txP.PMBlob.props);
     foragingFlip(dpP.window, stimCenters, dstRects, orderToReportStims, txP.gabor.size_px, rectColors, allTargets, targetOri, rectPW);
     KbReleaseWait;
+    
+    while true
+        [~,~,buttons] = GetMouse(dpP.window);
+        if ~any(buttons)
+            break;
+        end
+        WaitSecs(0.001);
+    end
     keyPressed = zeros(1, max([rightKey, leftKey, spaceKey]));
+    [~,~, buttons] = GetMouse(dpP.window);
+    buttons(:) = 0;
 
-    while ~any(keyPressed([spaceKey, rightKey, leftKey]))
-        [~, keyPressed] = KbWait();
-        
-        if keyPressed(spaceKey)
+    while ~(any(keyPressed([spaceKey, rightKey, leftKey])) || any(buttons))
+        while true
+            [~,~,keyPressed] = KbCheck;
+            [~, ~, buttons] = GetMouse(dpP.window);
+            if any(keyPressed) || any(buttons)
+                KbWait([], 1);
+                break;
+            end
+            WaitSecs(0.001);
+        end
+        if ~any(buttons) && keyPressed(spaceKey)
             outKey = rightKey;
             for j=1:length(orderToReportStims)
                 KbReleaseWait;
@@ -333,10 +350,10 @@ function [outKey, allTargets] = drawInteractive(tkP, dpP, drP, txP, prm, nStims,
                     foragingFlip(dpP.window, stimCenters, dstRects, orderToReportStims, txP.gabor.size_px, rectColors, allTargets, targetOri, rectPW);
                 end
             end
-        elseif keyPressed(rightKey)
+        elseif keyPressed(rightKey) || (length(buttons) >= 3 && buttons(3))
             outKey = rightKey;
             allTargets(orderToReportStims) = randi(2, [1 N])-1;
-        elseif keyPressed(leftKey)
+        elseif keyPressed(leftKey) || buttons(1)
             outKey = leftKey;
             allTargets(orderToReportStims) = randi(2, [1 N])-1;
         end

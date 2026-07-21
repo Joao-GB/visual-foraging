@@ -97,44 +97,62 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
             prevSes = sesNum - 1;
             auxPrev = sprintf('%02d_%02d', subjNum, prevSes);
             
-            % Procura pelo arquivo .mat
-            st  = {[params.matPreffix auxPrev]};
-            ext = {params.matExtension};
+            val_emaFix       = NaN;
+            val_fixQueue     = [];
+            val_aSigma       = NaN;
+            val_pinkNoiseDur = NaN;
             
+            
+            % Procura pelo arquivo .mat
             try
-                prevFile = foragingFindFiles(params.dataFolder, st, ext); 
+                st  = {[params.matPreffix auxPrev]};
+                ext = {params.matExtension};
+        
+                prevFile = foragingFindFiles(params.dataFolder, st, ext);
                 prevData = load(prevFile{1});
-                
-                % Extrai as variáveis
-                val_emaFix       = prevData.tkP.fixProps.emaFix; 
-                val_fixQueue     = prevData.tkP.fixQueue; 
-                val_aSigma       = prevData.tkP.aSigma;
-                val_pinkNoiseDur = prevData.tkP.pinkNoiseDur; 
-                
-                prompt2 = {'\fontsize{14} Fixação média (s)', '\fontsize{14} aSigma', '\fontsize{14} Duração ruído (s)'};
-                dlg_title2 = sprintf('Parâmetros da Sessão %02d', prevSes);
-                
-                def2 = {num2str(val_emaFix), mat2str(val_aSigma), num2str(val_pinkNoiseDur)}; 
-                
-                answer2 = inputdlg(prompt2, dlg_title2, [1 40; 1 40; 1 40], def2, options);
-                
-                if isempty(answer2)
-                    fprintf('Sessão cancelada na revisão de parâmetros\n'); 
-                    cleanup; 
-                    return; 
+        
+                if isfield(prevData.tkP,'aSigma')
+                    val_aSigma = prevData.tkP.aSigma;
                 end
                 
-                % Repassa as variáveis carregadas
-                loaded_emaFix       = str2double(answer2{1});
-                if (loaded_emaFix - val_emaFix) < 10^-3
-                    loaded_fixQueue = val_fixQueue;
+                if isfield(prevData.tkP,'pinkNoiseDur')
+                    val_pinkNoiseDur = prevData.tkP.pinkNoiseDur;
                 end
-                loaded_aSigma       = str2num(answer2{2}); %#ok<ST2NM>
-                loaded_pinkNoiseDur = str2double(answer2{3});
                 
+                if isfield(prevData.tkP,'fixQueue')
+                    val_fixQueue = prevData.tkP.fixQueue;
+                end
+                
+                if isfield(prevData.tkP,'fixProps') && ...
+                   isfield(prevData.tkP.fixProps,'emaFix')
+                    val_emaFix = prevData.tkP.fixProps.emaFix;
+                end
+        
             catch ME
-                warning('Não foi possível carregar a sessão %02d. Iniciando com NaNs. Erro: %s', prevSes, ME.message);
+                warning('Não foi possível carregar a sessão %02d: %s', prevSes, ME.message);
             end
+            prompt2 = {'\fontsize{14} Fixação média (s)', '\fontsize{14} aSigma', '\fontsize{14} Duração ruído (s)'};
+            dlg_title2 = sprintf('Parâmetros da Sessão %02d', prevSes);
+
+            def2 = {num2str(val_emaFix), mat2str(val_aSigma), num2str(val_pinkNoiseDur)}; 
+            answer2 = inputdlg(prompt2, dlg_title2, [1 40; 1 40; 1 40], def2, options);
+                
+            if isempty(answer2)
+                fprintf('Sessão cancelada na revisão de parâmetros\n'); 
+                cleanup; 
+                return; 
+            end
+            
+            loaded_emaFix = str2double(answer2{1});
+
+            if abs(loaded_emaFix - val_emaFix) < 1e-3
+                loaded_fixQueue = val_fixQueue;
+            else
+                loaded_fixQueue = [];
+            end
+        
+            loaded_aSigma       = str2num(answer2{2}); %#ok<ST2NM>
+            loaded_pinkNoiseDur = str2double(answer2{3});
         end
     end
 
@@ -149,7 +167,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
             auxASigma = repmat(auxASigma, 1, numel(stairPrev));
         end
         [stairPrev.aSigma] = auxASigma{:};
-        [stairPrev.tgtOri] = [prevData.tkP.stair.targetOri];
+        % [stairPrev.tgtOri] = [prevData.tkP.stair.targetOri];
     else
 %         stairBurnIn = 1;
         stairPrev   = [];
@@ -308,8 +326,19 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     noiseHiCutFreq = params.noiseHiCutFreq_cpd/gabor.ppd; % Parâmetros do filtro para ruído
     noiseLoCutFreq = params.noiseLoCutFreq_cpd/gabor.ppd;
 
-    fprintf('Vai usar %.2f como aSigma', params.aSigma)
-    [oriFilter, OFsize] = MakeOriFilter1(gabor.size_px, params.aSigma, params.rSigma2); % Filtro de orientação
+    nAux = numel(params.allOri);
+    if isscalar(params.aSigma)
+        params.aSigma = repmat(params.aSigma, 1, nAux); 
+    else
+        params.aSigma = params.aSigma(1:nAux); 
+    end
+    
+    fprintf('Vai usar %.2f como aSigma\n', params.aSigma)
+    oriFilter = cell(1, nAux);
+    OFsize    = cell(1, nAux);
+    for k = 1:nAux
+        [oriFilter{k}, OFsize{k}] = MakeOriFilter1(gabor.size_px, params.aSigma(k), params.rSigma2);  % Filtro de orientação
+    end
 
     % (b) Estímulos para a tela entre blocos
     exampleParams = params; exampleGaborFactor = 3;
@@ -728,21 +757,28 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: staircase\n')
                                 [resultsStair, taskState] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
-                                tkP.stair = resultsStair; clear resultsStair;
-                                aSigma = aSigmaFromStair(tkP.stair, prm);
-                                fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
+                                if taskState(1,2) == 1
+                                    tkP.stair = resultsStair; clear resultsStair;
+                                    aSigma = aSigmaFromStair(tkP.stair, prm);
+                                    fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
+                                else
+                                    aSigma = tkP.aSigma;
+                                    fprintf('Valor mantido de aSigma (sem staircase): %.2f\n', aSigma);
+                                end
                                 tkP.aSigma = aSigma;
                                 prm.aSigma = aSigma;
-                                tkP.sMap = containers.Map([tkP.stair.staircase.tgtOri], 1:prm.nBlocksStair);
-                                oriFilter = {}; OFsize = {};
+                                % tkP.sMap = containers.Map([tkP.stair.staircase.tgtOri], 1:prm.nBlocksStair);
+                                fprintf('Vai usar %s para orientações %s\n', mat2str(prm.aSigma), mat2str(prm.allOri))
+
+                                oriFilter = cell(1, prm.nBlocksStair);
+                                OFsize    = cell(1, prm.nBlocksStair);
                                 for k = 1:prm.nBlocksStair
-                                    [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, prm.aSigma(k), prm.rSigma2);
-                                    oriFilter = {oriFilter auxOriFilter}; %#ok<*AGROW> 
-                                    OFsize = {OFsize auxOFsize};
+                                    [oriFilter{k}, OFsize{k}] = MakeOriFilter1( ...
+                                        txP.gabor.size_px, prm.aSigma(k), prm.rSigma2);
                                 end
-                                oriFilter{1} = []; OFsize{1} = [];
-                                txP.oriFilter       = oriFilter;
-                                txP.OFsize          = OFsize;
+
+                                txP.oriFilter = oriFilter;
+                                txP.OFsize    = OFsize;
                                 fprintf('oriFilter e OFsize devidamente atualizados\n');
                             end
                         elseif strcmp(currentScreen, 'exp')
@@ -1104,11 +1140,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         %     (pois não faz sentido armazená-las), sem desenhá-las
 
                     auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                    fprintf('Vai usar filtro %.2f para orientaçao %d\n', prm.aSigma(prm.allOriMap(targetOri(b))), targetOri(b));
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         aux = auxNoiseMatrix(:,colRange);
                         noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
-                        oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter{tkP.sMap(targetOri(b))}', txP.OFsize{tkP.sMap(targetOri(b))}, aux);
+                        oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter{prm.allOriMap(targetOri(b))}', txP.OFsize{prm.allOriMap(targetOri(b))}, aux);
                     end
                     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);
                     gaborTex   = Screen('MakeTexture', dpP.window,  prm.gaborSTDmult*txP.gabor.matrix, [], [], 1);
