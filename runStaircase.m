@@ -52,7 +52,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         fixIdx      = zeros(nBlocks, nTrialsBuffered); 
 
         auxidx = zeros(1, nBlocks);
-        stimRange = (-prm.sigmaMax:prm.sigmaStep:-prm.sigmaMin);
+        stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, zprm.sigmaGrain);
         if isscalar(prm.aSigma), prm.aSigma = repmat(prm.aSigma, 1, nBlocks); end
         for b=1:nBlocks
             for i=1:nTrialsBuffered
@@ -613,69 +613,51 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
 
-            resultsStair.aSigma75  = aSigma;
-
+            oldLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
             newLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
 
             if b == nBlocks + 1 && keepGoingBlocks
             
-                searchGrid.alpha  = priorAlphaRange;
-                searchGrid.beta   = priorBetaRange;
-                searchGrid.gamma  = gamma;
-                searchGrid.lambda = priorLambdaRange;
-                
-                paramsFree = [1 1 0 1]; 
+%                 searchGrid.alpha  = priorAlphaRange;
+%                 searchGrid.beta   = priorBetaRange;
+%                 searchGrid.gamma  = gamma;
+%                 searchGrid.lambda = priorLambdaRange;
+%                 
+%                 paramsFree = [1 1 0 1]; 
                 for i = 1:nBlocks
-                    % % MLE restrito ao grid
-                    % [~, maxIndex] = PAL_findMax(PM(i).pdf);
-                    % MLalpha = priorAlphaRange(maxIndex(1));
-                    % MLbeta = priorBetaRange(maxIndex(2));
-                    % MLlambda = priorLambdaRange(maxIndex(4));
-    
-    
-                    % MLE preciso
-                    fprintf('Comprimentos dos históricos de estímulos e respostas para bloco %d: %d e %d\n', i, numel(stimHistory{i}), numel(respHistory{i}));
-                    StimLevels = unique(stimHistory{i});
-    
-                    NumPos   = zeros(size(StimLevels));
-                    OutOfNum = zeros(size(StimLevels));
-                    
-                    for k = 1:numel(StimLevels)
-                        idx = stimHistory{i} == StimLevels(k);
-                        OutOfNum(k) = sum(idx);
-                        NumPos(k)   = sum(respHistory{i}(idx));
-                    end
-    
-                    [paramsValues, ~] = PAL_PFML_Fit(StimLevels, NumPos, OutOfNum, searchGrid, paramsFree, PF);
-                    MLalpha  = paramsValues(1);
-                    MLbeta   = paramsValues(2);
-                    MLlambda = paramsValues(4);
-    
-    
-                    fprintf('ANTES\nAlpha: ML = %.3f e final = %.3f\n', MLalpha, PM(i).threshold(end));
-                    fprintf('Beta: ML = %.3f e final = %.3f\n', MLbeta, PM(i).slope(end));
-                    fprintf('Lambda: ML = %.3f e final = %.3f\n\n', MLlambda, PM(i).lapse(end));
-    
-                    if isnan(MLalpha) || isempty(MLalpha), MLalpha = PM(i).threshold(end); end
-                    if isnan(MLbeta) || isempty(MLbeta), MLbeta  = PM(i).slope(end); end
-                    if isnan(MLlambda) || isempty(MLlambda), MLlambda  = PM(i).lapse(end); end
+                    % EAP na posterior bayesiana
+                    pdfAlpha  = squeeze(sum(PM(i).pdf, [2 3 4]));
+                    pdfAlpha  = pdfAlpha(:) / sum(pdfAlpha);
+                    alphaMean = sum(pdfAlpha .* PM(i).priorAlphaRange(:));
+                    bayesAlpha = alphaMean;
 
-                    fprintf('DEPOIS\nAlpha: ML = %.3f e final = %.3f\n', MLalpha, PM(i).threshold(end));
-                    fprintf('Beta: ML = %.3f e final = %.3f\n', MLbeta, PM(i).slope(end));
-                    fprintf('Lambda: ML = %.3f e final = %.3f\n\n', MLlambda, PM(i).lapse(end));
+                    pdfBeta   = squeeze(sum(PM(i).pdf, [1 3 4]));
+                    pdfBeta   = pdfBeta(:) / sum(pdfBeta);
+                    betaMean  = sum(pdfBeta .* PM(i).priorBetaRange(:));
+                    bayesBeta = betaMean;
     
-                    PM(i).threshold(end) = MLalpha;
-                    % PM(i).slope(end)     = MLbeta;
-                    PM(i).lapse(end)     = MLlambda;
+                    fprintf('Alpha: EAP = %.3f e final = %.3f\n', bayesAlpha, PM(i).threshold(end));
+                    fprintf('Beta: EAP = %.3f e final = %.3f\n', bayesBeta, PM(i).slope(end));
+                    fprintf('Lambda: final = %.3f\n\n', PM(i).lapse(end));
+    
+                    if isnan(bayesAlpha) || isempty(bayesAlpha), bayesAlpha = PM(i).threshold(end); end
+                    if isnan(bayesBeta) || isempty(bayesBeta), bayesBeta  = PM(i).slope(end); end
+%                     if isnan(MLlambda) || isempty(MLlambda), MLlambda  = PM(i).lapse(end); end
+    
+                    PM(i).threshold(end) = bayesAlpha;
+                    PM(i).slope(end)     = bayesBeta;
+%                     PM(i).lapse(end)     = MLlambda;
                     
                     if mode <= 3 || isempty(PM(i).threshold)
                         newLevelASigma(prm.allOriMap(targetOri(i))) = aSigma(prm.allOriMap(targetOri(i)));
+                        
                     else
                         newLevelASigma(prm.allOriMap(targetOri(i))) = -PAL_CumulativeNormal([MLalpha, MLbeta, gamma, MLlambda], min(prm.stairLevel, 1-MLlambda-.0001), 'inverse');
                     end
                 end
             end
 
+            resultsStair.aSigma75  = oldLevelASigma;
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize    = OFsize;

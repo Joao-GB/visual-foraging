@@ -16,7 +16,7 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
     texArray = zeros(1, nTextures); 
     
     % Apenas B+1 figuras serão salvas no .fig (B blocos + 1 curva conjunta)
-    hFigs = gobjects(B+1, 1);
+    hFigs = gobjects(B+1,1);
     
     %% Texturas 1 a B: Staircases individuais com histórico completo
     for b = 1:B
