@@ -1,0 +1,1229 @@
+Selecionado: treino staircase
+----Início do staircase----
+
+ans =
+
+   1.7847e+09
+
+Selecionado: staircase
+----Início do staircase----
+
+Idx Bloco: 1
+# Trial: 1
+ Idx Trial: 14
+Elapsed time is 0.082885 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: -20.0000 (no xCurrent: -32.0000)
+
+Por isso o novo aSigma é 32.0000
+Limiar atual estimado (Alpha): -39.26
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 2
+ Idx Trial: 47
+Elapsed time is 0.082834 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 32.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -43.14
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 3
+ Idx Trial: 25
+Elapsed time is 0.083346 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 38.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.89
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 4
+ Idx Trial: 33
+Elapsed time is 0.083104 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.78
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 5
+ Idx Trial: 42
+Elapsed time is 0.083005 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -45.08
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 41
+Elapsed time is 0.083429 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -40.53
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 22
+Elapsed time is 0.083374 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 38.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -42.08
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 20
+Elapsed time is 0.083006 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 38.0000 (no xCurrent: -32.0000)
+
+Por isso o novo aSigma é 32.0000
+Limiar atual estimado (Alpha): -38.21
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 50
+Elapsed time is 0.083366 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 32.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -39.25
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 32
+Elapsed time is 0.083330 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 38.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -41.05
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 24
+Elapsed time is 0.083234 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 38.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -42.04
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 2
+Elapsed time is 0.083463 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -44.50
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 23
+Elapsed time is 0.083018 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.76
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 11
+Elapsed time is 0.083273 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -43.96
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 12
+Elapsed time is 0.083111 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.02
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 16
+ Idx Trial: 18
+Elapsed time is 0.083014 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -47.36
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 17
+ Idx Trial: 1
+Elapsed time is 0.083415 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.10
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 18
+ Idx Trial: 30
+Elapsed time is 0.083210 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -53.51
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 19
+ Idx Trial: 29
+Elapsed time is 0.083186 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -49.73
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 20
+ Idx Trial: 21
+Elapsed time is 0.083287 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -45.78
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 21
+ Idx Trial: 48
+Elapsed time is 0.083371 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.36
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 1
+# Trial: 22
+ Idx Trial: 45
+Elapsed time is 0.083283 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.66
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 23
+ Idx Trial: 4
+Elapsed time is 0.083125 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.85
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 24
+ Idx Trial: 13
+Elapsed time is 0.083120 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -46.98
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 25
+ Idx Trial: 39
+Elapsed time is 0.083357 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -47.60
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 26
+ Idx Trial: 31
+Elapsed time is 0.083117 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.73
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 27
+ Idx Trial: 17
+Elapsed time is 0.083285 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.18
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 28
+ Idx Trial: 40
+Elapsed time is 0.083343 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.34
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 29
+ Idx Trial: 53
+Elapsed time is 0.083031 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.48
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 30
+ Idx Trial: 35
+Elapsed time is 0.082998 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.60
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 31
+ Idx Trial: 9
+Elapsed time is 0.083351 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.70
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 32
+ Idx Trial: 34
+Elapsed time is 0.083341 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.79
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 33
+ Idx Trial: 26
+Elapsed time is 0.083330 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.38
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 34
+ Idx Trial: 43
+Elapsed time is 0.083102 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.49
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 35
+ Idx Trial: 19
+Elapsed time is 0.083218 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.59
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 36
+ Idx Trial: 37
+Elapsed time is 0.083210 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.68
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 37
+ Idx Trial: 36
+Elapsed time is 0.083277 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.76
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 38
+ Idx Trial: 52
+Elapsed time is 0.083189 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.41
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 39
+ Idx Trial: 46
+Elapsed time is 0.083138 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.51
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 40
+ Idx Trial: 3
+Elapsed time is 0.083075 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.60
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 41
+ Idx Trial: 49
+Elapsed time is 0.083207 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -46.68
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 1
+# Trial: 42
+ Idx Trial: 16
+Elapsed time is 0.083106 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -46.96
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 43
+ Idx Trial: 15
+Elapsed time is 0.083116 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -47.44
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 1
+# Trial: 44
+ Idx Trial: 10
+Elapsed time is 0.083091 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -48.23
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 1
+# Trial: 45
+ Idx Trial: 8
+Elapsed time is 0.083216 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -49.40
+Inclinação atual estimada (Beta): 0.10
+
+
+Idx Bloco: 1
+# Trial: 46
+ Idx Trial: 44
+Elapsed time is 0.083051 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -48.53
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 1
+# Trial: 47
+ Idx Trial: 27
+Elapsed time is 0.083046 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -48.06
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 1
+# Trial: 48
+ Idx Trial: 7
+Elapsed time is 0.083254 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -48.84
+Inclinação atual estimada (Beta): 0.10
+
+
+Idx Bloco: 1
+# Trial: 49
+ Idx Trial: 51
+Elapsed time is 0.083123 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -49.73
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 1
+# Trial: 50
+ Idx Trial: 28
+Elapsed time is 0.083244 seconds.
+Trial bom
+Atualizo o PM do bloco 1, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.61
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 1
+ Idx Trial: 21
+Elapsed time is 0.082964 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: -38.0000 (no xCurrent: -32.0000)
+
+Por isso o novo aSigma é 32.0000
+Limiar atual estimado (Alpha): -39.26
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 2
+ Idx Trial: 6
+Elapsed time is 0.083435 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 32.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -43.14
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 3
+ Idx Trial: 13
+Elapsed time is 0.083169 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 38.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.89
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 4
+ Idx Trial: 29
+Elapsed time is 0.083060 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.78
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 5
+ Idx Trial: 39
+Elapsed time is 0.083111 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.83
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 6
+ Idx Trial: 17
+Elapsed time is 0.083399 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.33
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 7
+ Idx Trial: 44
+Elapsed time is 0.083088 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -52.42
+Inclinação atual estimada (Beta): 0.14
+
+
+Idx Bloco: 2
+# Trial: 8
+ Idx Trial: 5
+Elapsed time is 0.083080 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -47.97
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 9
+ Idx Trial: 24
+Elapsed time is 0.083138 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -38.0000)
+
+Por isso o novo aSigma é 38.0000
+Limiar atual estimado (Alpha): -42.40
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 10
+ Idx Trial: 40
+Elapsed time is 0.083477 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 38.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -43.90
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 11
+ Idx Trial: 32
+Elapsed time is 0.083084 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -46.60
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 12
+ Idx Trial: 25
+Elapsed time is 0.083455 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -43.25
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 13
+ Idx Trial: 52
+Elapsed time is 0.083135 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -44.0000)
+
+Por isso o novo aSigma é 44.0000
+Limiar atual estimado (Alpha): -45.51
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 14
+ Idx Trial: 4
+Elapsed time is 0.083448 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 44.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -47.43
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 15
+ Idx Trial: 23
+Elapsed time is 0.083434 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -50.41
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 16
+ Idx Trial: 15
+Elapsed time is 0.083471 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -52.85
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 17
+ Idx Trial: 43
+Elapsed time is 0.083049 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.07
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 18
+ Idx Trial: 18
+Elapsed time is 0.083105 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -56.50
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 19
+ Idx Trial: 30
+Elapsed time is 0.083303 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -59.25
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 20
+ Idx Trial: 28
+Elapsed time is 0.083338 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -56.12
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 21
+ Idx Trial: 27
+Elapsed time is 0.083249 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -58.58
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 22
+ Idx Trial: 50
+Elapsed time is 0.083300 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.95
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 23
+ Idx Trial: 42
+Elapsed time is 0.083292 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -58.06
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 24
+ Idx Trial: 16
+Elapsed time is 0.083389 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.90
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 25
+ Idx Trial: 12
+Elapsed time is 0.083284 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.54
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 26
+ Idx Trial: 34
+Elapsed time is 0.083328 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -53.82
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 27
+ Idx Trial: 49
+Elapsed time is 0.083096 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.18
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 28
+ Idx Trial: 38
+Elapsed time is 0.083094 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -50.0000)
+
+Por isso o novo aSigma é 50.0000
+Limiar atual estimado (Alpha): -53.25
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 29
+ Idx Trial: 11
+Elapsed time is 0.083004 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 50.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -53.44
+Inclinação atual estimada (Beta): 0.13
+
+
+Idx Bloco: 2
+# Trial: 30
+ Idx Trial: 53
+Elapsed time is 0.083095 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -53.82
+Inclinação atual estimada (Beta): 0.12
+
+
+Idx Bloco: 2
+# Trial: 31
+ Idx Trial: 8
+Elapsed time is 0.082999 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.31
+Inclinação atual estimada (Beta): 0.11
+
+
+Idx Bloco: 2
+# Trial: 32
+ Idx Trial: 31
+Elapsed time is 0.083351 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.89
+Inclinação atual estimada (Beta): 0.10
+
+
+Idx Bloco: 2
+# Trial: 33
+ Idx Trial: 22
+Elapsed time is 0.083416 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.52
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 34
+ Idx Trial: 41
+Elapsed time is 0.083224 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.13
+Inclinação atual estimada (Beta): 0.09
+
+
+Idx Bloco: 2
+# Trial: 35
+ Idx Trial: 36
+Elapsed time is 0.083160 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.66
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 36
+ Idx Trial: 1
+Elapsed time is 0.083207 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -54.71
+Inclinação atual estimada (Beta): 0.10
+
+
+Idx Bloco: 2
+# Trial: 37
+ Idx Trial: 26
+Elapsed time is 0.083005 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.12
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 38
+ Idx Trial: 3
+Elapsed time is 0.083426 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.50
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 39
+ Idx Trial: 7
+Elapsed time is 0.083065 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.85
+Inclinação atual estimada (Beta): 0.06
+
+
+Idx Bloco: 2
+# Trial: 40
+ Idx Trial: 20
+Elapsed time is 0.083079 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.62
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 41
+ Idx Trial: 46
+Elapsed time is 0.083087 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.46
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 42
+ Idx Trial: 2
+Elapsed time is 0.083252 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.34
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 43
+ Idx Trial: 47
+Elapsed time is 0.083424 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.24
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 44
+ Idx Trial: 51
+Elapsed time is 0.083241 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.17
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 45
+ Idx Trial: 10
+Elapsed time is 0.083228 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.11
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 46
+ Idx Trial: 48
+Elapsed time is 0.083110 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.31
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 47
+ Idx Trial: 37
+Elapsed time is 0.083438 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.26
+Inclinação atual estimada (Beta): 0.08
+
+
+Idx Bloco: 2
+# Trial: 48
+ Idx Trial: 14
+Elapsed time is 0.083068 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.42
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 49
+ Idx Trial: 9
+Elapsed time is 0.083110 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.38
+Inclinação atual estimada (Beta): 0.07
+
+
+Idx Bloco: 2
+# Trial: 50
+ Idx Trial: 19
+Elapsed time is 0.083488 seconds.
+Trial bom
+Atualizo o PM do bloco 2, apresentamos: 56.0000 (no xCurrent: -56.0000)
+
+Por isso o novo aSigma é 56.0000
+Limiar atual estimado (Alpha): -55.50
+Inclinação atual estimada (Beta): 0.06
+
+Alpha: EAP = -50.608 e final = -50.608
+Beta: EAP = 0.079 e final = 0.079
+Lambda: final = 0.070
+
+Alpha: EAP = -55.499 e final = -55.499
+Beta: EAP = 0.064 e final = 0.064
+Lambda: final = 0.055
+
+Valor de aSigma escolhido via staircase: 40.00
+Valor de aSigma escolhido via staircase: 35.00
+Vai usar [40 35] para orientações [0 90]
+oriFilter e OFsize devidamente atualizados
+
+ans =
+
+   1.7847e+09
+
+Arquivo movido para o diretório fornecido.
+AVISO: Sessão de staircase concluída e salva com êxito.
+Tempo total da sessão: 671.140 s

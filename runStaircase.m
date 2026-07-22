@@ -52,7 +52,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         fixIdx      = zeros(nBlocks, nTrialsBuffered); 
 
         auxidx = zeros(1, nBlocks);
-        stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, zprm.sigmaGrain);
+        stimRange = linspace(-prm.sigmaMax, -prm.sigmaMin, prm.sigmaGrain);
         if isscalar(prm.aSigma), prm.aSigma = repmat(prm.aSigma, 1, nBlocks); end
         for b=1:nBlocks
             for i=1:nTrialsBuffered
@@ -652,7 +652,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                         newLevelASigma(prm.allOriMap(targetOri(i))) = aSigma(prm.allOriMap(targetOri(i)));
                         
                     else
-                        newLevelASigma(prm.allOriMap(targetOri(i))) = -PAL_CumulativeNormal([MLalpha, MLbeta, gamma, MLlambda], min(prm.stairLevel, 1-MLlambda-.0001), 'inverse');
+                        newLevelASigma(prm.allOriMap(targetOri(i))) = -PAL_CumulativeNormal([PM(i).threshold(end), PM(i).slope(end), gamma, PM(i).lapse(end)], min(prm.stairLevel, 1-PM(i).lapse(end)-.0001), 'inverse');
                     end
                 end
             end

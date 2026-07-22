@@ -222,12 +222,15 @@ function startFix(~, dpP, drP, ~, prm, fixCoords, fixCenters)
 end
 
 function startFix1(~, dpP, drP, ~, prm, fixCoords, fixCenters)
-    Screen('TextSize', dpP.window, prm.textSizeTitle);
+    Screen('TextSize', dpP.window, prm.textSizeEnormous);
     titleText = 'Advertências'; titleMargin = dpP.winCenter(1)*prm.titleMarginFactor;
     Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
 
     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     Screen('DrawLines', dpP.window, fixCoords, prm.lineWidth_px, drP.white, fixCenters', 2);
+
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function drawPink(~, dpP, ~, txP, ~, oriPinkTex, gaborTex, noiseTex, srcRects, dstRects, blinkIdx, fixIdx, orientation)
@@ -368,7 +371,9 @@ function obsPink(tkP, dpP, drP, txP, prm, easyPinkTex, hardPinkTex, gaborTex, no
     DrawFormattedText(dpP.window, leftText,   leftX - textWidth/2, leftRect(4)+50, drP.black);
     bounds = Screen('TextBounds', dpP.window, rightText); textWidth = RectWidth(bounds);
     DrawFormattedText(dpP.window, rightText, rightX - textWidth/2, rightRect(4)+50, drP.black);
+    
     Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOri)
@@ -386,7 +391,7 @@ function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOr
     foragingFlip1(dpP.window, [leftX, h/2]', leftRect', 1, txP.gabor.size_px, drP.orange', leftKey == targetKey, targetOri, drP.allPW(1));
     foragingFlip1(dpP.window, [rightX, h/2]', rightRect', 1, txP.gabor.size_px, drP.orange', rightKey == targetKey, targetOri, drP.allPW(1));
 
-    Screen('TextSize', dpP.window, prm.textSizeTitle);
+    Screen('TextSize', dpP.window, prm.textSizeEnormous);
     titleText = 'Observações'; titleMargin = dpP.winCenter(1)*prm.titleMarginFactor;
     leftText = 'Seta esquerda <';
     rightText = '> Seta direita';
@@ -397,7 +402,9 @@ function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOr
     DrawFormattedText(dpP.window, leftText,   leftX - textWidth/2, leftRect(4)+50, drP.black);
     bounds = Screen('TextBounds', dpP.window, rightText); textWidth = RectWidth(bounds);
     DrawFormattedText(dpP.window, rightText, rightX - textWidth/2, rightRect(4)+50, drP.black);
+    
     Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function warnTimeOut(~, dpP, drP, ~, prm, fixCoords, fixCenters, overlayColor, overlayRect, textColor1)
@@ -420,6 +427,9 @@ function warnTimeOut(~, dpP, drP, ~, prm, fixCoords, fixCenters, overlayColor, o
     ];
     Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
     DrawFormattedText(dpP.window, msg, 'center', dpP.winRect(4)/2 + 15, [textColor1 alpha*drP.white]);
+
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function warnMov(~, dpP, drP, txP, prm, stimCenters, dstRects, fixIdx)
@@ -427,6 +437,9 @@ function warnMov(~, dpP, drP, txP, prm, stimCenters, dstRects, fixIdx)
     titleText = 'Advertências'; titleMargin = dpP.winCenter(1)*prm.titleMarginFactor;
     Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
     warningFlip1(dpP.window, stimCenters, resizeRect(dstRects, .25), fixIdx, txP.gabor.size_px, drP.allPW, drP.darkRed);
+
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 

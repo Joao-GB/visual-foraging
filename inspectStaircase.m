@@ -102,15 +102,9 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, thrs, newThrs, ori)
         if isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev), k = find([tkP.stairPrev.tgtOri] == tgtOri,1); end
         subplot(1, B, b); hold on;
     
-        nBins = 15;
-        binEdges = linspace(prm.sigmaMin, prm.sigmaMax, nBins + 1);
-        binCenters = (binEdges(1:end-1) + binEdges(2:end)) / 2;
         rawSigma = -PM(b).x(1:end-1); 
-        binIdx = discretize(rawSigma, binEdges);
-        binIdx(isnan(binIdx)) = 1; 
-        binnedSigma = binCenters(binIdx);
         
-        [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(binnedSigma, PM(b).response, ones(size(PM(b).response)));
+        [SL, NP, OON] = PAL_PFML_GroupTrialsbyX(rawSigma, PM(b).response, ones(size(PM(b).response)));
         for SR = 1:length(SL(OON~=0))
             plot(SL(SR), NP(SR)/OON(SR), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 20*sqrt(OON(SR)/sum(OON)));
         end

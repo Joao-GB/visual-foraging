@@ -762,7 +762,11 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                     aSigma = aSigmaFromStair(tkP.stair, prm);
                                     fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
                                 else
-                                    aSigma = tkP.aSigma;
+                                    if isfield(tkP, 'aSigma')
+                                        aSigma = tkP.aSigma;
+                                    else
+                                        aSigma = prm.aSigma;
+                                    end
                                     fprintf('Valor mantido de aSigma (sem staircase): %.2f\n', aSigma);
                                 end
                                 tkP.aSigma = aSigma;

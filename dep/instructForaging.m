@@ -239,7 +239,6 @@ function drawBlocks(tkP, dpP, drP, txP, prm, tgtOri, b)
     DrawFormattedText(dpP.window, proceedText, 'center', dpP.screenRes.height*.75, drP.black);
 
     Screen('TextSize', dpP.window, prm.textSizeNormal);
-
     Screen('TextFont', dpP.window, prm.textFont);
 end
 
@@ -255,6 +254,9 @@ function startFix1(~, dpP, drP, ~, prm, fixCoords, fixCenters)
 
     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     Screen('DrawLines', dpP.window, fixCoords, prm.lineWidth_px, drP.white, fixCenters', 2);
+
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function drawPink(~, dpP, ~, txP, ~, oriPinkTex, gaborTex, noiseTex, srcRects, dstRects, blinkIdx, fixIdx, orientation)
@@ -396,6 +398,7 @@ function obsPink(tkP, dpP, drP, txP, prm, easyPinkTex, hardPinkTex, gaborTex, no
     bounds = Screen('TextBounds', dpP.window, rightText); textWidth = RectWidth(bounds);
     DrawFormattedText(dpP.window, rightText, rightX - textWidth/2, rightRect(4)+50, drP.black);
     Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOri)
@@ -425,6 +428,7 @@ function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOr
     bounds = Screen('TextBounds', dpP.window, rightText); textWidth = RectWidth(bounds);
     DrawFormattedText(dpP.window, rightText, rightX - textWidth/2, rightRect(4)+50, drP.black);
     Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function warnTimeOut(~, dpP, drP, ~, prm, fixCoords, fixCenters, overlayColor, overlayRect, textColor1)
@@ -447,6 +451,8 @@ function warnTimeOut(~, dpP, drP, ~, prm, fixCoords, fixCenters, overlayColor, o
     ];
     Screen('TextSize', dpP.window, prm.textSizeBig); Screen('TextStyle', dpP.window, 0);
     DrawFormattedText(dpP.window, msg, 'center', dpP.winRect(4)/2 + 15, [textColor1 alpha*drP.white]);
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function foragingDrawMain1(~, dpP, drP, txP, prm, gaborTex, noiseTex, srcRects, dstRects, orientation, alphas)
@@ -455,6 +461,8 @@ function foragingDrawMain1(~, dpP, drP, txP, prm, gaborTex, noiseTex, srcRects, 
     Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
 
     foragingDrawMain(dpP.window, gaborTex, noiseTex, srcRects, dstRects, orientation, txP, alphas);
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function warnFewSacc(~, dpP, drP, ~, prm, dstRects, overlayColor, overlayRect, textColor1, alpha, textColor2)
@@ -471,6 +479,8 @@ function warnFewSacc(~, dpP, drP, ~, prm, dstRects, overlayColor, overlayRect, t
     DrawFormattedText(dpP.window, 'Por favor, tente novamente', 'center', dpP.winRect(4)/2 + 50, [textColor1 drP.white]);
     Screen('TextSize', dpP.window, prm.textSizeBig);
     DrawFormattedText(dpP.window, 'Pressione ESPAÇO para prosseguir', 'center', dpP.winRect(4)/2 + 110, [textColor2 alpha*drP.white]);
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 function warnMov(~, dpP, drP, txP, prm, stimCenters, dstRects, fixIdx)
@@ -479,6 +489,8 @@ function warnMov(~, dpP, drP, txP, prm, stimCenters, dstRects, fixIdx)
     titleText = 'Advertências'; titleMargin = dpP.winCenter(1)*prm.titleMarginFactor;
     Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
     warningFlip1(dpP.window, stimCenters, resizeRect(dstRects, .25), fixIdx, txP.gabor.size_px, drP.allPW, drP.darkRed);
+    Screen('TextSize', dpP.window, prm.textSizeNormal);
+    Screen('TextFont', dpP.window, prm.textFont);
 end
 
 

@@ -98,7 +98,7 @@ function params = foragingParams
     params.sigmaMin = 20;   params.sigmaMax = 80; params.sigmaGrain = 11; 
     params.sigmaRem = 5;
     params.grainAlpha = 60;
-    params.betaMin  = .01; params.betaMax  = 1; params.grainBeta = 30;
+    params.betaMin  = .005; params.betaMax  = .7; params.grainBeta = 40;
     params.nStimsStair = 3;
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 50;     % <-
