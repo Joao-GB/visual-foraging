@@ -103,7 +103,7 @@ function params = foragingParams
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 50;     % <-
     params.nTrialsStairTrain = 10;
-    params.priorMeanStair  = 35; params.priorStdStair   = 15;
+    params.priorMeanStair  = 50; params.priorStdStair   = 20;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
     params.priorBetaMeanStair = 0.2; params.priorBetaStdStair = .5;
     params.priorBetaStdStair2 = .7*params.priorBetaStdStair;

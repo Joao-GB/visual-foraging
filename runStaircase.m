@@ -83,12 +83,15 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             burninTrials = 0;          % Neutraliza o loop posterior
             burnInASigma = prm.aSigma; aSigma = prm.aSigma;
         end
-        PF = @PAL_CumulativeNormal;
+        PF = @(params, x, varargin) PAL_CumulativeNormal_Level(params, x, prm.stairLevel, varargin{:});
+
+
+        
 
         % Como apenas gama é determinado, definimos os demais parâmetros
         % através de intervalos
         gamma = 0.5;
-        marginalize = 4;
+        marginalize = [2 4];
         
         priorAlphaRange = linspace(-prm.sigmaMax, -prm.sigmaMin, prm.grainAlpha);
         priorBetaRange  = 10.^(linspace(log10(prm.betaMin), log10(prm.betaMax), prm.grainBeta));
@@ -110,15 +113,15 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             if tkP.stairBurnIn == 0 && isfield(tkP, 'stairPrev') && ~isempty(tkP.stairPrev)
                 k = find([tkP.stairPrev.tgtOri] == targetOri(b),1);
                 prevSessionAlpha = tkP.stairPrev(k).threshold(end);
-                prevSessionBeta  = tkP.stairPrev(k).slope(end);
+%                 prevSessionBeta  = tkP.stairPrev(k).slope(end);
 
                 prior = PAL_pdfNormal(PM(b).priorAlphas, prevSessionAlpha, prm.priorStdStair2);
-                prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
+%                 prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prevSessionBeta, prm.priorBetaStdStair2);
             else
                 prior = PAL_pdfNormal(PM(b).priorAlphas, -prm.priorMeanStair, prm.priorStdStair);
-                prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prm.priorBetaMeanStair, prm.priorBetaStdStair);
             end
 
+            prior = prior .* PAL_pdfNormal(PM(b).priorBetas, prm.priorBetaMeanStair, prm.priorBetaStdStair);
             prior = prior .* PAL_pdfBeta(PM(b).priorLambdas, prm.priorLambdaMeanStair, prm.priorLambdaStdStair, 'meanandconcentration');
 
             % Normaliza a grade de probabilidade
@@ -613,7 +616,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
 
-            oldLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
+%             oldLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
             newLevelASigma = ones(1, nBlocks)*prm.aSigma(1);
 
             if b == nBlocks + 1 && keepGoingBlocks
@@ -631,21 +634,21 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                     alphaMean = sum(pdfAlpha .* PM(i).priorAlphaRange(:));
                     bayesAlpha = alphaMean;
 
-                    pdfBeta   = squeeze(sum(PM(i).pdf, [1 3 4]));
-                    pdfBeta   = pdfBeta(:) / sum(pdfBeta);
-                    betaMean  = sum(pdfBeta .* PM(i).priorBetaRange(:));
-                    bayesBeta = betaMean;
+%                     pdfBeta   = squeeze(sum(PM(i).pdf, [1 3 4]));
+%                     pdfBeta   = pdfBeta(:) / sum(pdfBeta);
+%                     betaMean  = sum(pdfBeta .* PM(i).priorBetaRange(:));
+%                     bayesBeta = betaMean;
     
                     fprintf('Alpha: EAP = %.3f e final = %.3f\n', bayesAlpha, PM(i).threshold(end));
-                    fprintf('Beta: EAP = %.3f e final = %.3f\n', bayesBeta, PM(i).slope(end));
+                    fprintf('Beta: final = %.3f\n', PM(i).slope(end));
                     fprintf('Lambda: final = %.3f\n\n', PM(i).lapse(end));
     
                     if isnan(bayesAlpha) || isempty(bayesAlpha), bayesAlpha = PM(i).threshold(end); end
-                    if isnan(bayesBeta) || isempty(bayesBeta), bayesBeta  = PM(i).slope(end); end
+%                     if isnan(bayesBeta) || isempty(bayesBeta), bayesBeta  = PM(i).slope(end); end
 %                     if isnan(MLlambda) || isempty(MLlambda), MLlambda  = PM(i).lapse(end); end
     
                     PM(i).threshold(end) = bayesAlpha;
-                    PM(i).slope(end)     = bayesBeta;
+%                     PM(i).slope(end)     = bayesBeta;
 %                     PM(i).lapse(end)     = MLlambda;
                     
                     if mode <= 3 || isempty(PM(i).threshold)
@@ -657,7 +660,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                 end
             end
 
-            resultsStair.aSigma75  = oldLevelASigma;
+%             resultsStair.aSigma75  = oldLevelASigma;
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize    = OFsize;
@@ -686,7 +689,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.targetOri = targetOri;
             resultsStair.trialOrder = trialOrder;
             resultsStair.trialFeedback = trialFeedback;
-            resultsStair.aSigma75 = aSigma;
+%             resultsStair.aSigma75 = aSigma;
             resultsStair.aSigma = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize = OFsize;
@@ -698,7 +701,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         end
         clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
-            inspectStaircase(tkP, dpP, drP, prm, PM, aSigma, newLevelASigma, targetOri);
+            inspectStaircase(tkP, dpP, drP, prm, PM, [], newLevelASigma, targetOri);
             tkS(1,2) = 1;
         end
 end
