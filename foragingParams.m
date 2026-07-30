@@ -45,9 +45,9 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [0 90];%[0 45 90 135]; %
+    params.allOri = [90];%[0 45 90 135]; %
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
-    params.allOriName = {'horizontal', 'vertical'};%{'horizontal', 'diagonal decrescente', 'vertical', 'diagonal crescente'};%
+    params.allOriName = {'vertical'};%{'horizontal', 'diagonal decrescente', 'vertical', 'diagonal crescente'};%
     sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
     params.nbhdRadius = min(diff(sortedOri))/2;
 
@@ -95,19 +95,19 @@ function params = foragingParams
 %% Porpriedades do staircase
     params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
     addpath(genpath(params.palPath));
-    params.sigmaMin = 20;   params.sigmaMax = 80; params.sigmaGrain = 11; 
+    params.sigmaMin = 20;   params.sigmaMax = 80; % params.sigmaGrain = 11; 
     params.sigmaRem = 5;
-    params.grainAlpha = 60;
-    params.betaMin  = .005; params.betaMax  = .7; params.grainBeta = 40;
+%     params.grainAlpha = 60;
+%     params.betaMin  = .005; params.betaMax  = .7; params.grainBeta = 40;
     params.nStimsStair = 3;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 50;     % <-
+    params.nTrialsStair = 60;     % <-
     params.nTrialsStairTrain = 10;
     params.priorMeanStair  = 50; params.priorStdStair   = 20;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
-    params.priorBetaMeanStair = 0.2; params.priorBetaStdStair = .5;
-    params.priorBetaStdStair2 = .7*params.priorBetaStdStair;
-    params.priorLambdaMeanStair = 0.03; params.priorLambdaStdStair = 20;
+    params.priorBetaMeanStair = 0.2; 
+%     params.priorBetaStdStair = .5; params.priorBetaStdStair2 = .7*params.priorBetaStdStair; params.priorLambdaStdStair = 20;
+    params.priorLambdaMeanStair = 0.05;
     params.minJitterStair  = .5;  % em s
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
