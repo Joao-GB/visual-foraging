@@ -45,7 +45,7 @@ function params = foragingParams
     params.randomize = false;
 
     % (i) Orientações possíveis dos estímulos, em graus
-    params.allOri = [90];%[0 45 90 135]; %
+    params.allOri = 90;%[0 45 90 135]; %
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
     params.allOriName = {'vertical'};%{'horizontal', 'diagonal decrescente', 'vertical', 'diagonal crescente'};%
     sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
@@ -101,7 +101,7 @@ function params = foragingParams
 %     params.betaMin  = .005; params.betaMax  = .7; params.grainBeta = 40;
     params.nStimsStair = 3;
     params.nBlocksStair = numel(params.allOri);
-    params.nTrialsStair = 60;     % <-
+    params.nTrialsStair = 60;     % 60 <-
     params.nTrialsStairTrain = 10;
     params.priorMeanStair  = 50; params.priorStdStair   = 20;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida

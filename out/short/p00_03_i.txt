@@ -1,161 +1,228 @@
 Selecionado: staircase
 ----Início do staircase----
 
-ans =
-
-   1.7846e+09
-
-
 Idx Bloco: 1
 # Trial: 1
- Idx Trial: 4
-Elapsed time is 0.083075 seconds.
+ Idx Trial: 35
+Elapsed time is 0.083349 seconds.
 Trial bom
-Atualizo o PM do bloco 1, apresentamos: -60.0000 (no xCurrent: -80.0000)
+Atualizo o RF do bloco 1, apresentamos: 55.0000 (no xCurrent: -48.5686)
 
-Por isso o novo aSigma é 80.0000
-Limiar atual estimado (Alpha): NaN
-Inclinação atual estimada (Beta): NaN
+A média evoluiu como:   -55.0000  -58.2368  -48.5686
 
+
+Por isso o novo aSigma é 48.5686
 
 Idx Bloco: 1
 # Trial: 2
- Idx Trial: 2
-Elapsed time is 0.083033 seconds.
+ Idx Trial: 14
+Elapsed time is 0.083048 seconds.
 Trial bom
-Atualizo o PM do bloco 1, apresentamos: 80.0000 (no xCurrent: -80.0000)
+Atualizo o RF do bloco 1, apresentamos: 48.5686 (no xCurrent: -52.4411)
 
-Por isso o novo aSigma é 80.0000
-Limiar atual estimado (Alpha): NaN
-Inclinação atual estimada (Beta): NaN
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411
 
+
+Por isso o novo aSigma é 52.4411
 
 Idx Bloco: 1
 # Trial: 3
- Idx Trial: 1
-Elapsed time is 0.083098 seconds.
+ Idx Trial: 42
+Elapsed time is 0.083042 seconds.
 Trial bom
-Atualizo o PM do bloco 1, apresentamos: 80.0000 (no xCurrent: -80.0000)
+Atualizo o RF do bloco 1, apresentamos: 52.4411 (no xCurrent: -47.5478)
 
-Por isso o novo aSigma é 80.0000
-Limiar atual estimado (Alpha): NaN
-Inclinação atual estimada (Beta): NaN
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478
 
+
+Por isso o novo aSigma é 47.5478
 
 Idx Bloco: 1
 # Trial: 4
- Idx Trial: 3
-Elapsed time is 0.083057 seconds.
+ Idx Trial: 22
+Elapsed time is 0.083048 seconds.
 Trial bom
-Atualizo o PM do bloco 1, apresentamos: 80.0000 (no xCurrent: -80.0000)
+Atualizo o RF do bloco 1, apresentamos: 47.5478 (no xCurrent: -50.0552)
 
-Por isso o novo aSigma é 80.0000
-Limiar atual estimado (Alpha): NaN
-Inclinação atual estimada (Beta): NaN
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552
 
+
+Por isso o novo aSigma é 50.0552
 
 Idx Bloco: 1
 # Trial: 5
- Idx Trial: 7
-Elapsed time is 0.082507 seconds.
+ Idx Trial: 32
+Elapsed time is 0.082958 seconds.
 Trial bom
-Atualizo o PM do bloco 1, apresentamos: 80.0000 (no xCurrent: -80.0000)
+Atualizo o RF do bloco 1, apresentamos: 50.0552 (no xCurrent: -52.1481)
 
-Por isso o novo aSigma é 80.0000
-Limiar atual estimado (Alpha): NaN
-Inclinação atual estimada (Beta): NaN
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481
 
 
-Idx Bloco: 2
-# Trial: 1
- Idx Trial: 4
-Elapsed time is 0.083005 seconds.
+Por isso o novo aSigma é 52.1481
+
+Idx Bloco: 1
+# Trial: 6
+ Idx Trial: 58
+Elapsed time is 0.083575 seconds.
 Trial bom
-Atualizo o PM do bloco 2, apresentamos: -46.0000 (no xCurrent: -64.0000)
+Atualizo o RF do bloco 1, apresentamos: 52.1481 (no xCurrent: -49.0683)
 
-Por isso o novo aSigma é 64.0000
-Limiar atual estimado (Alpha): -44.56
-Inclinação atual estimada (Beta): 0.18
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683
 
 
-Idx Bloco: 2
-# Trial: 2
- Idx Trial: 8
-Elapsed time is 0.083362 seconds.
+Por isso o novo aSigma é 49.0683
+
+Idx Bloco: 1
+# Trial: 7
+ Idx Trial: 46
+Elapsed time is 0.083016 seconds.
 Trial bom
-Atualizo o PM do bloco 2, apresentamos: 64.0000 (no xCurrent: -68.0000)
+Atualizo o RF do bloco 1, apresentamos: 49.0683 (no xCurrent: -50.4110)
 
-Por isso o novo aSigma é 68.0000
-Limiar atual estimado (Alpha): -51.89
-Inclinação atual estimada (Beta): 0.18
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110
 
 
-Idx Bloco: 2
-# Trial: 3
- Idx Trial: 5
+Por isso o novo aSigma é 50.4110
+
+Idx Bloco: 1
+# Trial: 8
+ Idx Trial: 15
+Elapsed time is 0.083447 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos: 50.4110 (no xCurrent: -48.3352)
+
+A média evoluiu como:   -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352
+
+
+Por isso o novo aSigma é 48.3352
+
+Idx Bloco: 1
+# Trial: 9
+ Idx Trial: 11
+Elapsed time is 0.083555 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos: 48.3352 (no xCurrent: -46.6057)
+
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Column 19
+
+  -46.6057
+
+
+Por isso o novo aSigma é 46.6057
+
+Idx Bloco: 1
+# Trial: 10
+ Idx Trial: 53
+Elapsed time is 0.083343 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos: 46.6057 (no xCurrent: -47.5412)
+
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Columns 19 through 21
+
+  -46.6057  -47.1212  -47.5412
+
+
+Por isso o novo aSigma é 47.5412
+
+Idx Bloco: 1
+# Trial: 11
+ Idx Trial: 23
+Elapsed time is 0.083464 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos: 47.5412 (no xCurrent: -48.2656)
+
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Columns 19 through 23
+
+  -46.6057  -47.1212  -47.5412  -47.9296  -48.2656
+
+
+Por isso o novo aSigma é 48.2656
+
+Idx Bloco: 1
+# Trial: 12
+ Idx Trial: 16
+Elapsed time is 0.083462 seconds.
+Trial bom
+Atualizo o RF do bloco 1, apresentamos: 48.2656 (no xCurrent: -48.8886)
+
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Columns 19 through 25
+
+  -46.6057  -47.1212  -47.5412  -47.9296  -48.2656  -48.5924  -48.8886
+
+
+Por isso o novo aSigma é 48.8886
+
+Idx Bloco: 1
+# Trial: 13
+ Idx Trial: 24
 Elapsed time is 0.082985 seconds.
 Trial bom
-Atualizo o PM do bloco 2, apresentamos: 68.0000 (no xCurrent: -62.0000)
+Atualizo o RF do bloco 1, apresentamos: 48.8886 (no xCurrent: -49.4668)
 
-Por isso o novo aSigma é 62.0000
-Limiar atual estimado (Alpha): -46.44
-Inclinação atual estimada (Beta): 0.18
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Columns 19 through 27
+
+  -46.6057  -47.1212  -47.5412  -47.9296  -48.2656  -48.5924  -48.8886  -49.1873  -49.4668
 
 
-Idx Bloco: 2
-# Trial: 4
- Idx Trial: 2
-Elapsed time is 0.083437 seconds.
+Por isso o novo aSigma é 49.4668
+
+Idx Bloco: 1
+# Trial: 14
+ Idx Trial: 57
+Elapsed time is 0.083359 seconds.
 Trial bom
-Atualizo o PM do bloco 2, apresentamos: 62.0000 (no xCurrent: -62.0000)
+Atualizo o RF do bloco 1, apresentamos: 49.4668 (no xCurrent: -50.0327)
 
-Por isso o novo aSigma é 62.0000
-Limiar atual estimado (Alpha): -54.79
-Inclinação atual estimada (Beta): 0.18
+A média evoluiu como:   Columns 1 through 18
+
+  -55.0000  -58.2368  -48.5686  -50.6903  -52.4411  -54.2643  -47.5478  -48.9315  -50.0552  -51.1833  -52.1481  -48.1152  -49.0683  -49.7941  -50.4110  -51.0377  -48.3352  -48.8424
+
+  Columns 19 through 29
+
+  -46.6057  -47.1212  -47.5412  -47.9296  -48.2656  -48.5924  -48.8886  -49.1873  -49.4668  -49.7561  -50.0327
 
 
-Idx Bloco: 2
-# Trial: 5
- Idx Trial: 7
-Elapsed time is 0.082888 seconds.
-Trial bom
-Atualizo o PM do bloco 2, apresentamos: 62.0000 (no xCurrent: -66.0000)
+Por isso o novo aSigma é 50.0327
 
-Por isso o novo aSigma é 66.0000
-Limiar atual estimado (Alpha): -62.12
-Inclinação atual estimada (Beta): 0.18
+Idx Bloco: 1
+# Trial: 15
+ Idx Trial: 55
 
-Comprimentos dos históricos de estímulos e respostas para bloco 1: 10 e 10
-ANTES
-Alpha: ML = -80.000 e final = NaN
-Beta: ML = Inf e final = NaN
-Lambda: ML = 0.000 e final = NaN
+ans =
 
-DEPOIS
-Alpha: ML = -80.000 e final = NaN
-Beta: ML = Inf e final = NaN
-Lambda: ML = 0.000 e final = NaN
+   1.7854e+09
 
-Comprimentos dos históricos de estímulos e respostas para bloco 2: 10 e 10
-ANTES
-Alpha: ML = -66.000 e final = -62.124
-Beta: ML = Inf e final = 0.178
-Lambda: ML = 0.125 e final = 0.047
-
-DEPOIS
-Alpha: ML = -66.000 e final = -62.124
-Beta: ML = Inf e final = 0.178
-Lambda: ML = 0.125 e final = 0.047
-
-Valor de aSigma escolhido via staircase: 80.00
-Valor de aSigma escolhido via staircase: 65.00
-Vai usar [80 65] para orientações [0 90]
+Trial ruim, pois ~keepGoingTrials = 1 e restartTrial = 0
+ keptFixP3 = 0, keptFixPM = 0
+Valor mantido de aSigma (sem staircase): 55.00
+Vai usar 55 para orientações 90
 oriFilter e OFsize devidamente atualizados
 
 ans =
 
-   1.7846e+09
+   1.7854e+09
 
 Arquivo movido para o diretório fornecido.
-AVISO: Sessão de staircase concluída e salva com êxito.
-Tempo total da sessão: 102.764 s
+AVISO: Sessão de staircase não concluída, mas salva.
+Tempo total da sessão: 104.348 s

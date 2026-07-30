@@ -79,7 +79,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             aSigma = ones(1, nBlocks)*burnInASigma(1);
         else
             burninTrials = 0;          % Neutraliza o loop posterior
-            burnInASigma = prm.aSigma; aSigma = prm.aSigma;
+            burnInASigma = -prm.aSigma; aSigma = -prm.aSigma;
         end
 
         % Uso valores fixos de beta e lambda para o AMRF
@@ -558,7 +558,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                         end
 
                         fprintf('Atualizo o RF do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(prm.allOriMap(targetOri(b))), RF(b).xCurrent);
-                        fprintf('\nA média evoluiu como: '); disp(PM(b).xStaircase)
+                        fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
 
                         % Quando chega nessa parte, o i já foi incrementado 
                         % na parte com trialIdxUp. Por iso i em vez de i+1
@@ -616,7 +616,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             resultsStair.aSigma    = newLevelASigma;
             resultsStair.oriFilter = oriFilter;
             resultsStair.OFsize    = OFsize;
-            resultsStair.staircase = rmfield(RF, {'priorAlphas', 'priorBetas', 'priorGammas', 'priorLambdas', 'priorModels', 'LUT', 'posteriorTplus1givenSuccess', 'posteriorTplus1givenFailure'});
+            resultsStair.staircase = RF;%rmfield(RF, {'priorAlphas', 'priorBetas', 'priorGammas', 'priorLambdas', 'priorModels', 'LUT', 'posteriorTplus1givenSuccess', 'posteriorTplus1givenFailure'});
         catch
             if ~exist('fixCenters', 'var'),   fixCenters = []; end
             if ~exist('stimCenters', 'var'),  stimCenters = []; end
@@ -647,7 +647,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
             diary off;
             psychrethrow(psychlasterror);
         end
-        clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm PM aSigma newLevelASigma targetOri tkS
+        clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm RF aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
             inspectStaircase(tkP, dpP, drP, prm, RF, [], newLevelASigma, targetOri);
             tkS(1,2) = 1;

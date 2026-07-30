@@ -136,7 +136,8 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 
             def2 = {num2str(val_emaFix), mat2str(val_aSigma), num2str(val_pinkNoiseDur)}; 
             answer2 = inputdlg(prompt2, dlg_title2, [1 40; 1 40; 1 40], def2, options);
-                
+
+            if isnan(answer2{3}), answer2{3} = params.pinkNoiseDur; end
             if isempty(answer2)
                 fprintf('Sessão cancelada na revisão de parâmetros\n'); 
                 cleanup; 
