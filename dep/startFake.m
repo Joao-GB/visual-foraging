@@ -32,7 +32,7 @@ function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
         totalTime = 8;
         hints     = {
                      'Memorize apenas onde estão os alvos!'
-                     'Faça pausas apenas quando o tipo de alvo mudar.'
+                     'Faça pausas apenas entre os blocos.'
                      'Evite se mexer durante o experimento.'
                      'Tente se manter concentrado e relaxado.'
                      'Priorize o desempenho, e não a velocidade.'

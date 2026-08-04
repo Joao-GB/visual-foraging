@@ -93,7 +93,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
         subjNum = str2double(answer{1});
         sesNum  = str2double(answer{2});
         
-        if sesNum > 1
+        if sesNum > 1 && sesNum - 25 ~= 0
             prevSes = sesNum - 1;
             auxPrev = sprintf('%02d_%02d', subjNum, prevSes);
             
@@ -137,12 +137,12 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
             def2 = {num2str(val_emaFix), mat2str(val_aSigma), num2str(val_pinkNoiseDur)}; 
             answer2 = inputdlg(prompt2, dlg_title2, [1 40; 1 40; 1 40], def2, options);
 
-            if isnan(answer2{3}), answer2{3} = params.pinkNoiseDur; end
             if isempty(answer2)
                 fprintf('Sessão cancelada na revisão de parâmetros\n'); 
                 cleanup; 
                 return; 
             end
+            if isnan(answer2{3}), answer2{3} = params.pinkNoiseDur; end
             
             loaded_emaFix = str2double(answer2{1});
 
@@ -891,12 +891,14 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                 prm.postModDur  = prm.cursorPostModDur;
                 prm.pinkNoiseDur= prm.cursorPinkNoiseDur;
                 tkP.nBlocks = 1;
-                tkP.nTrials = prm.nTrialsTrain;
+                tkP.nTrials = prm.nTrialsTrain1;
             % No treino, todas as orientações são alvo uma vez
             elseif mode == 2 || mode == 3
                 L = numel(prm.allOri);
                 tkP.nBlocks = L;
-                tkP.nTrials = max(prm.nTrialsTrain, ceil(1*prm.fixTimeQueueSize/L));
+                if mode == 2, tkP.nTrials = prm.nTrialsTrain2;
+                else,         tkP.nTrials = max(prm.nTrialsTrain3, ceil(1*prm.fixTimeQueueSize/L));
+                end
             end
         end
         fprintf('Tempo inicial: %.5f\n', toc)
