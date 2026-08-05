@@ -4,7 +4,10 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
     if expIdx == 2
         N = numel(mat.prm.allOri)*mat.tkP.t1.tkP.nTrials;
         mat.results = mat.tkP.t1;
-    else,           N = mat.tkP.nBlocks*mat.tkP.nTrials;
+        actTrl = mat.tkP.t1.tkP.nTrials;
+    else        
+        N = mat.tkP.nBlocks*mat.tkP.nTrials;
+        actTrl = mat.tkP.nTrials;
     end
     trl    = getTrlStruct(N);
 
@@ -75,7 +78,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
 
     hasProbeResp = zeros(1, nTrl);
     for i=1:nTrl
-        t = mod(i-1, mat.tkP.nTrials)+1;
+        t = mod(i-1,actTrl)+1;
 
         % Extrai a
         trlEyeData = eyeData;
@@ -142,6 +145,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
 %             find(saccLimsTime(1,:) >= phaseLimsTime(3,1), 1, 'first')
 
             noRepQueue = unique(stimsQueue{i}(1,:), 'stable');
+            repQueue = stimsQueue{i}(1,:);
 
             P3aux = find(stmPerPhase == 3);
             P3StmIdx = noRepQueue(P3aux);
@@ -154,7 +158,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             trl(i).saccAmpDva  = P3SaccAmp;
             trl(i).saccVelDvas = P3SaccVPeak;
 
-            PMStmIdx = noRepQueue(stmPerPhase == 4);
+            PMStmIdx = repQueue(stmPerPhase == 4);
             PMFixIdx = find(fixLimsTime(1,:) >= P3SaccLims(2), 1, 'first');
             PMFixPosPix = dva_to_pixel(eyeMovs.fixations.pos(:, PMFixIdx), 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
             PMTgtPosPix = mat.results.stimCenters(:, PMStmIdx, trl(i).trlIdx, b) - screenCenter;
@@ -228,7 +232,11 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             trl(i).allProbesOrder = feedback(2,:);
             
         end
-        if t == mat.tkP.nTrials, b = b+1; end
+        if expIdx == 2 && t == mat.tkP.t1.tkP.nTrials
+            b = b+1;
+        elseif expIdx ~= 2 && t == mat.tkP.nTrials
+            b = b+1; 
+        end
     end
     
 end
