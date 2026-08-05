@@ -2,9 +2,9 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
     if nargin < 5, expIdx = 4; end
 
     if expIdx == 2
-        N = numel(mat.prm.allOri)*mat.tkP.t1.tkP.nTrials;
+        N = numel(mat.prm.allOri)*mat.tkP.t1.tkP.nTrainTrials;
         mat.results = mat.tkP.t1;
-        actTrl = mat.tkP.t1.tkP.nTrials;
+        actTrl = mat.tkP.t1.tkP.nTrainTrials;
     else        
         N = mat.tkP.nBlocks*mat.tkP.nTrials;
         actTrl = mat.tkP.nTrials;

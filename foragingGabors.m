@@ -1948,28 +1948,31 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         else
 %                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
                             fprintf('Não há currIdx... ')
-%                             if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
-%                                 fprintf('... então pré-s. vira visto\n')
-%                                 nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
-%                             else
-%                                 fprintf('... então pré-s. vira não visto\n')
-% 
-%                                 nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
-%                             end
-%                             nStimsToReport(1, idx, b) = nPre;
-%                             nStimsToReport(2, idx, b) = 0;
-%                             nStimsToReport(3, idx, b) = nPost;
-%                             
-%                             if numel(seenIdx) < nPre
-%                                 dif = nPre - numel(seenIdx);
-%                                 nStimsToReport(1, idx, b) = numel(seenIdx);
-%                                 nStimsToReport(3, idx, b) = nPost + dif;
-%                             end
-%                             if numel(notSeenIdx) < nPost
-%                                 dif = nPost - numel(notSeenIdx);
-%                                 nStimsToReport(3, idx, b) = numel(notSeenIdx);
-%                                 nStimsToReport(1, idx, b) = nPre + dif;
-%                             end
+                            if mode <= 2
+                                if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
+                                    fprintf('... então pré-s. vira visto\n')
+                                    nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
+                                    nPost = nStimsToReport(3, idx, b);
+                                else
+                                    fprintf('... então pré-s. vira não visto\n')
+                                    nPre = nStimsToReport(1, idx, b);
+                                    nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
+                                end
+                                nStimsToReport(1, idx, b) = nPre;
+                                nStimsToReport(2, idx, b) = 0;
+                                nStimsToReport(3, idx, b) = nPost;
+    
+                                if numel(seenIdx) < nPre
+                                    dif = nPre - numel(seenIdx);
+                                    nStimsToReport(1, idx, b) = numel(seenIdx);
+                                    nStimsToReport(3, idx, b) = nPost + dif;
+                                end
+                                if numel(notSeenIdx) < nPost
+                                    dif = nPost - numel(notSeenIdx);
+                                    nStimsToReport(3, idx, b) = numel(notSeenIdx);
+                                    nStimsToReport(1, idx, b) = nPre + dif;
+                                end
+                            end
                         end
 %                         disp(nStimsToReport(:, idx, b))
                         if sum(nStimsToReport(:, idx, b)) ~= 3
@@ -2212,7 +2215,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         end
 
     if mode <= 3
+        tkP.nTrainBlocks = tkP.nBlocks;
         tkP.nBlocks = nBlocks;
+        tkP.nTrainTrials = tkP.nTrials;
         tkP.nTrials = nTrials;
         if debug == 0, HideCursor(dpP.window); end
 
