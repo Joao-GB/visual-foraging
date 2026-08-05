@@ -49,7 +49,7 @@ function params = foragingParams
     params.allOriMap  = containers.Map(params.allOri,1:length(params.allOri));
     params.allOriName = {'vertical'};%{'horizontal', 'diagonal decrescente', 'vertical', 'diagonal crescente'};%
     sortedOri = [sort(mod(params.allOri, 180)) min(params.allOri) + 180];
-    params.nbhdRadius = min(diff(sortedOri))/2;
+    params.nbhdRadius = min([diff(sortedOri) 90])/2;
 
 %% Propriedades indispensáveis da tarefa: tempos de fixação, durações dos estímulos...
     % (j) Quantidades e proporções de estímulos a serem reportados ao 
@@ -120,7 +120,7 @@ function params = foragingParams
 %% Propriedades secundárias da tarefa: treino e cursor, tempos limites, retentativas...
     % (a) Número de trials no treino
     params.nTrialsTrain1  = 6;
-    params.nTrialsTrain2  = 10;
+    params.nTrialsTrain2  = 30;
     params.nTrialsTrain3  = 12;
 
     % (b) Tempo máximo durante o qual é exibida a cruz antes de mensagem de

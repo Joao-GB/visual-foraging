@@ -2,6 +2,10 @@ function [badTrl, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx,
 
     % Encontra os trials descartados por pausa, timeout etc.
     badTrl = zeros(1, nTrl);
+    % Para fazer funcionar nos dados em que restartTrial estava mal
+    % computado. Acaba sendo redundante para os demais, mas não faz mal
+    % adicionar
+    offMsg = cell(1, nTrl);
     for i=1:nTrl
         currTrlAllIdx = trlLimIdx(1,i):trlLimIdx(2,i);
         badCond = strcmp(messages(currTrlAllIdx), mat.prm.msg.err.trl{1}) | ... % Cobre efeitos de pausa
@@ -10,10 +14,21 @@ function [badTrl, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx,
             ... strcmp(messages(currTrlIdx), mat.prm.msg.err.trl{3}) | ...   % Não é usado em foragingGabors o erro de NOP3
             strcmp(messages(currTrlAllIdx), mat.prm.msg.err.P1) | ...
             strcmp(messages(currTrlAllIdx), mat.prm.msg.err.P2);
-        if any(badCond), badTrl(i) = true; end
+         badTrl(i) = any(badCond);
+
+        % Se houver mensagem off.trl{2}, é extraída 
+        idx = find(contains(messages(currTrlAllIdx), mat.prm.msg.off.trl{2}), 1);
+        if ~isempty(idx)
+            offMsg{i} = messages{currTrlAllIdx(idx)};
+        end
+    end
+    for i = 2:nTrl
+        if ~isempty(offMsg{i}) && strcmp(offMsg{i}, offMsg{i-1})
+            badTrl(i-1) = true;
+        end
     end
 
-    % Encontra os blocos ruins, adelBadTrl saber
+    % Encontra os blocos ruins, a saber
     % (i)  os que têm mensagem de erro dentro deles (sempre acompanhadas por 
     %     fim de bloco)
     % (ii) os que não têm mensagem de fim de bloco, e sempre estão

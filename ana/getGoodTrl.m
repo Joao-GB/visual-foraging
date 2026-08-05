@@ -1,4 +1,6 @@
-function allGoodTrl =  getGoodTrl(trl, mat)
+function [allGoodTrl, keepIdx] =  getGoodTrl(trl, mat, trlName)
+    % O próprio foragingTrlProps já rejeita os já vistos por meio da linha
+    % trl(i).trlKeep = trlKeep && ~trl(i).probeSeen && hasProbeResp(i);
     keepIdx = logical([trl.trlKeep]);
 
     allGoodTrl = false(size(trl));
@@ -13,6 +15,6 @@ function allGoodTrl =  getGoodTrl(trl, mat)
     allGoodTrl(keepIdx) = latencyMask;
     
     % Mostra o print e filtra de uma vez só no final
-    fprintf('\n----------------------------------\nNúmero de trials pré-selecionados: %d\n', sum(keepIdx))
+    fprintf('\n----------------------------------\n%s\nNúmero de trials pré-selecionados: %d\n', trlName, sum(keepIdx))
     fprintf('Número de trials válidos final: %d\n', sum(allGoodTrl))
 end

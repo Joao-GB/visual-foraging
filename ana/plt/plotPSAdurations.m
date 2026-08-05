@@ -1,4 +1,5 @@
 function plotPSAdurations(trl, drP)
+    % Início e fins da P3 indicam início e fim do estímulo
     stimStart = arrayfun(@(s) s.phaseLimsTime(3,1), trl);
     stimEnd = arrayfun(@(s) s.phaseLimsTime(3,2), trl);
     

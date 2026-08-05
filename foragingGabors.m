@@ -1629,7 +1629,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         P3Frames = round(P3On / dpP.ifi);
                         TargetP3Onset = fixStartTime + (P3Frames - 0.5) * dpP.ifi;
                         
-                        % O update ocorre 1 frame antes do início de da fase 3
+                        % O update ocorre 1 frame antes do início da fase 3
                         preUpdateDeadline = TargetP3Onset - dpP.ifi; 
                         tNow = GetSecs;
                         while tNow < preUpdateDeadline
@@ -1693,9 +1693,10 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         end
                         if mode >= 3
-                                updateStimOnset = Screen('Flip', dpP.window, TargetP3Onset);
-                            else
-                                updateStimOnset = GetSecs;
+                            updateStimOnset = Screen('Flip', dpP.window, TargetP3Onset);
+                        else
+                            WaitSecs('UntilTime', TargetP3Onset);
+                            updateStimOnset = GetSecs;
                         end
 
                         if debug == 0 && mode >= 2, Eyelink('Message',[sprintf('I %d ', uint64(updateStimOnset * 1000)) prm.msg.on.P3]); end
@@ -1942,32 +1943,32 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             fprintf('Há currIdx... ')
                             fprintf('então será perguntado sobre\n');
                         else
-                            nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
+%                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
                             fprintf('Não há currIdx... ')
-                            if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
-                                fprintf('... então pré-s. vira visto\n')
-                                nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
-                            else
-                                fprintf('... então pré-s. vira não visto\n')
-
-                                nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
-                            end
-                            nStimsToReport(1, idx, b) = nPre;
-                            nStimsToReport(2, idx, b) = 0;
-                            nStimsToReport(3, idx, b) = nPost;
-                            
-                            if numel(seenIdx) < nPre
-                                dif = nPre - numel(seenIdx);
-                                nStimsToReport(1, idx, b) = numel(seenIdx);
-                                nStimsToReport(3, idx, b) = nPost + dif;
-                            end
-                            if numel(notSeenIdx) < nPost
-                                dif = nPost - numel(notSeenIdx);
-                                nStimsToReport(3, idx, b) = numel(notSeenIdx);
-                                nStimsToReport(1, idx, b) = nPre + dif;
-                            end
+%                             if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
+%                                 fprintf('... então pré-s. vira visto\n')
+%                                 nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
+%                             else
+%                                 fprintf('... então pré-s. vira não visto\n')
+% 
+%                                 nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
+%                             end
+%                             nStimsToReport(1, idx, b) = nPre;
+%                             nStimsToReport(2, idx, b) = 0;
+%                             nStimsToReport(3, idx, b) = nPost;
+%                             
+%                             if numel(seenIdx) < nPre
+%                                 dif = nPre - numel(seenIdx);
+%                                 nStimsToReport(1, idx, b) = numel(seenIdx);
+%                                 nStimsToReport(3, idx, b) = nPost + dif;
+%                             end
+%                             if numel(notSeenIdx) < nPost
+%                                 dif = nPost - numel(notSeenIdx);
+%                                 nStimsToReport(3, idx, b) = numel(notSeenIdx);
+%                                 nStimsToReport(1, idx, b) = nPre + dif;
+%                             end
                         end
-                        disp(nStimsToReport(:, idx, b))
+%                         disp(nStimsToReport(:, idx, b))
                         if sum(nStimsToReport(:, idx, b)) ~= 3
                             disp('ERRO')
                         end
@@ -2087,7 +2088,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
                         WaitSecs(.5);
 
-                        restartTrial = restartTrial & skipP4;
+                        restartTrial = restartTrial | skipP4;
                     % A condição é keepGoingTrials = false ou restartTrial = true
                     end
 

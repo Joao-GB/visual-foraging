@@ -1,7 +1,9 @@
 function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, expIdx)
     if nargin < 5, expIdx = 4; end
 
-    if expIdx == 2, N = numel(mat.prm.allOri)*mat.tkP.t1.tkP.nTrials;
+    if expIdx == 2
+        N = numel(mat.prm.allOri)*mat.tkP.t1.tkP.nTrials;
+        mat.results = mat.tkP.t1;
     else,           N = mat.tkP.nBlocks*mat.tkP.nTrials;
     end
     trl    = getTrlStruct(N);
@@ -44,7 +46,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
     trlLimAbs(:,badTrl) = [];
     trlDur(badTrl) = [];
 
-    if nTrl ~=mat.tkP.nTrials*mat.tkP.nBlocks
+    if nTrl ~= N
         warning('O número de trials não é compatível com o número esperado')
     end
 

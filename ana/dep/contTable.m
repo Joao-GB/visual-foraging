@@ -23,15 +23,29 @@ function [T, I, d, c] = contTable(E, O, showTable)
     % Cálculo das taxas
     nPresent = T(1,1) + T(1,2); % Sianis 
     nAbsent  = T(2,1) + T(2,2); % Total Signal Absent trials
+
+    H_rate  = NaN;
+    FA_rate = NaN;
+    d = NaN;
+    c = NaN;
     
-    H_rate  = T(1,1) / nPresent;
-    FA_rate = T(2,1) / nAbsent;
+    if nPresent > 0, H_rate = T(1,1)/nPresent; end
+    if nAbsent > 0, FA_rate = T(2,1)/nAbsent;  end    
+    if isnan(H_rate) || isnan(FA_rate)
+        if showTable
+            fprintf('\n======================================\n');
+            fprintf('Não há trials suficientes para calcular d'' e c.\n');
+        end
     
-    % Correção de Hautus para evitar infinitos nas operações
-    if H_rate == 1,   H_rate = 1 - (0.5 / nPresent); end
-    if H_rate == 0,   H_rate = 0.5 / nPresent;       end
-    if FA_rate == 1, FA_rate = 1 - (0.5 / nAbsent);  end
-    if FA_rate == 0, FA_rate = 0.5 / nAbsent;        end
+        warning('contTable:NoTrials', ...
+            'Não há trials suficientes para calcular d'' e c.');
+    
+        return
+    end
+    
+    % Limita H e FA ao intervalo válido para evitar z infinito (correção de Hautus)
+    H_rate  = min(max(H_rate, 0.5/nPresent), 1-0.5/nPresent);
+    FA_rate = min(max(FA_rate,0.5/nAbsent), 1-0.5/nAbsent);
     
     % Métricas de SDT
     zH  = norminv(H_rate);
@@ -51,4 +65,6 @@ function [T, I, d, c] = contTable(E, O, showTable)
         fprintf('Taxas:   Hit = %.2f%%,    FA = %.2f%%\n', H_rate*100, FA_rate*100);
         fprintf('          d'' = %.4f,     c = %.4f\n', d, c);
     end
+
+    if isnan(d), warning('contTable:NoTrials','Não há trials suficientes para calcular d''.'); end
 end

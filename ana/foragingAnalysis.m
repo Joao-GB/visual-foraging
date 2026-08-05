@@ -1,4 +1,4 @@
-function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
+function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses, searchFolder)
     % Convenção:
     % vou chamar os estímulos forrageado (for), sacádico (sacc) e 
     % não-sacádico (nSacc) e identificá-los como -1, 0 e 1 com respeito ao 
@@ -9,7 +9,10 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     addpath(genpath(fullfile(currFolder, 'dep')));
     addpath(genpath(fullfile(currFolder, 'plt')));
     addpath(parentFolder);
-    params = foragingParams; outFolder = fullfile(params.currFolder, params.outFolder);
+    params = foragingParams; 
+    if nargin < 3, outFolder = fullfile(params.currFolder, params.outFolder);
+    else,          outFolder = searchFolder;
+    end
 
     % Carrega os arquivos da sessão
     [mat, edf, sesStr] = foragingLoad(subj, ses, outFolder, params);
@@ -18,16 +21,20 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses)
     % Extrai as informações de cada trial, que já passaram por uma pré-seleção
     [trlProps, eyeData, evTimes] = foragingTrlProps(mat, edf, sesStr, subj);
     
-    allGoodTrl = getGoodTrl(trlProps, mat);
+    [allGoodTrl allTrl] = getGoodTrl(trlProps, mat, 'TRIALS EXPERIMENTO');
     trlProps = trlProps(allGoodTrl);
 
     [trainTrlProps, ~, ~] = foragingTrlProps(mat, edf, sesStr, subj, 2);
-    trainAllGoodTrl = getGoodTrl(trainTrlProps, mat);
-    trainTrlProps = trainTrlProps(trainAllGoodTrl);
+    [trainAllGoodTrl, trainAllTrl] = getGoodTrl(trainTrlProps, mat, 'TRIALS TREINO');
+    trainTrlProps1 = trainTrlProps(trainAllGoodTrl);
+    trainTrlProps2 = trainTrlProps(trainAllTrl);
+
+    trainTrlProps = trainTrlProps1;
 
     clear currFolder edf outFolder params parentFolder sesStr ses subj;
 
     %% -- TAREFA PRÉ-SACÁDICA --
+    disp('\n\n-- Gráficos de tarefa pré-sacádica --')
     % 1. Análise exploratória de estímulos e comportamento ocular na tarefa pré-sacádica
     preProbePos        = pixel_to_dva([trlProps.preProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     preProbePosFix     = pixel_to_dva([trlProps.preProbePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
