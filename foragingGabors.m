@@ -1149,7 +1149,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % (d) Cria as texturas de gabores e de ruído com e sem orientação
         %     (pois não faz sentido armazená-las), sem desenhá-las
 
-                    auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+%                     auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                    auxNoiseMatrix = pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
                     fprintf('Vai usar filtro %.2f para orientaçao %d\n', prm.aSigma(prm.allOriMap(targetOri(b))), targetOri(b));
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
@@ -2328,7 +2329,7 @@ function [T, tkP] = P3Onset3(tkP, prm, newFix)
     emaFix = (1 - beta) * emaFix + beta * newFix;
     tkP.fixProps.emaFix = emaFix;
     
-    % Tenho janela de (T+d_2) a (T+t_f+d_1), largura tf+d_1-d_2 e meio em 
+    % Tenho janela de (T+d_1) a (T+t_f+d_2), largura t_f+d_2-d_1 e meio em 
     % T + (d_1 + d_2 +t_f)/2; imponho igual a F, sai T = F - (d_1 + d_2 +t_f)/2
     T = emaFix - (tf+d1+d2)/2; 
 end
@@ -2383,7 +2384,7 @@ end
 function noise = foragingNoise(noiseSize, nStims, prm, loCut, hiCut) %#ok<INUSD> 
     auxNoiseMatrix = pinkNoise(noiseSize, nStims*noiseSize);
     if nargin >= 4
-        auxNoiseMatrix = butterFilter(auxNoiseMatrix, loCut, hiCut);
+%         auxNoiseMatrix = butterFilter(auxNoiseMatrix, loCut, hiCut);
     end
 %     noiseMatrix = rescale(auxNoiseMatrix, prm.ampRange(1), prm.ampRange(2));
     noiseMatrix = (auxNoiseMatrix - mean(auxNoiseMatrix(:))) / std(auxNoiseMatrix(:));

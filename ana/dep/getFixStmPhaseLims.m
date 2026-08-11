@@ -1,4 +1,4 @@
-function [keepTrl, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trlLimEvt, trlLimClk, prm, modTimes)
+function [keepTrl, fixLimsTime, fixPerStm, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trlLimEvt, trlLimClk, prm, modTimes)
 %     figure; plot(eyeMovs.data.filt_lin'); hold on; xline([phaseLimsTime(1,2); phaseLimsTime(2,2); phaseLimsTime(3,2); phaseLimsTime(4,2)], '-k', 'Linewidth', 1.5);
     keepTrl = 1; saccLimsTime = [];
     % Dados os eventos de um trial e a posição ocular durante esse período,

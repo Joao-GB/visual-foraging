@@ -54,7 +54,8 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-    auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+    auxNoiseMatrix = pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
+    %auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
     for j=1:(nStims)
         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
         aux = auxNoiseMatrix(:,colRange);
@@ -82,13 +83,15 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     eyeColor = eyeCols(aux, :);
 
     [easyFilter, easyOFsize] = MakeOriFilter1(txP.gabor.size_px, 15, prm.rSigma2);
-    auxNoiseMatrix1 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+%     auxNoiseMatrix1 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+    auxNoiseMatrix1 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
     oriPinkMatrix1  = ApplyOriFilter1(easyFilter', easyOFsize, auxNoiseMatrix1);
     easyPinkTex = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix1, [], [], 1);
 
 
     [hardFilter, hardOFsize] = MakeOriFilter1(txP.gabor.size_px, 80, prm.rSigma2);
-    auxNoiseMatrix2 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+%     auxNoiseMatrix2 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+    auxNoiseMatrix2 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
     oriPinkMatrix2  = ApplyOriFilter1(hardFilter', hardOFsize, auxNoiseMatrix2);
     hardPinkTex = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix2, [], [], 1);
 

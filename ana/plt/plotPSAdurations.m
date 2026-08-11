@@ -1,23 +1,24 @@
 function plotPSAdurations(trl, drP)
     % Início e fins da P3 indicam início e fim do estímulo
-    stimStart = arrayfun(@(s) s.phaseLimsTime(3,1), trl);
-    stimEnd = arrayfun(@(s) s.phaseLimsTime(3,2), trl);
+    stimOn  = arrayfun(@(s) s.phaseLimsTime(3,1), trl);
+    stimOff = arrayfun(@(s) s.phaseLimsTime(3,2), trl);
     
-    fixStart = stimStart - arrayfun(@(s) s.P3FixDurPerPhase(2), trl);
-    saccStart = stimEnd + arrayfun(@(s) s.P3FixDurPerPhase(4), trl);
+    fixOn  = arrayfun(@(s) s.P3FixLimsTime(1,1), trl);
+    fixOff = arrayfun(@(s) s.P3FixLimsTime(end,end), trl);
     
-    stimStart = stimStart(:); stimEnd = stimEnd(:);
-    fixStart  = fixStart(:);   saccStart = saccStart(:);
+    stimOn = stimOn(:); stimOff = stimOff(:);
+    fixOn  = fixOn(:);   fixOff = fixOff(:);
 
     % Coluna 1: alinha ao início do estímulo (P3)
-    c1_fix  = fixStart - stimStart;
-    c1_end  = stimEnd - stimStart;
+    c1_fix  = fixOn - stimOn;
+    c1_end  = stimOff - stimOn;
     
     % Coluna 2 e figura da direita: alinha ao início da sacada
-    c2_fix  = fixStart - saccStart;
-    c2_end  = stimEnd - saccStart;
-
-    c3_stim = stimStart - saccStart;
+    c2_fix  = fixOn - fixOff;
+    c2_end  = stimOff - fixOff; % <- esse é o mais relevante: diferença 
+                                %     entre fim do estímulo e início da
+                                %     sacada (ou fim da fixação)
+    c3_stim = stimOn - fixOff;
 
     % Figura 2x3
     figure('Name', 'PSA Stim and Sacc Times', 'Color', 'w', 'Position', [50 50 1300 700]);

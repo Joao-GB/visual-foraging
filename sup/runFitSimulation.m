@@ -61,7 +61,9 @@ function [estParams, expectedX, estX] = runFitSimulation( ...
 
     % Prior over alpha only
     priorAlphaRange = single(linspace(-80, -20, 60));
+    %% vvvvvvv
     prior = PAL_pdfNormal(priorAlphaRange, -50, 20);
+    %% ^^^^^^
     prior = prior ./ sum(prior);
 
     % AMRF setup

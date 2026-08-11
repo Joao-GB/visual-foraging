@@ -1,4 +1,6 @@
-function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams, plotOption, NumTrials, paramsGen, stairLevel, options)
+function [estParams, expectedX, estX] = psiMarginalSimulation3(marginalizeParams, plotOption, NumTrials, paramsGen, stairLevel, options)
+% Versão com parâmetros mais realistas, em escala log de intensidade
+%
 % PSIMARGINALSIMULATION Runs a Bayesian adaptive psychometric procedure.
 %
 % Inputs:
@@ -16,22 +18,22 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
         marginalizeParams = [4] %[2 4]; [alpha beta gamma lambda] = [1 2 3 4]
         plotOption = 'final'    % 'all'
         NumTrials = 150
-        paramsGen = [-50 0.15 0.5 0.03]
+        paramsGen = [0 0.8 0.5 0.03]
         stairLevel = 0.75
 
-        options.stimRange = [-80 -15]
-        options.stimGrain = 10;
-        options.stimScale = 'linear' %log
+        options.stimRange = [-2 2]
+        options.stimGrain = 15;
+        options.stimScale = 'log' % linear ou log
 
         options.plotGrain  = 51        % deve ter maior grnularidade que stimGrain
-        options.alphaRange = [-75 -20] % intervalo contido em stimRange
+        options.alphaRange = [-2 2] % intervalo contido em stimRange
         options.betaRange  = [.05 1]
 
     
-        options.priorAlphaRange = [-80 -20] % intervalo contido em stimRange
+        options.priorAlphaRange = [-2 2] % intervalo contido em stimRange
         options.priorAlphaGrain = 60
-        options.priorAlphaMean  = -50
-        options.priorAlphaStd   = 20
+        options.priorAlphaMean  = 0
+        options.priorAlphaStd   = 1
         
         options.priorBetaRange  = [1/(2^5) 2^3]
         options.priorBetaGrain  = 40
@@ -393,7 +395,6 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
         % Inset
         axes('units','pixels','position',[955 255 100 100]);    
         hold on
-        plot([min(stimRange):.01:max(stimRange)],PF([0 1 0 0],min(stimRange):.01:max(stimRange)),'k-','linewidth',2) %#ok<*NBRAK2> 
         plot([min(stimRange):.01:max(stimRange)],PF([MLalpha 10.^MLbeta gamma MLlambda],min(stimRange):.01:max(stimRange)),'r-','linewidth',2)
         plot([min(stimRange):.01:max(stimRange)],PF([PM.threshold(end) 10.^PM.slope(end) gamma PM.lapse(end)],min(stimRange):.01:max(stimRange)),'b-','linewidth',2)
         set(gca,'xtick',[],'ytick',[0 1],'Fontsize',10);

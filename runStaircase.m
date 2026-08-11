@@ -258,7 +258,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                     end
                     
 %% Fase 1: tela de fixação
-                    auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+%                     auxNoiseMatrix = butterFilter(pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                    auxNoiseMatrix = pinkNoise(txP.gabor.size_px, (nStims)*txP.gabor.size_px);
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         aux = auxNoiseMatrix(:,colRange);

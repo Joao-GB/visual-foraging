@@ -121,10 +121,12 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             %% Obtém os limites de todos os intervalos de fixação em estímulos
             % bem como das fixações individuais que os constituem
             modTimes = mat.results.modTimes(b, trl(i).trlIdx);
-            [trlKeep, fixLimsTime, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trl(i).trlLimEvt, trl(i).trlLimClk, mat.prm, modTimes);
+            [trlKeep, fixLimsTime, fixPerStm, stmLimsTime, stmPerPhase, phaseLimsTime, fixPerPhase, saccLimsTime, hasRepP2, hasRepP4, stmLimsTimeRep] = getFixStmPhaseLims(messages, eventLimClk, stmMsgs, eyeMovs, trl(i).trlLimEvt, trl(i).trlLimClk, mat.prm, modTimes);
             trl(i).phaseLimsIdx = phaseLimsTime;
             trl(i).stmLimsIdx   = stmLimsTime;
             trl(i).fixLimsIdx   = fixLimsTime;
+            trl(i).fixPerStm   = fixPerStm;
+            trl(i).stmPerPhase = stmPerPhase;
             trl(i).phaseLimsTime = phaseLimsTime/mat.prm.fs;
             trl(i).stmLimsTime = stmLimsTime    /mat.prm.fs;
             trl(i).fixLimsTime = fixLimsTime    /mat.prm.fs;
@@ -180,9 +182,11 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             % Atenção: a fixação no pré-probe tem duas fases: uma com
             % estímulos em tela, outra sem estímulos, isso se 
             trl(i).preProbeFixDur = diff(double(stmLimsTime(:, P3aux)))/mat.prm.fs;
-            P3FixLimsTime = fixLimsTime(:, find(fixPerPhase(3,:), 1));
-            trl(i).P3FixDurPerPhase   = [0; phaseLimsTime(2,2)-P3FixLimsTime(1); min(phaseLimsTime(3,2), P3FixLimsTime(2)) - phaseLimsTime(3,1); max(0, P3FixLimsTime(2)-phaseLimsTime(4,1))]/mat.prm.fs;
-            trl(i).pinkNoiseDur = trl(i).P3FixDurPerPhase(3);
+            P3FixLimsTime = fixLimsTime(:, logical(fixPerPhase(3,:)));
+            trl(i).P3FixLimsTime = P3FixLimsTime/mat.prm.fs;
+            trl(i).fixPerPhase = fixPerPhase;
+            trl(i).P3StmDurPerPhase   = [0; phaseLimsTime(2,2)-P3FixLimsTime(1,1); min(phaseLimsTime(3,2), P3FixLimsTime(2,end)) - phaseLimsTime(3,1); max(0, P3FixLimsTime(2,end)-phaseLimsTime(4,1))]/mat.prm.fs;
+            trl(i).pinkNoiseDur = trl(i).P3StmDurPerPhase(3);
             trl(i).preProbePosPix = P3TgtPosPix;
             trl(i).preProbePosFixPix = P3FixPosPix;
             trl(i).preProbeProbeDistDva = pixel_to_dva(vecnorm(trl(i).preProbePosPix - trl(i).probePosPix), 'dist', screenDist, 'width', screenWidth, 'res', screenRes(1));
@@ -232,7 +236,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             trl(i).allProbesOrder = feedback(2,:);
             
         end
-        if expIdx == 2 && t == mat.tkP.t1.tkP.nTrials
+        if expIdx == 2 && t == mat.tkP.t1.tkP.nTrainTrials
             b = b+1;
         elseif expIdx ~= 2 && t == mat.tkP.nTrials
             b = b+1; 

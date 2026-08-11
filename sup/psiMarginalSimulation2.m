@@ -1,41 +1,31 @@
-function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams, plotOption, NumTrials, paramsGen, stairLevel, options)
-% PSIMARGINALSIMULATION Runs a Bayesian adaptive psychometric procedure.
-%
-% Inputs:
-%   marginalizeParams : Array of parameters to treat as nuisance (e.g., [4] 
-%                       for lambda, [2 4] for beta and lambda, [] for none).
-%   plotOption        : 'none', 'all' (plot every trial), or 'final' (plot at the end)
-%   NumTrials         : Number of trials to run (e.g., 150)
-%   paramsGen         : True generating parameters [alpha, beta, gamma, lambda]
-%
-% Output:
-%   estParams         : Final estimated parameters [alpha, beta, gamma, lambda]
+function [estParams, expectedX, estX] = psiMarginalSimulation2(marginalizeParams, plotOption, NumTrials, paramsGen, stairLevel, options)
+% Versão em que a PF muda no meio da simulação: o alpha incrementa em 10
+% unidades
 
     % Set default arguments if not provided
     arguments
-        marginalizeParams = [4] %[2 4]; [alpha beta gamma lambda] = [1 2 3 4]
-        plotOption = 'final'    % 'all'
+        marginalizeParams = [4]
+        plotOption = 'final'
         NumTrials = 150
         paramsGen = [-50 0.15 0.5 0.03]
         stairLevel = 0.75
 
         options.stimRange = [-80 -15]
         options.stimGrain = 10;
-        options.stimScale = 'linear' %log
+        options.stimScale = 'linear'
 
-        options.plotGrain  = 51        % deve ter maior grnularidade que stimGrain
-        options.alphaRange = [-75 -20] % intervalo contido em stimRange
+        options.plotGrain  = 51
+        options.alphaRange = [-100 -10]
         options.betaRange  = [.05 1]
-
+        options.betaScale  = 'log'
     
-        options.priorAlphaRange = [-80 -20] % intervalo contido em stimRange
+        options.priorAlphaRange = [-80 -20]
         options.priorAlphaGrain = 60
         options.priorAlphaMean  = -50
         options.priorAlphaStd   = 20
         
         options.priorBetaRange  = [1/(2^5) 2^3]
         options.priorBetaGrain  = 40
-        options.betaScale  = 'log' % NÃO MUDAR
 
         options.priorBetaMean   = .5
         options.priorBetaStdOrders = 1
@@ -48,10 +38,13 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
         [priorLogBetaMean, priorLogBetaStd] = logBetaPrior(options.priorBetaMean, options.priorBetaStdOrders);
         stimRange = linspace(options.stimRange(1), options.stimRange(2), options.stimGrain);
 
-%     paramsGen(2) = log10(paramsGen(2));
-%     expectedX = paramsGen(1);
+    paramsGen2 = paramsGen;
+    sum10 = 10*(2*(rand > 0.5) - 1)
+    paramsGen2(1) = paramsGen2(1) + sum10;
 
-    expectedX = PAL_CumulativeNormal(paramsGen, min(stairLevel, 1-paramsGen(4)-.0001), 'inverse');
+    halfTrl = NumTrials/2;
+
+    expectedX = PAL_CumulativeNormal(paramsGen2, min(stairLevel, 1-paramsGen(4)-.0001), 'inverse');
 
     % Seed random number generator
     if exist('RandStream.m','file')
@@ -156,10 +149,15 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
     warning(S);
 
     %%%%%%% Trial Loop
+    count = 0;
     while PM.stop ~= 1
         
         % Simulate observer
-        response = rand(1) < PAL_CumulativeNormal(paramsGen, PM.xCurrent);
+        if count >= halfTrl
+            response = rand(1) < PAL_CumulativeNormal(paramsGen2, PM.xCurrent);
+        else
+            response = rand(1) < PAL_CumulativeNormal(paramsGen, PM.xCurrent);
+        end
         
         % Update visualization arrays if plotting is active
         if doPlot
@@ -183,6 +181,7 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
         if strcmp(plotOption, 'all')
             renderPlots();
         end
+        count = count + 1;
     end
 
     % Plot if 'final' is selected
@@ -377,7 +376,13 @@ function [estParams, expectedX, estX] = psiMarginalSimulation1(marginalizeParams
         MLbeta = priorLogBetaRange(MLindex(2));
         MLlambda = priorLambdaRange(MLindex(4));
             
-        plot([min(stimRange):.01:max(stimRange)],PF(paramsGen,min(stimRange):.01:max(stimRange)),'k-','linewidth',2.5)
+        if count >= halfTrl
+            plot([min(stimRange):.01:max(stimRange)],PF(paramsGen,min(stimRange):.01:max(stimRange)),'g-','linewidth',2.5)
+            plot([min(stimRange):.01:max(stimRange)],PF(paramsGen2,min(stimRange):.01:max(stimRange)),'k-','linewidth',2.5)
+        else
+            plot([min(stimRange):.01:max(stimRange)],PF(paramsGen,min(stimRange):.01:max(stimRange)),'k-','linewidth',2.5)
+        end
+
         plot([min(stimRange):.01:max(stimRange)],PF([MLalpha 10.^MLbeta gamma MLlambda],min(stimRange):.01:max(stimRange)),'r-','linewidth',2)
         plot([min(stimRange):.01:max(stimRange)],PF([PM.threshold(end) 10.^PM.slope(end) gamma PM.lapse(end)],min(stimRange):.01:max(stimRange)),'b-','linewidth',2)
         

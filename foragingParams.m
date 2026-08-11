@@ -151,7 +151,7 @@ function params = foragingParams
                                     % repetir cada trial
 
     % (e) Parâmetros para remoção de estímulos já fixados
-    params.minDurStim     = .65;
+    params.minDurStim     = .5;
     params.fadeOutStimDur = .1;
     params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
 
