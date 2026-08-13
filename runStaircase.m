@@ -1,4 +1,5 @@
-function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
+function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, sigmaTrainIdx)
+    if nargin <8, sigmaTrainIdx = []; end
 % Nessa versão, usa um único staircase para todos os tipos de estímulo, 
 % alimentando o ajuste da curva
         Screen('Flip', dpP.window);
@@ -7,9 +8,10 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
 
         if mode <= 3
+            if isempty(sigmaTrainIdx), sigmaTrainIdx = randi(nume(prm.aSigmaTrain)); end
             prm.pinkNoiseDur = prm.cursorPinkNoiseDur;
             nTrials = prm.nTrialsStairTrain;
-            prm.aSigma = prm.aSigmaTrain;
+            prm.aSigma = prm.aSigmaTrain(sigmaTrainIdx);
             tkP.stairPrev = [];
         
         end
@@ -263,7 +265,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS)
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         aux = auxNoiseMatrix(:,colRange);
-                        noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
+                        aux1 = butterFilter(aux, txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                        noiseMatrix(:, colRange) = (aux1 - mean(aux1(:)))/std(aux1(:));
                         oriPinkMatrix(:,colRange) = ApplyOriFilter1(oriFilter(:,:, b)', OFsize(:,:, b), aux);
                     end
                     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);

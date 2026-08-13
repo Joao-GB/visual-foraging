@@ -10,12 +10,12 @@ function params = foragingParams
     params.lineWidth_px = 4;
 
     % (c) Tamanhos, frequência e outras propriedades dos gabores
-    params.gaborSize_dva  = 2.5;
+    params.gaborSize_dva  = 2;
     params.gaborFreq_cpd  = 11; % Rucci et al. (2007) usam 11, em cpd
     params.gaborPhase     = 0;
 
     % (d) Parâmetros dos estímulos
-    params.stimRMScontrast  = .25; % Lembre que basta multiplicar por sqrt(.2) 
+    params.stimRMScontrast  = .2; % Lembre que basta multiplicar por sqrt(.2) 
                                     % para obter o contraste de Michelson
                                     % correspondente para um grating puro
                                     % Se usasse um stimRMScontrast =
@@ -31,11 +31,11 @@ function params = foragingParams
 
     % (e) Frequências de corte para filtro a ser aplicado no ruído, em cpd
     params.noiseLoCutFreq_cpd = 1/params.gaborSize_dva;
-    params.noiseHiCutFreq_cpd = max(5,2*params.noiseLoCutFreq_cpd);
+    params.noiseHiCutFreq_cpd = max(3*params.gaborSize_dva,2*params.noiseLoCutFreq_cpd);
 
     % (f) Parâmetros do ruído rosa com orientação
-    params.aSigma = 20;
-    params.aSigmaTrain = 5;
+    params.aSigma = 40;
+    params.aSigmaTrain = [10 20 40];
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -45,7 +45,7 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(2.5, params.gaborSize_dva);
+    params.minDist_dva = max(2.75, params.gaborSize_dva);
     params.ellipseToScreenRatio = [1/2 1/2];
     params.gridShape   = [2 4];
     params.randomize = false;
@@ -71,6 +71,9 @@ function params = foragingParams
     params.betaP3       = 1/20;                   % Taxa da EMA para a função P3Onset2
 
     % (l) Parâmetros temporais de fixação
+    params.minFixTimeBeforePink = .15;
+    params.timeTosubtractFromMedianFix = .12;          % Esse valor da a largura da janela dos jitters do P3Onset
+
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
     params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
     params.medFixTime2 = .25;                          % Tempo médio de fixação nos estímulos, em s, a ser usado apenas 
@@ -101,7 +104,7 @@ function params = foragingParams
 %% Porpriedades do staircase
     params.palPath = '/home/kaneda/Documents/Palamedes1_11_11/Palamedes';
     addpath(genpath(params.palPath));
-    params.sigmaMin = 20;   params.sigmaMax = 80; % params.sigmaGrain = 11; 
+    params.sigmaMin = 5;   params.sigmaMax = 80; % params.sigmaGrain = 11; 
     params.sigmaRem = 5;
 %     params.grainAlpha = 60;
 %     params.betaMin  = .005; params.betaMax  = .7; params.grainBeta = 40;
@@ -147,7 +150,7 @@ function params = foragingParams
                                             % mas para demonstração com cursor
     params.cursorMaxTrialDurFactor = (1+params.revisitFactor)*(1+params.cursorSacFixDurRatio);
 
-    params.cursorPinkNoiseDur   = .12;
+    params.cursorPinkNoiseDur   = .15;
     params.cursorPostModDur     = 1;
 
     % (d) Parâmetros de retentativas
@@ -157,7 +160,7 @@ function params = foragingParams
                                     % repetir cada trial
 
     % (e) Parâmetros para remoção de estímulos já fixados
-    params.minDurStim     = .5;
+    params.minDurStim     = .4;
     params.fadeOutStimDur = .1;
     params.maxDurStim     = params.minDurStim + params.fadeOutStimDur;
 

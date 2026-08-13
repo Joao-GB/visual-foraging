@@ -359,7 +359,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 
 %% 4) Reúne todas as variáveis definidas até aqui para passá-las às demais funções
     if isnan(loaded_fixQueue)
-        fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(4*nMaxFix)));
+        fixQueue = params.medFixTime2*ones(1, max(params.fixTimeQueueSize, round(3*nMaxFix)));
     else 
         fixQueue = loaded_fixQueue;
     end
@@ -511,6 +511,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
     
     leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4};
+    upKey   = KbName('UpArrow'); downKey = KbName('DownArrow');
     
     L = numel(options);
 
@@ -548,7 +549,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
         firstSelectL = floor((L+1)/2);
         firstSelectR = ceil((L+1)/2);
     end
-    selected = -1;
+    selected = -1; smallSelect = -1;
     [prevMx, prevMy, prevBut] = GetMouse(dpP.window);
     prevMouse = [prevMx, prevMy, prevBut];
     
@@ -558,6 +559,30 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     doAction = false;
     quitSes = 0;
     alreadyClosed = false;
+
+    % Acha a posição em que estarão os pequenos retângulos
+    n = numel(prm.aSigmaTrain);
+    w = 45; h = 45; s = 80;
+    smallRectIdx = strcmp(scOptions, 'training');
+    
+    auxL = numel(scOptions);
+    auxbtnW = min(300, (dpP.winRect(3)-(L+1)*gap)/L);
+    auxtotalW = L*auxbtnW + (L-1)*gap;
+    auxleftX0 = cX - auxtotalW/2;
+    auxleftX  = auxleftX0 + (0:L-1) * (auxbtnW + gap);
+    auxleftX = mean(auxleftX);
+
+    auxbtnRects = zeros(4, auxL);
+    auxbtnRects(1,:) = auxleftX; auxbtnRects(2,:) = cY - btnH/2;
+    auxbtnRects(3,:) = auxleftX + auxbtnW; auxbtnRects(4,:) = cY + btnH/2;
+    biggerRect = auxbtnRects(:, smallRectIdx);
+    s1 = (biggerRect(3) - biggerRect(1) - n*w) / (n + 1);
+    x = biggerRect(1) + s1 + (0:n-1) * (w + s1);
+    y = biggerRect(4) - s - h;
+    
+    smallRects = [x; repmat(y, 1, n); x + w; repmat(y + h, 1, n)];
+    
+    sigmaTrainIdx = randi(n);
     while true
         if refreshLayout
             if strcmp(currentScreen, 'main')
@@ -614,11 +639,20 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
         if mouseMoved || isMouseMostRecent
             cursorVisible = true;
             isMouseMostRecent = true;
-            selected = -1;
+            selected = -1; 
+            smallSelect = -1;
             for i=1:L
                 if IsInRect(mx, my, btnRects(:,i))
                     selected = i;
                     break;
+                end
+            end
+            if strcmp(currentScreen, 'sc') && selected > 0 && strcmp(options{selected}, 'training')
+                for i = 1:n
+                    if IsInRect(mx, my, smallRects(:,i))
+                        smallSelect = i;
+                        break;
+                    end
                 end
             end
             % Verifica botão Voltar (Apenas na tela de treino)
@@ -645,11 +679,26 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
         Screen('TextSize', dpP.window, prm.textSizeNormalish);
 
         % Se houver algum retângulo selecionado, adiciona contorno
+
+        %%
         if selected > 0
             drawBox = true;
             msg = optionsMsg{selected};
             Screen('FrameRect', dpP.window,  drP.darkBlue, btnRects(:, selected), prm.pW2);
+
+            if strcmp(currentScreen, 'sc') && strcmp(options{selected}, 'training')
+                Screen('FillRect', dpP.window, drP.grey, smallRects);
+                for i = 1:n
+                    smallText = num2str(prm.aSigmaTrain(i));
+                
+                    DrawFormattedText(dpP.window, smallText,      'center', 'center',   drP.black, [], [], [], [], [], smallRects(:,i)');
+                end
+                if smallSelect > 0
+                    Screen('FrameRect', dpP.window, drP.darkBlue, smallRects(:,smallSelect), prm.pW2);
+                end
+            end
         end
+
         Screen('TextStyle', dpP.window, 0);
 
         if drawBox
@@ -657,12 +706,6 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             Screen('TextSize', dpP.window, prm.textSizeNormalish);
             DrawFormattedText(dpP.window, msg, 'center', 'center',  drP.blackGrey, [], [], [], [], [], detailRect);
             Screen('TextSize', dpP.window, prm.textSizeNormal);
-        end
-
-        % Desenha o cursor antes de atualizar a tela
-        if cursorVisible
-            Screen('FillOval', dpP.window, prm.cursorColor, ...
-                [mx-prm.cursorRadius_px my-prm.cursorRadius_px mx+prm.cursorRadius_px my+prm.cursorRadius_px]);
         end
 
         % Desenha o botão de voltar se não estiver no menu
@@ -675,6 +718,12 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             if selected == 0
                 Screen('FramePoly', dpP.window, drP.darkBlue, arrowCoords, prm.pW2);
             end
+        end
+
+        % Desenha o cursor antes de atualizar a tela
+        if cursorVisible
+            Screen('FillOval', dpP.window, prm.cursorColor, ...
+                [mx-prm.cursorRadius_px my-prm.cursorRadius_px mx+prm.cursorRadius_px my+prm.cursorRadius_px]);
         end
     
         Screen('Flip', dpP.window);
@@ -699,21 +748,43 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             if doAction
                 doAction = false;
                 if keyCode(leftKey)
-                    if selected == -1
-                        selected = firstSelectL;
+                    if smallSelect > 0
+                        smallSelect = max(1, smallSelect - 1);
                     else
-                        if ~strcmp(currentScreen, 'main')
-                            selected = max(0, selected - 1);
+                        if selected == -1
+                            selected = firstSelectL;
                         else
-                            selected = max(1, selected - 1);
+                            if ~strcmp(currentScreen, 'main')
+                                selected = max(0, selected - 1);
+                            else
+                                selected = max(1, selected - 1);
+                            end
                         end
                     end
                     isMouseMostRecent = false;
                 elseif keyCode(rightKey)
-                    if selected == -1
-                        selected = firstSelectR;
+                    if smallSelect > 0
+                        smallSelect = min(n, smallSelect + 1);
                     else
-                        selected = min(L, selected + 1);
+                        if selected == -1
+                            selected = firstSelectR;
+                        else
+                            selected = min(L, selected + 1);
+                        end
+                    end
+                    isMouseMostRecent = false;
+                elseif keyCode(downKey)
+                    % Enter small-rectangle selection
+                    if strcmp(currentScreen, 'sc') && selected > 0 && strcmp(options{selected}, 'training')
+                        smallSelect = 1;
+                    end
+                
+                    isMouseMostRecent = false;
+                
+                elseif keyCode(upKey)
+                    % Leave small-rectangle selection
+                    if smallSelect > 0
+                        smallSelect = -1;
                     end
                     isMouseMostRecent = false;
                 elseif keyCode(spaceKey) || any(buttons)
@@ -752,7 +823,15 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             elseif strcmp(mode, 'training')
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: treino staircase\n')
-                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState);
+                                if smallSelect > 0
+                                    sigmaTrainIdx = smallSelect;
+                                    fprintf('aSigma de treino selecionado: %.2f\n', prm.aSigmaTrain(sigmaTrainIdx));
+                                else
+                                    sigmaTrainIdx = randi(n);
+                                    fprintf('aSigma de treino aleatório: %.2f\n', prm.aSigmaTrain(sigmaTrainIdx));
+                                end
+                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx);
+                                smallSelect = -1;
                             elseif strcmp(mode, 'staircase')
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
@@ -1155,7 +1234,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     for j=1:(nStims)
                         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
                         aux = auxNoiseMatrix(:,colRange);
-                        noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
+                        aux1 = butterFilter(aux, txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+                        noiseMatrix(:, colRange) = (aux1 - mean(aux1(:)))/std(aux1(:));
                         oriPinkMatrix(:,colRange) = ApplyOriFilter1(txP.oriFilter{prm.allOriMap(targetOri(b))}', txP.OFsize{prm.allOriMap(targetOri(b))}, aux);
                     end
                     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);
@@ -1450,7 +1530,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                     counter = counter + 1;
                                                     fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
-                                                    [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
+                                                    [P3On, tkP] = P3Onset5(tkP, prm, fixDur);
                                                 end
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
                                                 flag(currStim) = flag(currStim) + 1;
@@ -1493,7 +1573,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                         counter = counter + 1;
                                                         fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                         auxFixQueue(counter) = fixDur;
-                                                        [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
+                                                        [P3On, tkP] = P3Onset5(tkP, prm, fixDur);
                                                     end
                                                     seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
                                                     flag(currStim) = flag(currStim) + 1;

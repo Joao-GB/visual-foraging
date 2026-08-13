@@ -59,7 +59,8 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     for j=1:(nStims)
         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
         aux = auxNoiseMatrix(:,colRange);
-        noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
+        aux1 = butterFilter(aux, txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+        noiseMatrix(:, colRange) = (aux1 - mean(aux1(:)))/std(aux1(:));
         oriPinkMatrix(:,colRange) = ApplyOriFilter1(oriFilter', OFsize, aux);
     end
     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);

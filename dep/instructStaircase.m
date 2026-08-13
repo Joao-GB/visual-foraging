@@ -56,7 +56,8 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     for j=1:(nStims)
         colRange = ((j-1)*txP.gabor.size_px+1):(j*txP.gabor.size_px);
         aux = auxNoiseMatrix(:,colRange);
-        noiseMatrix(:, colRange) = (aux - mean(aux(:)))/std(aux(:));
+        aux1 = butterFilter(aux, txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+        noiseMatrix(:, colRange) = (aux1 - mean(aux1(:)))/std(aux1(:));
         oriPinkMatrix(:,colRange) = ApplyOriFilter1(oriFilter', OFsize, aux);
     end
     noiseTex   = Screen('MakeTexture', dpP.window,  prm.noiseSTDmult*noiseMatrix,      [], [], 1);
@@ -364,8 +365,8 @@ function obsPink(tkP, dpP, drP, txP, prm, allPinkTex, gaborTex, noiseTex, intere
     imageHeight = txP.gabor.size_px;
 
     % Spacing between images
-    xSpacing = imageWidth  * 1.8;
-    ySpacing = imageHeight * 1.35;
+    xSpacing = imageWidth  * 2.5;
+    ySpacing = imageHeight * 1.8;
 
     % Center the grid on the screen
     gridCenterX = w / 2;
