@@ -1450,7 +1450,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                     counter = counter + 1;
                                                     fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                     auxFixQueue(counter) = fixDur;
-                                                    [P3On, tkP] = P3Onset3(tkP, prm, fixDur);
+                                                    [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
                                                 end
                                                 seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
                                                 flag(currStim) = flag(currStim) + 1;
@@ -1493,7 +1493,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                                         counter = counter + 1;
                                                         fprintf('Terminou a visita ao %d-ésimo estímulo\n', counter)
                                                         auxFixQueue(counter) = fixDur;
-                                                        [P3On, tkP] = P3Onset3(tkP, prm, fixDur);
+                                                        [P3On, tkP] = P3Onset2(tkP, prm, fixDur);
                                                     end
                                                     seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 2]]; % Se quisesse registrar o comprimento de todas as fixações
                                                     flag(currStim) = flag(currStim) + 1;

@@ -95,7 +95,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             % que acontece quando aborta o índice por excesso de repetições),
             % ou porque alguma das fases (p1 a pM) não apresenta a quantidade
             % necessária de estímulos
-            trlKeep = mat.results.trialOrder(2,t,b);
+            trlKeep = mat.results.trialOrder(2,t,b) && ~isempty(eyeMovs);
         end
         trl(i).trlKeep = trlKeep;
         if trl(i).trlKeep

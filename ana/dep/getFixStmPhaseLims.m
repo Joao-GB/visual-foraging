@@ -28,6 +28,16 @@ function [keepTrl, fixLimsTime, fixPerStm, stmLimsTime, stmPerPhase, phaseLimsTi
     %% Com informação dos movimentos oculares, extrai fixações por fase,
     % bem como fixações por estímulo
     fixLimsTime = eyeMovs.fixations.lims;
+    if isempty(fixLimsTime)
+        keepTrl = 0; 
+        fixPerStm = [];
+        stmPerPhase = [];
+        fixPerPhase = [];
+        hasRepP2 = [];
+        hasRepP4 = [];
+        stmLimsTimeRep = [];
+        return
+    end
 
     [fixPerPhase, fixPerStm, stmPerPhase] = updatePers(fixLimsTime, stmLimsTime, phaseLimsTime, prm);
 

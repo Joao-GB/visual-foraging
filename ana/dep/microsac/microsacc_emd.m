@@ -96,6 +96,7 @@ end
     aux_vel = vecvel(data',fs,2);
     [sac, ~] = microsacc(data',aux_vel, VTHRES, MINDUR);
 %     [sac, ~] = microsacc(data',[vx' vy'], VTHRES, MINDUR);
+    if isempty(sac), eye_movs = []; return; end
 
     sac_lims = sac(:, 1:2)';
     sac_lims = merge_adjacent_events(sac_lims, ceil(min_fix_pt/2));

@@ -10,12 +10,18 @@ function params = foragingParams
     params.lineWidth_px = 4;
 
     % (c) Tamanhos, frequência e outras propriedades dos gabores
-    params.gaborSize_dva  = 1.5;
+    params.gaborSize_dva  = 2.5;
     params.gaborFreq_cpd  = 11; % Rucci et al. (2007) usam 11, em cpd
     params.gaborPhase     = 0;
 
     % (d) Parâmetros dos estímulos
-    params.stimRMScontrast  = .2;
+    params.stimRMScontrast  = .25; % Lembre que basta multiplicar por sqrt(.2) 
+                                    % para obter o contraste de Michelson
+                                    % correspondente para um grating puro
+                                    % Se usasse um stimRMScontrast =
+                                    % sqrt(.2), teria o equivalente de
+                                    % Michelson em .2, o que já é bem
+                                    % visível. 
     params.gaborAlpha       = 0.5;
     params.gaborAlpha       = min(1, max(0, params.gaborAlpha));
     params.noiseAlpha       = 1 - params.gaborAlpha;
@@ -28,8 +34,8 @@ function params = foragingParams
     params.noiseHiCutFreq_cpd = max(5,2*params.noiseLoCutFreq_cpd);
 
     % (f) Parâmetros do ruído rosa com orientação
-    params.aSigma = 40;
-    params.aSigmaTrain = 20;
+    params.aSigma = 20;
+    params.aSigmaTrain = 5;
     params.rSigma2 = NaN;
 
     % (g) Parâmetros dos blobs
@@ -39,7 +45,7 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(3, params.gaborSize_dva);
+    params.minDist_dva = max(2.5, params.gaborSize_dva);
     params.ellipseToScreenRatio = [1/2 1/2];
     params.gridShape   = [2 4];
     params.randomize = false;

@@ -82,18 +82,9 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     eyeCols = [drP.blue; drP.darkBlue; drP.darkGreen; drP.brown; drP.darkBrown; drP.greyBrown; drP.paleBrown]; aux = randsample(1:size(eyeCols, 1), 1);
     eyeColor = eyeCols(aux, :);
 
-    [easyFilter, easyOFsize] = MakeOriFilter1(txP.gabor.size_px, 15, prm.rSigma2);
-%     auxNoiseMatrix1 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
-    auxNoiseMatrix1 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
-    oriPinkMatrix1  = ApplyOriFilter1(easyFilter', easyOFsize, auxNoiseMatrix1);
-    easyPinkTex = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix1, [], [], 1);
-
-
-    [hardFilter, hardOFsize] = MakeOriFilter1(txP.gabor.size_px, 80, prm.rSigma2);
-%     auxNoiseMatrix2 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
-    auxNoiseMatrix2 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
-    oriPinkMatrix2  = ApplyOriFilter1(hardFilter', hardOFsize, auxNoiseMatrix2);
-    hardPinkTex = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix2, [], [], 1);
+    interestOri  = 90:45:225;
+    interestFilt = 5 * 2.^(0:4);
+    allPinkTex = zeros(numel(interestOri), numel(interestFilt));
 
     HideCursor;
     selected = 1; 
@@ -116,7 +107,7 @@ function instructForaging(tkP, dpP, drP, txP, prm)
         leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri);
         @(x,y,z,w)drawPostAns(tkP, dpP, drP, txP, prm, dstRects, orientation, ...
         textColor2, stimCenters, w, x, targetOri);                       % Tela 8: pós-resposta
-        @(x,y,z,w)obsPink(tkP, dpP, drP, txP, prm, easyPinkTex, hardPinkTex, ...              % Tela 9: diferenças de intensidade
+        @(x,y,z,w)obsPink(tkP, dpP, drP, txP, prm, allPinkTex, ...              % Tela 9: diferenças de intensidade
         gaborTex, noiseTex, targetOri)
         @(x,y,z,w)obsArrows(tkP, dpP, drP, txP, prm, leftKey, rightKey, targetKey, ...        % Tela 10: correspondência entre 
         targetOri)                                                                        %          setas e alvo ou distrator
@@ -195,7 +186,6 @@ function instructForaging(tkP, dpP, drP, txP, prm)
     KbWait([], 1);
 
     Screen('Close', noiseTex);    Screen('Close', gaborTex); Screen('Close', oriPinkTex)
-    Screen('Close', easyPinkTex); Screen('Close', hardPinkTex);
 end
 
 function [fixIdx, blinkIdx, orderToReportStims] = updateFixIdx(mCoord, minDist, nStims, stimCenters, oldFixIdx, blinkIdx, orderToReportStims)
@@ -374,34 +364,105 @@ function drawPostAns(~, dpP, drP, txP, ~, dstRects, orientation, textColor2, sti
     foragingFlip1(dpP.window, stimCenters, dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, allTargets, targetOri, drP.allPW);
 end
 
-function obsPink(tkP, dpP, drP, txP, prm, easyPinkTex, hardPinkTex, gaborTex, noiseTex, targetOri)
+function obsPink(tkP, dpP, drP, txP, prm, allPinkTex, gaborTex, noiseTex, targetOri)
 
     [w, h] = RectSize(dpP.winRect);
-    leftX  = round(w*(3/8));
-    rightX = round(w*(5/8));
-    
+
+    % Grid dimensions
+    [nRows, nCols] = size(allPinkTex);
+
+    % Image dimensions
     imageWidth  = txP.gabor.size_px;
     imageHeight = txP.gabor.size_px;
-    
-    leftRect  = CenterRectOnPointd([0 0 imageWidth imageHeight], leftX, h/2);
-    rightRect = CenterRectOnPointd([0 0 imageWidth imageHeight], rightX, h/2);
-    
-    drawPink(tkP, dpP, drP, txP, prm, easyPinkTex, gaborTex, noiseTex, [], leftRect, [], [], targetOri);
-    drawPink(tkP, dpP, drP, txP, prm, hardPinkTex, gaborTex, noiseTex, [], rightRect, [], [], targetOri);
 
+    % Spacing between images
+    xSpacing = imageWidth  * 1.25;
+    ySpacing = imageHeight * 1.25;
+
+    % Centers of the leftmost and rightmost columns
+    leftX  = round(w * (3/8));
+    rightX = round(w * (5/8));
+
+    % Total dimensions of the grid
+    gridWidth  = (nCols - 1) * xSpacing + imageWidth;
+    gridHeight = (nRows - 1) * ySpacing + imageHeight;
+
+    % Grid centers
+    leftGridCenterX  = leftX;
+    rightGridCenterX = rightX;
+    gridCenterY      = h / 2;
+
+    % Top-left corner of each grid
+    leftGridX0  = leftGridCenterX  - gridWidth  / 2;
+    rightGridX0 = rightGridCenterX - gridWidth  / 2;
+    gridY0      = gridCenterY - gridHeight / 2;
+
+    % Draw all textures
+    for row = 1:nRows
+        for col = 1:nCols
+
+            x = leftGridX0 + (col - 1) * xSpacing;
+            y = gridY0     + (row - 1) * ySpacing;
+
+            leftRect = CenterRectOnPointd( ...
+                [0 0 imageWidth imageHeight], ...
+                x + imageWidth/2, ...
+                y + imageHeight/2);
+
+            x = rightGridX0 + (col - 1) * xSpacing;
+
+            rightRect = CenterRectOnPointd( ...
+                [0 0 imageWidth imageHeight], ...
+                x + imageWidth/2, ...
+                y + imageHeight/2);
+
+            % Draw corresponding texture on left and right
+            drawPink(tkP, dpP, drP, txP, prm, ...
+                allPinkTex(row, col), gaborTex, noiseTex, [], ...
+                leftRect, [], [], targetOri);
+
+            drawPink(tkP, dpP, drP, txP, prm, ...
+                allPinkTex(row, col), gaborTex, noiseTex, [], ...
+                rightRect, [], [], targetOri);
+        end
+    end
+
+    % Text
     Screen('TextSize', dpP.window, prm.textSizeEnormous);
-    titleText = 'Observações'; titleMargin = dpP.winCenter(1)*prm.titleMarginFactor;
-    leftText = 'Muito visível';
+
+    titleText = 'Observações';
+    titleMargin = dpP.winCenter(1) * prm.titleMarginFactor;
+
+    leftText  = 'Muito visível';
     rightText = 'Pouco visível';
-    Screen('DrawText', dpP.window, titleText, titleMargin, titleMargin,  drP.blackGrey);
+
+    Screen('DrawText', dpP.window, titleText, ...
+        titleMargin, titleMargin, drP.blackGrey);
+
     Screen('TextSize', dpP.window, prm.textSizeNormalish);
 
-    bounds = Screen('TextBounds', dpP.window, leftText); textWidth = RectWidth(bounds);
-    DrawFormattedText(dpP.window, leftText,   leftX - textWidth/2, leftRect(4)+50, drP.black);
-    bounds = Screen('TextBounds', dpP.window, rightText); textWidth = RectWidth(bounds);
-    DrawFormattedText(dpP.window, rightText, rightX - textWidth/2, rightRect(4)+50, drP.black);
+    % Text above the leftmost/rightmost column
+    bounds = Screen('TextBounds', dpP.window, leftText);
+    textWidth = RectWidth(bounds);
+
+    leftTextX = leftGridCenterX - textWidth / 2;
+    leftTextY = gridY0 - 50 - bounds(4) + bounds(2);
+
+    DrawFormattedText(dpP.window, leftText, ...
+        leftTextX, leftTextY, drP.black);
+
+    bounds = Screen('TextBounds', dpP.window, rightText);
+    textWidth = RectWidth(bounds);
+
+    rightTextX = rightGridCenterX - textWidth / 2;
+    rightTextY = gridY0 - 50 - bounds(4) + bounds(2);
+
+    DrawFormattedText(dpP.window, rightText, ...
+        rightTextX, rightTextY, drP.black);
+
     Screen('TextSize', dpP.window, prm.textSizeNormal);
     Screen('TextFont', dpP.window, prm.textFont);
+
 end
 
 function obsArrows(~, dpP, drP, txP, prm, leftKey, rightKey, targetKey, targetOri)
