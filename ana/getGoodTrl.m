@@ -6,11 +6,17 @@ function [allGoodTrl, keepIdx] =  getGoodTrl(trl, mat, trlName)
 
     allGoodTrl = false(size(trl));
     
-    % Calcula o limite de latência apenas para os trials mantidos
-    P3SaccLatencyLims = -1 * [mat.prm.pinkNoiseDur + mat.prm.maxDelayFixOffP3, mat.prm.minP3Dur];
-    P3SaccLatency = [trl(keepIdx).saccInt] / 1000;
+    % Calcula o limite de latência apenas para os trials mantidos:
+    % (i)  a diferença entre o início da sacada e o fim do estímulo não pode
+    %     ser muito grande
+    % (ii) o sujeito deve ver um mínimo do estímulo
+    maxDelay = -mat.prm.maxDelayFixOffP3;
+    minSeen  = - mat.prm.minP3Dur;
+%     P3SaccLatencyLims = [mat.prm.maxDelayFixOffP3, mat.prm.minP3Dur];
+    P3SaccInterval = [trl(keepIdx).saccInterval] / 1000;
+    P3SaccLatency = [trl(keepIdx).saccLatency] / 1000;
     
-    latencyMask = P3SaccLatency >= P3SaccLatencyLims(1) & P3SaccLatency <= P3SaccLatencyLims(2);
+    latencyMask = P3SaccInterval >= maxDelay & P3SaccLatency <= minSeen;
     
     % Atribui verdadeiro apenas onde AMBOS os critérios passaram
     allGoodTrl(keepIdx) = latencyMask;

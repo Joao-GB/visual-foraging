@@ -72,7 +72,7 @@ function params = foragingParams
 
     % (l) Parâmetros temporais de fixação
     params.minFixTimeBeforePink = .15;
-    params.timeTosubtractFromMedianFix = .12;          % Esse valor da a largura da janela dos jitters do P3Onset
+    params.timeTosubtractFromMedianFix = .1;          % Esse valor da a largura da janela dos jitters do P3Onset
 
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
     params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
@@ -117,11 +117,11 @@ function params = foragingParams
     params.priorBetaMeanStair = 0.2; 
 %     params.priorBetaStdStair = .5; params.priorBetaStdStair2 = .7*params.priorBetaStdStair; params.priorLambdaStdStair = 20;
     params.priorLambdaMeanStair = 0.05;
-    params.minJitterStair  = .5;  % em s
+    params.minJitterStair  = .4 - params.pinkNoiseDur;  % em s <-
     params.maxJitterStair  = 1;
     params.postModDurStair = .25;
-    params.burninTrials    = 5;  % <-
-    params.stairLevel      = .85;
+    params.burninTrials    = 5;
+    params.stairLevel      = .92;  % <-
     params.avoidConsecutive= 1;
     params.stairWaitTime   = 3;
 

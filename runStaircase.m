@@ -132,7 +132,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
 
         oriFilter = repmat(oriFilter, [1, 1, nBlocks]);
         OFsize    = repmat(OFsize, [1, 1, nBlocks]);
-        jitterTimes = rand(nBlocks, nTrialsBuffered)*(prm.maxJitterStair-prm.minJitterStair)+prm.minJitterStair;
+        jitterTimes = rand(nBlocks, nTrialsBuffered)*(prm.timeTosubtractFromMedianFix)+prm.minJitterStair;
 
         suspend = 0;
 

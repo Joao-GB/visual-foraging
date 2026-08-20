@@ -7,7 +7,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     Screen('Flip', dpP.window);
     nBlocks = 1; nTrials = 1;
     
-    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4};
+    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; sKey = tkP.keys{6};
     if strcmp(tkP.targetKey, 'right'), targetKey = rightKey; % nonTargetKey = leftKey;
     else,                              targetKey = leftKey;  % nonTargetKey = rightKey;
     end
@@ -87,16 +87,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
 
     interestOri  = 90:45:225;
     interestFilt = 5 * 2.^(0:4);
-    allPinkTex = zeros(numel(interestOri), numel(interestFilt));
-    for i = 1:numel(interestOri)
-        for j = 1:numel(interestFilt)
-            [easyFilter, easyOFsize] = MakeOriFilter1(txP.gabor.size_px, interestFilt(j), prm.rSigma2);
-    %     auxNoiseMatrix1 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
-            auxNoiseMatrix1 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
-            oriPinkMatrix1  = ApplyOriFilter1(easyFilter', easyOFsize, auxNoiseMatrix1);
-            allPinkTex(i,j) = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix1, [], [], 1);
-        end
-    end
+    allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt);
 
     HideCursor;
     selected = 1; 
@@ -119,7 +110,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
         leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri);
         @(x)drawPostAns(tkP, dpP, drP, txP, prm, dstRects, orientation, ...
         textColor2, stimCenters, orderToReportStims, x, targetOri);                     % Tela 8: pós-resposta
-        @(x)obsPink(tkP, dpP, drP, txP, prm, allPinkTex, gaborTex, ...              % Tela 9: diferenças de intensidade
+        @(x)obsPink(tkP, dpP, drP, txP, prm, x, gaborTex, ...                           % Tela 9: diferenças de intensidade
         noiseTex, interestOri)
         @(x)obsArrows(tkP, dpP, drP, txP, prm, leftKey, rightKey, targetKey, ...        % Tela 10: correspondência entre 
         targetOri)                                                                      %          setas e alvo ou distrator
@@ -139,6 +130,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     SetMouse(dpP.winCenter(1) + dx, dpP.winCenter(2) + dy, dpP.window);
 
     oldState = false;
+    oldSState = false;
     quit = false;
 
     [~,~, buttons] = GetMouse(dpP.window);
@@ -154,13 +146,23 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
             kc = zeros(1, numel(kc));kc(outKey) = 1;
             oldState = 0;
         else
-            screens{selected}(allTargets);
+            if selected == 9
+                screens{selected}(allPinkTex);
+            else
+                screens{selected}(allTargets);
+            end
+
             [mx,my, buttons] = GetMouse(dpP.window);
             DrawEye(dpP.window, [mx my], prm.eyeSize, eyeColor);
     
             Screen('Flip', dpP.window);
 
             [pressed,~,kc] = KbCheck;
+
+            if selected == 9 && kc(sKey) && ~oldSState
+                allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt, allPinkTex);
+            end
+            oldSState = kc(sKey);
         end
 
         if (pressed || any(buttons)) && ~oldState
@@ -506,6 +508,24 @@ function warnMov(~, dpP, drP, txP, prm, stimCenters, dstRects, fixIdx)
     Screen('TextFont', dpP.window, prm.textFont);
 end
 
+
+function allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt, auxPink)
+    if nargin >= 6 && ~isempty(auxPink)
+        Screen('Close', auxPink(auxPink > 0));
+    end
+
+    allPinkTex = zeros(numel(interestOri), numel(interestFilt));
+    
+    for i = 1:numel(interestOri)
+        for j = 1:numel(interestFilt)
+            [easyFilter, easyOFsize] = MakeOriFilter1(txP.gabor.size_px, interestFilt(j), prm.rSigma2);
+    %     auxNoiseMatrix1 = butterFilter(pinkNoise(txP.gabor.size_px, txP.gabor.size_px), txP.noiseLoCutFreq, txP.noiseHiCutFreq);
+            auxNoiseMatrix1 = pinkNoise(txP.gabor.size_px, txP.gabor.size_px);
+            oriPinkMatrix1  = ApplyOriFilter1(easyFilter', easyOFsize, auxNoiseMatrix1);
+            allPinkTex(i,j) = Screen('MakeTexture', dpP.window,  prm.stimSTDmult *oriPinkMatrix1, [], [], 1);
+        end
+    end
+end
 
 
 

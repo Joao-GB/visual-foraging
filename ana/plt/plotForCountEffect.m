@@ -1,14 +1,17 @@
 function plotForCountEffect(trl, ~)
-    histLen     = {trl.forHistLen};
-    stmLimsTime = {trl.stmLimsTime};
+% Considera apenas os trials em que não há repetições/revisitas
+    hasNoRep    = ~[trl.forHistHasRep];
+    histLen     = {trl.forHistLen};      histLen = histLen(hasNoRep);
+    ROILimsTime = {trl.ROILimsTime}; ROILimsTime = ROILimsTime(hasNoRep);
+    stmLimsTime = {trl.stmLimsTime}; stmLimsTime = stmLimsTime(hasNoRep);
     
     % m.q. forHistFixDur, só que restrito aos índices de HistLen
-    counts = cellfun(@(x,y)[diff(x(:,1:y)); 1:y],stmLimsTime,histLen,'UniformOutput',false);
+    counts = cellfun(@(x,y,z)[diff([z(:,1) x(:,2:y)]); 1:y],ROILimsTime,histLen, stmLimsTime,'UniformOutput',false);
     counts = [counts{:}];
 
     histLen = [histLen{:}];
     
-    forHit = {trl.forProbeHit};
+    forHit = {trl.forProbeHit}; forHit = forHit(hasNoRep);
     forHit = [forHit{:}];
     
     % Cria a figura e o layout

@@ -204,8 +204,8 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
 
     leftKey   = KbName('LeftArrow'); rightKey  = KbName('RightArrow');
     spaceKey  = KbName('space');     escapeKey = KbName('ESCAPE');
-    rKey      = KbName('r');
-    keys = {leftKey, rightKey, spaceKey, escapeKey, rKey};
+    rKey      = KbName('r');         sKey      = KbName('s');
+    keys = {leftKey, rightKey, spaceKey, escapeKey, rKey, sKey};
 
     % (b) Escolhe a tela em que haverá o desenho e define algumas cores
     screenNumber = max(Screen('Screens'));

@@ -51,14 +51,17 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses, se
     if ~skipAll
         [skipMode, closePlots] = promptPlotStep('Gráficos de caracterização espacial e temporal da tarefa pré-sacádica');
         
+        auxPlot = strcmp(skipMode, 'none');
+        if closePlots, close all; end
+
+          % (a) Posição relativa entre pré-probe, probe e nSacc probe
+        [rotProbePos, rotProbeFix, rotNSaccProbePos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, mat.drP, auxPlot);
         if strcmp(skipMode, 'all')
             skipAll = true;
         elseif strcmp(skipMode, 'none')
-            if closePlots, close all; end
+            
             
             disp('> Gráficos de caracterização espacial e temporal da tarefa pré-sacádica');
-              % (a) Posição relativa entre pré-probe, probe e nSacc probe
-            [rotProbePos, rotProbeFix, rotNSaccProbePos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, mat.drP);
         
               % (b) Caracterização do triângulo definido por esses três pontos
             plotPSAStimTriangleProps(preProbePos, probePos, nSaccProbePos, mat.drP);
@@ -195,7 +198,7 @@ function [trlProps, analysis, eyeData, evTimes] = foragingAnalysis(subj, ses, se
             disp('> Fixações na tarefa de forrageamento');
             % Distribuição das durações de fixação em ROI, comparada com a duração
             % das fixações propriamente
-            plotFixDur(trlProps, mat)
+            plotFixDur(trlProps, mat, true)
         
             % Duração da fixação em função de ser alvo ou não e de ter acerto ou não
             plotForFixDur(trlProps, mat)

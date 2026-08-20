@@ -15,9 +15,9 @@ function plotPSAdurations(trl, drP)
     
     % Coluna 2 e figura da direita: alinha ao início da sacada
     c2_fix  = fixOn - fixOff;
-    c2_end  = stimOff - fixOff; % <- esse é o mais relevante: diferença 
-                                %     entre fim do estímulo e início da
-                                %     sacada (ou fim da fixação)
+    c2_end  = [trl.saccInterval]/1000; % <- esse é o mais relevante: diferença 
+                                  %     entre fim do estímulo e início da
+                                  %     sacada (ou fim da fixação)
     c3_stim = stimOn - fixOff;
 
     % Figura 2x3

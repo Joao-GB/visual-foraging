@@ -55,7 +55,7 @@ all_ev_types = {'blinks', 'fixations', 'pursuits', 'saccades', 'psos'};
 % 2) Sacadas e fixações
     % Parâmetros do próprio algoritmo microsacc
     MINDUR = 5;        % Minimum duration (number of samples)
-    VTHRES = 4;        % Velocity threshold
+    VTHRES = 8;        % Velocity threshold, parece menos ruidoso que 4
     min_sac_ms   = 10;                         % Duração mínima de uma sacada, em ms
     min_sac_pt   = ceil(min_sac_ms*fs/1000);   % em quantidade de pontos 
 %     min_sac_ms_2 = 5;                          % Outra duração mínima de sacada, em ms (cf. mod_CluterFix)

@@ -1,10 +1,27 @@
 function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, printCount)
     if nargin < 7, printCount = true; end
-    edges = sort(splitValues(:)'); %#ok<TRSRT> 
-    numSplits = length(edges);
-    numBins = numSplits + 1;
     
-    % Aloca matrizes separadas para Acurácia, Sensibilidade e Contagens
+    % --- ZERO-AWARE QUANTILE HANDLING ---
+    hasZeroInflation = (mean(metricVector == 0) >= 0.20);
+    
+    if hasZeroInflation
+        posMetrics = metricVector(metricVector > 0);
+        numSplits  = length(splitValues); 
+        
+        % Calculate quantiles ONLY on positive data
+        pSteps = linspace(0, 1, numSplits + 2); 
+        posEdges = quantile(posMetrics, pSteps(2:end-1));
+        posEdges = unique(posEdges);
+        
+        % 1 bin for zeros + bins for positive data
+        numBins = length(posEdges) + 2; 
+    else
+        edges   = sort(splitValues(:)');
+        edges   = unique(edges);
+        numBins = length(edges) + 1;
+    end
+    
+    % Preallocate matrices
     barMatrixAcc  = zeros(numBins, 2);
     barMatrixSens = zeros(numBins, 2);
     countMatrix   = zeros(numBins, 2);
@@ -13,35 +30,55 @@ function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, 
     calcDPrime = @(hit, total) norminv(min(max(hit./total, 0.001), 0.999)) * sqrt(2);
     
     for bIdx = 1:numBins
-        if bIdx == 1
-            % Primeiro bin com < em vez de intervalo
-            mask = metricVector < edges(1);
-            xlabelPSA{bIdx} = sprintf('< %.3f', edges(1));
-            
-        elseif bIdx == numBins
-            % Último bin com >= em vez de intervalo
-            mask = metricVector >= edges(end);
-            xlabelPSA{bIdx} = sprintf('\\geq %.3f', edges(end));
+        if hasZeroInflation
+            % --- ZERO-INFLATED MASK LOGIC ---
+            if bIdx == 1
+                % Bin 1: Strictly Zero
+                mask = (metricVector == 0);
+                xlabelPSA{bIdx} = '= 0';
+                
+            elseif bIdx == 2
+                % Bin 2: First positive bin (strictly > 0 to avoid double-counting)
+                mask = (metricVector > 0 & metricVector < posEdges(1));
+                xlabelPSA{bIdx} = sprintf('(0, %.3f)', posEdges(1));
+                
+            elseif bIdx == numBins
+                % Last Bin: Top positive quantile
+                mask = (metricVector >= posEdges(end));
+                xlabelPSA{bIdx} = sprintf('\\geq %.3f', posEdges(end));
+                
+            else
+                % Intermediate positive bins
+                eIdx = bIdx - 2; % Shift index for posEdges
+                mask = (metricVector >= posEdges(eIdx) & metricVector < posEdges(eIdx+1));
+                xlabelPSA{bIdx} = sprintf('[%.3f, %.3f)', posEdges(eIdx), posEdges(eIdx+1));
+            end
             
         else
-            % Bins intermediários com intervalos
-            mask = metricVector >= edges(bIdx-1) & metricVector < edges(bIdx);
-            xlabelPSA{bIdx} = sprintf('[%.3f, %.3f)', edges(bIdx-1), edges(bIdx));
+            % --- STANDARD CONTINUOUS MASK LOGIC ---
+            if bIdx == 1
+                mask = (metricVector < edges(1));
+                xlabelPSA{bIdx} = sprintf('< %.3f', edges(1));
+                
+            elseif bIdx == numBins
+                mask = (metricVector >= edges(end));
+                xlabelPSA{bIdx} = sprintf('\\geq %.3f', edges(end));
+                
+            else
+                mask = (metricVector >= edges(bIdx-1) & metricVector < edges(bIdx));
+                xlabelPSA{bIdx} = sprintf('[%.3f, %.3f)', edges(bIdx-1), edges(bIdx));
+            end
         end
         
-        % Se houver dados, calcula counts, porcentagens e d-primes
+        % --- Calculate Statistics ---
         if any(mask)
             [~, countsSub] = getPSAeffect(trl(mask));
-            
-            % Salva os denominadores reais [Sacádico, Não-sacádico]
             countMatrix(bIdx, :) = [countsSub(2,2), countsSub(2,3)];
             
-            % Acurácia (%)
             pct_s = (countsSub(1,2) / countsSub(2,2)) * 100;
             pct_n = (countsSub(1,3) / countsSub(2,3)) * 100;
             barMatrixAcc(bIdx, :) = [pct_s, pct_n];
             
-            % Sensibilidade (d')
             d_s = calcDPrime(countsSub(1,2), countsSub(2,2));
             d_n = calcDPrime(countsSub(1,3), countsSub(2,3));
             barMatrixSens(bIdx, :) = [d_s, d_n];

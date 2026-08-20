@@ -1,4 +1,4 @@
-function [rotProbePos, rotProbeFix, rotNSaccPos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, drP)
+function [rotProbePos, rotProbeFix, rotNSaccPos] = plotPSAStimPos(preProbePos, preProbePosFix, probePos, probePosFix, nSaccProbePos, drP, plotMode)
     % plotPSAStimPos para vizualizar a geometria dos estímulos relevantes
     % para PSA
     % Inputs devem ser matrizes Nx2 em dva
@@ -24,74 +24,76 @@ function [rotProbePos, rotProbeFix, rotNSaccPos] = plotPSAStimPos(preProbePos, p
     
     
     % 3. Figura em si
-    figure('Name', 'PSA Stim Pos', 'Color','w','Position', [100 200 1200 400]);
-    tiledlayout(1,2);
-    alphaLevel = 0.5;
+    if plotMode
+        figure('Name', 'PSA Stim Pos', 'Color','w','Position', [100 200 1200 400]);
+        tiledlayout(1,2);
+        alphaLevel = 0.5;
+        
+        colorPreFix  = repmat(drP.blackGrey, [1 3]);
+        colorPostFix = drP.darkGreen;
+        colorProbe   = drP.blue;
+        colorNSacc   = drP.orange; 
+        
+        %% Subplot 1: espaço inteiro em dva
+        nexttile; hold on;
+        
+        % Linhas conectando probePos a probeFix (para ter noção do erro da
+        % sacada à probe)
+        x_lines = [vProbePos(:,1)'; vProbeFix(:,1)'; NaN(1, size(vProbePos,1))];
+        y_lines = [vProbePos(:,2)'; vProbeFix(:,2)'; NaN(1, size(vProbePos,1))];
+        plot(x_lines(:), y_lines(:), 'Color', [0.8 0.8 0.8], 'LineWidth', 0.5, 'HandleVisibility', 'off');
     
-    colorPreFix  = repmat(drP.blackGrey, [1 3]);
-    colorPostFix = drP.darkGreen;
-    colorProbe   = drP.blue;
-    colorNSacc   = drP.orange; 
+        % Posição dos estímulos
+        h2 = scatter(vProbePos(:,1), vProbePos(:,2), 35, colorProbe, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
+        h3 = scatter(vNSaccPos(:,1), vNSaccPos(:,2), 35, colorNSacc, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
+        
+        % Posição ocular
+        h4 = scatter(vPreProbeFix(:,1), vPreProbeFix(:,2), 25, colorPreFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
+        h5 = scatter(vProbeFix(:,1), vProbeFix(:,2), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
     
-    %% Subplot 1: espaço inteiro em dva
-    nexttile; hold on;
+        % Origem
+        plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
+        h1 = plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
+        theLim = ceil(max(abs(single([vProbeFix(:); vPreProbeFix(:); vNSaccPos(:); vProbePos(:)]))))+.5;
+        axis equal;
+        xlim([-theLim theLim]); ylim([-theLim theLim]);
+        drawnow;
+        xticks(yticks())
+        
+        grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
     
-    % Linhas conectando probePos a probeFix (para ter noção do erro da
-    % sacada à probe)
-    x_lines = [vProbePos(:,1)'; vProbeFix(:,1)'; NaN(1, size(vProbePos,1))];
-    y_lines = [vProbePos(:,2)'; vProbeFix(:,2)'; NaN(1, size(vProbePos,1))];
-    plot(x_lines(:), y_lines(:), 'Color', [0.8 0.8 0.8], 'LineWidth', 0.5, 'HandleVisibility', 'off');
-
-    % Posição dos estímulos
-    h2 = scatter(vProbePos(:,1), vProbePos(:,2), 35, colorProbe, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
-    h3 = scatter(vNSaccPos(:,1), vNSaccPos(:,2), 35, colorNSacc, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
+        xlabel('Horizontal (dva)'); ylabel('Vertical (dva)');
+        title({'Posição de estímulos e fixações', 'em relação à pré-probe'});
+        
+        %% Subplot 2: posição relativa do probe não sacádico
+        nexttile; hold on;
     
-    % Posição ocular
-    h4 = scatter(vPreProbeFix(:,1), vPreProbeFix(:,2), 25, colorPreFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
-    h5 = scatter(vProbeFix(:,1), vProbeFix(:,2), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
-
-    % Origem
-    plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
-    h1 = plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
-    theLim = ceil(max(abs(single([vProbeFix(:); vPreProbeFix(:); vNSaccPos(:); vProbePos(:)]))))+.5;
-    axis equal;
-    xlim([-theLim theLim]); ylim([-theLim theLim]);
-    drawnow;
-    xticks(yticks())
+        % Linhas entre rotNSacc e rotLanding no espaço rotacionado
+        x_lines3 = [real(rotNSacc)'; real(rotLanding)'; NaN(1, length(rotNSacc))];
+        y_lines3 = [imag(rotNSacc)'; imag(rotLanding)'; NaN(1, length(rotNSacc))];
+        plot(x_lines3(:), y_lines3(:), 'Color', [0.8 0.8 0.8], 'LineWidth', 0.5, 'HandleVisibility', 'off');
     
-    grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
-
-    xlabel('Horizontal (dva)'); ylabel('Vertical (dva)');
-    title({'Posição de estímulos e fixações', 'em relação à pré-probe'});
     
-    %% Subplot 2: posição relativa do probe não sacádico
-    nexttile; hold on;
-
-    % Linhas entre rotNSacc e rotLanding no espaço rotacionado
-    x_lines3 = [real(rotNSacc)'; real(rotLanding)'; NaN(1, length(rotNSacc))];
-    y_lines3 = [imag(rotNSacc)'; imag(rotLanding)'; NaN(1, length(rotNSacc))];
-    plot(x_lines3(:), y_lines3(:), 'Color', [0.8 0.8 0.8], 'LineWidth', 0.5, 'HandleVisibility', 'off');
-
-
-    plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
-    plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
-    scatter(real(rotProbe), imag(rotProbe), 35, colorProbe, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
-    scatter(real(rotNSacc), imag(rotNSacc), 35, colorNSacc, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
-    scatter(real(rotLanding), imag(rotLanding), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
+        plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 4, 'HandleVisibility', 'off');
+        plot(0, 0, 'k+', 'MarkerSize', 12, 'LineWidth', 2);
+        scatter(real(rotProbe), imag(rotProbe), 35, colorProbe, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
+        scatter(real(rotNSacc), imag(rotNSacc), 35, colorNSacc, 'filled', 'MarkerFaceAlpha', alphaLevel, 'MarkerEdgeColor', 'flat', 'LineWidth', 1);
+        scatter(real(rotLanding), imag(rotLanding), 25, colorPostFix, 'filled', 'MarkerFaceAlpha', alphaLevel);
+        
+        axis equal;
+        xlim([-theLim theLim]); ylim([-theLim theLim]);
+        drawnow;
+        xticks(yticks())
+        
+        grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
+        xlabel('Horizontal transformado (dva)'); 
+        ylabel('Horizontal transformado (dva)');
+        title({'Posição de probes não-sacádicos', 'em relação à direção das sacadas'});
     
-    axis equal;
-    xlim([-theLim theLim]); ylim([-theLim theLim]);
-    drawnow;
-    xticks(yticks())
-    
-    grid on; set(gca, 'TickDir', 'out', 'Box', 'off');
-    xlabel('Horizontal transformado (dva)'); 
-    ylabel('Horizontal transformado (dva)');
-    title({'Posição de probes não-sacádicos', 'em relação à direção das sacadas'});
-
-    lgd = legend([h1 h2 h3 h4 h5], {'pré-probe pos', 'probe pos', 'nSacc probe pos', 'pré-probe fix', 'probe fix'});
-    lgd.Layout.Tile = 'south'; 
-    lgd.Orientation = 'horizontal';
+        lgd = legend([h1 h2 h3 h4 h5], {'pré-probe pos', 'probe pos', 'nSacc probe pos', 'pré-probe fix', 'probe fix'});
+        lgd.Layout.Tile = 'south'; 
+        lgd.Orientation = 'horizontal';
+    end
 
     rotProbePos = [real(rotProbe), imag(rotProbe)];
     rotProbeFix = [real(rotLanding), imag(rotLanding)];

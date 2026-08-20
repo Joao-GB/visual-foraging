@@ -143,6 +143,12 @@ function [keepTrl, stmLimsTime, stmPerPhase] = refineLims(eyeMovs, fixLimsTime, 
     %% P2
     trlStmLimsTime = [phaseLimsTime(2,1); fixLimsTime(2,find(fixPerStm(1, :), 1,'last'))];
     newStmPerPhase = [2]; %#ok<NBRAK2> 
+    if numel(trlStmLimsTime) <= 1
+        keepTrl = 0;
+        stmLimsTime = [];
+        stmPerPhase = [];
+        return;
+    end
     
     % Adiciona os demais da fase 2, i.e., nem primeiro nem último
     nSeenStimsP2 = sum(stmPerPhase(2,:));
