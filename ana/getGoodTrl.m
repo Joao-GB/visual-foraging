@@ -6,7 +6,7 @@ function [allGoodTrl, keepIdx] =  getGoodTrl(trl, mat, trlName)
 
     allGoodTrl = false(size(trl));
     
-    % Calcula o limite de latência apenas para os trials mantidos:
+    %% 1. Calcula o limite de latência apenas para os trials mantidos:
     % (i)  a diferença entre o início da sacada e o fim do estímulo não pode
     %     ser muito grande
     % (ii) o sujeito deve ver um mínimo do estímulo
@@ -17,9 +17,17 @@ function [allGoodTrl, keepIdx] =  getGoodTrl(trl, mat, trlName)
     P3SaccLatency = [trl(keepIdx).saccLatency] / 1000;
     
     latencyMask = P3SaccInterval >= maxDelay & P3SaccLatency <= minSeen;
+
+    %% 2. Identifica as distâncias entre fixação e probe
+    maxDist = mat.prm.gaborSize_dva/2 + 1.5;
+
+    probePos      = pixel_to_dva([trl(keepIdx).probePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+    probePosFix   = pixel_to_dva([trl(keepIdx).probePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
+
+    distanceMask = vecnorm(probePos'-probePosFix') <= maxDist;
     
     % Atribui verdadeiro apenas onde AMBOS os critérios passaram
-    allGoodTrl(keepIdx) = latencyMask;
+    allGoodTrl(keepIdx) = latencyMask & distanceMask;
     
     fprintf('\n----------------------------------\n%s\nNúmero de trials pré-selecionados: %d\n', trlName, sum(keepIdx))
     fprintf('Número de trials válidos final: %d\n', sum(allGoodTrl))

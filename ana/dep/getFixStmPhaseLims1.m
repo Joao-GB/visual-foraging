@@ -85,8 +85,9 @@ function [trlKeep, perPhase, perROI, perStm, limsTime, hasRepetition] = getFixSt
     badP3 = sum(perPhase.ROI(3,:)) ~= 1;
     badPM_1 = sum(~oldROIIdx & perPhase.ROI(4,:)) == 0;
     badPM_2 = sum(perPhase.fix(4,:)) == 0;
+    badPM_3 = any(sum(perROI.fix) > 1);
     
-    if badP2 || badP3 || badPM_1 || badPM_2
+    if badP2 || badP3 || badPM_1 || badPM_2 || badPM_3
         trlKeep = 0;
         if badP2
             warning('Trial ruim: menos estímulos em P2 que esperado (cf. getFixStmPhaseLims1)')
@@ -96,6 +97,8 @@ function [trlKeep, perPhase, perROI, perStm, limsTime, hasRepetition] = getFixSt
             warning('Trial ruim: sem estímulo bom pós-modificação (cf. getFixStmPhaseLims1)')
         elseif badPM_2
             warning('Trial ruim: sem fixação pós-modificação (cf. getFixStmPhaseLims1)')
+        elseif badPM_3
+            warning('Trial ruim: fixação em mais de um ROI da fase 4 (cf. getFixStmPhaseLims1)')
         end
         return; 
     end

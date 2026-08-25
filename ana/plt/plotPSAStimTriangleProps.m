@@ -1,5 +1,8 @@
 function plotPSAStimTriangleProps(preProbePos, probePos, nSaccProbePos, drP)
-% Me interessam apenas posições, e não fixações, para essa função
+% Me interessam apenas posições, e não fixações, para essa função. As
+% extremidades do triângulo são denotadas por P para pré-probe, S para
+% probe sacádico e N para probe não-sacádico. Assim, NS é a distância entre
+% os probes
 % The function produces two standard scatter plots using the color code from drP:
 %   1) Shape coordinates:
 %        x = angle opposite NS
@@ -40,6 +43,8 @@ colorMetric = drP.orange;
 %                               relação ao não-sacádico;
 % - Pontos concentrados em 1:  probe não sacádico 2 vezes mais perto que o
 %                               sacádico
+% Então abaixo do 0 (da vertical) indica probe não sacádico mais distante
+% que o sacádico
 
 nexttile
 hold on;
