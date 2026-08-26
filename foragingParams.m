@@ -15,7 +15,7 @@ function params = foragingParams
     params.gaborPhase     = 0;
 
     % (d) Parâmetros dos estímulos
-    params.stimRMScontrast  = .35;  % Lembre que basta multiplicar por sqrt(.2) 
+    params.stimRMScontrast  = .35;  % .5/sqrt(2); Lembre que basta multiplicar por sqrt(.2) 
                                     % para obter o contraste de Michelson
                                     % correspondente para um grating puro
                                     % Se usasse um stimRMScontrast =
@@ -76,7 +76,7 @@ function params = foragingParams
 
     params.minFixTime1 = .5;                           % Tempo mínimo de fixação na cruz inicial, em s
     params.minFixTime2 = .08;                          % Tempo mínimo de fixação nos estímulos, em s
-    params.medFixTime2 = .25;                          % Tempo médio de fixação nos estímulos, em s, a ser usado apenas 
+    params.medFixTime2 = .4;                          % Tempo médio de fixação nos estímulos, em s, a ser usado apenas 
                                                         % para a fila inicial de fixações
 
         % Preciso que minFixTime3 (filtro de ruído) < maxTolPM (tempo de reação) < postModDur (duração máxima de PM) 
@@ -111,7 +111,7 @@ function params = foragingParams
     params.nStimsStair = 3;
     params.nBlocksStair = numel(params.allOri);
     params.nTrialsStair = 60;     % 60 <-
-    params.nTrialsStairTrain = 10;
+    params.nTrialsStairTrain = 30;
     params.priorMeanStair  = 50; params.priorStdStair   = 20;
     params.priorStdStair2   = .7*params.priorStdStair;      % Para os staircases posteriores, uso variância reduzida
     params.priorBetaMeanStair = 0.2; 
@@ -119,7 +119,7 @@ function params = foragingParams
     params.priorLambdaMeanStair = 0.05;
     params.minJitterStair  = .4 - params.pinkNoiseDur;  % em s <-
     params.maxJitterStair  = 1;
-    params.postModDurStair = .25;
+    params.postModDurStair = .15;
     params.burninTrials    = 5;
     params.stairLevel      = .92;  % <-
     params.avoidConsecutive= 1;
@@ -130,7 +130,7 @@ function params = foragingParams
     % (a) Número de trials no treino
     params.nTrialsTrain1  = 6;
     params.nTrialsTrain2  = 30;
-    params.nTrialsTrain3  = 12;
+    params.nTrialsTrain3  = 20;
 
     % (b) Tempo máximo durante o qual é exibida a cruz antes de mensagem de
     % 'Tempo Esgotado' na fase 1

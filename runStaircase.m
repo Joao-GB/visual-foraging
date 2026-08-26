@@ -1,5 +1,6 @@
-function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, sigmaTrainIdx)
+function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, sigmaTrainIdx, pinkNoiseDur)
     if nargin <8, sigmaTrainIdx = []; end
+    if nargin <9, pinkNoiseDur  = []; end
 % Nessa versão, usa um único staircase para todos os tipos de estímulo, 
 % alimentando o ajuste da curva
         Screen('Flip', dpP.window);
@@ -8,8 +9,13 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
 
         if mode <= 3
-            if isempty(sigmaTrainIdx), sigmaTrainIdx = randi(nume(prm.aSigmaTrain)); end
-            prm.pinkNoiseDur = prm.cursorPinkNoiseDur;
+            if isempty(sigmaTrainIdx), sigmaTrainIdx = randi(numel(prm.aSigmaTrain)); end
+            if isempty(pinkNoiseDur) || pinkNoiseDur == 1
+                pinkNoiseDur = prm.cursorPinkNoiseDur; 
+            elseif pinkNoiseDur == 2
+                pinkNoiseDur = prm.pinkNoiseDur;
+            end
+            prm.pinkNoiseDur = pinkNoiseDur;
             nTrials = prm.nTrialsStairTrain;
             prm.aSigma = prm.aSigmaTrain(sigmaTrainIdx);
             tkP.stairPrev = [];
@@ -427,11 +433,11 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                             WaitSecs(.0005);
                             tNow = GetSecs;
                         end
-                        toc
 
 
                         foragingDrawPedestal(dpP.window, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP);
                         Screen('Close', noiseTex);
+                        toc
 %                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                         PMOn = Screen('Flip', dpP.window);
                         Eyelink('Message',prm.msg.off.P3);
@@ -553,36 +559,40 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                     else
                         disp('Trial bom')
 %% Atualiza o staircase se o trial foi útil
-                        if aSigma(prm.allOriMap(targetOri(b))) <= (prm.sigmaMin + .5*prm.sigmaRem) && prm.avoidConsecutive, suspend = 1;
-                        end
-                        if suspend == 1, suspend = rand(1) > 1./prm.stairWaitTime;
-                        end
-                        
-                        for j=1:length(orderToReportStims)
-                            RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(prm.allOriMap(targetOri(b))), feedback(orderToReportStims(j)));
-                            stimHistory{b} = [stimHistory{b} stimRange(auxidx(b))];
-                            respHistory{b} = [respHistory{b} feedback(orderToReportStims(j))];
-                        end
-
-                        fprintf('Atualizo o RF do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(prm.allOriMap(targetOri(b))), RF(b).xCurrent);
-                        fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
-
-                        % Quando chega nessa parte, o i já foi incrementado 
-                        % na parte com trialIdxUp. Por iso i em vez de i+1
-                        if i <= burninTrials && b == 1
-                            [~, auxidx(b)] = min(abs(stimRange - (-burnInASigma(i))));
-                            aSigma(prm.allOriMap(targetOri(b))) = stimRange(auxidx(b));
-                            fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
-                            RF(b).xCurrent = -aSigma(prm.allOriMap(targetOri(b)));
+                        if mode > 3
+                            if aSigma(prm.allOriMap(targetOri(b))) <= (prm.sigmaMin + .5*prm.sigmaRem) && prm.avoidConsecutive, suspend = 1;
+                            end
+                            if suspend == 1, suspend = rand(1) > 1./prm.stairWaitTime;
+                            end
+                            
+                            for j=1:length(orderToReportStims)
+                                RF(b) = PAL_AMRF_updateRF(RF(b), -aSigma(prm.allOriMap(targetOri(b))), feedback(orderToReportStims(j)));
+                                stimHistory{b} = [stimHistory{b} stimRange(auxidx(b))];
+                                respHistory{b} = [respHistory{b} feedback(orderToReportStims(j))];
+                            end
+    
+                            fprintf('Atualizo o RF do bloco %d, apresentamos: %.4f (no xCurrent: %.4f)\n', b, aSigma(prm.allOriMap(targetOri(b))), RF(b).xCurrent);
+                            fprintf('\nA média evoluiu como: '); disp(RF(b).xStaircase)
+    
+                            % Quando chega nessa parte, o i já foi incrementado 
+                            % na parte com trialIdxUp. Por iso i em vez de i+1
+                            if i <= burninTrials && b == 1
+                                [~, auxidx(b)] = min(abs(stimRange - (-burnInASigma(i))));
+                                aSigma(prm.allOriMap(targetOri(b))) = stimRange(auxidx(b));
+                                fprintf('\nMas como é burn-in, o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
+                                RF(b).xCurrent = -aSigma(prm.allOriMap(targetOri(b)));
+                            else
+                                [~, auxidx(b)] = min(abs(stimRange - (RF(b).mean)));
+                                aSigma(prm.allOriMap(targetOri(b))) = -RF(b).mean;
+                                fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
+                            end
+    
+                            [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(prm.allOriMap(targetOri(b))), prm.rSigma2);
+                            oriFilter(:,:,b) = auxOriFilter;
+                            OFsize(:,:,b)    = auxOFsize;
                         else
-                            [~, auxidx(b)] = min(abs(stimRange - (RF(b).mean)));
-                            aSigma(prm.allOriMap(targetOri(b))) = -RF(b).mean;
-                            fprintf('\nPor isso o novo aSigma é %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
+                            fprintf('\nComo é treino, mantenho aSigma %.4f\n', aSigma(prm.allOriMap(targetOri(b))));
                         end
-
-                        [auxOriFilter, auxOFsize] = MakeOriFilter1(txP.gabor.size_px, aSigma(prm.allOriMap(targetOri(b))), prm.rSigma2);
-                        oriFilter(:,:,b) = auxOriFilter;
-                        OFsize(:,:,b)    = auxOFsize;
                     end
                     trialOffset = GetSecs; %#ok<NASGU>
                     Eyelink('Message', sprintf(prm.msg.off.trl{1}, i - trialIdxUp, nTrials));

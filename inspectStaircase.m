@@ -1,7 +1,7 @@
 function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
 % Os thrs, newThrs e tkP.stairPrev estão na ordem canônica de estímulos, 
 % mas o PM não, por isso a estratégia do k
-    oldNewThrs = aSigmaFromStair(newThrs, prm);
+    oldNewThrs = aSigmaFromStair(newThrs, prm, 1);
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;    targetH = screenH / 2;
     
@@ -99,6 +99,7 @@ function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
     KbReleaseWait;
 
     newNewThrs = oldNewThrs;
+    textColor1   = repmat(drP.black, 1, 3);
     while true
         % Draw the current figure
         Screen('DrawTexture', dpP.window, texArray(currentView), [], targetRect);
@@ -128,8 +129,9 @@ function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
             thresholdText = num2str(newNewThrs);
             DrawFormattedText(dpP.window, thresholdText, ...
                 'center', ...
-                boxTop + 5, ...
+                'center', ...
                 drP.black, [], [], [], [], [], boxRect);
+
     
             % -----------------------------------------------------
             % Up triangle above the box
@@ -145,7 +147,7 @@ function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
                 triangleCenterX + triangleWidth/2, boxTop ...
             ]';
     
-            Screen('FillPoly', dpP.window, drP.black, upTriangle);
+            Screen('FillPoly', dpP.window, textColor1, upTriangle');
     
             % -----------------------------------------------------
             % Down triangle below the box
@@ -156,7 +158,7 @@ function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
                 triangleCenterX + triangleWidth/2, boxTop + boxHeight ...
             ]';
     
-            Screen('FillPoly', dpP.window, drP.black, downTriangle);
+            Screen('FillPoly', dpP.window, textColor1, downTriangle');
     
             % -----------------------------------------------------
             % "(recommended)" if threshold equals oldNewThrs
@@ -169,11 +171,11 @@ function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
     
                 % Put it immediately to the right of the box
                 recommendedX = boxRect(3) + 8;
-                recommendedY = boxTop + ...
-                               (boxHeight - prm.textSizeSmall) / 2;
-    
+                recommendedY = boxTop + boxHeight/2 - prm.textSizeSmall/2 + 6;
+                
                 DrawFormattedText(dpP.window, recommendedText, ...
                     recommendedX, recommendedY, drP.black);
+
             end
         end
     

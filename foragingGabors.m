@@ -471,8 +471,8 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     scOptions     = {'instructions', 'training', 'staircase'};
     scOptionsName = {'Instruções', 'Treino', 'Iniciar'};
     scOptionsMsg  = {'Telas explicativas sobre as etapas do staircase.',...
-                    ['Treino para o staircase, mais lento e com\n'...
-                     'feedback ao fim de cada tentativa.'],...
+                    ['Treino para o staircase, mais lento (ou não)\n'...
+                     'e com feedback ao fim de cada tentativa.'],...
                     ['Prosseguir ao staircase quando as etapas anteriores\n',...
                      'tiverem sido cumpridas.']};
 
@@ -549,7 +549,8 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
         firstSelectL = floor((L+1)/2);
         firstSelectR = ceil((L+1)/2);
     end
-    selected = -1; smallSelect = -1;
+    selected = -1; smallSelect = -1; smallTimeSelect = 1;
+    smallTimePreffix = ['L'; 'S'];
     [prevMx, prevMy, prevBut] = GetMouse(dpP.window);
     prevMouse = [prevMx, prevMy, prevBut];
     
@@ -581,8 +582,9 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
     y = biggerRect(4) - s - h;
     
     smallRects = [x; repmat(y, 1, n); x + w; repmat(y + h, 1, n)];
+    triangleHeight = 8; triangleWidth = 10; triangleMargin = 4;
+    triangleColor  = repmat(drP.black, [1 3]);
     
-    sigmaTrainIdx = randi(n);
     while true
         if refreshLayout
             if strcmp(currentScreen, 'main')
@@ -641,6 +643,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
             isMouseMostRecent = true;
             selected = -1; 
             smallSelect = -1;
+            smallTimeSelect = 1;
             for i=1:L
                 if IsInRect(mx, my, btnRects(:,i))
                     selected = i;
@@ -682,21 +685,41 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 
         %%
         if selected > 0
+            Screen('TextSize', dpP.window, prm.textSizeSmall);
             drawBox = true;
             msg = optionsMsg{selected};
             Screen('FrameRect', dpP.window,  drP.darkBlue, btnRects(:, selected), prm.pW2);
 
             if strcmp(currentScreen, 'sc') && strcmp(options{selected}, 'training')
                 Screen('FillRect', dpP.window, drP.grey, smallRects);
-                for i = 1:n
-                    smallText = num2str(prm.aSigmaTrain(i));
+                for i = 1:n 
+                    if i == smallSelect
+                        smallText = [smallTimePreffix(smallTimeSelect) num2str(prm.aSigmaTrain(i))];
+                    else
+                        smallText = [smallTimePreffix(1) num2str(prm.aSigmaTrain(i))];
+                    end
                 
                     DrawFormattedText(dpP.window, smallText,      'center', 'center',   drP.black, [], [], [], [], [], smallRects(:,i)');
                 end
                 if smallSelect > 0
                     Screen('FrameRect', dpP.window, drP.darkBlue, smallRects(:,smallSelect), prm.pW2);
+                    triangleCenterX = (smallRects(1,smallSelect) +smallRects(3,smallSelect))/2;
+                    if smallTimeSelect == 1
+                        downTriangle = [triangleCenterX, smallRects(4,smallSelect) + triangleHeight + triangleMargin; ...
+                                      triangleCenterX - triangleWidth/2, smallRects(4,smallSelect) + triangleMargin; ...
+                                      triangleCenterX + triangleWidth/2, smallRects(4,smallSelect) + triangleMargin];
+                        Screen('FillPoly', dpP.window, triangleColor, downTriangle);
+                        
+                    elseif smallTimeSelect == 2
+                        upTriangle = [triangleCenterX, smallRects(2,smallSelect)  - triangleHeight - triangleMargin; ...
+                                      triangleCenterX - triangleWidth/2, smallRects(2,smallSelect) - triangleMargin; ...
+                                      triangleCenterX + triangleWidth/2, smallRects(2,smallSelect) - triangleMargin];
+                        Screen('FillPoly', dpP.window, triangleColor, upTriangle);
+                    end
                 end
             end
+
+            Screen('TextSize', dpP.window, prm.textSizeNormalish);
         end
 
         Screen('TextStyle', dpP.window, 0);
@@ -776,7 +799,11 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                 elseif keyCode(downKey)
                     % Enter small-rectangle selection
                     if strcmp(currentScreen, 'sc') && selected > 0 && strcmp(options{selected}, 'training')
-                        smallSelect = 1;
+                        if smallSelect >= 1
+                            smallTimeSelect = 2;
+                        else
+                            smallSelect = 1;
+                        end
                     end
                 
                     isMouseMostRecent = false;
@@ -784,7 +811,11 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                 elseif keyCode(upKey)
                     % Leave small-rectangle selection
                     if smallSelect > 0
-                        smallSelect = -1;
+                        if smallTimeSelect == 1
+                            smallSelect = -1;
+                        elseif smallTimeSelect == 2
+                            smallTimeSelect = 1;
+                        end
                     end
                     isMouseMostRecent = false;
                 elseif keyCode(spaceKey) || any(buttons)
@@ -830,13 +861,21 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                     sigmaTrainIdx = randi(n);
                                     fprintf('aSigma de treino aleatório: %.2f\n', prm.aSigmaTrain(sigmaTrainIdx));
                                 end
-                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx);
-                                smallSelect = -1;
+                                if smallTimeSelect == 1
+                                    fprintf('Treino de ruido rosa longo: \n');
+                                elseif smallTimeSelect == 2
+                                    fprintf('Treino de ruido rosa curto: \n');
+                                end
+
+                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx, smallTimeSelect);
+
+                                smallSelect = -1; smallTimeSelect = 1;
                             elseif strcmp(mode, 'staircase')
                                 taskState(1,1) = 1;
                                 for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                                 fprintf('Selecionado: staircase\n')
                                 [resultsStair, taskState] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
+                                smallSelect = -1; smallTimeSelect = 1;
                                 if taskState(1,2) == 1
                                     tkP.stair = resultsStair; clear resultsStair;
                                     aSigma = tkP.stair.aSigma;
@@ -2031,31 +2070,31 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         else
 %                             nPre = nStimsToReport(1, idx, b); nPost = nStimsToReport(3, idx, b);
                             fprintf('Não há currIdx... ')
-                            if mode <= 2
-                                if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
-                                    fprintf('... então pré-s. vira visto\n')
-                                    nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
-                                    nPost = nStimsToReport(3, idx, b);
-                                else
-                                    fprintf('... então pré-s. vira não visto\n')
-                                    nPre = nStimsToReport(1, idx, b);
-                                    nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
-                                end
-                                nStimsToReport(1, idx, b) = nPre;
-                                nStimsToReport(2, idx, b) = 0;
-                                nStimsToReport(3, idx, b) = nPost;
-    
-                                if numel(seenIdx) < nPre
-                                    dif = nPre - numel(seenIdx);
-                                    nStimsToReport(1, idx, b) = numel(seenIdx);
-                                    nStimsToReport(3, idx, b) = nPost + dif;
-                                end
-                                if numel(notSeenIdx) < nPost
-                                    dif = nPost - numel(notSeenIdx);
-                                    nStimsToReport(3, idx, b) = numel(notSeenIdx);
-                                    nStimsToReport(1, idx, b) = nPre + dif;
-                                end
-                            end
+                            % if mode <= 2
+                            %     if rand < prm.seenNotSeenRatio/(1+prm.seenNotSeenRatio)
+                            %         fprintf('... então pré-s. vira visto\n')
+                            %         nPre = nStimsToReport(1, idx, b) + nStimsToReport(2, idx, b);
+                            %         nPost = nStimsToReport(3, idx, b);
+                            %     else
+                            %         fprintf('... então pré-s. vira não visto\n')
+                            %         nPre = nStimsToReport(1, idx, b);
+                            %         nPost = nStimsToReport(3, idx, b) + nStimsToReport(2, idx, b);
+                            %     end
+                            %     nStimsToReport(1, idx, b) = nPre;
+                            %     nStimsToReport(2, idx, b) = 0;
+                            %     nStimsToReport(3, idx, b) = nPost;
+                            % 
+                            %     if numel(seenIdx) < nPre
+                            %         dif = nPre - numel(seenIdx);
+                            %         nStimsToReport(1, idx, b) = numel(seenIdx);
+                            %         nStimsToReport(3, idx, b) = nPost + dif;
+                            %     end
+                            %     if numel(notSeenIdx) < nPost
+                            %         dif = nPost - numel(notSeenIdx);
+                            %         nStimsToReport(3, idx, b) = numel(notSeenIdx);
+                            %         nStimsToReport(1, idx, b) = nPre + dif;
+                            %     end
+                            % end
                         end
 %                         disp(nStimsToReport(:, idx, b))
                         if sum(nStimsToReport(:, idx, b)) ~= 3
@@ -2079,13 +2118,29 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             % O do passado não importa de onde eu pergunto,
                             % desde que não seja a última fixação nem o pós
                             % sacádico
-                            isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
-                            auxIdx = setdiff(seenIdx, [currStim currIdx]);
-                            seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
+                            seenAux = [];
+                            if mode >= 3
+                                isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
+                                auxIdx = setdiff(seenIdx, [currStim currIdx]);
+                                seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
+                            end
+
                             currAux = []; 
-                            
                             if nStimsToReport(2, idx, b) == 1, currAux = currIdx; end
-    
+
+                            % Se nStimsTOReport somar 2 para essas duas
+                            % condições, sempre haverá pelo menos um pra
+                            % cada com o mínimo de vistos antes da
+                            % atualização sendo 2
+                            if isempty(seenAux) || isempty(currAux)
+                                theAux = datasample(seenIdx, min(length(seenIdx), nStimsToReport(1, idx, b)+nStimsToReport(2, idx, b)), 'Replace', false);
+                                seenAux = theAux(1:nStimsToReport(1, idx, b));
+                                if mode >= 3
+                                    currAux = theAux((end-nStimsToReport(2, idx, b)+1):end);
+                                else
+                                    currAux = [];
+                                end
+                            end
                             % O não visto eu pergunto o mais próximo de
                             % currStim que não seja currIdx e nem já visto. Mas
                             % se a pessoa nao mover o olho, como puniçao,
@@ -2096,23 +2151,34 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
     
                             notSeenNbhd = setdiff(nbhd, currIdx, 'stable');
                             notSeenNbhd = setdiff(notSeenNbhd, seenIdx, 'stable');
-                            notSeenAux = notSeenNbhd(1:nStimsToReport(3, idx, b));
+                            notSeenAux = notSeenNbhd(1:min(numel(notSeenNbhd),nStimsToReport(3, idx, b)));
     
                             % notSeenAux = datasample(auxNotSeenIdx, min(length(auxNotSeenIdx), nStimsToReport(3, idx, b)), 'Replace', false);
                             % Tanto seenAux como notSeenAux devem ser linhas
-                            % para concatenar 
+                            % para concatenar
                             fprintf('Vistos: '); fprintf(num2str(seenAux));
-                            fprintf('\nPré-s: '); fprintf(num2str(currAux));
-                            fprintf('\nNão vistos: '); fprintf(num2str(notSeenAux));
-                            fprintf('\n');
-                            orderToReportStimsCell = {seenAux, currAux, notSeenAux};
-                            orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
-                            if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
-                                fprintf('Algo de errado: tem que reportar: %d', numel(orderToReportStims));
+                            if mode >= 3
+                                fprintf('\nPré-s: '); fprintf(num2str(currAux));
+                                fprintf('\nNão vistos: '); fprintf(num2str(notSeenAux));
+                            else
+                                fprintf('\nPré-s: AUSENTE');
+                                fprintf('\nNão vistos: AUSENTE');
                             end
-                            orderRemapped = [];
-                            for auxIdx = 1:3
-                                orderRemapped = [orderRemapped orderToReportMap(orderToReportSets(auxIdx, idx, b))*ones(1, length(orderToReportStimsCell{orderToReportSets(auxIdx, idx, b)}))]; %#ok<AGROW> 
+                            fprintf('\n');
+
+                            if mode >=3
+                                orderToReportStimsCell = {seenAux, currAux, notSeenAux};
+                                orderToReportStims = [orderToReportStimsCell{orderToReportSets(1, idx, b)} orderToReportStimsCell{orderToReportSets(2, idx, b)} orderToReportStimsCell{orderToReportSets(3, idx, b)}];
+                                if numel(orderToReportStims) < 2 || numel(orderToReportStims) > 3
+                                    fprintf('Algo de errado: tem que reportar: %d', numel(orderToReportStims));
+                                end
+                                orderRemapped = [];
+                                for auxIdx = 1:3
+                                    orderRemapped = [orderRemapped orderToReportMap(orderToReportSets(auxIdx, idx, b))*ones(1, length(orderToReportStimsCell{orderToReportSets(auxIdx, idx, b)}))]; %#ok<AGROW> 
+                                end
+                            else
+                                orderToReportStims = seenAux;
+                                orderRemapped = ones([1 numel(seenAux)]);
                             end
     
                              if debug == 0  && mode >= 2
