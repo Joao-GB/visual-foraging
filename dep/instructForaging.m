@@ -103,7 +103,7 @@ function instructForaging(tkP, dpP, drP, txP, prm)
         dstRects, orientation, txP, [repmat(alphas', [3,1]); ones(1, nStims)], 0);           % Tela 4: estímulos
         @(x,y,z,w)drawPink(tkP, dpP, drP, txP, prm, oriPinkTex, gaborTex, ...
         noiseTex, srcRects, dstRects, z, y, orientation);                          % Tela 5: ruído rosa
-        @(x,y,z,w)drawPM(tkP, dpP, drP, txP, prm, dstRects, orientation, textColor2);         % Tela 6: pedestais
+        @(x)foragingDrawPedestal(dpP.window, noiseTex, srcRects, dstRects, orientation, txP);    %@(x,y,z,w)drawPM(tkP, dpP, drP, txP, prm, dstRects, orientation, textColor2);         % Tela 6: pedestais
         @(x,y,z,w)drawInteractive(tkP, dpP, drP, txP, prm, nStims, w, ...    % Tela 7: interativa de resposta
         leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri);
         @(x,y,z,w)drawPostAns(tkP, dpP, drP, txP, prm, dstRects, orientation, ...

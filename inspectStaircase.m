@@ -1,6 +1,7 @@
-function inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
+function newNewThrs = inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
 % Os thrs, newThrs e tkP.stairPrev estão na ordem canônica de estímulos, 
 % mas o PM não, por isso a estratégia do k
+    oldNewThrs = aSigmaFromStair(newThrs, prm);
     screenW = dpP.winRect(3); screenH = dpP.winRect(4);
     targetW = screenW / 2;    targetH = screenH / 2;
     
@@ -88,40 +89,151 @@ function inspectStaircase(tkP, dpP, drP, prm, PM, ~, newThrs, ori)
     savefig(h, prm.tempFig); close(h); clear h;
     
     %% Interação via PTB
-    leftKey   = KbName('LeftArrow'); 
-    rightKey  = KbName('RightArrow'); 
+    leftKey   = KbName('LeftArrow');
+    rightKey  = KbName('RightArrow');
+    upKey   = KbName('UpArrow');
+    downKey  = KbName('DownArrow');
     escapeKey = KbName('ESCAPE');
     
     currentView = 1; 
     KbReleaseWait;
-    
+
+    newNewThrs = oldNewThrs;
     while true
+        % Draw the current figure
         Screen('DrawTexture', dpP.window, texArray(currentView), [], targetRect);
+    
+        if currentView >= length(texArray)
+    
+            % Small box dimensions
+            boxWidth  = 80;
+            boxHeight = 35;
+            boxMargin = 20;  % distance between figure and threshold box
+    
+            % Position: upper-right of the figure, just outside it
+            boxLeft = targetRect(3) + boxMargin;
+            boxTop  = targetRect(2);
+    
+            boxRect = [boxLeft, ...
+                       boxTop, ...
+                       boxLeft + boxWidth, ...
+                       boxTop + boxHeight];
+    
+            % White box
+            Screen('FillRect', dpP.window, [255 255 255], boxRect);
+    
+            % Threshold text inside the box
+            Screen('TextSize', dpP.window, prm.textSizeNormalish);
+    
+            thresholdText = num2str(newNewThrs);
+            DrawFormattedText(dpP.window, thresholdText, ...
+                'center', ...
+                boxTop + 5, ...
+                drP.black, [], [], [], [], [], boxRect);
+    
+            % -----------------------------------------------------
+            % Up triangle above the box
+            % -----------------------------------------------------
+            triangleWidth  = 14;
+            triangleHeight = 10;
+    
+            triangleCenterX = boxLeft + boxWidth/2;
+    
+            upTriangle = [ ...
+                triangleCenterX,                    boxTop - triangleHeight; ...
+                triangleCenterX - triangleWidth/2, boxTop; ...
+                triangleCenterX + triangleWidth/2, boxTop ...
+            ]';
+    
+            Screen('FillPoly', dpP.window, drP.black, upTriangle);
+    
+            % -----------------------------------------------------
+            % Down triangle below the box
+            % -----------------------------------------------------
+            downTriangle = [ ...
+                triangleCenterX,                    boxTop + boxHeight + triangleHeight; ...
+                triangleCenterX - triangleWidth/2, boxTop + boxHeight; ...
+                triangleCenterX + triangleWidth/2, boxTop + boxHeight ...
+            ]';
+    
+            Screen('FillPoly', dpP.window, drP.black, downTriangle);
+    
+            % -----------------------------------------------------
+            % "(recommended)" if threshold equals oldNewThrs
+            % -----------------------------------------------------
+            if newNewThrs == oldNewThrs
+    
+                Screen('TextSize', dpP.window, prm.textSizeSmall);
+    
+                recommendedText = '(recomendado)';
+    
+                % Put it immediately to the right of the box
+                recommendedX = boxRect(3) + 8;
+                recommendedY = boxTop + ...
+                               (boxHeight - prm.textSizeSmall) / 2;
+    
+                DrawFormattedText(dpP.window, recommendedText, ...
+                    recommendedX, recommendedY, drP.black);
+            end
+        end
+    
+        % ---------------------------------------------------------
+        % Prompt
+        % ---------------------------------------------------------
         Screen('TextSize', dpP.window, prm.textSizeNormalish);
-        
+    
         if currentView < length(texArray)
             promptText = 'Pressione uma das setas para avançar pelas figuras';
         else
-            promptText = 'Pressione uma das setas para avançar pelas figuras \nou pressione Esc para sair';
+            promptText = ['Pressione uma das setas para avançar pelas figuras ' ...
+                          '\nou pressione Esc para sair'];
         end
-        
-        textY = targetRect(4) + 50; 
-        DrawFormattedText(dpP.window, promptText, 'center', textY, drP.black);
+    
+        textY = targetRect(4) + 50;
+        DrawFormattedText(dpP.window, promptText, ...
+            'center', textY, drP.black);
+    
         Screen('Flip', dpP.window);
-        
+    
+        % ---------------------------------------------------------
+        % Keyboard
+        % ---------------------------------------------------------
         [keyIsDown, ~, keyCode] = KbCheck;
+    
         if keyIsDown
+    
             if keyCode(leftKey)
-                currentView = max(1, currentView - 1); 
+    
+                currentView = max(1, currentView - 1);
                 KbReleaseWait;
+    
             elseif keyCode(rightKey)
-                currentView = min(length(texArray), currentView + 1); 
+    
+                currentView = min(length(texArray), currentView + 1);
                 KbReleaseWait;
+    
             elseif keyCode(escapeKey)
+    
                 KbReleaseWait;
-                break; 
+                break;
+    
+            % -----------------------------------------------------
+            % Change threshold ONLY on the last figure
+            % -----------------------------------------------------
+            elseif currentView >= length(texArray) && keyCode(upKey)
+    
+                newNewThrs = min(prm.sigmaMax, ...
+                                 newNewThrs + prm.sigmaRem);
+                KbReleaseWait;
+    
+            elseif currentView >= length(texArray) && keyCode(downKey)
+    
+                newNewThrs = max(prm.sigmaMin, ...
+                                 newNewThrs - prm.sigmaRem);
+                KbReleaseWait;
             end
         end
+    
         WaitSecs(0.01);
     end
     

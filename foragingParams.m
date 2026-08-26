@@ -15,7 +15,7 @@ function params = foragingParams
     params.gaborPhase     = 0;
 
     % (d) Parâmetros dos estímulos
-    params.stimRMScontrast  = .2; % Lembre que basta multiplicar por sqrt(.2) 
+    params.stimRMScontrast  = .35;  % Lembre que basta multiplicar por sqrt(.2) 
                                     % para obter o contraste de Michelson
                                     % correspondente para um grating puro
                                     % Se usasse um stimRMScontrast =

@@ -839,7 +839,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 [resultsStair, taskState] = runStaircase(tkP, dpP, drP, txP, prm, 4, taskState);
                                 if taskState(1,2) == 1
                                     tkP.stair = resultsStair; clear resultsStair;
-                                    aSigma = aSigmaFromStair(tkP.stair, prm);
+                                    aSigma = tkP.stair.aSigma;
                                     fprintf('Valor de aSigma escolhido via staircase: %.2f\n', aSigma);
                                 else
                                     if isfield(tkP, 'aSigma')
@@ -1773,7 +1773,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         
                 % (j) Desenha a abertura gaussiana
                             Screen('DrawTextures', auxWin, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                            Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
+                            Screen('Close', oriPinkTex); Screen('Close', gaborTex);
                             Screen('BlendFunction', auxWin, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                         end
                         if mode >= 3
@@ -1850,7 +1850,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                         seenStimsQueue{b, i} = [seenStimsQueue{b, i} [currStim; fixDur; 3]];
                         flag(currStim) = flag(currStim) + 1;
 
-                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+                        foragingDrawPedestal(dpP.window, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP);
+                        Screen('Close', noiseTex);
+%                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                         if earlyStop || mode == 1
                             P3Flip = GetSecs + 0.5 * dpP.ifi;
                         else

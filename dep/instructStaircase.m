@@ -105,7 +105,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
         dstRects, orientation, txP, [repmat(alphas', [3,1]); ones(1, nStims)]);         % Tela 4: estímulos
         @(x)drawPink(tkP, dpP, drP, txP, prm, oriPinkTex, gaborTex, ...
         noiseTex, srcRects, dstRects, blinkIdx, fixIdx, orientation);                   % Tela 5: ruído rosa
-        @(x)drawPM(tkP, dpP, drP, txP, prm, dstRects, orientation, textColor2);         % Tela 6: pedestais
+        @(x)foragingDrawPedestal(dpP.window, noiseTex, srcRects, dstRects, orientation, txP); % Tela 6: pedestais       % @(x)drawPM(tkP, dpP, drP, txP, prm, dstRects, orientation, textColor2);
         @(x)drawInteractive(tkP, dpP, drP, txP, prm, nStims, orderToReportStims, ...    % Tela 7: interativa de resposta
         leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri);
         @(x)drawPostAns(tkP, dpP, drP, txP, prm, dstRects, orientation, ...

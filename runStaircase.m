@@ -399,7 +399,7 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                         Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:, fixIdx(b, idx)), orientation(fixIdx(b, idx), idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
                         
                         Screen('DrawTextures', dpP.window, txP.blob.tex, [], dstRects(:, blinkIdx), orientation(blinkIdx, idx, b), [], [], [0 0 0 1]', [], [], txP.blob.props);
-                        Screen('Close', oriPinkTex); Screen('Close', noiseTex); Screen('Close', gaborTex);
+                        Screen('Close', oriPinkTex); Screen('Close', gaborTex);
                         Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                         P3On = Screen('Flip', dpP.window, P2On + jitterTimes(b, idx));
@@ -429,7 +429,10 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                         end
                         toc
 
-                        Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
+
+                        foragingDrawPedestal(dpP.window, noiseTex, srcRects, dstRects, orientation(:, idx, b), txP);
+                        Screen('Close', noiseTex);
+%                         Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation(:, idx, b), [], [], [textColor2 1]', [], [], txP.PMBlob.props);
                         PMOn = Screen('Flip', dpP.window);
                         Eyelink('Message',prm.msg.off.P3);
                         
@@ -653,7 +656,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
         end
         clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm RF aSigma newLevelASigma targetOri tkS
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
-            inspectStaircase(tkP, dpP, drP, prm, RF, [], newLevelASigma, targetOri);
+            [oneMoreASigma] = inspectStaircase(tkP, dpP, drP, prm, RF, [], newLevelASigma, targetOri);
+            resultsStair.aSigma = oneMoreASigma;
             tkS(1,2) = 1;
         end
 end
