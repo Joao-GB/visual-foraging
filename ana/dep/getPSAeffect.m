@@ -1,21 +1,22 @@
-function [result, counts] = getPSAeffect(trlProps)
+function [result, counts] = getPSAeffect(trlProps, showTable)
+    if nargin < 2, showTable = true; end
 
-    fprintf('\n\nTabela: forrageamento (F)')
+    if showTable, fprintf('\n\nTabela: forrageamento (F)'); end
     [result.for.table, result.for.idx, result.for.d, result.for.c] = ...
-        contTable([trlProps.forProbeCat], [trlProps.forProbeResp], 1);
+        contTable([trlProps.forProbeCat], [trlProps.forProbeResp], showTable);
     result.for.correct = result.for.table(1,1)+result.for.table(2,2);
     result.for.total   = sum(result.for.table(:));
 
-    fprintf('\n\nTabela: condição sacádica (S)')
+    if showTable, fprintf('\n\nTabela: condição sacádica (S)'); end
     [result.sacc.table, result.sacc.idx, result.sacc.d, result.sacc.c] = ...
-        contTable([trlProps.probeCat], [trlProps.probeResp], 1);
+        contTable([trlProps.probeCat], [trlProps.probeResp], showTable);
     result.sacc.correct = trace(result.sacc.table);
     result.sacc.total   = sum(result.sacc.table(:));
 
 
-    fprintf('\n\nTabela: condição não sacádica (N)')
+    if showTable, fprintf('\n\nTabela: condição não sacádica (N)'); end
     [result.nSacc.table, result.nSacc.idx, result.nSacc.d, result.nSacc.c] = ...
-        contTable([trlProps.nSaccProbeCat], [trlProps.nSaccProbeResp], 1);
+        contTable([trlProps.nSaccProbeCat], [trlProps.nSaccProbeResp], showTable);
     result.nSacc.correct = trace(result.nSacc.table);
     result.nSacc.total   = sum(result.nSacc.table(:));
     

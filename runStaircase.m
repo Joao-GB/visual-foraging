@@ -518,8 +518,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                         feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
                         feedback = feedback/2;
 
-                        nHits = nHits + feedback;
-                        nAns  = nAns  + numel(feedback);
+                        nHits = nHits + sum(feedback(orderToReportStims));
+                        nAns  = nAns  + numel(feedback(orderToReportStims));
 
                         trialFeedback{b, i} = [orderToReportStims; zeros(1, nStims-1); feedback(orderToReportStims)];
 
@@ -669,14 +669,14 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
             diary off;
             psychrethrow(psychlasterror);
         end
-        clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm RF aSigma newLevelASigma targetOri tkS
+        clearvars -except b resultsStair nBlocks keepGoingBlocks mode tkP dpP drP prm RF aSigma newLevelASigma targetOri tkS nHits nAns
         if b == nBlocks + 1 && keepGoingBlocks && mode > 3
             [oneMoreASigma] = inspectStaircase(tkP, dpP, drP, prm, RF, [], newLevelASigma, targetOri);
             resultsStair.aSigma = oneMoreASigma;
             tkS(1,2) = 1;
         end
 
-        if mode <= 3
+        if mode <= 3 && exist("nAns", "var") && nAns > 0
             displayHits(prm, dpP, drP, nHits, nAns)
         end
 end

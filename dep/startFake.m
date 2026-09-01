@@ -19,6 +19,7 @@ function aux = startFake(tkP, dpP, drP, prm, loadingMode, txP, ori)
                      'Ganhe brinde extra ao indicar outras pessoas\n para participarem de nossos experimentos!'
                      'Faça parte da lista de sujeitos experimentais\n do laboratório!'
                      'Evite distrações enquanto realiza a tarefa.'
+                     'Tente vir bem descansado para o experimento.'
                      'Se o experimento tiver mais de uma sessão, \nnão esqueça de comparecer em todas elas!'
                     };
 
