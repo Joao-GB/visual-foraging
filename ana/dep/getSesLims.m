@@ -31,7 +31,7 @@ function sesLims = getSesLims(mat, messages, expIdx)
     auxIdx = [find(strcmp(messages(expSesOffIdx), sesCpMsg), 1, "last")];
     if isempty(auxIdx)
         warning('Não há sessões experimentais concluídas, usando a última interrompida');
-        sesCpMsg = sprintf(mat.prm.msg.off.ses{2}, mat.prm.msg.suffix{3});
+        sesCpMsg = sprintf(mat.prm.msg.off.ses{2}, mat.prm.msg.suffix{expIdx});
         auxIdx = min([length(messages), [find(strcmp(messages(expSesOffIdx), sesCpMsg), 1, "last")]]);
     end
 

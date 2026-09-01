@@ -162,6 +162,8 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
             respHistory = cell(1,nBlocks);
 
             while b <= nBlocks && keepGoingBlocks
+                nHits = 0;
+                nAns  = 0;
 %                 if b > 1
 %                     startPM(b) = PM(b-1);
 %                     startASigma(b) = aSigma(b-1);
@@ -516,6 +518,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
                         feedback(rem(feedback,2) == 0) = 2; feedback(rem(feedback,2) == 1) = 0;
                         feedback = feedback/2;
 
+                        nHits = nHits + feedback;
+                        nAns  = nAns  + numel(feedback);
+
                         trialFeedback{b, i} = [orderToReportStims; zeros(1, nStims-1); feedback(orderToReportStims)];
 
                         restartTrial = ~(keptFixP3 && keptFixPM);
@@ -669,5 +674,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
             [oneMoreASigma] = inspectStaircase(tkP, dpP, drP, prm, RF, [], newLevelASigma, targetOri);
             resultsStair.aSigma = oneMoreASigma;
             tkS(1,2) = 1;
+        end
+
+        if mode <= 3
+            displayHits(prm, dpP, drP, nHits, nAns)
         end
 end

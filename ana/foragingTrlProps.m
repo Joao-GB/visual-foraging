@@ -104,7 +104,11 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
         end
 
         trl(i).probeSeen = mat.results.isSaccSeen(b,trl(i).trlIdx);
-        trl(i).trlKeep = trlKeep && ~trl(i).probeSeen;
+        if expIdx ~= 2
+            trl(i).trlKeep = trlKeep && ~trl(i).probeSeen;
+        else
+            trl(i).trlKeep = trlKeep;
+        end
 
         % Só entro aqui se a probe não tiver sido vista
         if trl(i).trlKeep

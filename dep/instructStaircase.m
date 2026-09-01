@@ -98,7 +98,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     %% Tarefa
     
     screens = { 
-        @(x)drawBlocks(tkP, dpP, drP, txP, prm, targetOri, b);                          % Tela 1: blocos 
+        @(x)drawBlocks(nBlocks, dpP, drP, txP, prm, targetOri, b);                          % Tela 1: blocos 
         @(x)DrawCalibrationTarget(dpP.window, dpP.winCenter(1), dpP.winCenter(2));      % Tela 2: calibração
         @(x)startFix(tkP, dpP, drP, txP, prm, fixCoords, fixCenters);                   % Tela 3: fixação inicial
         @(x)foragingDrawMain(dpP.window, gaborTex, noiseTex, srcRects, ...
@@ -195,7 +195,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     end
 end
 
-function drawBlocks(tkP, dpP, drP, txP, prm, tgtOri, b)
+function drawBlocks(nBlocks, dpP, drP, txP, prm, tgtOri, b)
     Screen('BlendFunction', dpP.window, GL_ONE, GL_ONE);
     Screen('DrawTexture', dpP.window, txP.exampleGabor.tex, [], [], tgtOri, [], [], [], [], []);
     Screen('DrawTexture', dpP.window, txP.exampleNoise.tex, [], [], [], [], [], [], [], []);
@@ -204,7 +204,7 @@ function drawBlocks(tkP, dpP, drP, txP, prm, tgtOri, b)
 
     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     Screen('TextSize', dpP.window, prm.textSizeBigger);
-    countBlockText  = sprintf('Bloco %d de %d', b, tkP.nBlocks);
+    countBlockText  = sprintf('Bloco %d de %d', b, nBlocks);
     DrawFormattedText(dpP.window, countBlockText, 'center', dpP.screenRes.height*.1, drP.black);
 
     Screen('TextSize', dpP.window, prm.textSizeHuge);
