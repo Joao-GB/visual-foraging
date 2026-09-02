@@ -198,6 +198,7 @@ function [trl, eyeData, eventLimClk] = foragingTrlProps(mat, edf, sesStr, subj, 
             else
                 trl(i).saccInterval = limsTime.phase(3,2) - P3SaccLims(1);
             end
+            trl(i).saccInterval1 = P3SaccLims(2) - limsTime.phase(3,2);
             trl(i).saccLatency = limsTime.phase(3,1) - P3SaccLims(1);
             trl(i).saccAmpDva  = P3SaccAmp;
             trl(i).saccVelDvas = P3SaccVPeak;
