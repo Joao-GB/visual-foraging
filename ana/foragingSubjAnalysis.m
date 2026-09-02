@@ -109,7 +109,7 @@ function [allTrlProps] = foragingSubjAnalysis(subj, allSes, searchFolder, append
         
             %% Para o treino:
             if isfield(mat.tkP.t1.tkP, 'nTrainTrials')
-                trainPSA = plotPSAmain(trainTrlProps, mat.drP, 1);
+                trainPSA = plotPSAmain(allTrainTrlProps, mat.drP, 1);
             end
         end
     end

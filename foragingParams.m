@@ -22,7 +22,7 @@ function params = foragingParams
                                     % sqrt(.2), teria o equivalente de
                                     % Michelson em .2, o que já é bem
                                     % visível. 
-    params.gaborAlpha       = 0.5;
+    params.gaborAlpha       = 0.3;
     params.gaborAlpha       = min(1, max(0, params.gaborAlpha));
     params.noiseAlpha       = 1 - params.gaborAlpha;
     params.gaborRMScontrast = params.stimRMScontrast*sqrt(params.gaborAlpha);
@@ -45,7 +45,7 @@ function params = foragingParams
 
     % (h) Regras de disposição dos estímulos
         % OBS: Ajustar minDist_dva junto com ellipseToScreenRatio
-    params.minDist_dva = max(2.75, params.gaborSize_dva);
+    params.minDist_dva = max(3, params.gaborSize_dva);
     params.ellipseToScreenRatio = [1/2 1/2];
     params.gridShape   = [2 4];
     params.randomize = false;
