@@ -125,7 +125,7 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
                 
                 if isfield(prevData.tkP,'fixProps') && ...
                    isfield(prevData.tkP.fixProps,'emaFix')
-                    val_emaFix = prevData.tkP.fixProps.emaFix;
+                    val_emaFix = prevData.tkP.fixProps.med(end);
                 elseif isfield(prevData.tkP.t2.tkP,'fixProps') && ...
                    isfield(prevData.tkP.t2.tkP.fixProps,'med')
                     val_emaFix = prevData.tkP.t2.tkP.fixProps.med(end);
