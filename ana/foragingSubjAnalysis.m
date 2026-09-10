@@ -1,4 +1,4 @@
-function [allTrlProps] = foragingSubjAnalysis(subj, allSes, searchFolder, appendNum, doPlots)
+function [allTrlProps, mat, probes] = foragingSubjAnalysis(subj, allSes, searchFolder, appendNum, doPlots)
 % Dado um número de sujeito e o número das sessões, será gerado um trlProps
 % correspondente. Se não forem dadas as sessões, vai procurá-las na pasta,
 % sempre incluindo algum de todas as sessões (mesmo se interrrompido). Se
@@ -66,6 +66,12 @@ function [allTrlProps] = foragingSubjAnalysis(subj, allSes, searchFolder, append
     probePosFix   = pixel_to_dva([allTrlProps.probePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     nSaccProbePos = pixel_to_dva([allTrlProps.nSaccProbePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
 
+    probes.pre.pos = preProbePos;
+    probes.pre.posFix = preProbePosFix;
+    probes.sacc.pos = probePos;
+    probes.sacc.posFix = probePosFix;
+    probes.nSacc.pos = nSaccProbePos;
+
     if ~skipAll
         fprintf('\n\n-- TAREFA PRÉ-SACÁDICA --\n')
         [skipMode, closePlots] = promptPlotStep('Gráficos de caracterização espacial e temporal da tarefa pré-sacádica');
@@ -84,6 +90,17 @@ function [allTrlProps] = foragingSubjAnalysis(subj, allSes, searchFolder, append
         
               % (b) Caracterização do triângulo definido por esses três pontos
             plotPSAStimTriangleProps(preProbePos, probePos, nSaccProbePos, mat.drP);
+
+            % Dá pra fazer também:
+%             [sameDirTrl, difDirTrl] =plotPSAStimTriangleProps1(probes.pre.pos, probes.sacc.pos, probes.nSacc.pos, mat.drP, 1,0);
+%             plotPSAmain(st(sameDirTrl), mat.drP);
+%             plotPSAmain(st(difDirTrl), mat.drP);
+%             [sameEccTrl, difEccTrl] =plotPSAStimTriangleProps1(probes.pre.pos, probes.sacc.pos, probes.nSacc.pos, mat.drP, 2,1);
+%             plotPSAmain(st(sameEccTrl), mat.drP);
+%             plotPSAmain(st(difEccTrl), mat.drP);
+%             [closeTrl, farTrl] =plotPSAStimTriangleProps1(probes.pre.pos, probes.sacc.pos, probes.nSacc.pos, mat.drP, 3,0);
+%             plotPSAmain(st(closeTrl), mat.drP);
+%             plotPSAmain(st(farTrl), mat.drP);
         
               % (c) Direção e amplitude das sacadas
             plotPSASaccProps(preProbePos, probePos, preProbePosFix, probePosFix, mat.drP);

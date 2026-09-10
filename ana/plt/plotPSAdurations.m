@@ -1,7 +1,8 @@
 function plotPSAdurations(trl, drP)
-    % Início e fins da P3 indicam início e fim do estímulo
+    % Início e fins da P3 indicam início e fim do estímulo, mas fim do
+    % estímulo visto é dado pelo fim da fixação durante P3
     stimOn  = arrayfun(@(s) s.phaseLimsTime(3,1), trl);
-    stimOff = arrayfun(@(s) s.phaseLimsTime(3,2), trl);
+    stimOff = arrayfun(@(s) min(s.phaseLimsTime(3,2), s.P3FixLimsTime(2, end)), trl);
     
     fixOn  = arrayfun(@(s) s.P3FixLimsTime(1,1), trl);
     fixOff = arrayfun(@(s) s.P3FixLimsTime(end,end), trl);

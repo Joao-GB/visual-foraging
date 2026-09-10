@@ -30,9 +30,11 @@ function [trlKeep, perPhase, perROI, perStm, limsTime, hasRepetition] = getFixSt
     trlStmMsgs = trlMsgs(trlStmMsgsLimsEvt - (trlLimEvt(1) - 1));
     stmLimsTime = eventStartClk(trlStmMsgsLimsEvt) - trlLimClk(1);
     badStmIdx = strcmp(trlStmMsgs(2,:), prm.msg.off.stm{2});               % Salva os ruins de fato
+    PMStmIdx = stmLimsTime(2,:) == pMMsgsLimsTime(2);
     shortStmIdx = diff(stmLimsTime) < 15;                                  % Os únicos curtos de fato a serem descartados  
                                                                            % poderão ser em PM, que não entram na fila mas aparecem no arquivo,
-    auxShortStmIdx = shortStmIdx;                                                                       % e não como ruins...
+    shortStmIdx(PMStmIdx) = 0;                                                                       % e não como ruins...
+    auxShortStmIdx = shortStmIdx;
     auxShortStmIdx(stmLimsTime(1,:) >= phaseLimsTime(3,2)) = 0;
     if any(auxShortStmIdx & ~badStmIdx)
         warning('Estímulos curtos detectados durante forrageamento!');

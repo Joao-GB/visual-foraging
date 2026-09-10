@@ -43,7 +43,7 @@ function [pPSA] = foragingAnalysis(allSubj, searchFolder, nPerm)
     %   the observed condition assignment is exchangeable according to the 
     %   randomization mechanism used in the experiment.
 
-    %% 1. Efeito pré-sacádico
+    %% 1. Efeito pré-sacádico principal
     % ----
     %    d-primes reais por sujeito -> 
     % -> diferenças de d-primes por sujeito ->
@@ -77,5 +77,44 @@ function [pPSA] = foragingAnalysis(allSubj, searchFolder, nPerm)
 
     pPSA = plotPSAPermTest(T, permT, params);
 
-    %% 2. 
+    %% 1.a) PSA restrito a distâncias específicas
+    % Usar algo como 
+%             [closeTrl, farTrl] =plotPSAStimTriangleProps1(probes.pre.pos, probes.sacc.pos, probes.nSacc.pos, mat.drP, 3,0);
+%             plotPSAmain(st(closeTrl), mat.drP);
+%             plotPSAmain(st(farTrl), mat.drP);
+    % E, dependendo, usar as máscaras geradas nas demais análises
+
+    %% 2. Efeito da categoria dos estímulos no desempenho PSA
+    % Nesse caso, a hipótese nula seria de que os diferentes níveis dos
+    % fatores não interferem no desepenho. Seriam 3 fatores (2x2x2): condição 
+    % probe sacc ou não-sacc, categoria do pré-probe e categoria do probe. 
+    % Então divide por 4 o número de trials para cada sujeito
+    plotPSAcat([allTrlProps.preProbeCat], [allTrlProps.probeCat], [allTrlProps.probeHit], [allTrlProps.nSaccProbeHit], mat.drP)
+
+    %% 3. Efeito do desempenho forrageamento no desempenho PSA
+    % ANOVA 2x2, divide em 2 categorias os trials existentes, bem
+    % desproporcionais (talvez 5:1). Lembrando que aqui talvez tenha um
+    % efeito de confounding com o seguinte, já que a chance de acertos é
+    % função da quantidade de vistos
+
+    %% 4. Efeito do tamanho do histórico no desempenho PSA
+    % Como pode ir de 2 a 6, ambos inclusos, são 5 categorias diferentes, e
+    % emprincípio com a mesma quantidade de trials
+
+    %% 5.a) Efeito da duração do ruído rosa no desempenho PSA
+    % Talvez dividir em sacada iniciada durante (i.e., menos de 83 ms) e
+    % iniciada depois. ANOVA 2x2
+
+    %% 5.b) Efeito do intervalo sacádico no desempenho PSA
+    % Talvez dividir em quartis por sujeito, ou em durações fixas. Também 2
+    % fatores
+
+    %% 6. Forrageamento: duração da fixação e acerto
+
+    %% 7. Forrageamento: duração da fixação em função do tamanho do histórico
+    % Acredito que tudo funcione melhor se 6 e 7 forem avaliados
+    % conjuntamente, o que resulta em 5*(# de níveis de durações), a não
+    % ser que use a duração como covariável
+
+    %% 8. Forrageamento: 
 
