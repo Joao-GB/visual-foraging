@@ -211,7 +211,8 @@ function foragingGabors(nStims, nTrials, nBlocks, nMaxFix, nMinFix, options)
     leftKey   = KbName('LeftArrow'); rightKey  = KbName('RightArrow');
     spaceKey  = KbName('space');     escapeKey = KbName('ESCAPE');
     rKey      = KbName('r');         sKey      = KbName('s');
-    keys = {leftKey, rightKey, spaceKey, escapeKey, rKey, sKey};
+    dKey      = KbName('d');
+    keys = {leftKey, rightKey, spaceKey, escapeKey, rKey, sKey, dKey};
 
     % (b) Escolhe a tela em que haverá o desenho e define algumas cores
     screenNumber = max(Screen('Screens'));
@@ -516,7 +517,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
 
     iconsTex = getMenuTex(dpP.window, iconsDir, drP.black);
     
-    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4};
+    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; sKey = tkP.keys{6};
     upKey   = KbName('UpArrow'); downKey = KbName('DownArrow');
     
     L = numel(options);
@@ -824,7 +825,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                         end
                     end
                     isMouseMostRecent = false;
-                elseif keyCode(spaceKey) || any(buttons)
+                elseif keyCode(sKey) || keyCode(spaceKey) || any(buttons)
                     KbReleaseWait;
                     while any(buttons); [~, ~, buttons] = GetMouse(dpP.window); WaitSecs(0.001); end
                     
@@ -872,8 +873,11 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                                 elseif smallTimeSelect == 2
                                     fprintf('Treino de ruido rosa curto: \n');
                                 end
-
-                                [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx, smallTimeSelect);
+                                if keyCode(spaceKey)
+                                    [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx, smallTimeSelect);
+                                else
+                                    [~, ~] = runStaircase(tkP, dpP, drP, txP, prm, 1, taskState, sigmaTrainIdx, smallTimeSelect, 1);
+                                end
 
                                 smallSelect = -1; smallTimeSelect = 1;
                             elseif strcmp(mode, 'staircase')

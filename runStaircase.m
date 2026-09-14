@@ -1,6 +1,7 @@
-function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, sigmaTrainIdx, pinkNoiseDur)
+function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, sigmaTrainIdx, pinkNoiseDur, auxNumStims)
     if nargin <8, sigmaTrainIdx = []; end
     if nargin <9, pinkNoiseDur  = []; end
+    if nargin <10, auxNumStims  = 0;  end
 % Nessa versão, usa um único staircase para todos os tipos de estímulo, 
 % alimentando o ajuste da curva
         Screen('Flip', dpP.window);
@@ -29,7 +30,9 @@ function [resultsStair, tkS] = runStaircase(tkP, dpP, drP, txP, prm, mode, tkS, 
         % Não me interessam os outputs de distribuições temporais, pois no
         % staircase o tempo não será por quantidade de fixações
         nTrialsBuffered = nTrials + prm.nBufferTrials;
-        nStims = prm.nStimsStair;
+        if auxNumStims == 0, nStims = prm.nStimsStair;
+        else,                nStims = 2;
+        end
         [nTs,  ~, targetOri, ~, ~, ~] = getForagingDistributions1(nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, nBlocks, prm);
         
         drP.allColors = drP.white*ones(3, nStims);

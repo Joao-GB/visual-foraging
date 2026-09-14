@@ -7,7 +7,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     Screen('Flip', dpP.window);
     nBlocks = 1; nTrials = 1;
     
-    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; sKey = tkP.keys{6};
+    leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; sKey = tkP.keys{6}; dKey = tkP.keys{7};
     if strcmp(tkP.targetKey, 'right'), targetKey = rightKey; % nonTargetKey = leftKey;
     else,                              targetKey = leftKey;  % nonTargetKey = rightKey;
     end
@@ -86,6 +86,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
     eyeColor = eyeCols(aux, :);
 
     interestOri  = 90:45:225;
+    interestOri1 = interestOri;
     interestFilt = 5 * 2.^(0:4);
     allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt);
 
@@ -110,8 +111,8 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
         leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri);
         @(x)drawPostAns(tkP, dpP, drP, txP, prm, dstRects, orientation, ...
         textColor2, stimCenters, orderToReportStims, x, targetOri);                     % Tela 8: pós-resposta
-        @(x)obsPink(tkP, dpP, drP, txP, prm, x, gaborTex, ...                           % Tela 9: diferenças de intensidade
-        noiseTex, interestOri)
+        @(x,y)obsPink(tkP, dpP, drP, txP, prm, x, gaborTex, ...                           % Tela 9: diferenças de intensidade
+        noiseTex, y)
         @(x)obsArrows(tkP, dpP, drP, txP, prm, leftKey, rightKey, targetKey, ...        % Tela 10: correspondência entre 
         targetOri)                                                                      %          setas e alvo ou distrator
         @(x)startFix1(tkP, dpP, drP, txP, prm, fixCoords, fixCenters);                  % Tela 11
@@ -147,7 +148,7 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
             oldState = 0;
         else
             if selected == 9
-                screens{selected}(allPinkTex);
+                screens{selected}(allPinkTex, interestOri1);
             else
                 screens{selected}(allTargets);
             end
@@ -161,6 +162,12 @@ function instructStaircase(tkP, dpP, drP, txP, prm)
 
             if selected == 9 && kc(sKey) && ~oldSState
                 allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt, allPinkTex);
+                interestOri1 = interestOri;
+            elseif selected == 9 && kc(dKey) && ~oldSState
+                allPinkTex = createNewPinkTex(dpP, txP, prm, interestOri, interestFilt, allPinkTex);
+                
+                interestOri1 = mod(rand(numel(interestOri), numel(interestFilt))*(upperBound-lowerBound)+lowerBound, 180);
+                interestOri1(rand(numel(interestOri), numel(interestFilt)) > .5) = targetOri;
             end
             oldSState = kc(sKey);
         end
@@ -267,10 +274,6 @@ function drawPink(~, dpP, ~, txP, ~, oriPinkTex, gaborTex, noiseTex, srcRects, d
     Screen('BlendFunction', dpP.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 end
 
-function drawPM(~, dpP, ~, txP, ~, dstRects, orientation, textColor2)
-    Screen('DrawTextures', dpP.window, txP.PMBlob.tex, [], dstRects, orientation, [], [], [textColor2 1]', [], [], txP.PMBlob.props);
-end
-
 function [outKey, allTargets] = drawInteractive(tkP, dpP, drP, txP, prm, nStims, orderToReportStims, leftKey, rightKey, spaceKey, dstRects, orientation, textColor2, stimCenters, targetOri)
     if strcmp(tkP.targetKey, 'right'), targetKey = rightKey; nonTargetKey = leftKey;
     else,                              targetKey = leftKey; nonTargetKey = rightKey;
@@ -362,6 +365,13 @@ function obsPink(tkP, dpP, drP, txP, prm, allPinkTex, gaborTex, noiseTex, intere
     % Grid dimensions
     [nRows, nCols] = size(allPinkTex);
 
+    if size(interestOri, 1) == 1
+        % Multiple orientations -> repeat each orientation across columns 
+        interestOri1 = repmat(interestOri(:), 1, nCols);
+    else
+        interestOri1 = interestOri;
+    end
+
     % Image dimensions
     imageWidth  = txP.gabor.size_px;
     imageHeight = txP.gabor.size_px;
@@ -396,7 +406,7 @@ function obsPink(tkP, dpP, drP, txP, prm, allPinkTex, gaborTex, noiseTex, intere
 
             drawPink(tkP, dpP, drP, txP, prm, ...
                 allPinkTex(row, col), gaborTex, noiseTex, [], ...
-                rect, [], [], interestOri(row));
+                rect, [], [], interestOri1(row, col));
 
         end
     end
