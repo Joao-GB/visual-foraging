@@ -936,7 +936,7 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                             for i=1:L, Screen('Close', iconsTex(i)); alreadyClosed = true; end
                             fprintf('Selecionado: treino %s\n', mode)
                             [tkP1, taskState, resultsTrain] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode, taskState);
-                            if isfield(tkP1, 'pinkNoiseDur')
+                            if isfield(tkP1, 'pinkNoiseDur') && ~strcmp(mode, 't3')
                                 fprintf('Valor de duração do ruido rosa ajustado: %.2f\n', tkP1.pinkNoiseDur); 
                                 tkP.pinkNoiseDur = tkP1.pinkNoiseDur;
                             end
@@ -999,7 +999,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
 
         modeMap = containers.Map({'cursor', 't1', 't2', 'experiment'}, 1:4);
 
-        if strcmp(mode, 'tr3')
+        if strcmp(mode, 't3')
             mode = 't2';
             trueMode = 5;
         else
@@ -1054,7 +1054,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
         if trueMode == 5
             nStims   = 3;
-            modTimes = 1;
+            modTimes(:) = 1;
         end
         if mode == 2 || mode == 3,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
@@ -1328,7 +1328,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             WaitSecs(.1);
                         end
                         if trueMode == 5
-                            Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, stimCenters(:, :, i, b)', 2);
+                            for k = 1:size(stimCenters, 2)
+                                Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, stimCenters(:, k, idx, b)', 2);
+                            end
                         else
                             Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, fixCenters(:, idx, b)', 2);
                         end
@@ -1355,7 +1357,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         % v. Não avança de tela até que o olho (ou o cursor) esteja na
         %    cruz de fixação
                         if trueMode == 5
-                            fixCenter = stimCenters(:, :, i, b);
+                            fixCenter = stimCenters(:, :, idx, b);
                         else
                             fixCenter = fixCenters(:,idx, b);
                         end
@@ -1412,7 +1414,7 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             break; 
                                         end
                                     % Se estiver distante, reinicia a contagem
-                                    elseif any(vecnorm([x_gaze; y_gaze] - fixCenter) > minFixDist1)
+                                    elseif all(vecnorm([x_gaze; y_gaze] - fixCenter) > minFixDist1)
                                         FPonset = GetSecs;
                                     end
                                 end
@@ -1680,6 +1682,9 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                             %% IMPORTANTE: Se for iniciada a modTimes(b,i)-ésima fixação
                                             % diferente num estímulo, começa a contar o tempo de
                                             % atualização
+                                            if trueMode == 5
+                                                [P3On, tkP] = P3Onset5(tkP, prm, 0);
+                                            end
                                             if flag(currStim) == 0 && counter == modTimes(b, idx) - 1
                                                 preUpdateDeadline = fixStartTime + P3On;
                                                 counter = counter+1;
