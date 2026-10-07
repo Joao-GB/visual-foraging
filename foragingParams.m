@@ -177,7 +177,7 @@ function params = foragingParams
 
     % (h) Textos de início, fim, pausa e interrupção de sessão, blocos e
     %     trials
-    params.msg.suffix     = {'cur', 'tr1', 'tr2', 'exp'};
+    params.msg.suffix     = {'cur', 'tr1', 'tr2', 'exp', 'tr3'};
     params.msg.on.ses{1}     = 'SESSION ONSET (%s)';
     params.msg.on.ses{2}     = 'SESSION ONSET';
     params.msg.on.blk{1}  = 'BLOCK ONSET %d/%d';

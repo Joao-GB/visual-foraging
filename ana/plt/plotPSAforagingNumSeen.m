@@ -1,7 +1,8 @@
 function plotPSAforagingNumSeen(trl, drP)
     % 1. Extrair o número de itens vistos por trial
     numSeen = [trl.probeForHistIdx];
-    uniqueSeen = 2:6; % Valores inteiros esperados de 2 a 6
+    uniqueSeen1 = 2:6; % Valores inteiros esperados de 2 a 6
+    uniqueSeen = uniqueSeen1 + 1;
     
     % Inicializa as matrizes para guardar os cálculos e as contagens
     barMatrixAcc  = zeros(length(uniqueSeen), 2);
@@ -42,10 +43,10 @@ function plotPSAforagingNumSeen(trl, drP)
     titleBase = 'Efeito pré-sacádico por quantidade de estímulos vistos';
     
     % 1. Renderiza figura de Acurácia
-    renderPSAforagingNumSeen(barMatrixAcc, countMatrix, uniqueSeen, 'Acertos (%)', ...
+    renderPSAforagingNumSeen(barMatrixAcc, countMatrix, uniqueSeen1, 'Acertos (%)', ...
         'PSA num seen effect - Accuracy', [titleBase, ' (Acurácia)'], drP, false);
         
     % 2. Renderiza figura de Sensibilidade
-    renderPSAforagingNumSeen(barMatrixSens, countMatrix, uniqueSeen, 'Sensibilidade (d'')', ...
+    renderPSAforagingNumSeen(barMatrixSens, countMatrix, uniqueSeen1, 'Sensibilidade (d'')', ...
         'PSA num seen effect - Sensitivity', [titleBase, ' (Sensibilidade)'], drP, true);
 end

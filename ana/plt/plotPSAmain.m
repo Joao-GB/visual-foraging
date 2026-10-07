@@ -7,6 +7,7 @@ if nargin < 3, aux = 0; end
     end
     xlabelPSA = ["Forrag.", "Sacádico", "Não-sacádico"];
     ylabelPSA = 'Acertos (%)';
+    nTrl = numel(trl);
     [main, counts] = getPSAeffect(trl);
     PSA.main = main; PSA.main.counts = counts;
     
@@ -27,6 +28,18 @@ if nargin < 3, aux = 0; end
     xticklabels(xlabelPSA);
     ylabel(ylabelPSA); ylim([0 100]);
     title('Acurácia');
+
+    xL = xlim;
+    yL = ylim;
+    
+    xPos = xL(1) + 0.9 * diff(xL);
+    yPos = yL(1) + 0.9 * diff(yL);
+    
+    text(xPos, yPos, ['N = ' num2str(nTrl)], ...
+        'HorizontalAlignment', 'right', ...
+        'VerticalAlignment', 'top', ...
+        'FontSize', 11);
+
     grid on;
 
     % Subplot 2: d-prime

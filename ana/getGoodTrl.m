@@ -20,10 +20,10 @@ function [allGoodTrl, keepIdx] =  getGoodTrl(trl, mat, trlName)
     P3SaccLatency = [trl(keepIdx).saccLatency] / 1000;
     
     % 
-    latencyMask = P3SaccInterval >= maxDelay & P3SaccLatency <= minSeen & P3SaccInterval1 > .02; % & P3SaccInterval < 0
+    latencyMask = P3SaccInterval >= maxDelay & P3SaccLatency <= minSeen & P3SaccInterval1 > .01; % & P3SaccInterval < 0
 
     %% 2. Identifica as distâncias entre fixação e probe
-    maxDist = mat.prm.gaborSize_dva/2 + 1.5;
+    maxDist = mat.prm.gaborSize_dva/2 + 2;
 
     probePos      = pixel_to_dva([trl(keepIdx).probePosPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';
     probePosFix   = pixel_to_dva([trl(keepIdx).probePosFixPix], 'dist', mat.prm.screenDist, 'width', mat.dpP.monitorW_mm/10, 'res', mat.dpP.screenRes.width)';

@@ -1,5 +1,7 @@
-function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, printCount)
+function fullMask = plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, printCount)
     if nargin < 7, printCount = true; end
+
+    plotMode = ~isempty(figTitle) && ~isempty(plotTitle);
     
     % --- ZERO-AWARE QUANTILE HANDLING ---
     hasZeroInflation = (mean(metricVector == 0) >= 0.20);
@@ -28,7 +30,7 @@ function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, 
     xlabelPSA     = cell(1, numBins);
     
     calcDPrime = @(hit, total) norminv(min(max(hit./total, 0.001), 0.999)) * sqrt(2);
-    
+    fullMask = false(numBins, numel(metricVector));
     for bIdx = 1:numBins
         if hasZeroInflation
             % --- ZERO-INFLATED MASK LOGIC ---
@@ -69,10 +71,10 @@ function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, 
                 xlabelPSA{bIdx} = sprintf('[%.3f, %.3f)', edges(bIdx-1), edges(bIdx));
             end
         end
-        
+        fullMask(bIdx,:) = mask;
         % --- Calculate Statistics ---
         if any(mask)
-            [~, countsSub] = getPSAeffect(trl(mask));
+            [~, countsSub] = getPSAeffect(trl(mask), plotMode);
             countMatrix(bIdx, :) = [countsSub(2,2), countsSub(2,3)];
             
             pct_s = (countsSub(1,2) / countsSub(2,2)) * 100;
@@ -90,8 +92,10 @@ function plotPSAsplit(splitValues, metricVector, trl, mat, figTitle, plotTitle, 
     end
     
     if ~printCount, countMatrix = []; end
-    renderPSAsplit(barMatrixAcc, countMatrix, numBins, xlabelPSA, 'Acertos (%)', ...
-        [figTitle, ' - Accuracy'], [plotTitle, ' (Acurácia)'], mat, false);
-    renderPSAsplit(barMatrixSens, countMatrix, numBins, xlabelPSA, 'Sensibilidade (d'')', ...
-        [figTitle, ' - Sensitivity'], [plotTitle, ' (Sensibilidade)'], mat, true);
+    if plotMode
+        renderPSAsplit(barMatrixAcc, countMatrix, numBins, xlabelPSA, 'Acertos (%)', ...
+            [figTitle, ' - Accuracy'], [plotTitle, ' (Acurácia)'], mat, false);
+        renderPSAsplit(barMatrixSens, countMatrix, numBins, xlabelPSA, 'Sensibilidade (d'')', ...
+            [figTitle, ' - Sensitivity'], [plotTitle, ' (Sensibilidade)'], mat, true);
+    end
 end

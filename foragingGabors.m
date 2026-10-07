@@ -492,9 +492,10 @@ function [tkP, taskState] = menuScreen1(tkP, dpP, drP, txP, debug, prm)
                         'Recomendado antes de toda sessão experimental.'],...
                         'Prosseguir à sessão experimental propriamente.'};
 
-    trainOptions     = {'t1', 't2'};
-    trainOptionsName = {'Treino 1', 'Treino 2'};
+    trainOptions     = {'t1', 't3', 't2'};
+    trainOptionsName = {'Treino 1', 'Treino 2', 'Treino 3'};
     trainOptionsMsg  = {'Treino dos aspectos de busca visual da tarefa.',...
+                        'Treino dos aspectos sacádicos  da tarefa.',...
                         ['Treino dos aspectos de acuidade visual da \n'...
                          'tarefa.']};
     
@@ -986,6 +987,8 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         if nargin < 7, mode = 'experiment'; end
         tic;
 
+        
+
         Screen('Flip', dpP.window);
 
         if strcmp(mode, 'experiment')
@@ -995,9 +998,17 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         if isfield(tkP,'pinkNoiseDur'), prm.pinkNoiseDur = tkP.pinkNoiseDur; end
 
         modeMap = containers.Map({'cursor', 't1', 't2', 'experiment'}, 1:4);
-        mode = modeMap(mode);
 
-        suffix = prm.msg.suffix{mode};
+        if strcmp(mode, 'tr3')
+            mode = 't2';
+            trueMode = 5;
+        else
+            trueMode = modeMap(mode);
+        end
+
+        mode = modeMap(mode);
+        
+        suffix = prm.msg.suffix{trueMode};
         
         leftKey = tkP.keys{1}; rightKey = tkP.keys{2}; spaceKey = tkP.keys{3}; escapeKey = tkP.keys{4}; rKey = tkP.keys{5};
         if strcmp(tkP.targetKey, 'right')
@@ -1036,7 +1047,15 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
         tic;
     %% 2) Define as distribuições das condições dos trials e dos blocos
         nTrialsBuffered = tkP.nTrials + prm.nBufferTrials;
+
+        if trueMode == 5
+            tkP.nStims = 3;
+        end
         [nTs, nStims, targetOri, modTimes, nStimsToReport, orderToReportSets] = getForagingDistributions1(tkP.nStims, tkP.nMinFix, tkP.nMaxFix, nTrialsBuffered, tkP.nBlocks, prm);
+        if trueMode == 5
+            nStims   = 3;
+            modTimes = 1;
+        end
         if mode == 2 || mode == 3,  targetOri = prm.allOri(randperm(tkP.nBlocks)); end
 
         drP.allColors = drP.white*ones(3, nStims);
@@ -1308,7 +1327,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             EyelinkDoDriftCorrection(tkP.el);
                             WaitSecs(.1);
                         end
-                        Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, fixCenters(:, idx, b)', 2);
+                        if trueMode == 5
+                            Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, stimCenters(:, :, i, b)', 2);
+                        else
+                            Screen('DrawLines', auxWin, fixCoords, prm.lineWidth_px, drP.white, fixCenters(:, idx, b)', 2);
+                        end
 
         % (g) Atualiza a tela para exibir a cruz de fixação
                         if mode == 1
@@ -1331,7 +1354,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                     
         % v. Não avança de tela até que o olho (ou o cursor) esteja na
         %    cruz de fixação
-                        fixCenter = fixCenters(:,idx, b);
+                        if trueMode == 5
+                            fixCenter = stimCenters(:, :, i, b);
+                        else
+                            fixCenter = fixCenters(:,idx, b);
+                        end
+
                          if debug > 0 && mode >= 2
                             while true
                                 [keyIsDown, ~, keyCode] = KbCheck;
@@ -1378,13 +1406,13 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 if check
                                     % Se o olho (ou cursor) estiver perto da cruz 
                                     % por tempo suficiente, prossegue
-                                    if vecnorm([x_gaze; y_gaze] - fixCenter) <= minFixDist1
+                                    if any(vecnorm([x_gaze; y_gaze] - fixCenter) <= minFixDist1)
                                         if (GetSecs - FPonset) >= prm.minFixTime1
                                             fixAcquired = true;
                                             break; 
                                         end
                                     % Se estiver distante, reinicia a contagem
-                                    elseif vecnorm([x_gaze; y_gaze] - fixCenter) > minFixDist1
+                                    elseif any(vecnorm([x_gaze; y_gaze] - fixCenter) > minFixDist1)
                                         FPonset = GetSecs;
                                     end
                                 end
@@ -1513,7 +1541,6 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             % excesso de tempo) ou se o período pré-ruído rosa tiver sido completado
                             % sem movimento ocular
                             runTrial = true;
-                            needOffset = false;
                             while runTrial
 
                                 WaitSecs(0.001);
@@ -2129,7 +2156,11 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                             % desde que não seja a última fixação nem o pós
                             % sacádico
                             isSaccSeen(b, idx) = any(ismember(currIdx, seenIdx));
-                            auxIdx = setdiff(seenIdx, [currStim currIdx]);
+                            if trueMode == 5
+                                auxIdx = setdiff(seenIdx, currIdx);
+                            else
+                                auxIdx = setdiff(seenIdx, [currStim currIdx]);
+                            end
                             seenAux = datasample(auxIdx, min(length(auxIdx), nStimsToReport(1, idx, b)), 'Replace', false);
 
                             currAux = []; 
@@ -2214,10 +2245,12 @@ function [tkP, tkS, results] = runForaging1(tkP, dpP, drP, txP, prm, debug, mode
                                 foragingFlip(dpP.window, stimCenters(:, :, idx, b), dstRects, orderToReportStims, txP.gabor.size_px, drP.allColors, isTargetAnswer, targetOri(b), drP.allPW);
                             end
                             
-                            tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
-    
-                            tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
-                            tkP.fixProps.med   = [tkP.fixProps.med    med];
+                            if trueMode ~= 5
+                                tkP.fixQueue = [tkP.fixQueue(modTimes(b, idx):end), auxFixQueue(1:(modTimes(b, idx)-1))];
+  
+                                tkP.fixProps.preP3 = [tkP.fixProps.preP3 P3On];
+                                tkP.fixProps.med   = [tkP.fixProps.med    med];
+                            end
                             trialOrder(2, i, b) = 1;
     
                             i = i + 1;

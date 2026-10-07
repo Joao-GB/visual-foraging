@@ -41,7 +41,7 @@ function [badTrl, nTrl, blkIdx] = delBadTrl(mat, messages, sesLimIdx, trlLimIdx,
     auxIdx = [blkOnIdx sesLimIdx(2)]; badBlk = zeros(1, nBlk);
     for i=1:nBlk
         currBlkIdx = auxIdx(i):auxIdx(i+1);
-        blkOffIdx(i) = find(contains(messages(currBlkIdx), mat.prm.msg.off.blk{2})) + auxIdx(i) - 1;
+        blkOffIdx(i) = find(contains(messages(currBlkIdx), mat.prm.msg.off.blk{2}), 1) + auxIdx(i) - 1;
         badCond = strcmp(messages(currBlkIdx), mat.prm.msg.err.blk) | ...    % (i)
                   strcmp(messages(currBlkIdx), sesItMsg);                    % (ii)
         if any(badCond), badBlk(i) = true; end
